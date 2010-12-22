@@ -73,11 +73,18 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.csrf.CsrfResponseMiddleware',
 )
 
 ROOT_URLCONF = 'manager.urls'
 
+# Cambio de variables para la redireccion del login
+LOGIN_URL = "cuentas/login"
+LOGOUT_URL = "cuentas/logout"
+LOGIN_REDIRECT_URL = "cuentas/perfil"
+
 TEMPLATE_DIRS = (
+	"templates/",
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

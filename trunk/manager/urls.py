@@ -17,12 +17,11 @@ urlpatterns = patterns('',
 	
 	
 	# Modulo de login
-	#(r'^registrarse/', 'manager.equipos.views.registrar_usuario'),
-    (r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
-   	(r'^accounts/login/$', 'django.contrib.auth.views.login'),
-   	(r'^accounts/$', 'django.contrib.auth.views.login'),
-    #(r'^accounts/profile', 'manager.equipos.views.index'),
+	(r'^registrarse/', 'manager.equipos.views.registrar_usuario'),
+    (r'^cuentas/logout/$', 'django.contrib.auth.views.logout'),
+   	(r'^cuentas/login/$', 'django.contrib.auth.views.login'),
+    (r'^cuentas/perfil/$', 'manager.equipos.views.perfil_usuario'),
 
-   	(r'^equipos/(?P<equipo_id>\d+)/$', 'manager.equipos.views.ver_equipo'),
-   	(r'^equipos/(?P<equipo_id>\d+)/editar$', 'manager.equipos.views.editar_equipo'),
+	# Modulo de equipos
+   	#(r'^equipos/(?P<equipo_id>\d+)/$', 'manager.equipos.views.ver_equipo'),
 )

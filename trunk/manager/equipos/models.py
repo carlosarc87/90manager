@@ -18,8 +18,18 @@ class Usuario(User):
 
 # Liga
 class Liga(models.Model):
+	creador = models.ForeignKey(Usuario)
 	division = models.IntegerField()
 	fecha_inicio = models.DateField("Fecha de inicio")
+	
+	def agregarEquipo(self, equipo):
+		''' Agrega un equipo a la liga '''
+		self.equipos_set.add(equipo)
+	
+	def generar(self):
+		''' Genera las jornadas de la liga '''
+		for i in range((self.equipos_set.all().size() - 1) * 2):
+			print "a"
 
 # Jornada
 class Jornada(models.Model):
@@ -32,6 +42,10 @@ class Equipo(models.Model):
 	nombre = models.CharField(max_length=200)
 	usuario = models.OneToOneField(Usuario)
 	liga = models.ForeignKey(Liga)
+	
+	# Funciones
+	def agregarJugador(self, jugador):
+		self.jugador_set.add(jugador)
 	
 	def __unicode__(self):
 		return self.nombre
@@ -52,3 +66,6 @@ class Partido(models.Model):
 	equipo_local = models.ForeignKey(Equipo, related_name="Local")
 	equipo_visitante = models.ForeignKey(Equipo, related_name="Visitante")	
 
+	def jugar(self):
+		''' Juega el partido y devuelve al ganador'''
+		return self.equipo_local
