@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<strong>Datos de la liga</strong>
+<ul>
+	<li>Nombre: {{ liga.nombre }}</li>
+</ul>
+
+<strong>Listado de equipos</strong>
+<ul>
+{% for equipo in equipos %}
+	<ul>
+	<li><a href="/equipos/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
+	</ul>
+{% endfor %}
+</ul>
+
+<strong>Listado de jornadas</strong>
+{% for jornada in jornadas %}
+	<ul>
+	<li><a href="/jornadas/{{ jornada.id }}/">{{ jornada.id }}</a></li>
+	</ul>
+{% endfor %}
+
+{% endblock %}

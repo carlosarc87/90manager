@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<strong>Datos de la jornada</strong>
+<ul>
+	<li>Numero: {{ jornada.numero }}</li>
+</ul>
+
+
+<strong>Datos de la liga</strong>
+<ul>
+	<li>Nombre: {{ liga.nombre }}</li>
+</ul>
+
+<strong>Listado de encuentros</strong>
+<ul>
+{% for emparejamiento in emparejamientos %}
+	<ul>
+	<li><a href="/partidos/{{ emparejamiento.id }}/">{{ emparejamiento.equipo_local }} vs {{ emparejamiento.equipo_visitante }}</a></li>
+	</ul>
+{% endfor %}
+</ul>
+
+
+{% endblock %}

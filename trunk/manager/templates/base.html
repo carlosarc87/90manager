@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <link rel="stylesheet" href="style.css" />
+    <title>{% block title %}90manager{% endblock %}</title>
+</head>
+
+<body>
+	<div id="login">
+		{% block login %}
+		{% if usuario %}
+			<strong> Hola usuario: {{ usuario }} </strong>
+			<ul>
+				<li><a href="/cuentas/perfil">Perfil</a></li>
+				<li><a href="/cuentas/logout">Desconectar</a></li>
+			</ul>
+        {% else %}
+			<strong>Sin usuario</strong>
+		{% endif %}
+		{% endblock %}
+		<hr>
+	</div>
+    <div id="content">
+		<hr>
+        {% block contenido %}Bloque contenido{% endblock %}
+		<hr>
+    </div>
+    <div id="subbarra">
+		<hr>
+        {% block subbarra %}{% endblock %}
+        <a href="/admin/">Administracion</a>
+		<hr>
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <link rel="stylesheet" href="style.css" />
+    <title>{% block title %}Compartidor{% endblock %}</title>
+</head>
+
+<body>
+	<form>
+	<fieldset>
+	<legend>Informacion del objeto</legend>
+	<label for="ti">Titulo</label><br>
+	<input type="text" name="titulo" id="ti"/><br>
+	<label for="en">Enlace:</label><br>
+	<textarea label="etiqueta" rows="10" cols="30" name="enlace" id="en"></textarea><br>
+	<label for="de">Descripcion:</label><br>
+	<textarea rows="10" cols="30" name="descripcion" id="de"></textarea><br>
+	</fieldset>
+	<fieldset>
+	<legend>Usuarios permitidos</legend>
+	{% for usuario in usuarios %}
+		<input type="checkbox" name="{{ usuario.id }}" value="{{ usuario.username }}" /> {{ usuario.username }}<br />
+	{% empty %}
+		No hay usuarios disponibles...
+	{% endfor %}
+	</fieldset>
+	<input type="submit" value="Crear" />
+	</form>
+</body>
+</html>
