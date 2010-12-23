@@ -64,8 +64,4 @@ class Partido(models.Model):
 	jornada = models.ForeignKey(Jornada)
 	jugadores = models.ManyToManyField(Jugador)
 	equipo_local = models.ForeignKey(Equipo, related_name="Local")
-	equipo_visitante = models.ForeignKey(Equipo, related_name="Visitante")	
-
-	def jugar(self):
-		''' Juega el partido y devuelve al ganador'''
-		return self.equipo_local
+	equipo_visitante = models.F
