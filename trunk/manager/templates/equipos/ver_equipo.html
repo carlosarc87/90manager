@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<strong>Datos del equipo</strong>
+{{ equipo }}
+<ul>
+	<li>Nombre: {{ equipo.nombre }}</li>
+</ul>
+
+<strong>Liga: <a href="/ligas/{{ liga.id }}/">{{ liga.nombre }}</a></strong>
+
+<strong>Listado de jugadores</strong>
+<ul>
+{% for jugador in jugadores %}
+	<ul>
+	<li><a href="/jugadores/{{ jugador.id }}/">{{ jugador.nombre }}</a></li>
+	</ul>
+{% endfor %}
+</ul>
+
+{% endblock %}

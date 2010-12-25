@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<strong>Datos de la jornada</strong>
+<ul>
+	<li>Numero: {{ jornada.numero }}</li>
+</ul>
+
+
+<strong>Datos de la liga</strong>
+<ul>
+	<li>Nombre: {{ liga.nombre }}</li>
+</ul>
+
+<strong>Listado de encuentros</strong>
+<ul>
+	<li>Local: <a href="/equipos/{{ equipo_local.id }}/">{{ partido.equipo_local }}</a>
+	<li>Visitante: <a href="/equipos/{{ equipo_visitante.id }}/">{{ partido.equipo_visitante }}</a>
+</ul>
+
+<strong>¿Acabado?</strong>
+{% if finalizado %}
+	Si
+	<ul>
+		<li>Goles local: {{ partido.goles_local }}</li>
+		<li>Goles visitante: {{ partido.goles_visitante }}</li>
+		<li>Resultado: {{ resultado }}</li>
+	</ul>
+{% else %}
+	No
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<strong>Datos de la liga</strong>
+<ul>
+	<li>Nombre: {{ liga.nombre }}</li>
+</ul>
+
+<strong>Clasificacion actual:</strong>
+<ul>
+	<li>Por hacer...</li>
+</ul>
+	
+<strong>Equipo en esta liga</strong>
+<ul>
+{% if equipo_propio %}
+	<li><a href="/equipos/{{ equipo_propio.id }}">{{ equipo_propio.nombre }}</a></li>
+{% else %}
+	{% if activada %}
+		<li>No se pueden añadir mas equipos</li>
+	{% else %}
+		<li><a href="/equipos/crear/{{ liga.id }}/">Crear</a><br></li>
+	{% endif %}
+{% endif %}
+</ul>
+
+<strong>Listado de equipos</strong>
+<ul>
+{% for equipo in equipos %}
+	<li><a href="/equipos/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
+{% endfor %}
+</ul>
+
+{% if activada %}
+	{% if jornada_actual %}
+		<strong>Jornada actual</strong>
+		<ul>
+			<li><a href="/jornadas/{{ jornada_actual.id }}/">{{ jornada_actual.id }}</a></li>
+		</ul>
+
+		<a href="/ligas/{{ liga.id }}/avanzar/">Avanzar jornada</a><br>
+	{% else %}
+		<strong>Jornada actual</strong>
+		<ul>
+			<li>Liga acabada</li>
+		</ul>
+	{% endif %}
+
+	<strong>Listado de jornadas</strong>
+	{% for jornada in jornadas %}
+		<ul>
+			<li><a href="/jornadas/{{ jornada.id }}/">{{ jornada.id }}</a> ¿Jugada? {{ jornada.jugada }}</li>
+		</ul>
+	{% endfor %}
+{% else %}
+	No esta activada aun. <a href="/ligas/{{ liga.id }}/activar/">Activar</a>
+{% endif %}
+
+{% endblock %}

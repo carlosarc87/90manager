@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<strong>Datos de la jornada</strong>
+<a href="/jornadas/{{ jornada_anterior }}/">Anterior</a>
+<a href="/jornadas/{{ jornada_siguiente }}/">Siguiente</a>
+<ul>
+	<li>Numero: {{ jornada.numero }}</li>
+</ul>
+
+<strong>Datos de la liga</strong>
+<ul>
+	<li>Nombre: {{ liga.nombre }}</li>
+</ul>
+
+<strong>Listado de encuentros</strong>
+<ul>
+{% for emparejamiento in emparejamientos %}
+	<li><a href="/partidos/{{ emparejamiento.id }}/">{{ emparejamiento.equipo_local }} vs {{ emparejamiento.equipo_visitante }}</a></li>
+{% endfor %}
+</ul>
+
+<strong>¿Jugada?</strong>
+<ul>
+	{% if jornada.jugada %}
+		<li>Si</li>
+	{% else %}
+		<li>No</li>
+	{% endif %}
+</ul>
+{% endblock %}
+
+<strong>Clasificacion antes de la jornada</strong>
+
+<strong>Clasificacion despues de la jornada</strong>

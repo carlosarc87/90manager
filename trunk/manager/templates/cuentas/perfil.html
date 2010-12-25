@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block breadcrumbs %}<div class="breadcrumbs"><a href="../">{% trans 'Home' %}</a></div>{% endblock %}
+{% block contenido %}
+
+<p>Perfil principal de usuario {{ usuario.username }}</p>
+
+<strong>Ligas creadas</strong>
+<ul>
+	{% for liga in ligas_creadas %}
+		<li>Nombre: <a href="/ligas/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+	{% endfor %}
+</ul>
+
+<strong>Ligas en las que participa</strong>
+<ul>
+	{% for equipo in equipos %}
+		<li>
+			Nombre: <a href="/ligas/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a>
+			<ul>
+				<li>Equipo: <a href="/equipos/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
+			</ul>
+		</li>
+	{% endfor %}
+</ul>
+
+{% endblock %}

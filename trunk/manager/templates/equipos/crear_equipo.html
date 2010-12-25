@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+<form action="/equipos/crear/{{ liga.id }}/" method="post">
+	{% csrf_token %}
+    <div class="fieldWrapper">
+        {{ form.nombre.errors }}
+        <label for="id_nombre">Nombre del equipo:</label><br>
+        {{ form.nombre }}
+    </div>
+    <hr>
+	<input type="submit" value="Crear" />
+</form>
+{% endblock %}
+
