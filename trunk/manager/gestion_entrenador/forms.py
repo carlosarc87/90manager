@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 from django import forms
-from equipos.models import *
+from gestion_entrenador.models import *
 
 # Formulario para registrar a un usuario. Elimina los campos que no queremos que trastee
 class UsuarioForm(forms.ModelForm):
@@ -41,6 +42,14 @@ class PrepararEquipoVisitanteForm(forms.ModelForm):
 		exclude = ('jornada', 'equipo_local', 'equipo_visitante', 'goles_local', 'goles_visitante', 'titulares_local')
 
 class LigaForm(forms.ModelForm):
+	def clean_num_equipos(self):
+		valor = self.cleaned_data['num_equipos']
+		if valor % 2 != 0:
+			raise forms.ValidationError("Debe de introducir un valor par")
+		if valor <= 0:
+			raise forms.ValidationError("Debe de introducir un valor mayor que 0")
+		return valor
+	
 	class Meta:
 		model = Liga
 		exclude = ('creador', 'fecha_creacion')

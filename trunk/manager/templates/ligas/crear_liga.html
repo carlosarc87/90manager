@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block contenido %}
-<form action="/ligas/crear_liga/" method="post">
+<form action="/ligas/crear/" method="post">
 	{% csrf_token %}
     <div class="fieldWrapper">
         {{ form.nombre.errors }}

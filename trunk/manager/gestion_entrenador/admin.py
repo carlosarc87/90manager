@@ -1,5 +1,6 @@
-from manager.equipos.models import *
+# -*- coding: utf-8 -*-
 from django.contrib import admin
+from manager.gestion_entrenador.models import *
 
 admin.site.register(Usuario)
 admin.site.register(Equipo)

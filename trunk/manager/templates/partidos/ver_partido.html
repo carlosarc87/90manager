@@ -4,18 +4,18 @@
 
 <strong>Datos de la jornada</strong>
 <ul>
-	<li>Numero: <a href="/jornadas/{{ jornada.id }}">{{ jornada.numero }}</a></li>
+	<li>Numero: <a href="/jornadas/ver/{{ jornada.id }}">{{ jornada.numero }}</a></li>
 </ul>
 
 <strong>Datos de la liga</strong>
 <ul>
-	<li>Nombre: <a href="/ligas/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+	<li>Nombre: <a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
 </ul>
 
 <strong>Listado de equipos</strong>
 <ul>
-	<li>Local: <a href="/equipos/{{ equipo_local.id }}/">{{ partido.equipo_local }}</a>
-	<li>Visitante: <a href="/equipos/{{ equipo_visitante.id }}/">{{ partido.equipo_visitante }}</a>
+	<li>Local: <a href="/equipos/ver/{{ equipo_local.id }}/">{{ partido.equipo_local }}</a>
+	<li>Visitante: <a href="/equipos/ver/{{ equipo_visitante.id }}/">{{ partido.equipo_visitante }}</a>
 </ul>
 
 <strong>¿Acabado?</strong>
@@ -29,13 +29,13 @@
 	<strong>Titulares del equipo local</strong>
 	<ul>
 		{% for titular in titulares_local %}
-			<li><a href="/jugadores/{{ titular.id }}">{{ titular.nombre }}</a></li>
+			<li><a href="/jugadores/ver/{{ titular.id }}">{{ titular.nombre }}</a></li>
 		{% endfor %}
 	</ul>
 	<strong>Titulares del equipo visitante</strong>
 	<ul>
 		{% for titular in titulares_visitante %}
-			<li><a href="/jugadores/{{ titular.id }}">{{ titular.nombre }}</a></li>
+			<li><a href="/jugadores/ver/{{ titular.id }}">{{ titular.nombre }}</a></li>
 		{% endfor %}
 	</ul>
 	

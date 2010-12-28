@@ -3,8 +3,11 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+# Mandar reporte de error por correo a los siguientes destinatarios cuando DEBUG = False
 ADMINS = (
-     ('admin', 'admin@admin.net'),
+     ('Juanmi', 'ciberjm@gmail.com'),
+     ('Pino', 'jllopezpino@gmail.com'),
+     ('Carlos', 'carlos.kapazao@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -80,9 +83,9 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'manager.urls'
 
 # Cambio de variables para la redireccion del login
-LOGIN_URL = "/cuentas/login"
-LOGOUT_URL = "/cuentas/logout"
-LOGIN_REDIRECT_URL = "/cuentas/perfil"
+LOGIN_URL = "/cuentas/login/"
+LOGOUT_URL = "/cuentas/logout/"
+LOGIN_REDIRECT_URL = "/"
 
 TEMPLATE_DIRS = (
 	"templates/",
@@ -101,5 +104,5 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'manager.equipos'
+    'manager.gestion_entrenador'
 )

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User, UserManager
 
@@ -5,12 +6,15 @@ import random
 
 # Usuario - hereda de la clase User de django
 class Usuario(User):
+	''' Representa a un usuario en el sistema '''
 	objects = UserManager()
 	
 	def __unicode__(self):
+		''' Devuelve una cadena de texto que representa la clase '''
 		return self.username
 		
 	def save(self):
+		''' Sobreescritura de la funcion save para arreglar un fallo con las contrasennas '''
 		password = ""
 		password = self.password
 		self.set_password(self.password)
@@ -20,6 +24,7 @@ class Usuario(User):
 
 # Liga
 class Liga(models.Model):
+	''' Representa una liga '''
 	creador = models.ForeignKey(Usuario)
 	nombre = models.CharField(max_length = 200)
 	num_equipos = models.IntegerField()
@@ -46,7 +51,6 @@ class Liga(models.Model):
 		
 	def generarJornadas(self):
 		''' Genera las jornadas de una liga '''
-		# Generar jornadas
 		jornadas = []
 		num_jornadas_ida = self.num_equipos - 1
 		num_emparejamientos_jornada = self.num_equipos / 2
@@ -83,7 +87,7 @@ class Liga(models.Model):
 			jornada = Jornada(liga = self, numero = i, jugada = False)
 			jornada.save()
 			for emparejamiento in jornadas[i]:
-				partido = Partido(jornada=jornada, equipo_local=emparejamiento[0], equipo_visitante=emparejamiento[1])
+				partido = Partido(jornada = jornada, equipo_local = emparejamiento[0], equipo_visitante = emparejamiento[1], jugado = False)
 				partido.save()
 
 # Jornada
@@ -163,29 +167,30 @@ class Jugador(models.Model):
 class Partido(models.Model):
 	#hora_inicio = models.TimeField("Hora de inicio")
 	jornada = models.ForeignKey(Jornada)
-	#jugadores = models.ManyToManyField(Jugador)
 	equipo_local = models.ForeignKey(Equipo, related_name = "Local")
 	equipo_visitante = models.ForeignKey(Equipo, related_name = "Visitante")
 	
 	goles_local = models.IntegerField(null = True, blank = True)
 	goles_visitante = models.IntegerField(null = True, blank = True)
 	
+	jugado = models.BooleanField()
+	
 	titulares_local = models.ManyToManyField(Jugador, related_name = "Titulares_locales")
 	titulares_visitante = models.ManyToManyField(Jugador, related_name = "Titulares_visitantes")
 	
 	def finalizado(self):
 		''' Indica si un partido ya ha acabado '''
-		return self.goles_local != None
+		return self.jugado
 	
 	def jugar(self):
 		''' Juega el partido y devuelve al ganador'''
 		self.goles_local = random.randint(0, 10)
 		self.goles_visitante = random.randint(0, 10)
+		self.jugado = True
 
 class ClasificacionEquipoJornada(models.Model):
 	jornada = models.ForeignKey(Jornada)
 	equipo = models.ForeignKey(Equipo)
-	#posicion = models.IntegerField()
 	goles_favor = models.IntegerField()
 	goles_contra = models.IntegerField()
 	puntos = models.IntegerField()

@@ -9,13 +9,13 @@
 
 <strong>Liga:</strong>
 <ul>
-	<li><a href="/ligas/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+	<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
 </ul>
 
 <strong>Listado de jugadores</strong>
 <ul>
 	{% for jugador in jugadores %}
-		<li><a href="/jugadores/{{ jugador.id }}/">{{ jugador.nombre }}</a></li>
+		<li><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></li>
 	{% endfor %}
 </ul>
 

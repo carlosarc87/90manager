@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.template import Context, loader
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -7,13 +8,17 @@ from django.db import transaction
 import datetime
 import random
 
-from manager.equipos.models import *
-from manager.equipos.forms import *
+from manager.gestion_entrenador.models import *
+from manager.gestion_entrenador.forms import *
 
 ###################### FUNCIONES AUXILIARES ############################
 
 def obtenerUsuario(request):
-	return Usuario.objects.get(id = request.user.id)
+	if Usuario.objects.filter(id = request.user.id).count() > 0:
+		usuario = Usuario.objects.get(id = request.user.id)
+	else:
+		usuario = None
+	return usuario
 
 ############################ VISTAS ####################################
 
@@ -21,6 +26,8 @@ def obtenerUsuario(request):
 def index(request):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
 	
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("base.html")
@@ -29,13 +36,14 @@ def index(request):
 	
 # Vista para registrar a un usuario
 def registrar_usuario(request):
-#	return HttpResponse("Aun no implementado del todo...")
-#	if request.user == None:
+	
+	if obtenerUsuario(request) != None:
+		return HttpResponse("No puede registrar usuarios estando logueado.")
 	if request.method == 'POST':
 		form = UsuarioForm(request.POST)
 		if form.is_valid():
 			# Solucion para los problemas de la password
-			usuario = form.save(commit=False)
+			usuario = form.save(commit = False)
 			usuario.is_staff = False
 			usuario.is_active = True
 			usuario.is_superuser = False
@@ -50,6 +58,8 @@ def registrar_usuario(request):
 @login_required
 def perfil_usuario(request):
 	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
 	# Obtenemos las ligas creadas por el usuario
 	ligas_creadas = Liga.objects.filter(creador = usuario)
 	# Obtenemos los equipos
@@ -67,6 +77,12 @@ def perfil_usuario(request):
 def ver_equipo(request, equipo_id):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+
+	if Equipo.objects.filter(id = equipo_id).count() == 0:
+		return HttpResponse("Error, no existe un equipo con identificador %s" % equipo_id)
+
 	# Obtenemos el equipo
 	equipo = Equipo.objects.get(id = equipo_id)
 	# Obtenemos los jugadores
@@ -87,6 +103,12 @@ def ver_equipo(request, equipo_id):
 def ver_jugador(request, jugador_id):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+
+	if Jugador.objects.filter(id = jugador_id).count() == 0:
+		return HttpResponse("Error, no existe un jugador con identificador %s" % jugador_id)
+		
 	# Obtenemos el jugador
 	jugador = Jugador.objects.get(id = jugador_id)
 	# Obtenemos el equipo
@@ -103,6 +125,12 @@ def ver_jugador(request, jugador_id):
 def ver_liga(request, liga_id):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+
+	if Liga.objects.filter(id = liga_id).count() == 0:
+		return HttpResponse("Error, no existe una liga con identificador %s" % liga_id)
+
 	# Obtenemos la liga
 	liga = Liga.objects.get(id = liga_id)
 	# Obtenemos los equipos que juegan en la liga
@@ -168,10 +196,21 @@ def ver_liga(request, liga_id):
 def avanzar_jornada_liga(request, liga_id):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+
+	if Liga.objects.filter(id = liga_id).count() == 0:
+		return HttpResponse("Error, no existe una liga con identificador %s" % liga_id)
+
 	# Obtenemos la liga
 	liga = Liga.objects.get(id = liga_id)
+		
 	# Obtenemos las jornadas no jugadas
 	jornadas = liga.jornada_set.filter(jugada = False)
+	
+	if jornadas.count() == 0:
+		return HttpResponse("Esta liga ya esta acabada")	
+	
 	# Sacar primera jornada no jugada
 	jornada = jornadas[0]
 	partidos = jornada.partido_set.all()
@@ -193,6 +232,14 @@ def avanzar_jornada_liga(request, liga_id):
 	
 @login_required
 def jugar_partido(request, partido_id):
+	# Obtenemos el usuario
+	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+	
+	if Partido.objects.filter(id = partido_id).count() == 0:
+		return HttpResponse("Error, no existe un partido con identificador %s" % partido_id)
+
 	partido = Partido.objects.get(id = partido_id)
 	if partido.finalizado():
 		return HttpResponse("Este partido ya se jugo")
@@ -216,6 +263,12 @@ def jugar_partido(request, partido_id):
 def ver_jornada(request, jornada_id):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+
+	if Jornada.objects.filter(id = jornada_id).count() == 0:
+		return HttpResponse("Error, no existe una jornada con identificador %s" % jornada_id)
+
 	# Obtenemos la jornada
 	jornada = Jornada.objects.get(id = jornada_id)
 	# Obtenemos la liga
@@ -237,14 +290,27 @@ def ver_jornada(request, jornada_id):
 			clasificacion_anterior_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
 			clasificacion_anterior = sorted(clasificacion_anterior_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
 
+	jornada_anterior = liga.jornada_set.filter(numero = jornada.numero - 1)
+	if jornada_anterior.count() > 0:
+		jornada_anterior = jornada_anterior[0].id
+	else:
+		jornada_anterior = None
+
+	jornada_siguiente = liga.jornada_set.filter(numero = jornada.numero + 1)
+	if jornada_siguiente.count() > 0:
+		jornada_siguiente = jornada_siguiente[0].id
+	else:
+		jornada_siguiente = None
+
+
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("jornadas/ver_jornada.html")
 	c = Context({"jornada" : jornada,
 				 "emparejamientos" : emparejamientos,
 				 "liga" : liga,
 				 "usuario" : usuario,
-				 "jornada_anterior" : jornada.id - 1,
-				 "jornada_siguiente" : jornada.id + 1,
+				 "jornada_anterior" : jornada_anterior,
+				 "jornada_siguiente" : jornada_siguiente,
 				 "clasificacion" : clasificacion,
 				 "clasificacion_anterior" : clasificacion_anterior,
 				})
@@ -254,6 +320,12 @@ def ver_jornada(request, jornada_id):
 def ver_partido(request, partido_id):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+
+	if Partido.objects.filter(id = partido_id).count() == 0:
+		return HttpResponse("Error, no existe un partido con identificador %s" % partido_id)
+
 	# Obtenemos el partido
 	partido = Partido.objects.get(id = partido_id)
 	# Obtenemos la liga y la jornada
@@ -298,6 +370,15 @@ def ver_partido(request, partido_id):
 def preparar_partido(request, partido_id):
 	partido = Partido.objects.get(id = partido_id)
 	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+
+	if Partido.objects.filter(id = partido_id).count() == 0:
+		return HttpResponse("Error, no existe un partido con identificador %s" % partido_id)
+
+	# Comprobar que el partido no se haya jugado ya
+	if partido.finalizado():
+		return HttpResponse("El partido ya acabo. <a href=\"/partidos/ver/%d\">Volver</a>" % partido.id)
 
 	# Comprobar si el usuario juega en el partido
 	if (partido.equipo_local.usuario == usuario): # Juega como local
@@ -306,7 +387,7 @@ def preparar_partido(request, partido_id):
 			form = PrepararEquipoLocalForm(request.POST, instance = partido)
 			if form.is_valid():
 				form.save()
-				return HttpResponse("Se ha creado correctamente la alineacion. <a href=\"/partidos/%d\">Volver</a>" % partido.id)
+				return HttpResponse("Se ha creado correctamente la alineacion. <a href=\"/partidos/ver/%d\">Volver</a>" % partido.id)
 		else:
 			form = PrepararEquipoLocalForm(instance = partido)
 
@@ -316,24 +397,32 @@ def preparar_partido(request, partido_id):
 			form = PrepararEquipoVisitanteForm(request.POST, instance = partido)
 			if form.is_valid():
 				form.save()
-				return HttpResponse("Se ha creado correctamente la alineacion. <a href=\"/partidos/%d\">Volver</a>" % partido.id)
+				return HttpResponse("Se ha creado correctamente la alineacion. <a href=\"/partidos/ver/%d\">Volver</a>" % partido.id)
 		else:
 			form = PrepararEquipoVisitanteForm(instance = partido)
 	
 	else: # No juega como naaaaaaaaaaaaaaa
-		return HttpResponse("No tienes vela en este entierro, o mejor dicho, no tienes equipo en este partido <a href=\"/partidos/%d\">Volver</a>" % partido.id)
+		return HttpResponse("No tienes vela en este entierro, o mejor dicho, no tienes equipo en este partido <a href=\"/partidos/ver/%d\">Volver</a>" % partido.id)
 
 	return render_to_response("partidos/preparar_partido.html", {"form": form, "usuario" : usuario, "partido" : partido, "equipo" : equipo })	
 
 @login_required
 def crear_equipo(request, liga_id):
-#	return HttpResponse("Aun no implementado del todo...")
-	liga = Liga.objects.get(id = liga_id)
 	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+
+	if Liga.objects.filter(id = liga_id).count() == 0:
+		return HttpResponse("Error, no existe una liga con identificador %s" % liga_id)
+
+	liga = Liga.objects.get(id = liga_id)
+
+	if liga.activada():
+		return HttpResponse("Esta liga ya no acepta mas equipos")
+
 	if request.method == 'POST':
 		form = EquipoForm(request.POST)
 		if form.is_valid():
-			# Solucion para los problemas de la password
 			equipo = form.save(commit = False)
 			equipo.usuario = usuario
 			equipo.liga = liga
@@ -343,8 +432,7 @@ def crear_equipo(request, liga_id):
 				jugador = Jugador(nombre="Jugador %d - %s - %d" % (liga.id, equipo.nombre, j), equipo = equipo)
 				jugador.save()
 				equipo.agregarJugador(jugador)
-			#equipo.save()
-			return HttpResponse("Se ha creado correctamente. <a href=\"/equipos/%d\">Volver</a>" % equipo.id)
+			return HttpResponse("Se ha creado correctamente. <a href=\"/equipos/ver/%d\">Volver</a>" % equipo.id)
 	else:
 		form = EquipoForm()
 	
@@ -353,15 +441,18 @@ def crear_equipo(request, liga_id):
 @login_required
 def crear_liga(request):
 	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+		
 	if request.method == 'POST':
 		form = LigaForm(request.POST)
 		if form.is_valid():
 			# Solucion para los problemas de la password
-			liga = form.save(commit=False)
+			liga = form.save(commit = False)
 			liga.creador = Usuario.objects.get(id = request.user.id)
 			liga.save()
 
-			return HttpResponse("Se ha creado correctamente. <a href=\"/ligas/%d\">Volver</a>" % liga.id)
+			return HttpResponse("Se ha creado correctamente. <a href=\"/ligas/ver/%d\">Volver</a>" % liga.id)
 	else:
 		form = LigaForm()
 	
@@ -371,10 +462,19 @@ def crear_liga(request):
 @transaction.commit_on_success
 def activar_liga(request, liga_id):
 	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+
+	if Liga.objects.filter(id = liga_id).count() == 0:
+		return HttpResponse("Error, no existe una liga con identificador %s" % liga_id)
+		
 	# Obtenemos la liga
 	liga = Liga.objects.get(id = liga_id)
+	
+	if liga.activada():
+		return HttpResponse("Ya esta activada esta liga. <a href=\"/ligas/ver/%d\">Ir</a> su pagina." % liga.id)
+	
 	liga.rellenarLiga()
 	liga.generarJornadas()
 
-	return HttpResponse("Se ha generado la liga correctamente. <a href=\"/ligas/%d\">Volver</a>" % liga.id)
-	
+	return HttpResponse("Se ha generado la liga correctamente. <a href=\"/ligas/ver/%d\">Volver</a>" % liga.id)

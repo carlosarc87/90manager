@@ -9,7 +9,7 @@
 
 {% if liga_acabada %}
 	<strong>Clasificacion final:</strong>
-	<h1>FINAL EH</h1>
+	<h1>EH FINAL EH</h1>
 {% else %}
 	<strong>Clasificacion actual:</strong>
 {% endif %}
@@ -23,8 +23,8 @@
 	{% if jornada_actual %}
 		<strong>Jornada actual</strong>
 		<ul>
-			<li><a href="/jornadas/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></li>
-			<li><a href="/ligas/{{ liga.id }}/avanzar/">Avanzar jornada</a></li>
+			<li><a href="/jornadas/ver/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></li>
+			<li><a href="/ligas/avanzar/{{ liga.id }}/">Avanzar jornada</a></li>
 		</ul>
 	{% else %}
 		<strong>Jornada actual</strong>
@@ -36,20 +36,20 @@
 	<strong>Listado de jornadas</strong>
 	<ul>
 		{% for jornada in jornadas %}
-			<li><a href="/jornadas/{{ jornada.id }}/">{{ jornada.numero }}</a> ¿Jugada? {{ jornada.jugada }}</li>
+			<li><a href="/jornadas/ver/{{ jornada.id }}/">{{ jornada.numero }}</a> ¿Jugada? {{ jornada.jugada }}</li>
 		{% endfor %}
 	</ul>
 {% else %}
 	No esta activada aun.
 	<ul>
-		<li><a href="/ligas/{{ liga.id }}/activar/">Activar</a></li>
+		<li><a href="/ligas/activar/{{ liga.id }}/">Activar</a></li>
 	</ul>
 {% endif %}
 
 <strong>Equipo en esta liga</strong>
 <ul>
 {% if equipo_propio %}
-	<li><a href="/equipos/{{ equipo_propio.id }}">{{ equipo_propio.nombre }}</a></li>
+	<li><a href="/equipos/ver/{{ equipo_propio.id }}">{{ equipo_propio.nombre }}</a></li>
 {% else %}
 	{% if activada %}
 		<li>No se pueden añadir mas equipos</li>
@@ -62,7 +62,7 @@
 <strong>Listado de equipos</strong>
 <ul>
 {% for equipo in equipos %}
-	<li><a href="/equipos/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
+	<li><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
 {% endfor %}
 </ul>
 

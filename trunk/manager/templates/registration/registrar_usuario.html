@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block contenido %}
-<form action="/registrarse/" method="post">
+<form action="/cuentas/registrar/" method="post">
 	{% csrf_token %}
     <div class="fieldWrapper">
         {{ form.username.errors }}

@@ -16,7 +16,7 @@
 				<li><a href="/cuentas/logout">Desconectar</a></li>
 			</ul>
         {% else %}
-			<strong>Sin usuario</strong>
+			<a href="{% url django.contrib.auth.views.login %}?next={{request.path}}">Login</a>
 		{% endif %}
 		{% endblock %}
 		<hr>
@@ -26,7 +26,7 @@
 		{% if usuario %}
 			<strong> Cosas que se pueden hacer: </strong>
 			<ul>
-				<li><a href="/ligas/crear_liga/">Crear Liga Nueva</a></li>
+				<li><a href="/ligas/crear/">Crear Liga Nueva</a></li>
 			</ul>
 		{% endif %}
 		{% endblock %}
@@ -41,7 +41,15 @@
     <div id="subbarra">
 		<hr>
         {% block subbarra %}{% endblock %}
+        <a href="/">Inicio</a>
         <a href="/admin/">Administracion</a>
+        <p>Realizado por:
+			<ul>
+				<li>Juan Miguel Lechuga Pérez</li>
+				<li>Jose Luis López Pino</li>
+				<li>Carlos Antonio Rivera Cabello</li>
+			</ul>
+		</p>
 		<hr>
     </div>
 </body>

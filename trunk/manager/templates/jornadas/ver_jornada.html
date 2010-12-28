@@ -2,9 +2,13 @@
 
 {% block contenido %}
 
-<strong>Datos de la jornada</strong>
-<a href="/jornadas/{{ jornada_anterior }}/">Anterior</a>
-<a href="/jornadas/{{ jornada_siguiente }}/">Siguiente</a>
+<strong>Datos de la jornada</strong><br>
+{% if jornada_anterior %}
+<a href="/jornadas/ver/{{ jornada_anterior }}/">Anterior</a>
+{% endif %}
+{% if jornada_siguiente %}
+<a href="/jornadas/ver/{{ jornada_siguiente }}/">Siguiente</a>
+{% endif %}
 <ul>
 	<li>Numero: {{ jornada.numero }}</li>
 </ul>
@@ -14,21 +18,21 @@
 	{% if jornada.jugada %}
 		<li>Si</li>
 	{% else %}
-		<li>No <a href="/ligas/{{ liga.id }}/avanzar/">Avanzar</a></a></li>
+		<li>No <a href="/ligas/avanzar/{{ liga.id }}">Avanzar</a></a></li>
 	{% endif %}
 </ul>
 
 <strong>Datos de la liga</strong>
 <ul>
-	<li>Nombre: <a href="/ligas/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+	<li>Nombre: <a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
 </ul>
 
 <strong>Listado de encuentros</strong>
 <ul>
 {% for emparejamiento in emparejamientos %}
 	<li>
-		<a href="/partidos/{{ emparejamiento.id }}/">{{ emparejamiento.equipo_local }} vs {{ emparejamiento.equipo_visitante }}</a>
-		{% if emparejamiento.goles_local %}
+		<a href="/partidos/ver/{{ emparejamiento.id }}/">{{ emparejamiento.equipo_local }} vs {{ emparejamiento.equipo_visitante }}</a>
+		{% if emparejamiento.jugado %}
 			{{ emparejamiento.goles_local }} - {{ emparejamiento.goles_visitante }}
 		{% else %}
 			Aun no jugado.
