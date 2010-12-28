@@ -7,11 +7,45 @@
 	<li>Nombre: {{ liga.nombre }}</li>
 </ul>
 
-<strong>Clasificacion actual:</strong>
+{% if liga_acabada %}
+	<strong>Clasificacion final:</strong>
+	<h1>FINAL EH</h1>
+{% else %}
+	<strong>Clasificacion actual:</strong>
+{% endif %}
 <ul>
-	<li>Por hacer...</li>
+	{% for dato_clasificacion in clasificacion %}
+		<li>{{ dato_clasificacion.equipo.nombre }}: {{ dato_clasificacion.goles_favor }} - {{ dato_clasificacion.goles_contra }} - <b>{{ dato_clasificacion.puntos }}</b></li>
+	{% endfor%}
 </ul>
-	
+
+{% if activada %}
+	{% if jornada_actual %}
+		<strong>Jornada actual</strong>
+		<ul>
+			<li><a href="/jornadas/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></li>
+			<li><a href="/ligas/{{ liga.id }}/avanzar/">Avanzar jornada</a></li>
+		</ul>
+	{% else %}
+		<strong>Jornada actual</strong>
+		<ul>
+			<li>Liga acabada</li>
+		</ul>
+	{% endif %}
+
+	<strong>Listado de jornadas</strong>
+	<ul>
+		{% for jornada in jornadas %}
+			<li><a href="/jornadas/{{ jornada.id }}/">{{ jornada.numero }}</a> ¿Jugada? {{ jornada.jugada }}</li>
+		{% endfor %}
+	</ul>
+{% else %}
+	No esta activada aun.
+	<ul>
+		<li><a href="/ligas/{{ liga.id }}/activar/">Activar</a></li>
+	</ul>
+{% endif %}
+
 <strong>Equipo en esta liga</strong>
 <ul>
 {% if equipo_propio %}
@@ -31,30 +65,5 @@
 	<li><a href="/equipos/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
 {% endfor %}
 </ul>
-
-{% if activada %}
-	{% if jornada_actual %}
-		<strong>Jornada actual</strong>
-		<ul>
-			<li><a href="/jornadas/{{ jornada_actual.id }}/">{{ jornada_actual.id }}</a></li>
-		</ul>
-
-		<a href="/ligas/{{ liga.id }}/avanzar/">Avanzar jornada</a><br>
-	{% else %}
-		<strong>Jornada actual</strong>
-		<ul>
-			<li>Liga acabada</li>
-		</ul>
-	{% endif %}
-
-	<strong>Listado de jornadas</strong>
-	{% for jornada in jornadas %}
-		<ul>
-			<li><a href="/jornadas/{{ jornada.id }}/">{{ jornada.id }}</a> ¿Jugada? {{ jornada.jugada }}</li>
-		</ul>
-	{% endfor %}
-{% else %}
-	No esta activada aun. <a href="/ligas/{{ liga.id }}/activar/">Activar</a>
-{% endif %}
 
 {% endblock %}

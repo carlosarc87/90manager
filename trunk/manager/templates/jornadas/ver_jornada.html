@@ -9,28 +9,45 @@
 	<li>Numero: {{ jornada.numero }}</li>
 </ul>
 
-<strong>Datos de la liga</strong>
-<ul>
-	<li>Nombre: {{ liga.nombre }}</li>
-</ul>
-
-<strong>Listado de encuentros</strong>
-<ul>
-{% for emparejamiento in emparejamientos %}
-	<li><a href="/partidos/{{ emparejamiento.id }}/">{{ emparejamiento.equipo_local }} vs {{ emparejamiento.equipo_visitante }}</a></li>
-{% endfor %}
-</ul>
-
 <strong>¿Jugada?</strong>
 <ul>
 	{% if jornada.jugada %}
 		<li>Si</li>
 	{% else %}
-		<li>No</li>
+		<li>No <a href="/ligas/{{ liga.id }}/avanzar/">Avanzar</a></a></li>
 	{% endif %}
 </ul>
-{% endblock %}
+
+<strong>Datos de la liga</strong>
+<ul>
+	<li>Nombre: <a href="/ligas/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+</ul>
+
+<strong>Listado de encuentros</strong>
+<ul>
+{% for emparejamiento in emparejamientos %}
+	<li>
+		<a href="/partidos/{{ emparejamiento.id }}/">{{ emparejamiento.equipo_local }} vs {{ emparejamiento.equipo_visitante }}</a>
+		{% if emparejamiento.goles_local %}
+			{{ emparejamiento.goles_local }} - {{ emparejamiento.goles_visitante }}
+		{% else %}
+			Aun no jugado.
+		{% endif %}
+	</li>
+{% endfor %}
+</ul>
 
 <strong>Clasificacion antes de la jornada</strong>
+<ul>
+	{% for dato_clasificacion in clasificacion_anterior %}
+		<li>{{ dato_clasificacion.equipo.nombre }}: {{ dato_clasificacion.goles_favor }} - {{ dato_clasificacion.goles_contra }} - <b>{{ dato_clasificacion.puntos }}</b></li>
+	{% endfor%}
+</ul>
 
 <strong>Clasificacion despues de la jornada</strong>
+<ul>
+	{% for dato_clasificacion in clasificacion %}
+		<li>{{ dato_clasificacion.equipo.nombre }}: {{ dato_clasificacion.goles_favor }} - {{ dato_clasificacion.goles_contra }} - <b>{{ dato_clasificacion.puntos }}</b></li>
+	{% endfor%}
+</ul>
+{% endblock %}

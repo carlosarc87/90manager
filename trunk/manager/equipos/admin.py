@@ -7,4 +7,4 @@ admin.site.register(Jugador)
 admin.site.register(Liga)
 admin.site.register(Jornada)
 admin.site.register(Partido)
-
+admin.site.register(ClasificacionEquipoJornada)

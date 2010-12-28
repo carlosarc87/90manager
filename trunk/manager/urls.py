@@ -15,7 +15,6 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
 	(r'^/?$', 'manager.equipos.views.perfil_usuario'),
 	
-	
 	# Modulo de login
 	(r'^registrarse/', 'manager.equipos.views.registrar_usuario'),
     (r'^cuentas/logout/$', 'django.contrib.auth.views.logout'),
@@ -40,4 +39,6 @@ urlpatterns = patterns('',
    	
    	# Modulo de partidos
    	(r'^partidos/(?P<partido_id>\d+)/$', 'manager.equipos.views.ver_partido'),
+   	(r'^partidos/preparar/(?P<partido_id>\d+)/$', 'manager.equipos.views.preparar_partido'),
+   	(r'^partidos/jugar/(?P<partido_id>\d+)/$', 'manager.equipos.views.jugar_partido'),
 )

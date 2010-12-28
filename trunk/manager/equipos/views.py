@@ -117,6 +117,10 @@ def ver_liga(request, liga_id):
 
 	jornada_actual = None
 
+	clasificacion = None
+
+	liga_acabada = False
+
 	# Comprobamos si el jugador tiene un equipo en esta liga
 	equipo_propio = liga.equipo_set.filter(usuario = usuario)
 	if len(equipo_propio) > 0:
@@ -133,7 +137,18 @@ def ver_liga(request, liga_id):
 		else:
 			# Ha acabado
 			jornada_actual = None
-		
+			liga_acabada = True
+			
+		if jornada_actual:
+			if jornada_actual.numero > 0:
+				jornada_anterior = liga.jornada_set.get(numero = jornada_actual.numero - 1)
+				clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
+				clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
+		if liga_acabada:
+			jornada_anterior = liga.jornada_set.all()[len(liga.jornada_set.all()) - 1]
+			clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
+			clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
+			
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("ligas/ver_liga.html")
 	c = Context({"liga" : liga,
@@ -143,7 +158,9 @@ def ver_liga(request, liga_id):
 				 "jornada_actual" : jornada_actual,
 				 "jornadas_restantes" : jornadas_restantes,
 				 "activada" : activada,
-				 "equipo_propio" : equipo_propio
+				 "equipo_propio" : equipo_propio,
+				 "clasificacion" : clasificacion,
+				 "liga_acabada" : liga_acabada
 				})
 	return HttpResponse(t.render(c))
 
@@ -159,12 +176,41 @@ def avanzar_jornada_liga(request, liga_id):
 	jornada = jornadas[0]
 	partidos = jornada.partido_set.all()
 	for partido in partidos:
-		partido.jugar()
-		partido.save()
+		if partido.equipo_local.usuario != None or partido.equipo_visitante.usuario != None:
+			if not partido.finalizado():
+				return HttpResponse("EH! que aun quedan partidos de los usuarios por jugar")
+		else:
+			if not partido.finalizado():
+				# Generar alineacion aleatoria
+				partido.titulares_local = partido.equipo_local.jugador_set.all()[:11]
+				partido.titulares_visitante = partido.equipo_visitante.jugador_set.all()[:11]
+				partido.jugar()
+				partido.save()
 	jornada.jugada = True
 	jornada.save()
+	jornada.obtenerClasificacion()
 	return ver_liga(request, liga_id) # Devolvemos a lo bruto a la vision de la liga
 	
+@login_required
+def jugar_partido(request, partido_id):
+	partido = Partido.objects.get(id = partido_id)
+	if partido.finalizado():
+		return HttpResponse("Este partido ya se jugo")
+	if partido.equipo_local.usuario != None:
+		if partido.titulares_local.count() != 11:
+			return HttpResponse("Eh, que tienes que preparar el equipo antes del partido")			
+	else:
+		partido.titulares_local = partido.equipo_local.jugador_set.all()[:11]
+
+	if partido.equipo_visitante.usuario != None:
+		if partido.titulares_visitante.count() != 11:
+			return HttpResponse("Eh, que tienes que preparar el equipo antes del partido")			
+	else:
+		partido.titulares_visitante = partido.equipo_visitante.jugador_set.all()[:11]
+	partido.jugar()
+	partido.save()
+	
+	return ver_partido(request, partido_id)
 
 @login_required
 def ver_jornada(request, jornada_id):
@@ -176,6 +222,20 @@ def ver_jornada(request, jornada_id):
 	liga = jornada.liga
 	# Obtenemos los encuentros que hay
 	emparejamientos = jornada.partido_set.all()
+	# Obtenemos la clasificacion
+
+	clasificacion = None
+	clasificacion_anterior = None
+	if jornada.jugada:
+		clasificacion_sin_ordenar = jornada.clasificacionequipojornada_set.all()
+		# Funcion sorted devuelve una COPIA de la lista ordenada
+		clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
+
+	if jornada.numero >= 1:
+		jornada_anterior = liga.jornada_set.get(numero = jornada.numero - 1)
+		if jornada_anterior.jugada:
+			clasificacion_anterior_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
+			clasificacion_anterior = sorted(clasificacion_anterior_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
 
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("jornadas/ver_jornada.html")
@@ -185,6 +245,8 @@ def ver_jornada(request, jornada_id):
 				 "usuario" : usuario,
 				 "jornada_anterior" : jornada.id - 1,
 				 "jornada_siguiente" : jornada.id + 1,
+				 "clasificacion" : clasificacion,
+				 "clasificacion_anterior" : clasificacion_anterior,
 				})
 	return HttpResponse(t.render(c))
 	
@@ -200,6 +262,9 @@ def ver_partido(request, partido_id):
 	# Obtenemos los equipos que juegan en el partido
 	equipo_local = partido.equipo_local
 	equipo_visitante = partido.equipo_visitante
+
+	titulares_local = partido.titulares_local.all()
+	titulares_visitante = partido.titulares_visitante.all()
 
 	# Comprobamos si el partido ha acabado
 	finalizado = partido.finalizado()
@@ -223,8 +288,42 @@ def ver_partido(request, partido_id):
 				 "usuario" : usuario,
 				 "finalizado" : finalizado,
 				 "resultado" : resultado,
+				 "titulares_local" : titulares_local,
+				 "titulares_visitante" : titulares_visitante
 				})
 	return HttpResponse(t.render(c))
+
+
+@login_required
+def preparar_partido(request, partido_id):
+	partido = Partido.objects.get(id = partido_id)
+	usuario = obtenerUsuario(request)
+
+	# Comprobar si el usuario juega en el partido
+	if (partido.equipo_local.usuario == usuario): # Juega como local
+		equipo = partido.equipo_local
+		if request.method == 'POST':
+			form = PrepararEquipoLocalForm(request.POST, instance = partido)
+			if form.is_valid():
+				form.save()
+				return HttpResponse("Se ha creado correctamente la alineacion. <a href=\"/partidos/%d\">Volver</a>" % partido.id)
+		else:
+			form = PrepararEquipoLocalForm(instance = partido)
+
+	elif (partido.equipo_visitante.usuario == usuario): # Juega como visitante
+		equipo = partido.equipo_visitante
+		if request.method == 'POST':
+			form = PrepararEquipoVisitanteForm(request.POST, instance = partido)
+			if form.is_valid():
+				form.save()
+				return HttpResponse("Se ha creado correctamente la alineacion. <a href=\"/partidos/%d\">Volver</a>" % partido.id)
+		else:
+			form = PrepararEquipoVisitanteForm(instance = partido)
+	
+	else: # No juega como naaaaaaaaaaaaaaa
+		return HttpResponse("No tienes vela en este entierro, o mejor dicho, no tienes equipo en este partido <a href=\"/partidos/%d\">Volver</a>" % partido.id)
+
+	return render_to_response("partidos/preparar_partido.html", {"form": form, "usuario" : usuario, "partido" : partido, "equipo" : equipo })	
 
 @login_required
 def crear_equipo(request, liga_id):
@@ -235,7 +334,7 @@ def crear_equipo(request, liga_id):
 		form = EquipoForm(request.POST)
 		if form.is_valid():
 			# Solucion para los problemas de la password
-			equipo = form.save(commit=False)
+			equipo = form.save(commit = False)
 			equipo.usuario = usuario
 			equipo.liga = liga
 			equipo.save()
@@ -259,7 +358,7 @@ def crear_liga(request):
 		if form.is_valid():
 			# Solucion para los problemas de la password
 			liga = form.save(commit=False)
-			liga.creador = Usuario.objects.get(id=request.user.id)
+			liga.creador = Usuario.objects.get(id = request.user.id)
 			liga.save()
 
 			return HttpResponse("Se ha creado correctamente. <a href=\"/ligas/%d\">Volver</a>" % liga.id)

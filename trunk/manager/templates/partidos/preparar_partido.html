@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+<strong>Equipo: </strong>
+<ul>
+	<li>{{ equipo.nombre }}</li>
+</ul>
+
+<form action="/partidos/preparar/{{ partido.id }}/" method="post">
+	{% csrf_token %}
+    <div class="fieldWrapper">
+        {{ form.titulares_local.errors }}
+        {{ form.titulares_visitante.errors }}
+        <label for="id_titulares">Titulares:</label><br>
+        {{ form.titulares_local }}
+        {{ form.titulares_visitante }}
+    </div>
+	<hr>
+	<input type="submit" value="Aceptar" />
+</form>
+
+{% endblock %}
