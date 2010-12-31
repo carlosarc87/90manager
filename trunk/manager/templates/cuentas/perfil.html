@@ -2,27 +2,38 @@
 {% load i18n %}
 
 {% block breadcrumbs %}<div class="breadcrumbs"><a href="../">{% trans 'Home' %}</a></div>{% endblock %}
+
 {% block contenido %}
 
-<p>Perfil principal de usuario: {{ usuario.username }}</p>
+	<h2>Perfil principal de {{ usuario.username }}</h2>
 
-<strong>Ligas creadas</strong>
-<ul>
-	{% for liga in ligas_creadas %}
-		<li>Nombre: <a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
-	{% endfor %}
-</ul>
+	<table style="margin-bottom: 20px; width: 200px;">
+		<caption>Ligas creadas</caption>
+		<tbody>
+			{% for liga in ligas_creadas %}
+				<tr>
+					<td><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
+				</tr>
+			{% endfor %}
+		<tbody>
+	</table>
 
-<strong>Ligas en las que participa</strong>
-<ul>
-	{% for equipo in equipos %}
-		<li>
-			Nombre: <a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a>
-			<ul>
-				<li>Equipo: <a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
-			</ul>
-		</li>
-	{% endfor %}
-</ul>
+	<table style="width: 200px;">
+		<caption>Ligas en las que participa</caption>
+		<thead>
+			<tr>
+				<th>Liga</th>
+				<th>Equipo</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for equipo in equipos %}
+				<tr>
+					<td><a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a></td>
+					<td><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></td>
+				</tr>
+			{% endfor %}
+		<tbody>
+	</table>
 
 {% endblock %}

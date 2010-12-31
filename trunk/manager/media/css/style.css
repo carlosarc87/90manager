@@ -1,0 +1,213 @@
+a{ color: #00aa00; }
+a:visited{ color: #aa0000; }
+
+body{
+	background: #88dd88; /* url('../img/fondo_cesped.jpg') no-repeat; */
+	color: #000000;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+}
+
+h1, h2, h3, h4{
+	margin-top: 0px;
+}
+
+table{
+	background: #fff;
+	border: solid 1px #444;
+	border-spacing: 1px;
+}
+
+table a{
+	color: #5555aa;
+	text-decoration: none;
+}
+
+table a:hover{
+	text-decoration: underline;
+}
+
+table caption{
+	background-color: #ddd;
+	border-top: solid 1px #444;
+	border-right: solid 1px #444;
+	border-left: solid 1px #444;
+	color: #666;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 5px 0px 5px 0px;
+	text-align: center;
+}
+
+table thead{
+	background-color: #ccc;
+	border: solid 1px #444;
+	color: #666;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+table tbody{
+	background-color: #eee;
+	border: solid 1px #444;
+	color: #444;
+}
+
+table td{
+	padding: 4px;
+}
+
+table th{
+}
+
+table tr{
+	border: solid 1px #444;
+	border-spacing: 1px;
+}
+
+#contenido_centro{
+	clear: right;
+	float: left;
+	padding: 10px;
+	width: 680px;
+}
+
+#login{
+	float: right;
+	width: 500px;
+}
+
+#header{
+	background-color: #fff;
+	border-bottom: solid 1px #555555;
+	width: 100%;
+}
+
+#footer{
+	background-color: #fff;
+	border-top: solid 1px #555555;
+	border-bottom: solid 1px #555555;
+	clear: both;
+	padding: 10px 0px 10px 0px;
+	text-align: center;
+	width: 100%;
+}
+
+#footer ul{
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+#menu_lateral{
+	background-color: #99ff99;
+	float: left;
+	width: 150px;
+}
+
+#menu_lateral ul{
+	list-style: none;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+}
+
+#menu_lateral ul li{
+	border-bottom: solid 1px #55aa55;
+	padding: 5px 10px 5px 10px;
+}
+
+#menu_superior{
+	background: #55aa55;
+	font-size: 14px;
+	height: 30px;
+	width: 100%;
+}
+
+#menu_superior a{
+	color: #fff;
+	height: 100%;
+	text-decoration: none;
+	width: 100%;
+}
+
+#menu_superior a:hover{
+	text-decoration: underline;
+}
+
+#menu_superior_situacion{
+	float: left;
+	height: 30px;
+	list-style-image: url('../img/icons/favicon.ico');
+	margin: 0px 0px 0px 150px;
+	padding: 0px;
+}
+
+#menu_superior_situacion li{
+	float: left;
+	height: 20px;
+	margin-left: 30px;
+	padding: 5px;
+}
+
+#menu_superior_botones {
+	float: right;
+	height: 30px;
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+#menu_superior_botones li{
+	border-left: solid 1px #88ff88;
+	float: left;
+	height: 20px;
+	margin: 0px;
+	padding: 5px;
+}
+
+#registro{
+	background-color: #fff;
+	border: solid 1px #555555;
+	margin: 0 auto;
+	margin-top: 10px;
+	margin-bottom: 40px;
+	padding: 20px;
+	width: 300px;
+}
+
+.contenido{
+	margin: 0 auto;
+	width: 950px;
+}
+
+.errorlist{
+	margin: 0px 0px 0px 15px;
+	padding: 0px;
+}
+
+.fila{
+	clear: both;
+	float: left;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	width: 100%;
+}
+
+.fila div{
+	float: left;
+}
+
+.texto_error{
+	color: #aa0000;
+	font-weight: bold;
+}
+
+.texto_info{
+	color: #00aa;
+	font-weight: bold;
+}

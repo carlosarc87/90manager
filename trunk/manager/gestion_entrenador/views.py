@@ -53,7 +53,7 @@ def registrar_usuario(request):
 	else:
 		form = UsuarioForm()
 	
-	return render_to_response("registration/registrar_usuario.html", {"form": form })
+	return render_to_response("registration/registrar_usuario.html", {"form_reg": form})
 
 @login_required
 def perfil_usuario(request):

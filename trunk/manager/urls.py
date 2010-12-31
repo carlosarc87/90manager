@@ -1,5 +1,9 @@
 from django.conf.urls.defaults import *
 
+# Para que funcione lo necesario para media
+from django.views.static import *
+from django.conf import settings
+
 # Habilitar la administracion
 from django.contrib import admin
 admin.autodiscover()
@@ -7,6 +11,9 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+	
+	# Required to make static serving work
+	(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 
     # Habilitar la administracion
     (r'^admin/', include(admin.site.urls)),

@@ -1,28 +1,30 @@
-{% extends "base.html" %}
+<div id="login">
+	{% if usuario %}
+		<h1>Usuario: {{ usuario }}</h1>
+	{% else %}
+		{% if form.errors %}
+			<p class="texto_error">Usuario y/o contraseña no válidos</p>
+		{% endif %}
 
-{% block login %}
-{% if form.errors %}
-	<p>Usuario y/o contraseña no validos.</p>
-{% endif %}
+		<form action="{% url django.contrib.auth.views.login %}" method="post">
+			<div class="fila">
+				{% csrf_token %}
+				<!-- Usuario -->
+				<div style="width:60px;"><label for="username">Usuario:</label></div>
+				<div style="width:140px;"><input type="text" name="username" value="" style="width:120px;"/></div>
 
-<form method="post" action="{% url django.contrib.auth.views.login %}">
-	{% csrf_token %}
-	<table>
-	<tr>
-		<td>{{ form.username.label_tag }}</td>
-		<td>{{ form.username }}</td>
-	</tr>
-	<tr>
-		<td>{{ form.password.label_tag }}</td>
-		<td>{{ form.password }}</td>
-	</tr>
-	</table>
+				<!-- Clave -->
+				<div style="width:80px;"><label for="password">Contraseña:</label></div>
+				<div style="width:130px;"><input type="password" name="password" value="" style="width:120px;" /></div>
 
-	<input type="submit" value="login" />
-</form>
-<a href="/cuentas/registrar/">Registrarse en el sistema</a>
-<hr>
-{% endblock %}
-{% block contenido %}
-Entre con su cuenta para hacer algo
-{% endblock %}
+				<!-- Boton entrar -->
+				<input type="submit" name="login" value="Entrar" style="float: right;" />
+			</div>
+		</form>
+
+		<div class="fila" style="text-align:right;">
+			<a href="/cuentas/registrar/">Registro</a>
+			<a href="#">Recordar contraseña</a>
+		</div>
+	{% endif %}
+</div>

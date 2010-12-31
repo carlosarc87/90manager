@@ -3,18 +3,27 @@
 {% block contenido %}
 <form action="/ligas/crear/" method="post">
 	{% csrf_token %}
-    <div class="fieldWrapper">
-        {{ form.nombre.errors }}
-        <label for="id_nombre">Nombre de la liga:</label><br>
-        {{ form.nombre }}
+
+	<!-- Nombre de la liga -->
+    <div class="fila">
+        {% if form.nombre.errors %}
+			<p class="texto_error">{{ form.nombre.errors }}</p>
+		{% endif %}
+        <div style="width: 150px;"><label for="id_nombre">Nombre de la liga:</label></div>
+		<div style="width: 150px;">{{ form.nombre }}</div>
     </div>
-    <div class="fieldWrapper">
-        {{ form.num_equipos.errors }}
-        <label for="id_num_equipos">Numero de equipos:</label><br>
-        {{ form.num_equipos }}
+
+	<!-- Numero de equipos -->
+    <div class="fila">
+        {% if form.num_equipos.errors %}
+			<p class="texto_error">{{ form.num_equipos.errors }}</p>
+		{% endif %}
+        <div style="width: 150px;"><label for="id_num_equipos">Numero de equipos:</label></div>
+        <div style="width: 150px;"><input type="text" name="num_equipos" value="0" maxlength="3" style="width:50px;"/></div>
     </div>
-    <hr>
-	<input type="submit" value="Crear" />
+
+	<!-- Boton crear -->
+	<div class="fila"><input type="submit" value="Crear" /></div>
 </form>
 {% endblock %}
 

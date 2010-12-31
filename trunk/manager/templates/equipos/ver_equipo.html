@@ -1,22 +1,17 @@
 {% extends "base.html" %}
 
+{% block situacion %}
+	<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+	<li>{{ equipo.nombre }}</li>
+{% endblock %}
+
 {% block contenido %}
 
-<strong>Datos del equipo</strong>
-<ul>
-	<li>Nombre: {{ equipo.nombre }}</li>
-</ul>
-
-<strong>Liga:</strong>
-<ul>
-	<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
-</ul>
-
-<strong>Listado de jugadores</strong>
-<ul>
-	{% for jugador in jugadores %}
-		<li><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></li>
-	{% endfor %}
-</ul>
+	<h4>Jugadores</h4>
+	<ul>
+		{% for jugador in jugadores %}
+			<li><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></li>
+		{% endfor %}
+	</ul>
 
 {% endblock %}

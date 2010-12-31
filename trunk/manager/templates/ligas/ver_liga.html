@@ -1,69 +1,116 @@
 {% extends "base.html" %}
 
+{% block situacion %}
+	<li>{{ liga.nombre }}</li>
+{% endblock %}
+
 {% block contenido %}
+	<h2>Liga: {{ liga.nombre }}</h2>
 
-<strong>Datos de la liga</strong>
-<ul>
-	<li>Nombre: {{ liga.nombre }}</li>
-</ul>
-
-{% if liga_acabada %}
-	<strong>Clasificacion final:</strong>
-	<h1>EH FINAL EH</h1>
-{% else %}
-	<strong>Clasificacion actual:</strong>
-{% endif %}
-<ul>
-	{% for dato_clasificacion in clasificacion %}
-		<li>{{ dato_clasificacion.equipo.nombre }}: {{ dato_clasificacion.goles_favor }} - {{ dato_clasificacion.goles_contra }} - <b>{{ dato_clasificacion.puntos }}</b></li>
-	{% endfor%}
-</ul>
-
-{% if activada %}
-	{% if jornada_actual %}
-		<strong>Jornada actual</strong>
-		<ul>
-			<li><a href="/jornadas/ver/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></li>
-			<li><a href="/ligas/avanzar/{{ liga.id }}/">Avanzar jornada</a></li>
-		</ul>
-	{% else %}
-		<strong>Jornada actual</strong>
-		<ul>
-			<li>Liga acabada</li>
-		</ul>
-	{% endif %}
-
-	<strong>Listado de jornadas</strong>
-	<ul>
-		{% for jornada in jornadas %}
-			<li><a href="/jornadas/ver/{{ jornada.id }}/">{{ jornada.numero }}</a> ¿Jugada? {{ jornada.jugada }}</li>
-		{% endfor %}
-	</ul>
-{% else %}
-	No esta activada aun.
-	<ul>
-		<li><a href="/ligas/activar/{{ liga.id }}/">Activar</a></li>
-	</ul>
-{% endif %}
-
-<strong>Equipo en esta liga</strong>
-<ul>
-{% if equipo_propio %}
-	<li><a href="/equipos/ver/{{ equipo_propio.id }}">{{ equipo_propio.nombre }}</a></li>
-{% else %}
 	{% if activada %}
-		<li>No se pueden añadir mas equipos</li>
-	{% else %}
-		<li><a href="/equipos/crear/{{ liga.id }}/">Crear</a><br></li>
-	{% endif %}
-{% endif %}
-</ul>
 
-<strong>Listado de equipos</strong>
-<ul>
-{% for equipo in equipos %}
-	<li><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
-{% endfor %}
-</ul>
+		{% if jornada_actual %}
+			<h4>Jornada actual: <a href="/jornadas/ver/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></h4>
+			<h4><a href="/ligas/avanzar/{{ liga.id }}/">Avanzar jornada</a></h4>
+		{% else %}
+			<h4>FINALIZADA</h4>
+		{% endif %}
+
+		<table style="width: 300px;">
+			{% if liga_acabada %}
+				<caption>Clasificacion final</caption>
+			{% else %}
+				<caption>Clasificacion (jornada {{ jornada_actual.numero }})</caption>
+			{% endif %}
+
+			<thead>
+				<tr>
+					<th>Equipo</th>
+					<th>GF</th>
+					<th>GC</th>
+					<th>DG</th>
+					<th>Puntos</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for dato_clasificacion in clasificacion %}
+					<tr>
+						<td>
+							<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/">{{ dato_clasificacion.equipo.nombre }}</a>
+						</td>
+						<td style="text-align:right;">
+							{{ dato_clasificacion.goles_favor }}
+						</td>
+						<td style="text-align:right;">
+							{{ dato_clasificacion.goles_contra }}
+						</td>
+						<td style="text-align:right;">
+							{{ dato_clasificacion.goles_favor}} - {{dato_clasificacion.goles_contra }}
+						</td>
+						<td style="text-align:right;">
+							{{ dato_clasificacion.puntos }}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		
+		<table style="margin-top:20px; width: 300px;">
+			<caption>Listado de jornadas</caption>
+			<thead>
+				<tr>
+					<th style="width:50%;">Jornada</th>
+					<th>Jugada</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for jornada in jornadas %}
+					<tr>
+						<td style="text-align:right;"><a href="/jornadas/ver/{{ jornada.id }}/">{{ jornada.numero }}</a></td>
+						<th>
+							{% if jornada.jugada %}
+								SI
+							{% else %}
+								NO
+							{% endif %}
+						</th>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<p>La liga no está activada aun: <a href="/ligas/activar/{{ liga.id }}/">Activar</a></p>
+		<b>{{ usuario }} aún puede </b><a href="/equipos/crear/{{ liga.id }}/">crear un equipo</a><b> en esta liga.</b>
+	{% endif %}
+
+	{% if equipos.count %}
+		<table style="margin-top: 20px; width: 300px;">
+			<caption>Listado de equipos</caption>
+			<thead>
+				<tr>
+					<th style="width:50%;">Nombre</th>
+					<th>Entrenador</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for equipo in equipos %}
+					<tr>
+						<td>
+							<a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a>
+						</td>
+						<td>
+							{% if equipo.id == equipo_propio.id %}
+								{{ usuario }}
+							{% else %}
+								bot
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<h4>Aún no se ha añadido ningún equipo a la liga</h4>
+	{% endif %}
 
 {% endblock %}

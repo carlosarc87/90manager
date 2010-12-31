@@ -3,6 +3,8 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+import os.path
+
 # Mandar reporte de error por correo a los siguientes destinatarios cuando DEBUG = False
 ADMINS = (
      ('Juanmi', 'ciberjm@gmail.com'),
@@ -46,19 +48,22 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
+# No se si es necesario (Carlos)
+#MEDIA_PREFIX = '/media/'
+
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(os.path.dirname(__file__), "media") 
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'f+8k5vf7x$n@kmd62c9!42i4)6-@v4%q6)+_9hq)+uz6wr3t!c'
@@ -83,8 +88,8 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'manager.urls'
 
 # Cambio de variables para la redireccion del login
-LOGIN_URL = "/cuentas/login/"
-LOGOUT_URL = "/cuentas/logout/"
+LOGIN_URL = "/"
+LOGOUT_URL = "/"
 LOGIN_REDIRECT_URL = "/"
 
 TEMPLATE_DIRS = (

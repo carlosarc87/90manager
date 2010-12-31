@@ -1,50 +1,66 @@
 {% extends "base.html" %}
 
+{% block situacion %}
+	<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+	<li><a href="/jornadas/ver/{{ jornada.id }}/">Jornada {{ jornada.numero }}</a></li>
+	<li>Partido {{ partido.id }}</li>
+{% endblock %}
+
 {% block contenido %}
 
-<strong>Datos de la jornada</strong>
-<ul>
-	<li>Numero: <a href="/jornadas/ver/{{ jornada.id }}">{{ jornada.numero }}</a></li>
-</ul>
+	<table style="margin-bottom: 20px;">
+		<caption>Partido {{ partido.id }}</caption>
 
-<strong>Datos de la liga</strong>
-<ul>
-	<li>Nombre: <a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
-</ul>
+		<tbody>
+			<tr>
+				<!-- Equipo local -->
+				<td>
+					{% if finalizado and partido.goles_local > partido.goles_visitante %}
+						<b><a href="/equipos/ver/{{ equipo_local.id }}/">{{ equipo_local }}</a></b>
+					{% else %}
+						<a href="/equipos/ver/{{ equipo_local.id }}/">{{ equipo_local }}</a>
+					{% endif %}
+				</td>
+				<!-- Equipo visitante -->
+				<td>
+					{% if finalizado and partido.goles_local < partido.goles_visitante %}
+						<b><a href="/equipos/ver/{{ equipo_visitante.id }}/">{{ equipo_visitante }}</a></b>
+					{% else %}
+						<a href="/equipos/ver/{{ equipo_visitante.id }}/">{{ equipo_visitante }}</a>
+					{% endif %}
+				</td>
+				<!-- Resultado -->
+				<th>
+					{% if finalizado %}
+						{{ partido.goles_local }} - {{ partido.goles_visitante }}
+					{% else %}
+						Aún no jugado.
+					{% endif %}
+				</th>
+			</tr>
+		</tbody>
+	</table>
 
-<strong>Listado de equipos</strong>
-<ul>
-	<li>Local: <a href="/equipos/ver/{{ equipo_local.id }}/">{{ partido.equipo_local }}</a>
-	<li>Visitante: <a href="/equipos/ver/{{ equipo_visitante.id }}/">{{ partido.equipo_visitante }}</a>
-</ul>
+	{% if finalizado %}
+		<h4>Titulares del equipo local</h4>
+		<ul>
+			{% for titular in titulares_local %}
+				<li><a href="/jugadores/ver/{{ titular.id }}">{{ titular.nombre }}</a></li>
+			{% endfor %}
+		</ul>
 
-<strong>¿Acabado?</strong>
-{% if finalizado %}
-	Si
-	<ul>
-		<li>Goles local: {{ partido.goles_local }}</li>
-		<li>Goles visitante: {{ partido.goles_visitante }}</li>
-		<li>Resultado: {{ resultado }}</li>
-	</ul>
-	<strong>Titulares del equipo local</strong>
-	<ul>
-		{% for titular in titulares_local %}
-			<li><a href="/jugadores/ver/{{ titular.id }}">{{ titular.nombre }}</a></li>
-		{% endfor %}
-	</ul>
-	<strong>Titulares del equipo visitante</strong>
-	<ul>
-		{% for titular in titulares_visitante %}
-			<li><a href="/jugadores/ver/{{ titular.id }}">{{ titular.nombre }}</a></li>
-		{% endfor %}
-	</ul>
-	
-{% else %}
-	No
-	<ul>
-		<li><a href="/partidos/preparar/{{ partido.id }}/">Preparar partido</a></li>
-		<li><a href="/partidos/jugar/{{ partido.id }}/">Jugar</a></li>
-	</ul>
-{% endif %}
+		<h4>Titulares del equipo visitante</h4>
+		<ul>
+			{% for titular in titulares_visitante %}
+				<li><a href="/jugadores/ver/{{ titular.id }}">{{ titular.nombre }}</a></li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<h4>SIN INICIAR</h4>
+		<ul>
+			<li><a href="/partidos/preparar/{{ partido.id }}/">Preparar partido</a></li>(Si ninguno es mi equipo esto no debe aparecer)
+			<li><a href="/partidos/jugar/{{ partido.id }}/">Jugar</a></li>
+		</ul>
+	{% endif %}
 
 {% endblock %}
