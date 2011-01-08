@@ -1,9 +1,9 @@
 # Django settings for manager project.
 
+import os.path
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-
-import os.path
 
 # Mandar reporte de error por correo a los siguientes destinatarios cuando DEBUG = False
 ADMINS = (
@@ -88,9 +88,9 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'manager.urls'
 
 # Cambio de variables para la redireccion del login
-LOGIN_URL = "/"
-LOGOUT_URL = "/"
-LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "/cuentas/login/"
+LOGOUT_URL = "/cuentas/logout/"
+LOGIN_REDIRECT_URL = "/cuentas/perfil/"
 
 TEMPLATE_DIRS = (
 	"templates/",

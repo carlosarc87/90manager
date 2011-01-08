@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block contenido %}
+	<p style="padding: 10px;">90 manager es un juego multijugador donde puedes ser
+	entrenador y presidente de un equipo de fútbol.</p>
+	{% if not form_reg %}
+		<img src="/media/img/campo_inicio.png" alt="campillo" title="" style="margin:20px;"/>
+	{% endif %}
+{% endblock %}

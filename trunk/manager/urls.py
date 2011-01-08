@@ -17,7 +17,7 @@ urlpatterns = patterns('',
 
     # Habilitar la administracion
     (r'^admin/', include(admin.site.urls)),
-	(r'^/?$', 'manager.gestion_entrenador.views.perfil_usuario'),
+	(r'^/?$', 'manager.gestion_entrenador.views.index'),
 	
 	# Modulo de login
     (r'^cuentas/logout/$', 'django.contrib.auth.views.logout'),

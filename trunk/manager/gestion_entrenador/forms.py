@@ -20,6 +20,12 @@ class PrepararEquipoLocalForm(forms.ModelForm):
 		super(PrepararEquipoLocalForm, self).__init__(*args, **kwargs)
 		self.fields['titulares_local'].choices = [[choice.id, choice.nombre] for choice in self.instance.equipo_local.jugador_set.all()]
 
+	def clean_titulares_local(self):
+		valor = self.cleaned_data['titulares_local']
+		if len(valor) != 11:
+			raise forms.ValidationError("Solo puedes seleccionar 11 jugadores.")
+		return valor
+
 	class Meta:
 		model = Partido
 		exclude = ('jornada', 'equipo_local', 'equipo_visitante', 'goles_local', 'goles_visitante', 'titulares_visitante')

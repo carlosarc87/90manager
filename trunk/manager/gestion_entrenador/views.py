@@ -5,6 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.db import transaction
 
+from django.db.models import Q
+
 import datetime
 import random
 
@@ -20,25 +22,19 @@ def obtenerUsuario(request):
 		usuario = None
 	return usuario
 
+def devolverMensaje(request, mensaje, url_salida = None):
+	return render_to_response("mensaje.html", {"usuario" : obtenerUsuario(request), "mensaje" : mensaje, "url_salida" : url_salida})
+
 ############################ VISTAS ####################################
 
-@login_required
 def index(request):
-	# Obtenemos el usuario
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
-	
-	# Cargamos la plantilla con los parametros y la devolvemos
-	t = loader.get_template("base.html")
-	c = Context({ "usuario" : usuario })
-	return HttpResponse(t.render(c))
+	t = loader.get_template("index.html")
+	return render_to_response("index.html", {})
 	
 # Vista para registrar a un usuario
 def registrar_usuario(request):
-	
 	if obtenerUsuario(request) != None:
-		return HttpResponse("No puede registrar usuarios estando logueado.")
+		return devolverMensaje(request, "No puede registrar usuarios estando logueado.", "/")
 	if request.method == 'POST':
 		form = UsuarioForm(request.POST)
 		if form.is_valid():
@@ -49,7 +45,7 @@ def registrar_usuario(request):
 			usuario.is_superuser = False
 			usuario.date_joined = datetime.datetime.now()
 			usuario.save()
-			return HttpResponse("Se ha registrado correctamente. <a href=\"/cuentas/perfil\">Volver</a>")
+			return devolverMensaje(request, "Se ha registrado correctamente.", "/cuentas/perfil/")
 	else:
 		form = UsuarioForm()
 	
@@ -59,7 +55,7 @@ def registrar_usuario(request):
 def perfil_usuario(request):
 	usuario = obtenerUsuario(request)
 	if usuario == None:
-		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")		
 	# Obtenemos las ligas creadas por el usuario
 	ligas_creadas = Liga.objects.filter(creador = usuario)
 	# Obtenemos los equipos
@@ -78,10 +74,10 @@ def ver_equipo(request, equipo_id):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
 	if usuario == None:
-		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")		
 
 	if Equipo.objects.filter(id = equipo_id).count() == 0:
-		return HttpResponse("Error, no existe un equipo con identificador %s" % equipo_id)
+		return devolverMensaje(request, "Error, no existe un equipo con identificador %s" % equipo_id)
 
 	# Obtenemos el equipo
 	equipo = Equipo.objects.get(id = equipo_id)
@@ -104,10 +100,10 @@ def ver_jugador(request, jugador_id):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
 	if usuario == None:
-		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
 
 	if Jugador.objects.filter(id = jugador_id).count() == 0:
-		return HttpResponse("Error, no existe un jugador con identificador %s" % jugador_id)
+		return devolverMensaje(request, "Error, no existe un jugador con identificador %s" % jugador_id)
 		
 	# Obtenemos el jugador
 	jugador = Jugador.objects.get(id = jugador_id)
@@ -126,10 +122,10 @@ def ver_liga(request, liga_id):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
 	if usuario == None:
-		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
 
 	if Liga.objects.filter(id = liga_id).count() == 0:
-		return HttpResponse("Error, no existe una liga con identificador %s" % liga_id)
+		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
 
 	# Obtenemos la liga
 	liga = Liga.objects.get(id = liga_id)
@@ -197,10 +193,10 @@ def avanzar_jornada_liga(request, liga_id):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
 	if usuario == None:
-		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
 
 	if Liga.objects.filter(id = liga_id).count() == 0:
-		return HttpResponse("Error, no existe una liga con identificador %s" % liga_id)
+		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
 
 	# Obtenemos la liga
 	liga = Liga.objects.get(id = liga_id)
@@ -209,16 +205,16 @@ def avanzar_jornada_liga(request, liga_id):
 	jornadas = liga.jornada_set.filter(jugada = False)
 	
 	if jornadas.count() == 0:
-		return HttpResponse("Esta liga ya esta acabada")	
+		return devolverMensaje(request, "Esta liga ya esta acabada", "/ligas/ver/%d/" % liga.id)	
 	
 	# Sacar primera jornada no jugada
 	jornada = jornadas[0]
 	partidos = jornada.partido_set.all()
 	for partido in partidos:
-		if partido.equipo_local.usuario != None or partido.equipo_visitante.usuario != None:
-			if not partido.finalizado():
-				return HttpResponse("EH! que aun quedan partidos de los usuarios por jugar")
-		else:
+#		if partido.equipo_local.usuario != None or partido.equipo_visitante.usuario != None:
+#			if not partido.finalizado():
+#				return HttpResponse("EH! que aun quedan partidos de los usuarios por jugar")
+#		else:
 			if not partido.finalizado():
 				# Generar alineacion aleatoria
 				partido.titulares_local = partido.equipo_local.jugador_set.all()[:11]
@@ -235,23 +231,23 @@ def jugar_partido(request, partido_id):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
 	if usuario == None:
-		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
 	
 	if Partido.objects.filter(id = partido_id).count() == 0:
-		return HttpResponse("Error, no existe un partido con identificador %s" % partido_id)
+		return devolverMensaje(request, "Error, no existe un partido con identificador %s" % partido_id)
 
 	partido = Partido.objects.get(id = partido_id)
 	if partido.finalizado():
-		return HttpResponse("Este partido ya se jugo")
+		return devolverMensaje(request, "Este partido ya se jugo", "/partidos/ver/%d/" % partido.id)			
 	if partido.equipo_local.usuario != None:
 		if partido.titulares_local.count() != 11:
-			return HttpResponse("Eh, que tienes que preparar el equipo antes del partido")			
+			return devolverMensaje(request, "Eh, que tienes que preparar el equipo antes del partido", "/partidos/ver/%d/" % partido.id)			
 	else:
 		partido.titulares_local = partido.equipo_local.jugador_set.all()[:11]
 
 	if partido.equipo_visitante.usuario != None:
 		if partido.titulares_visitante.count() != 11:
-			return HttpResponse("Eh, que tienes que preparar el equipo antes del partido")			
+			return devolverMensaje(request, "Eh, que tienes que preparar el equipo antes del partido", "/partidos/ver/%d/" % partido.id)			
 	else:
 		partido.titulares_visitante = partido.equipo_visitante.jugador_set.all()[:11]
 	partido.jugar()
@@ -264,10 +260,10 @@ def ver_jornada(request, jornada_id):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
 	if usuario == None:
-		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
 
 	if Jornada.objects.filter(id = jornada_id).count() == 0:
-		return HttpResponse("Error, no existe una jornada con identificador %s" % jornada_id)
+		return devolverMensaje(request, "Error, no existe una jornada con identificador %s" % jornada_id)
 
 	# Obtenemos la jornada
 	jornada = Jornada.objects.get(id = jornada_id)
@@ -321,10 +317,10 @@ def ver_partido(request, partido_id):
 	# Obtenemos el usuario
 	usuario = obtenerUsuario(request)
 	if usuario == None:
-		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
 
 	if Partido.objects.filter(id = partido_id).count() == 0:
-		return HttpResponse("Error, no existe un partido con identificador %s" % partido_id)
+		return devolverMensaje(request, "Error, no existe un partido con identificador %s" % partido_id)
 
 	# Obtenemos el partido
 	partido = Partido.objects.get(id = partido_id)
@@ -371,14 +367,14 @@ def preparar_partido(request, partido_id):
 	partido = Partido.objects.get(id = partido_id)
 	usuario = obtenerUsuario(request)
 	if usuario == None:
-		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
 
 	if Partido.objects.filter(id = partido_id).count() == 0:
-		return HttpResponse("Error, no existe un partido con identificador %s" % partido_id)
+		return devolverMensaje(request, "Error, no existe un partido con identificador %s" % partido_id)
 
 	# Comprobar que el partido no se haya jugado ya
 	if partido.finalizado():
-		return HttpResponse("El partido ya acabo. <a href=\"/partidos/ver/%d\">Volver</a>" % partido.id)
+		return devolverMensaje(request, "Este partido ya acabo", "/partidos/ver/%d/" % partido.id)
 
 	# Comprobar si el usuario juega en el partido
 	if (partido.equipo_local.usuario == usuario): # Juega como local
@@ -387,7 +383,7 @@ def preparar_partido(request, partido_id):
 			form = PrepararEquipoLocalForm(request.POST, instance = partido)
 			if form.is_valid():
 				form.save()
-				return HttpResponse("Se ha creado correctamente la alineacion. <a href=\"/partidos/ver/%d\">Volver</a>" % partido.id)
+				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
 		else:
 			form = PrepararEquipoLocalForm(instance = partido)
 
@@ -397,28 +393,28 @@ def preparar_partido(request, partido_id):
 			form = PrepararEquipoVisitanteForm(request.POST, instance = partido)
 			if form.is_valid():
 				form.save()
-				return HttpResponse("Se ha creado correctamente la alineacion. <a href=\"/partidos/ver/%d\">Volver</a>" % partido.id)
+				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
 		else:
 			form = PrepararEquipoVisitanteForm(instance = partido)
 	
 	else: # No juega como naaaaaaaaaaaaaaa
-		return HttpResponse("No tienes vela en este entierro, o mejor dicho, no tienes equipo en este partido <a href=\"/partidos/ver/%d\">Volver</a>" % partido.id)
-
+		return devolverMensaje(request, "No tienes equipo en este partido", "/partidos/ver/%d/" % partido.id)
+		
 	return render_to_response("partidos/preparar_partido.html", {"form": form, "usuario" : usuario, "partido" : partido, "equipo" : equipo })	
 
 @login_required
 def crear_equipo(request, liga_id):
 	usuario = obtenerUsuario(request)
 	if usuario == None:
-		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
 
 	if Liga.objects.filter(id = liga_id).count() == 0:
-		return HttpResponse("Error, no existe una liga con identificador %s" % liga_id)
+		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
 
 	liga = Liga.objects.get(id = liga_id)
 
 	if liga.activada():
-		return HttpResponse("Esta liga ya no acepta mas equipos")
+		return devolverMensaje(request, "Esta liga ya no acepta mas equipos", "/ligas/ver/%d/" % liga.id)
 
 	if request.method == 'POST':
 		form = EquipoForm(request.POST)
@@ -432,7 +428,7 @@ def crear_equipo(request, liga_id):
 				jugador = Jugador(nombre="Jugador %d - %s - %d" % (liga.id, equipo.nombre, j), equipo = equipo)
 				jugador.save()
 				equipo.agregarJugador(jugador)
-			return HttpResponse("Se ha creado correctamente. <a href=\"/equipos/ver/%d\">Volver</a>" % equipo.id)
+			return devolverMensaje(request, "Se ha creado correctamente", "/equipos/ver/%d/" % equipo.id)
 	else:
 		form = EquipoForm()
 	
@@ -442,7 +438,7 @@ def crear_equipo(request, liga_id):
 def crear_liga(request):
 	usuario = obtenerUsuario(request)
 	if usuario == None:
-		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
 		
 	if request.method == 'POST':
 		form = LigaForm(request.POST)
@@ -452,7 +448,7 @@ def crear_liga(request):
 			liga.creador = Usuario.objects.get(id = request.user.id)
 			liga.save()
 
-			return HttpResponse("Se ha creado correctamente. <a href=\"/ligas/ver/%d\">Volver</a>" % liga.id)
+			return devolverMensaje(request, "Se ha creado correctamente", "/ligas/ver/%d/" % liga.id)
 	else:
 		form = LigaForm()
 	
@@ -463,18 +459,18 @@ def crear_liga(request):
 def activar_liga(request, liga_id):
 	usuario = obtenerUsuario(request)
 	if usuario == None:
-		return HttpResponse("¡Eh eh! No te <a href=\"/admin/\"/>escapes</a>")
+		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
 
 	if Liga.objects.filter(id = liga_id).count() == 0:
-		return HttpResponse("Error, no existe una liga con identificador %s" % liga_id)
+		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
 		
 	# Obtenemos la liga
 	liga = Liga.objects.get(id = liga_id)
 	
 	if liga.activada():
-		return HttpResponse("Ya esta activada esta liga. <a href=\"/ligas/ver/%d\">Ir</a> su pagina." % liga.id)
+		return devolverMensaje(request, "Ya esta activada esta liga", "/ligas/ver/%d/" % liga.id)
 	
 	liga.rellenarLiga()
 	liga.generarJornadas()
 
-	return HttpResponse("Se ha generado la liga correctamente. <a href=\"/ligas/ver/%d\">Volver</a>" % liga.id)
+	return devolverMensaje(request, "Se ha generado la liga correctamente", "/ligas/ver/%d/" % liga.id)

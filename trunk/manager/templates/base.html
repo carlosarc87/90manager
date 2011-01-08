@@ -45,21 +45,17 @@
 					<li><a href="#">Jornadas</a></li>
 				</ul>
 			</div>
-			
+		{% endif %}
+		{% if not form_reg %}
 			<!-- Contenido de la pagina actual -->
 			<div id="contenido_centro">
-				{% block contenido %}
-				{% endblock %}
-			</div>
-		{% else %}
-			<p style="padding: 10px;">90 manager es un juego multijugador donde puedes ser
-			entrenador y presidente de un equipo de fútbol.</p>
-			{% block registro %}
-				{% if not form_reg %}
-					<img src="/media/img/campo_inicio.png" alt="campillo" title="" style="margin:20px;"/>
-				{% endif %}
-			{% endblock %}
 		{% endif %}
+		{% block contenido %}
+		{% endblock %}
+		{% if not form_reg %}
+			</div>
+		{% endif %}
+
 	</div>
 	
 	<!-- Pie de pagina -->
@@ -76,3 +72,4 @@
     </div>
 </body>
 </html>
+
