@@ -80,6 +80,7 @@ def perfil_usuario(request):
 		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
 	# Obtenemos las ligas creadas por el usuario
 	ligas_creadas = Liga.objects.filter(creador = usuario)
+
 	# Obtenemos los equipos
 	equipos = usuario.equipo_set.all()
 
@@ -88,6 +89,24 @@ def perfil_usuario(request):
 	c = Context({"usuario" : usuario,
 				 "ligas_creadas" : ligas_creadas,
 				 "equipos" : equipos,
+				})
+	return HttpResponse(t.render(c))
+
+########################################################################
+
+@login_required
+def ver_ligas_publicas(request):
+	''' Muestra las ligas publicas que haya en el sistema '''
+	usuario = obtenerUsuario(request)
+	if usuario == None:
+		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	# Obtenemos las ligas
+	ligas = Liga.objects.filter(publica = True)
+
+	# Cargamos la plantilla con los parametros y la devolvemos
+	t = loader.get_template("ligas/ver_ligas_publicas.html")
+	c = Context({"usuario" : usuario,
+				 "ligas" : ligas
 				})
 	return HttpResponse(t.render(c))
 
@@ -176,6 +195,8 @@ def ver_liga(request, liga_id):
 
 	liga_acabada = False
 
+	es_creador = liga.creador == usuario
+
 	# Comprobamos si el jugador tiene un equipo en esta liga
 	equipo_propio = liga.equipo_set.filter(usuario = usuario)
 	if len(equipo_propio) > 0:
@@ -215,7 +236,8 @@ def ver_liga(request, liga_id):
 				 "activada" : activada,
 				 "equipo_propio" : equipo_propio,
 				 "clasificacion" : clasificacion,
-				 "liga_acabada" : liga_acabada
+				 "liga_acabada" : liga_acabada,
+				 "es_creador" : es_creador
 				})
 	return HttpResponse(t.render(c))
 
@@ -235,6 +257,9 @@ def avanzar_jornada_liga(request, liga_id):
 	# Obtenemos la liga
 	liga = Liga.objects.get(id = liga_id)
 
+	if liga.creador != usuario:
+		return devolverMensaje(request, "No eres el creador de esta liga")
+
 	# Obtenemos las jornadas no jugadas
 	jornadas = liga.jornada_set.filter(jugada = False)
 
@@ -251,8 +276,10 @@ def avanzar_jornada_liga(request, liga_id):
 #		else:
 			if not partido.finalizado():
 				# Generar alineacion aleatoria
-				partido.titulares_local = partido.equipo_local.jugador_set.all()[:11]
-				partido.titulares_visitante = partido.equipo_visitante.jugador_set.all()[:11]
+				if partido.titulares_local == None:
+					partido.titulares_local = partido.equipo_local.jugador_set.all()[:11]
+				if partido.titulares_visitante == None:
+					partido.titulares_visitante = partido.equipo_visitante.jugador_set.all()[:11]
 				partido.jugar()
 				partido.save()
 	jornada.jugada = True
@@ -309,10 +336,11 @@ def ver_jornada(request, jornada_id):
 	jornada = Jornada.objects.get(id = jornada_id)
 	# Obtenemos la liga
 	liga = jornada.liga
+	es_creador = liga.creador == usuario
+
 	# Obtenemos los encuentros que hay
 	emparejamientos = jornada.partido_set.all()
 	# Obtenemos la clasificacion
-
 	clasificacion = None
 	clasificacion_anterior = None
 	if jornada.jugada:
@@ -328,16 +356,21 @@ def ver_jornada(request, jornada_id):
 
 	jornada_anterior = liga.jornada_set.filter(numero = jornada.numero - 1)
 	if jornada_anterior.count() > 0:
-		jornada_anterior = jornada_anterior[0].id
+		jornada_anterior = jornada_anterior[0]
 	else:
 		jornada_anterior = None
 
 	jornada_siguiente = liga.jornada_set.filter(numero = jornada.numero + 1)
 	if jornada_siguiente.count() > 0:
-		jornada_siguiente = jornada_siguiente[0].id
+		jornada_siguiente = jornada_siguiente[0]
 	else:
 		jornada_siguiente = None
 
+	# Es la jornada actual si se jugo la anterior pero no si misma
+	if jornada_anterior != None:
+		es_jornada_actual = jornada_anterior.jugada == True and jornada.jugada == False
+	else:
+		es_jornada_actual = False
 
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("jornadas/ver_jornada.html")
@@ -349,6 +382,8 @@ def ver_jornada(request, jornada_id):
 				 "jornada_siguiente" : jornada_siguiente,
 				 "clasificacion" : clasificacion,
 				 "clasificacion_anterior" : clasificacion_anterior,
+				 "es_creador" : es_creador,
+				 "es_jornada_actual" : es_jornada_actual,
 				})
 	return HttpResponse(t.render(c))
 
@@ -389,6 +424,13 @@ def ver_partido(request, partido_id):
 		else:
 			resultado = "Empate"
 
+	tiene_equipo = False
+	if equipo_local.usuario == usuario:
+		tiene_equipo = True
+	elif equipo_visitante.usuario == usuario:
+		tiene_equipo = True
+	es_creador = liga.creador == usuario
+
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("partidos/ver_partido.html")
 	c = Context({"jornada" : jornada,
@@ -400,7 +442,9 @@ def ver_partido(request, partido_id):
 				 "finalizado" : finalizado,
 				 "resultado" : resultado,
 				 "titulares_local" : titulares_local,
-				 "titulares_visitante" : titulares_visitante
+				 "titulares_visitante" : titulares_visitante,
+				 "es_creador" : es_creador,
+				 "tiene_equipo" : tiene_equipo,
 				})
 	return HttpResponse(t.render(c))
 
@@ -464,6 +508,9 @@ def crear_equipo(request, liga_id):
 	if liga.activada():
 		return devolverMensaje(request, "Esta liga ya no acepta mas equipos", "/ligas/ver/%d/" % liga.id)
 
+	if liga.equipo_set.filter(usuario = usuario).count() > 0:
+		return devolverMensaje(request, "Ya tienes un equipo en esta liga", "/ligas/ver/%d/" % liga.id)
+
 	if request.method == 'POST':
 		form = EquipoForm(request.POST)
 		if form.is_valid():
@@ -494,7 +541,6 @@ def crear_liga(request):
 	if request.method == 'POST':
 		form = LigaForm(request.POST)
 		if form.is_valid():
-			# Solucion para los problemas de la password
 			liga = form.save(commit = False)
 			liga.creador = Usuario.objects.get(id = request.user.id)
 			liga.save()
@@ -510,7 +556,7 @@ def crear_liga(request):
 @login_required
 @transaction.commit_on_success
 def activar_liga(request, liga_id):
-	''' Activa una liga '''
+	''' Formulario para activar una liga '''
 	usuario = obtenerUsuario(request)
 	if usuario == None:
 		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
@@ -521,12 +567,27 @@ def activar_liga(request, liga_id):
 	# Obtenemos la liga
 	liga = Liga.objects.get(id = liga_id)
 
+	if liga.creador != usuario:
+		return devolverMensaje(request, "Error, solo el creador de la liga puede activarla")
+
 	if liga.activada():
 		return devolverMensaje(request, "Ya esta activada esta liga", "/ligas/ver/%d/" % liga.id)
 
-	liga.rellenarLiga()
-	liga.generarJornadas()
+	if request.method == 'POST':
+		form = ActivarLigaForm(request.POST, instance=liga)
+		if form.is_valid():
+			liga = form.save(commit = False)
+			#equipos_descartados = form.cleaned_data['equipos']
+			#for equipo in equipos_descartados:
+			#	Equipo.delete(Equipo.objects.get(id = equipo)) # A lo bruten xD
+			#liga.save()
+			#liga.rellenarLiga()
+			#liga.generarJornadas();
+			return devolverMensaje(request, "Se ha generado la liga correctamente", "/ligas/ver/%d/" % liga.id)
+	else:
+		form = ActivarLigaForm(instance = liga)
 
-	return devolverMensaje(request, "Se ha generado la liga correctamente", "/ligas/ver/%d/" % liga.id)
+	return render_to_response("ligas/activar_liga.html", {"form" : form, "usuario" : usuario, "liga" : liga })
+
 
 ########################################################################

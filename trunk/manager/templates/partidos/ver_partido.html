@@ -58,8 +58,12 @@
 	{% else %}
 		<h4>SIN INICIAR</h4>
 		<ul>
-			<li><a href="/partidos/preparar/{{ partido.id }}/">Preparar partido</a></li>(Si ninguno es mi equipo esto no debe aparecer)
-			<li><a href="/partidos/jugar/{{ partido.id }}/">Jugar</a></li>
+			{% if tiene_equipo %}
+				<li><a href="/partidos/preparar/{{ partido.id }}/">Preparar partido</a></li>
+			{% endif %}
+			{% if es_creador %}
+				<li><a href="/partidos/jugar/{{ partido.id }}/">Jugar</a></li>
+			{% endif %}
 		</ul>
 	{% endif %}
 

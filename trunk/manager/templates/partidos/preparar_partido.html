@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block situacion %}
-	<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
-	<li><a href="/jornadas/ver/{{ jornada.id }}/">Jornada {{ jornada.numero }}</a></li>
+	<li><a href="/ligas/ver/{{ partido.jornada.liga_id }}/">{{ partido.jornada.liga.nombre }}</a></li>
+	<li><a href="/jornadas/ver/{{ partido.jornada.id }}/">Jornada {{ partido.jornada.numero }}</a></li>
 	<li><a href="/partidos/ver/{{ partido.id }}/">Partido {{ partido.id }}</a></li>
 	<li>{{ equipo.nombre }}</li>
 {% endblock %}

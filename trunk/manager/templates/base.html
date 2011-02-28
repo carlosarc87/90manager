@@ -15,7 +15,7 @@
 			{% include "registration/login.html" %}
 		</div>
 	</div>
-	
+
 	<!-- Contenedor central -->
 	<div class="contenido">
 		{% if usuario %}
@@ -29,13 +29,14 @@
 
 				<!-- Botones -->
 				<ul id="menu_superior_botones">
+					<li><a href="/ligas/publicas">Ver ligas públicas</a></li>
 					<li><a href="/cuentas/perfil">Perfil</a></li>
 					<li><a href="/cuentas/logout">Desconectar</a></li>
 				</ul>
 				{% block menu_superior %}
 				{% endblock %}
 			</div>
-			
+
 			<!-- Menu lateral -->
 			<div id="menu_lateral">
 				<ul>
@@ -57,7 +58,7 @@
 		{% endif %}
 
 	</div>
-	
+
 	<!-- Pie de pagina -->
     <div id="footer">
 		<div class="contenido">

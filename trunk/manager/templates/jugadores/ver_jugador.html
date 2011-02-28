@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block situacion %}
-	<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+	<li><a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a></li>
 	<li><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
 	<li>{{ jugador.nombre }}</li>
 {% endblock %}

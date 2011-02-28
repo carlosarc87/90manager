@@ -13,13 +13,13 @@
 		<div style="width: 150px;">{{ form.nombre }}</div>
     </div>
 
-	<!-- Numero de equipos -->
+	<!-- Visibilidad -->
     <div class="fila">
-        {% if form.num_equipos.errors %}
-			<p class="texto_error">{{ form.num_equipos.errors }}</p>
+        {% if form.publica.errors %}
+			<p class="texto_error">{{ form.publica.errors }}</p>
 		{% endif %}
-        <div style="width: 150px;"><label for="id_num_equipos">Numero de equipos:</label></div>
-        <div style="width: 150px;"><input type="text" name="num_equipos" value="0" maxlength="3" style="width:50px;"/></div>
+        <div style="width: 150px;"><label for="id_visibilidad">Publica:</label></div>
+        <div style="width: 150px;">{{ form.publica }}</div>
     </div>
 
 	<!-- Boton crear -->

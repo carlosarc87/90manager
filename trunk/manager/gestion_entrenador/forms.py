@@ -26,7 +26,7 @@ class EquipoForm(forms.ModelForm):
 class PrepararEquipoLocalForm(forms.ModelForm):
 	''' Formulario de preparacion de equipos locales '''
 	titulares_local = forms.fields.MultipleChoiceField()
-	
+
 	def __init__(self, *args, **kwargs):
 		''' Constructor que establece la lista de valores de los titulares '''
 		super(PrepararEquipoLocalForm, self).__init__(*args, **kwargs)
@@ -47,13 +47,13 @@ class PrepararEquipoLocalForm(forms.ModelForm):
 ########################################################################
 
 class PrepararEquipoVisitanteForm(forms.ModelForm):
-	''' Formulario de preparacion de equipos locales '''	
+	''' Formulario de preparacion de equipos locales '''
 	titulares_visitante = forms.fields.MultipleChoiceField()
-	
+
 	def __init__(self, *args, **kwargs):
-		''' Constructor que establece la lista de valores de los titulares '''		
+		''' Constructor que establece la lista de valores de los titulares '''
 		super(PrepararEquipoVisitanteForm, self).__init__(*args, **kwargs)
-		# Establecemos los valores de la lista multiple como los jugadores del equipo visitante		
+		# Establecemos los valores de la lista multiple como los jugadores del equipo visitante
 		self.fields['titulares_visitante'].choices = [[choice.id, choice.nombre] for choice in self.instance.equipo_visitante.jugador_set.all()]
 
 	def clean_titulares_visitante(self):
@@ -71,17 +71,33 @@ class PrepararEquipoVisitanteForm(forms.ModelForm):
 
 class LigaForm(forms.ModelForm):
 	''' Formulario para crear ligas '''
-	def clean_num_equipos(self):
-		''' Comprueba que haya un numero de equipos positivo y par y en caso afirmativo los devuelve '''
-		valor = self.cleaned_data['num_equipos']
-		if valor % 2 != 0:
-			raise forms.ValidationError("Debe de introducir un valor par")
-		if valor <= 0:
-			raise forms.ValidationError("Debe de introducir un valor mayor que 0")
-		return valor
-	
 	class Meta:
 		model = Liga
-		exclude = ('creador', 'fecha_creacion')
+		exclude = ('creador', 'fecha_creacion', 'num_equipos')
 
 ########################################################################
+
+class ActivarLigaForm(forms.ModelForm):
+	''' Formulario de activacion de una liga '''
+	equipos = forms.fields.MultipleChoiceField(required = False)
+
+	def __init__(self, *args, **kwargs):
+		''' Constructor que establece la lista de valores de los titulares '''
+		super(ActivarLigaForm, self).__init__(*args, **kwargs)
+		# Establecemos los valores de la lista multiple como los jugadores del equipo visitante
+		self.fields['equipos'].choices = [[choice.id, choice.nombre] for choice in self.instance.equipo_set.all()]
+		numero = len(self.instance.equipo_set.all())
+		self.fields['num_equipos'] = forms.IntegerField(initial = str(123))
+
+	def clean_num_equipos(self):
+		''' Comprueba que haya un numero de equipos positivo y par y en caso afirmativo los devuelve '''
+		valor = self.cleaned_data['num_equipos'] + len(self.instance.equipo_set.all())
+		if valor % 2 != 0:
+			raise forms.ValidationError("Debe de introducir un valor para que el numero de equipos sea par")
+		if valor <= 0:
+			raise forms.ValidationError("Deben de haber mas de 0 equipos")
+		return valor
+
+	class Meta:
+		model = Liga
+		exclude = ('creador', 'fecha_creacion', 'publica', 'nombre')

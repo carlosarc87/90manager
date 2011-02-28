@@ -11,7 +11,9 @@
 
 		{% if jornada_actual %}
 			<h4>Jornada actual: <a href="/jornadas/ver/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></h4>
-			<h4><a href="/ligas/avanzar/{{ liga.id }}/">Avanzar jornada</a></h4>
+			{% if es_creador %}
+				<h4><a href="/ligas/avanzar/{{ liga.id }}/">Avanzar jornada</a></h4>
+			{% endif %}
 		{% else %}
 			<h4>FINALIZADA</h4>
 		{% endif %}
@@ -54,7 +56,7 @@
 				{% endfor %}
 			</tbody>
 		</table>
-		
+
 		<table style="margin-top:20px; width: 300px;">
 			<caption>Listado de jornadas</caption>
 			<thead>
@@ -79,8 +81,17 @@
 			</tbody>
 		</table>
 	{% else %}
-		<p>La liga no está activada aun: <a href="/ligas/activar/{{ liga.id }}/">Activar</a></p>
-		<b>{{ usuario }} aún puede </b><a href="/equipos/crear/{{ liga.id }}/">crear un equipo</a><b> en esta liga.</b>
+		<p>La liga no está activada aun
+		{% if es_creador %}
+			: <a href="/ligas/activar/{{ liga.id }}/">Activar</a></p>
+		{% else %}
+			<br>
+		{% endif %}
+		{% if equipo_propio %}
+			Equipo de la liga: <a href="/equipos/ver/{{ equipo_propio.id }}/">{{ equipo_propio.nombre }}</a>
+		{% else %}
+			<b>{{ usuario }} aún puede </b><a href="/equipos/crear/{{ liga.id }}/">crear un equipo</a><b> en esta liga.</b>
+		{% endif %}
 	{% endif %}
 
 	{% if equipos.count %}
@@ -99,10 +110,10 @@
 							<a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a>
 						</td>
 						<td>
-							{% if equipo.id == equipo_propio.id %}
-								{{ usuario }}
+							{% if equipo.usuario %}
+								{{ equipo.usuario }}
 							{% else %}
-								bot
+								Bot
 							{% endif %}
 						</td>
 					</tr>

@@ -8,10 +8,10 @@
 {% block contenido %}
 
 	{% if jornada_anterior %}
-		<a href="/jornadas/ver/{{ jornada_anterior }}/">Ver Jornada {{ jornada_anterior }}</a>
+		<a href="/jornadas/ver/{{ jornada_anterior.id }}/">Ver Jornada {{ jornada_anterior.numero }}</a>
 	{% endif %}
 	{% if jornada_siguiente %}
-		<a href="/jornadas/ver/{{ jornada_siguiente }}/">Ver Jornada {{ jornada_siguiente }}</a>
+		<a href="/jornadas/ver/{{ jornada_siguiente.id }}/">Ver Jornada {{ jornada_siguiente.numero }}</a>
 	{% endif %}
 
 	<h2>Datos de la jornada</h2>
@@ -19,7 +19,11 @@
 	{% if jornada.jugada %}
 		<h4>FINALIZADA</h4>
 	{% else %}
-		<h4><a href="/ligas/avanzar/{{ liga.id }}">FINALIZAR JORNADA</a></h4>
+		{% if es_creador %}
+			{% if es_jornada_actual %}
+				<h4><a href="/ligas/avanzar/{{ liga.id }}">FINALIZAR JORNADA</a></h4>
+			{% endif %}
+		{% endif %}
 	{% endif %}
 
 	<table style="width: 400px;">
