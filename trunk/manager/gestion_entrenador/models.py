@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
+# Clases del sistema
+
 from django.db import models
 from django.contrib.auth.models import User, UserManager
 
 import random
+
+########################################################################
 
 # Usuario - hereda de la clase User de django
 class Usuario(User):
@@ -14,13 +18,15 @@ class Usuario(User):
 		return self.username
 		
 	def save(self):
-		''' Sobreescritura de la funcion save para arreglar un fallo con las contrasennas '''
+		''' Sobreescritura de la funcion save para arreglar un fallo con las contraseñas '''
 		password = ""
 		password = self.password
 		self.set_password(self.password)
 		if self.email == "":
 			self.email = "none@none.net"
 		User.save(self)
+		
+########################################################################
 
 # Liga
 class Liga(models.Model):
@@ -89,15 +95,19 @@ class Liga(models.Model):
 			for emparejamiento in jornadas[i]:
 				partido = Partido(jornada = jornada, equipo_local = emparejamiento[0], equipo_visitante = emparejamiento[1], jugado = False)
 				partido.save()
+		
+########################################################################
 
 # Jornada
 class Jornada(models.Model):
+	''' Representa una jornada en el sistema '''
 	numero = models.IntegerField()
 	#fecha = models.DateField("Fecha")
 	liga = models.ForeignKey(Liga)
 	jugada = models.BooleanField()
 	
 	def obtenerClasificacion(self):
+		''' Obtiene la clasificacion de la jornada '''
 		if self.jugada:
 			clasificaciones = []
 			partidos = self.partido_set.all()
@@ -141,30 +151,40 @@ class Jornada(models.Model):
 		
 	def __unicode__(self):
 		return "Jornada %d de liga %d" % (self.numero, self.liga.id)
-	
+			
+########################################################################
+
 # Equipo
 class Equipo(models.Model):
+	''' Representa un equipo en el sistema '''
 	nombre = models.CharField(max_length=200)
 	usuario = models.ForeignKey(Usuario, null = True)
 	liga = models.ForeignKey(Liga)
 	
 	# Funciones
 	def agregarJugador(self, jugador):
+		''' Añade un jugador al equipo '''
 		self.jugador_set.add(jugador)
 	
 	def __unicode__(self):
 		return self.nombre
+		
+########################################################################
 
 # Jugador
 class Jugador(models.Model):
+	''' Representa un jugador '''
 	nombre = models.CharField(max_length=200)
 	equipo = models.ForeignKey(Equipo)
 	
 	def __unicode__(self):
 		return self.nombre
-		
+				
+########################################################################
+
 # Partido
 class Partido(models.Model):
+	''' Representa un partido en el sistema '''
 	#hora_inicio = models.TimeField("Hora de inicio")
 	jornada = models.ForeignKey(Jornada)
 	equipo_local = models.ForeignKey(Equipo, related_name = "Local")
@@ -187,11 +207,15 @@ class Partido(models.Model):
 		self.goles_local = random.randint(0, 10)
 		self.goles_visitante = random.randint(0, 10)
 		self.jugado = True
+		
+########################################################################
 
 class ClasificacionEquipoJornada(models.Model):
+	''' Representa una posicion de un equipo en una jornada '''
 	jornada = models.ForeignKey(Jornada)
 	equipo = models.ForeignKey(Equipo)
 	goles_favor = models.IntegerField()
 	goles_contra = models.IntegerField()
 	puntos = models.IntegerField()
 	
+########################################################################

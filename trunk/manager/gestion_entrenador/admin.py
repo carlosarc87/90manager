@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Archivo para añadir las clases al panel de administración. Por cada
+# clase se añade una linea
+
 from django.contrib import admin
 from manager.gestion_entrenador.models import *
 
