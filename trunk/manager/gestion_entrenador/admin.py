@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Copyright 2011 by
     * Juan Miguel Lechuga Pérez
@@ -20,7 +21,6 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-# -*- coding: utf-8 -*-
 # Archivo para añadir las clases al panel de administración. Por cada
 # clase se añade una linea
 
