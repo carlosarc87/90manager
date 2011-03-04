@@ -580,9 +580,9 @@ def activar_liga(request, liga_id):
 			#equipos_descartados = form.cleaned_data['equipos']
 			#for equipo in equipos_descartados:
 			#	Equipo.delete(Equipo.objects.get(id = equipo)) # A lo bruten xD
-			#liga.save()
-			#liga.rellenarLiga()
-			#liga.generarJornadas();
+			liga.save()
+			liga.rellenarLiga()
+			liga.generarJornadas();
 			return devolverMensaje(request, "Se ha generado la liga correctamente", "/ligas/ver/%d/" % liga.id)
 	else:
 		form = ActivarLigaForm(instance = liga)
