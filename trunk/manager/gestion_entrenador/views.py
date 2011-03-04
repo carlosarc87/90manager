@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Vistas del sistema
-
+# comments for testing svn 
 from django.template import Context, loader
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
