@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Vistas del sistema
-# comments for testing svn 
+# comments for testing svn
 from django.template import Context, loader
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -154,7 +154,7 @@ def ver_jugador(request, jugador_id):
 
 	# Obtenemos el jugador
 	jugador = Jugador.objects.get(id = jugador_id)
-	
+
 	# Obtener sitio en el próximo partido
 	if jugador.titular:
 		prox_partido = "Titular"
@@ -162,13 +162,13 @@ def ver_jugador(request, jugador_id):
 		prox_partido = "Suplente"
 	else:
 		prox_partido = "No juega"
-	
+
 	# Obtener mejor posición
 	mejor_posicion = jugador.mejorPosicion()
-	
+
 	# Obtenemos el equipo
 	equipo = jugador.equipo
-	
+
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("jugadores/ver_jugador.html")
 	c = Context({"equipo" : equipo,
@@ -291,10 +291,10 @@ def avanzar_jornada_liga(request, liga_id):
 #		else:
 			if not partido.finalizado():
 				# Generar alineacion aleatoria
-				if partido.titulares_local == None:
-					partido.titulares_local = partido.equipo_local.jugador_set.all()[:11]
-				if partido.titulares_visitante == None:
-					partido.titulares_visitante = partido.equipo_visitante.jugador_set.all()[:11]
+#				if not partido.alineacion_local:
+#					partido.titulares_local = partido.equipo_local.jugador_set.all()[:11]
+#				if partido.titulares_visitante == None:
+#					partido.titulares_visitante = partido.equipo_visitante.jugador_set.all()[:11]
 				partido.jugar()
 				partido.save()
 	jornada.jugada = True
@@ -487,6 +487,12 @@ def preparar_partido(request, partido_id):
 			form = PrepararEquipoLocalForm(request.POST, instance = partido)
 			if form.is_valid():
 				form.save()
+				titulares = form.cleaned_data["titulares_local"]
+				suplentes = partido.equipo_local.jugador_set.all()
+				for j in suplentes:
+					if j in titulares:
+						suplentes.remove(j)
+				partido.crearAlineacion(True, titulares, suplentes)
 				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
 		else:
 			form = PrepararEquipoLocalForm(instance = partido)
@@ -497,6 +503,12 @@ def preparar_partido(request, partido_id):
 			form = PrepararEquipoVisitanteForm(request.POST, instance = partido)
 			if form.is_valid():
 				form.save()
+				titulares = form.cleaned_data["titulares_visitante"]
+				suplentes = partido.equipo_visitante.jugador_set.all()
+				for j in suplentes:
+					if j in titulares:
+						suplentes.remove(j)
+				partido.crearAlineacion(False, titulares, suplentes)
 				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
 		else:
 			form = PrepararEquipoVisitanteForm(instance = partido)
@@ -544,7 +556,7 @@ def crear_equipo(request, liga_id):
 					posicion = "CENTROCAMPISTA"
 				else:
 					posicion = "DELANTERO"
-				
+
 				# Establecer si es titular o suplente
 				if (j <= 11):
 					titular = True
@@ -552,7 +564,7 @@ def crear_equipo(request, liga_id):
 				else:
 					titular = False
 					suplente = True
-				
+
 				jugador = Jugador(equipo = equipo, nombre = nombreJugadorAleatorio(), titular = titular, suplente = suplente, transferible = False)
 				jugador.setNumero(j)
 				jugador.setPosicion(posicion)

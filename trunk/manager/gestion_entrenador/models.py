@@ -62,7 +62,7 @@ class Liga(models.Model):
 					posicion = "CENTROCAMPISTA"
 				else:
 					posicion = "DELANTERO"
-				
+
 				# Establecer si es titular o suplente
 				if (j <= 11):
 					titular = True
@@ -70,7 +70,7 @@ class Liga(models.Model):
 				else:
 					titular = False
 					suplente = True
-				
+
 				jugador = Jugador(equipo = equipo, nombre = nombreJugadorAleatorio(), titular = titular, suplente = suplente, transferible = False)
 				jugador.setNumero(j)
 				jugador.setPosicion(posicion)
@@ -203,17 +203,17 @@ class Jugador(models.Model):
 	''' Representa un jugador '''
 	nombre = models.CharField(max_length = 200)
 	equipo = models.ForeignKey(Equipo)
-	
+
 	numero = models.IntegerField(null = True, blank = True)
 	posicion = models.CharField(max_length = 50)
-	
+
 	ataque = models.IntegerField(null = False, blank = False)
 	defensa = models.IntegerField(null = False, blank = False)
 	velocidad = models.IntegerField(null = False, blank = False)
 	pases = models.IntegerField(null = False, blank = False)
 	anotacion = models.IntegerField(null = False, blank = False)
 	portero = models.IntegerField(null = False, blank = False)
-	
+
 	titular = models.BooleanField()
 	suplente = models.BooleanField()
 	transferible = models.BooleanField()
@@ -229,7 +229,7 @@ class Jugador(models.Model):
 			self.pases = aleatorio((int)(nivel * 0.5), (int)(nivel * 0.8))
 			self.anotacion = aleatorio((int)(nivel * 0.8), nivel)
 			self.portero = aleatorio(0, (int)(nivel * 0.1))
-			
+
 		elif(posicion == "CENTROCAMPISTA"):
 			self.ataque = aleatorio((int)(nivel * 0.5), (int)(nivel * 0.8))
 			self.defensa = aleatorio((int)(nivel * 0.5), (int)(nivel * 0.8))
@@ -237,7 +237,7 @@ class Jugador(models.Model):
 			self.pases = aleatorio((int)(nivel * 0.7), nivel)
 			self.anotacion = aleatorio((int)(nivel * 0.3), (int)(nivel * 0.8))
 			self.portero = aleatorio(0, (int)(nivel * 0.1))
-			
+
 		elif(posicion == "DEFENSA"):
 			self.ataque = aleatorio(0, (int)(nivel * 0.3))
 			self.defensa = aleatorio((int)(nivel * 0.8), nivel)
@@ -245,7 +245,7 @@ class Jugador(models.Model):
 			self.pases = aleatorio((int)(nivel * 0.5), (int)(nivel * 0.8))
 			self.anotacion = aleatorio(0, (int)(nivel * 0.5))
 			self.portero = aleatorio(0, (int)(nivel * 0.3))
-			
+
 		elif(posicion == "PORTERO"):
 			self.ataque = aleatorio(0, (int)(nivel * 0.3))
 			self.defensa = aleatorio(0, (int)(nivel * 0.3))
@@ -253,7 +253,7 @@ class Jugador(models.Model):
 			self.pases = aleatorio((int)(nivel * 0.3), (int)(nivel * 0.7))
 			self.anotacion = aleatorio(0, (int)(nivel * 0.1))
 			self.portero = aleatorio((int)(nivel * 0.8), nivel)
-			
+
 		else:
 			self.ataque = aleatorio(0, nivel)
 			self.defensa = aleatorio(0, nivel)
@@ -261,7 +261,7 @@ class Jugador(models.Model):
 			self.pases = aleatorio(0, nivel)
 			self.anotacion = aleatorio(0, nivel)
 			self.portero = aleatorio(0, nivel)
-		
+
 		return self
 
 	def mejorPosicion(self):
@@ -277,7 +277,7 @@ class Jugador(models.Model):
 				return "CENTROCAMPISTA"
 			else:
 				return "DEFENSA"
-		
+
 		return "PORTERO"
 
 	def setNumero(self, numero):
@@ -292,14 +292,15 @@ class AlineacionEquipo(models.Model):
 	equipo = models.ForeignKey(Equipo)
 	titulares = models.ManyToManyField(Jugador, related_name = "Jugadores_titulares")
 	suplentes = models.ManyToManyField(Jugador, related_name = "Jugadores_suplentes")
-	
+
 	def getValorAtaque(self):
 		valor = 0
-		num_jugadores_campo = len(self.titulares)
+		titulares = self.titulares.all()
+		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
-			posicion = self.titulares[i].posicion
-			ataque = self.titulares[i].ataque
-			
+			posicion = titulares[i].posicion
+			ataque = titulares[i].ataque
+
 			if(posicion == "DEFENSA"):
 				valor += (int)(ataque * 0.25)
 			else:
@@ -308,16 +309,17 @@ class AlineacionEquipo(models.Model):
 				else:
 					if(posicion == "DELANTERO"):
 						valor += ataque
-		
+
 		return valor / (num_jugadores_campo - 1)
-	
+
 	def getValorDefensa(self):
 		valor = 0
-		num_jugadores_campo = len(self.titulares)
+		titulares = self.titulares.all()
+		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
-			posicion = self.titulares[i].posicion
-			defensa = self.titulares[i].defensa
-			
+			posicion = titulares[i].posicion
+			defensa = titulares[i].defensa
+
 			if(posicion == "DEFENSA"):
 				valor += defensa
 			else:
@@ -326,15 +328,16 @@ class AlineacionEquipo(models.Model):
 				else:
 					if(posicion == "DELANTERO"):
 						valor += (int)(defensa * 0.25)
-		
+
 		return valor / (num_jugadores_campo - 1)
-	
+
 	def getValorPases(self):
 		valor = 0
-		num_jugadores_campo = len(self.titulares)
+		titulares = self.titulares.all()
+		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
-			posicion = self.titulares[i].posicion
-			pases = self.titulares[i].pases
+			posicion = titulares[i].posicion
+			pases = titulares[i].pases
 			if(posicion == "DEFENSA"):
 				valor += (int)(pases * 0.75)
 			else:
@@ -343,15 +346,16 @@ class AlineacionEquipo(models.Model):
 				else:
 					if(posicion == "DELANTERO"):
 						valor += (int)(pases * 0.75)
-		
+
 		return valor / (num_jugadores_campo - 1)
-	
+
 	def getValorVelocidad(self):
 		valor = 0
-		num_jugadores_campo = len(self.titulares)
+		titulares = self.titulares.all()
+		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
-			posicion = self.titulares[i].posicion
-			velocidad = self.titulares[i].velocidad
+			posicion = titulares[i].posicion
+			velocidad = titulares[i].velocidad
 			if(posicion == "DEFENSA"):
 				valor += (int)(velocidad * 0.75)
 			else:
@@ -360,15 +364,16 @@ class AlineacionEquipo(models.Model):
 				else:
 					if(posicion == "DELANTERO"):
 						valor += (int)(velocidad * 0.75)
-		
+
 		return valor / (num_jugadores_campo - 1)
-	
+
 	def getValorAnotacion(self):
 		valor = 0
-		num_jugadores_campo = len(self.titulares)
+		titulares = self.titulares.all()
+		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
-			posicion = self.titulares[i].posicion
-			anotacion = self.titulares[i].anotacion
+			posicion = titulares[i].posicion
+			anotacion = titulares[i].anotacion
 			if(posicion == "DEFENSA"):
 				valor += (int)(anotacion * 0.5)
 			else:
@@ -377,40 +382,23 @@ class AlineacionEquipo(models.Model):
 				else:
 					if(posicion == "DELANTERO"):
 						valor += anotacion
-		
+
 		return valor / (num_jugadores_campo - 1)
-	
+
 	def getValorPortero(self):
 		valor = 0
 		i = 0
-		num_jugadores_campo = len(self.titulares)
+		titulares = self.titulares.all()
+		num_jugadores_campo = len(titulares)
 		while (i < num_jugadores_campo) and (valor == 0):
-			posicion = self.titulares[i].posicion
-			
+			posicion = titulares[i].posicion
+
 			if(posicion == "PORTERO"):
-				valor = self.titulares[i].portero
-				
+				valor = titulares[i].portero
+
 			i += 1
-		
+
 		return valor
-
-########################################################################
-
-class Suceso(models.Model):
-	segundo_partido = models.IntegerField(null = True, blank = True)
-	tipo_suceso = models.CharField(max_length = 50)
-	nombre_equipo = models.ForeignKey(Equipo)
-	
-	def __init__(self, segundo_partido, tipo_suceso, nombre_equipo):
-		self.segundo_partido = segundo_partido
-		self.tipo_suceso = tipo_suceso
-		self.nombre_equipo = nombre_equipo
-	
-	def getMinuto(self):
-		return self.segundo_partido / 60
-	
-	def getSegundo(self):
-		return self.segundo_partido % 60
 
 ########################################################################
 
@@ -421,7 +409,7 @@ class Partido(models.Model):
 	jornada = models.ForeignKey(Jornada)
 	equipo_local = models.ForeignKey(Equipo, related_name = "Local")
 	equipo_visitante = models.ForeignKey(Equipo, related_name = "Visitante")
-	
+
 	alineacion_local = models.ForeignKey(AlineacionEquipo, related_name = "AlineacionLocal", null = True)
 	alineacion_visitante = models.ForeignKey(AlineacionEquipo, related_name = "AlineacionVisitante", null = True)
 
@@ -430,35 +418,59 @@ class Partido(models.Model):
 
 	jugado = models.BooleanField()
 
-	titulares_local = models.ManyToManyField(Jugador, related_name = "Titulares_locales")
-	titulares_visitante = models.ManyToManyField(Jugador, related_name = "Titulares_visitantes")
-	
-	sucesos_partido = models.ForeignKey(Suceso, null = True)
-
 	def finalizado(self):
 		''' Indica si un partido ya ha acabado '''
 		return self.jugado
+
+	def crearAlineacion(self, local, titulares, suplentes):
+		if local:
+			equipo = self.equipo_local
+			if self.alineacion_local != None:
+				del self.alineacion_local
+		else:
+			equipo = self.equipo_visitante
+			if self.alineacion_visitante != None:
+				del self.alineacion_visitante
+
+		alineacion = AlineacionEquipo(equipo = equipo)
+		alineacion.save()
+
+		for jugador in titulares:
+			alineacion.titulares.add(jugador)
+		for jugador in suplentes:
+			alineacion.suplentes.add(jugador)
+
+		if local:
+			self.alineacion_local = alineacion
+		else:
+			self.alineacion_visitante = alineacion
 
 	def jugar(self):
 		''' Juega el partido '''
 		num_goles = []
 		sucesos_partido = []
-		
+
 		# Obtener jugadores titulares y suplentes de los 2 equipos
 		titulares_local = self.equipo_local.jugador_set.filter(titular = True)
 		suplentes_local = self.equipo_local.jugador_set.filter(suplente = True)
 		titulares_visitante = self.equipo_visitante.jugador_set.filter(titular = True)
 		suplentes_visitante = self.equipo_visitante.jugador_set.filter(suplente = True)
-		
+
 		# Obtener alineaciones de los 2 equipos
-		alineacion_local = AlineacionEquipo(equipo = self.equipo_local, titulares = titulares_local, suplentes = suplentes_local)
-		alineacion_visitante = AlineacionEquipo(equipo = self.equipo_visitante, titulares = titulares_visitante, suplentes = suplentes_visitante)
-		alineacion = []
-		alineacion[0] = alineacion_local
-		alineacion[1] = alineacion_visitante
-		
+		alineacion_local = self.alineacion_local
+		alineacion_visitante = self.alineacion_visitante
+
+		if not alineacion_local:
+			self.crearAlineacion(True, self.equipo_local.jugador_set.all()[:11], self.equipo_local.jugador_set.all()[11:])
+			alineacion_local = self.alineacion_local
+		if not alineacion_visitante:
+			self.crearAlineacion(False, self.equipo_visitante.jugador_set.all()[:11], self.equipo_visitante.jugador_set.all()[11:])
+			alineacion_visitante = self.alineacion_visitante
+
+		alineacion = [alineacion_local, alineacion_visitante]
+
 		num_parte = 1 # Parte de partido que se está jugando
-		
+
 		# Inicializar variables para el partido
 		# --------------------------------------
 		ataque = [alineacion[0].getValorAtaque(), alineacion[1].getValorAtaque()]
@@ -468,9 +480,9 @@ class Partido(models.Model):
 		anotacion = [alineacion[0].getValorAnotacion(), alineacion[1].getValorAnotacion()]
 		portero = [alineacion[0].getValorPortero(), alineacion[1].getValorPortero()]
 		# --------------------------------------
-		
+
 		print "-------------------------------------------"
-		print alineacion[0].getNombre()
+		#print alineacion[0].getNombre()
 		print "Ataque: " + str(alineacion[0].getValorAtaque())
 		print "Defensa: " + str(alineacion[0].getValorDefensa())
 		print "Pases: " + str(alineacion[0].getValorPases())
@@ -478,7 +490,7 @@ class Partido(models.Model):
 		print "Anotacion: " + str(alineacion[0].getValorAnotacion())
 		print "Portero: " + str(alineacion[0].getValorPortero())
 		print "-------------------------------------------"
-		print alineacion[1].getNombre()
+		#print alineacion[1].getNombre()
 		print "Ataque: " + str(alineacion[1].getValorAtaque())
 		print "Defensa: " + str(alineacion[1].getValorDefensa())
 		print "Pases: " + str(alineacion[1].getValorPases())
@@ -486,7 +498,7 @@ class Partido(models.Model):
 		print "Anotacion: " + str(alineacion[1].getValorAnotacion())
 		print "Portero: " + str(alineacion[1].getValorPortero())
 		print "-------------------------------------------"
-		
+
 		# Continuar jugando mientras no se hayan acabado las 2 partes del partido
 		while(num_parte <= 2):
 			# Establecer equipo que comienza a jugar la parte
@@ -499,28 +511,28 @@ class Partido(models.Model):
 				if(equipo_comienza == 0): id_equipo_atacante = 1
 				else: id_equipo_atacante = 0
 				segundos_jugados = 45 * 60
-			
+
 			# Iniciar variables
 			seg_restantes = 45 * 60
 			tiempo_descuento = False
-			
+
 			# Continuar jugando mientras no se haya acabado todo el tiempo de la parte actual
 			while(seg_restantes > 0):
 				# Establecer id del defensor
 				if(id_equipo_atacante == 0): id_equipo_defensor = 1
 				else: id_equipo_defensor = 0
-				
+
 				# Crear jugada
 				num_acciones = (aleatorio(2, 20) + aleatorio(2, 20) + aleatorio(2, 20)) / 3
 				seg_accion = 2 + ((100 - velocidad[id_equipo_atacante]) / 10)
-				
+
 				#print "\t" + "num_acciones: " + str(num_acciones) + " (" + str(seg_accion) + " seg / accion)"
 				formula = (1.0 * ataque[id_equipo_atacante]) / pases[id_equipo_atacante]
 				prob_regate = 100 - (100 / (formula + 1))
 				accion = 1
 				while (accion <= num_acciones) and (id_equipo_defensor != id_equipo_atacante):
 					#print "\t" + str(accion) + ".- "
-					
+
 					# Realizar una de las acciones de la jugada completa
 					if(accion != num_acciones):
 						# Calcular probabilidad de que la acción sea un pase o un regate
@@ -538,12 +550,12 @@ class Partido(models.Model):
 							print "Pase (" + str(prob_exito) + "%) "
 							if(aleatorio(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
-							
+
 					# Disparo a puerta
 					else:
 						# Calcular probabilidad de que el disparo vaya a portería (95% de la anotación)
 						prob_exito = anotacion[id_equipo_atacante] * 0.95
-						
+
 						# Si el balón va a portería
 						if(aleatorio(1, 100) <= prob_exito):
 							formula = (1.0 * anotacion[id_equipo_atacante] / portero[id_equipo_defensor])
@@ -551,43 +563,55 @@ class Partido(models.Model):
 							print "Disparo a puerta (" + str(prob_exito) + "%) "
 							if(aleatorio(1, 100) > prob_exito):
 								texto = "Disparo parado"
-								suceso = Suceso(segundos_jugados, texto, alineacion[id_equipo_atacante].getNombre())
-								sucesos_partido.append(suceso)
+								if id_equipo_atacante == 0:
+									equipo_suceso = self.equipo_local
+								else:
+									equipo_suceso = self.equipo_visitante
+								suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
+								self.suceso_set.add(suceso)
 								print "fallado."
-								
+
 								id_equipo_atacante = id_equipo_defensor
 							# Marcar gol
 							else:
 								num_goles[id_equipo_atacante] += 1
-								
+
 								texto = "Gol"
-								suceso = Suceso(segundos_jugados, texto, alineacion[id_equipo_atacante].getNombre())
-								sucesos_partido.append(suceso)
+								if id_equipo_atacante == 0:
+									equipo_suceso = self.equipo_local
+								else:
+									equipo_suceso = self.equipo_visitante
+								suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
+								self.suceso_set.add(suceso)
 								print "¡GOL!"
-								
+
 								# Ahora sacará el equipo contrario
 								id_equipo_atacante = id_equipo_defensor
-								
+
 								# Tiempo perdido en la celebración del gol
 								seg_restantes -= 30
 								segundos_jugados += 30
 						# Fuera
 						else:
 							texto = "Disparo fuera"
-							suceso = Suceso(segundos_jugados, texto, alineacion[id_equipo_atacante].getNombre())
-							sucesos_partido.append(suceso)
-					
+							if id_equipo_atacante == 0:
+								equipo_suceso = self.equipo_local
+							else:
+								equipo_suceso = self.equipo_visitante
+							suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
+							self.suceso_set.add(suceso)
+
 					seg_restantes -= seg_accion
 					segundos_jugados += seg_accion
 					accion += 1
-				
+
 				# Minutos de descuento
 				if(seg_restantes <= 0):
 					if(tiempo_descuento == False):
 						tiempo_descuento = True
 						min_descuento = aleatorio(1, 5)
 						seg_restantes += ((min_descuento * 60) + aleatorio(0, 30))
-						
+
 						texto = "TIEMPO DESCUENTO (" + str(min_descuento) + " minutos)"
 						suceso = Suceso(segundos_jugados - (segundos_jugados % 60), texto)
 						sucesos_partido.append(suceso)
@@ -596,9 +620,9 @@ class Partido(models.Model):
 						texto = "FIN DE LA " + str(num_parte) + "ª PARTE"
 						suceso = Suceso(segundos_jugados, texto)
 						sucesos_partido.append(suceso)
-					
+
 			num_parte += 1
-		
+
 		self.goles_local = num_goles[0]
 		self.goles_visitante = num_goles[1]
 		self.jugado = True
@@ -620,4 +644,20 @@ class ClasificacionEquipoJornada(models.Model):
 	def __unicode__(self):
 		''' Devuelve una cadena de texto que representa la clase '''
 		return self.equipo.nombre + " en jornada: " + str(self.jornada.numero) + " de liga: " + str(self.jornada.liga.id)
+
+########################################################################
+
+class Suceso(models.Model):
+	segundo_partido = models.IntegerField(null = True, blank = True)
+	tipo = models.CharField(max_length = 50)
+
+	equipo = models.ForeignKey(Equipo)
+	partido = models.ForeignKey(Partido)
+
+	def getMinuto(self):
+		return self.segundo_partido / 60
+
+	def getSegundo(self):
+		return self.segundo_partido % 60
+
 ########################################################################

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Formularios del sistema. Los que deriven de una clase son rápidos de
+# crear.
 """
 Copyright 2011 by
     * Juan Miguel Lechuga Pérez
@@ -22,7 +23,6 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-# crear.
 
 from django import forms
 from gestion_entrenador.models import *
@@ -53,7 +53,8 @@ class PrepararEquipoLocalForm(forms.ModelForm):
 		''' Constructor que establece la lista de valores de los titulares '''
 		super(PrepararEquipoLocalForm, self).__init__(*args, **kwargs)
 		# Establecemos los valores de la lista multiple como los jugadores del equipo local
-		self.fields['titulares_local'].choices = [[choice.id, choice.nombre] for choice in self.instance.equipo_local.jugador_set.all()]
+		jugadores = self.instance.equipo_local.jugador_set.all()
+		self.fields['titulares_local'].choices = [[choice.id, choice.nombre] for choice in jugadores]
 
 	def clean_titulares_local(self):
 		''' Valida que se hayan seleccionado 11 jugadores y los devuelve '''
