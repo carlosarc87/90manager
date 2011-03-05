@@ -29,3 +29,42 @@ import random
 
 def aleatorio(min, max):
 	return random.randint(min, max)
+
+########################################################################
+
+def nombreJugadorAleatorio():
+	# Crear listas
+	lista_nombres = []
+	lista_apellidos = []
+	
+	# Obtener nombres de jugadores
+	fich = open("media/doc/nombres_hombres.txt", "r")
+	while(True):
+		nombre = fich.readline()
+		if not nombre: break
+		
+		lista_nombres.append(nombre)
+	
+	fich.close()
+	
+	# Obtener apellidos de jugadores
+	fich = open("media/doc/apellidos.txt", "r")
+	while(True):
+		apellido = fich.readline()
+		if not apellido: break
+		
+		lista_apellidos.append(apellido)
+	
+	fich.close()
+	
+	# Poner 1 o 2 nombres
+	num_nombres = aleatorio(1, 2)
+	nombre_completo = lista_nombres[aleatorio(0, len(lista_nombres) - 1)]
+	if(num_nombres == 2):
+		nombre_completo += (" " + lista_nombres[aleatorio(0, len(lista_nombres) - 1)])
+	
+	# Poner 2 apellidos
+	apellidos = lista_apellidos[aleatorio(0, len(lista_apellidos) - 1)] + " " + lista_apellidos[aleatorio(0, len(lista_apellidos) - 1)]
+	
+	# Devolver nombre/s y apellidos
+	return nombre_completo + " " + apellidos

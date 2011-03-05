@@ -53,6 +53,7 @@ class Liga(models.Model):
 			equipo.save()
 			# Generar jugadores
 			for j in range(1, 20):
+				# Establecer posición
 				if (j == 1 or j == 20):
 					posicion = "PORTERO"
 				elif ((j >= 2 and j <= 5) or (j >= 12 and j <= 14)):
@@ -61,10 +62,19 @@ class Liga(models.Model):
 					posicion = "CENTROCAMPISTA"
 				else:
 					posicion = "DELANTERO"
-					
-				jugador = Jugador(equipo, "", 0, 0, 0, 0, 0, 0)
-				jugador.JugadorAleatorio(posicion, 50)
+				
+				# Establecer si es titular o suplente
+				if (j <= 11):
+					titular = True
+					suplente = False
+				else:
+					titular = False
+					suplente = True
+				
+				jugador = Jugador(equipo = equipo, nombre = nombreJugadorAleatorio(), titular = titular, suplente = suplente, transferible = False)
 				jugador.setNumero(j)
+				jugador.setPosicion(posicion)
+				jugador.setHabilidadesAleatorias(posicion, 50)
 				jugador.save()
 				equipo.agregarJugador(jugador)
 
@@ -210,57 +220,8 @@ class Jugador(models.Model):
 
 	def __unicode__(self):
 		return self.nombre
-	
-	def __init__(self, equipo, nombre, ataque, defensa, velocidad, pases, anotacion, portero):
-		self.equipo = equipo
-		self.nombre = nombre
 
-		self.ataque = ataque
-		self.defensa = defensa
-		self.velocidad = velocidad
-		self.pases = pases
-		self.anotacion = anotacion
-		self.portero = portero
-		
-		self.posicion = self.mejorPosicion
-		
-		self.titular = False
-		self.suplente = False
-		self.transferible = False
-
-	def JugadorAleatorio(self, posicion, nivel):
-		lista_nombres = []
-		lista_apellidos = []
-		
-		# Obtener nombres de jugadores
-		fich = open("media/doc/nombres_hombres.txt", "r")
-		while(True):
-			nombre = fich.readline()
-			if not nombre: break
-			
-			lista_nombres.append(nombre)
-		
-		fich.close()
-		
-		# Obtener apellidos de jugadores
-		fich = open("media/doc/apellidos.txt", "r")
-		while(True):
-			apellido = fich.readline()
-			if not apellido: break
-			
-			lista_apellidos.append(apellido)
-		
-		fich.close()
-		
-		num_nombres = aleatorio(1, 2)
-		nombre_completo = lista_nombres[aleatorio(0, len(lista_nombres) - 1)]
-		if(num_nombres == 2):
-			nombre_completo += (" " + lista_nombres[aleatorio(0, len(lista_nombres) - 1)])
-		
-		apellidos = lista_apellidos[aleatorio(0, len(lista_apellidos) - 1)] + " " + lista_apellidos[aleatorio(0, len(lista_apellidos) - 1)]
-						
-		nombre_completo = nombre_completo + " " + apellidos
-		
+	def setHabilidadesAleatorias(self, posicion, nivel):
 		if(posicion == "DELANTERO"):
 			self.ataque = aleatorio((int)(nivel * 0.8), nivel)
 			self.defensa = aleatorio(0, (int)(nivel * 0.3))
@@ -301,7 +262,6 @@ class Jugador(models.Model):
 			self.anotacion = aleatorio(0, nivel)
 			self.portero = aleatorio(0, nivel)
 		
-		self.posicion = posicion
 		return self
 
 	def mejorPosicion():
