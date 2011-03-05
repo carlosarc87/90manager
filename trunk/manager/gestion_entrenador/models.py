@@ -264,15 +264,19 @@ class Jugador(models.Model):
 		
 		return self
 
-	def mejorPosicion():
+	def mejorPosicion(self):
 		# CENTROCAMPISTA o DELANTERO
 		if(self.ataque > self.defensa):
-			if(self.anotacion > self.pases): return "DELANTERO"
-			else: return "CENTROCAMPISTA"
+			if(self.anotacion > self.pases):
+				return "DELANTERO"
+			else:
+				return "CENTROCAMPISTA"
 		# DEFENSA o CENTROCAMPISTA
 		elif(self.defensa > self.portero):
-			if(self.pases > self.defensa): return "CENTROCAMPISTA"
-			else: return "DEFENSA"
+			if(self.pases > self.defensa):
+				return "CENTROCAMPISTA"
+			else:
+				return "DEFENSA"
 		
 		return "PORTERO"
 
@@ -288,15 +292,6 @@ class AlineacionEquipo(models.Model):
 	equipo = models.ForeignKey(Equipo)
 	titulares = models.ManyToManyField(Jugador, related_name = "Jugadores_titulares")
 	suplentes = models.ManyToManyField(Jugador, related_name = "Jugadores_suplentes")
-	
-	def init(self, equipo, titulares, suplentes):
-		self.equipo = equipo
-		
-		for jugador in titulares:
-			self.titulares.append(titulares[i])
-		
-		for jugador in suplentes:
-			self.suplentes.append(suplentes[i])
 	
 	def getValorAtaque(self):
 		valor = 0

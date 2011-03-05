@@ -185,6 +185,11 @@ table tr{
 	width: 950px;
 }
 
+.cuadro_valor_habilidad{
+	color: #0000aa;
+	text-align: right;
+}
+
 .errorlist{
 	margin: 0px 0px 0px 15px;
 	padding: 0px;

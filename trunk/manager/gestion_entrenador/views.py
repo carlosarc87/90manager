@@ -154,13 +154,28 @@ def ver_jugador(request, jugador_id):
 
 	# Obtenemos el jugador
 	jugador = Jugador.objects.get(id = jugador_id)
+	
+	# Obtener sitio en el próximo partido
+	if jugador.titular:
+		prox_partido = "Titular"
+	elif jugador.suplente:
+		prox_partido = "Suplente"
+	else:
+		prox_partido = "No juega"
+	
+	# Obtener mejor posición
+	mejor_posicion = jugador.mejorPosicion()
+	
 	# Obtenemos el equipo
 	equipo = jugador.equipo
+	
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("jugadores/ver_jugador.html")
 	c = Context({"equipo" : equipo,
 				 "usuario" : usuario,
 				 "jugador" : jugador,
+				 "prox_partido" : prox_partido,
+				 "mejor_posicion" : mejor_posicion
 				})
 	return HttpResponse(t.render(c))
 

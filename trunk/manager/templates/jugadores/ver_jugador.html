@@ -8,9 +8,59 @@
 
 {% block contenido %}
 
-	<h4>Datos del jugador</h4>
+	<h2>{{ jugador.nombre }}</h2>
+
 	<ul>
-		<li>Nombre: {{ jugador.nombre }}</li>
+		<li>Posici&oacute;n actual: {{ jugador.posicion }}</li>
+		<li>Mejor posici&oacute;n: {{ mejor_posicion }}</li>
+		<li>Pr&oacute;ximo partido: {{ prox_partido }}</li>
 	</ul>
+
+	<table>
+		<caption>Habilidades de campo</caption>
+		<thead>
+			<tr>
+				<th width="120px">Habilidad</th>
+				<th width="60px">Valor</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- Ataque -->
+			<tr>
+				<td>Ataque</td>
+				<td class="cuadro_valor_habilidad">{{ jugador.ataque }}</td>
+			<tr>
+
+			<!-- Defensa -->
+			<tr>
+				<td>Defensa</td>
+				<td class="cuadro_valor_habilidad">{{ jugador.defensa }}</td>
+			<tr>
+
+			<!-- Velocidad -->
+			<tr>
+				<td>Velocidad</td>
+				<td class="cuadro_valor_habilidad">{{ jugador.velocidad }}</td>
+			<tr>
+
+			<!-- Pases -->
+			<tr>
+				<td>Pases</td>
+				<td class="cuadro_valor_habilidad">{{ jugador.pases }}</td>
+			<tr>
+
+			<!-- Anotacion -->
+			<tr>
+				<td>Anotaci&oacute;n</td>
+				<td class="cuadro_valor_habilidad">{{ jugador.anotacion }}</td>
+			<tr>
+
+			<!-- Portero -->
+			<tr>
+				<td>Portero</td>
+				<td class="cuadro_valor_habilidad">{{ jugador.portero }}</td>
+			<tr>
+		</tbody>
+	</table>
 
 {% endblock %}
