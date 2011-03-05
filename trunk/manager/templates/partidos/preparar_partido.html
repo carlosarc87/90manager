@@ -12,37 +12,35 @@
 
 	<form action="/partidos/preparar/{{ partido.id }}/" method="post">
 		{% csrf_token %}
+		{{ form.errors }}
 		<!-- Titulares local -->
-		<div class="fila">
-			{% if form.titulares_local.errors %}
-				<p class="texto_error">{{ form.titulares_local.errors }}</p>
-			{% endif %}
-		</div>
-		<div class="fila">
-			<label for="titulares_local">Titulares local:</label>
-		</div>
-		<div class="fila">
-			{{ form.titulares_local }}<!--
-			<select name="titulares_local" size="4" multiple="multiple">
-				{% for titular in titulares_local %}
-					<option value="{{ titular.id }}">{{ titular.nombre }}</option>
-				{% endfor %}
-			</select>-->
-		</div>
-
+		{% if form.titulares_local %}
+			<div class="fila">
+				{% if form.titulares_local.errors %}
+					<p class="texto_error">{{ form.titulares_local.errors }}</p>
+				{% endif %}
+			</div>
+			<div class="fila">
+				<label for="titulares_local">Titulares local:</label>
+			</div>
+			<div class="fila">
+				{{ form.titulares_local }}
+			</div>
+		{% endif %}
 		<!-- Titulares visitante -->
-		<div class="fila">
-			{% if form.titulares_visitante.errors %}
-				<p class="texto_error">{{ form.titulares_visitante.errors }}</p>
-			{% endif %}
-		</div>
-		<div class="fila">
-			<label for="titulares_visitante">Titulares visitante:</label>
-		</div>
-		<div class="fila">
-			{{ form.titulares_visitante }}
-		</div>
-
+		{% if form.titulares_visitante %}
+			<div class="fila">
+				{% if form.titulares_visitante.errors %}
+					<p class="texto_error">{{ form.titulares_visitante.errors }}</p>
+				{% endif %}
+			</div>
+			<div class="fila">
+				<label for="titulares_visitante">Titulares visitante:</label>
+			</div>
+			<div class="fila">
+				{{ form.titulares_visitante }}
+			</div>
+		{% endif %}
 		<!-- Boton Aceptar -->
 		<div class="fila"><input type="submit" value="Aceptar" /></div>
 	</form>

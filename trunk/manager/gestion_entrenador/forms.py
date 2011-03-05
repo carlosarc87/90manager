@@ -65,7 +65,7 @@ class PrepararEquipoLocalForm(forms.ModelForm):
 
 	class Meta:
 		model = Partido
-		exclude = ('jornada', 'equipo_local', 'equipo_visitante', 'goles_local', 'goles_visitante', 'titulares_visitante')
+		exclude = ('jornada', 'equipo_local', 'equipo_visitante', 'goles_local', 'goles_visitante', 'alineacion_visitante', 'alineacion_local')
 
 ########################################################################
 
@@ -88,7 +88,7 @@ class PrepararEquipoVisitanteForm(forms.ModelForm):
 
 	class Meta:
 		model = Partido
-		exclude = ('jornada', 'equipo_local', 'equipo_visitante', 'goles_local', 'goles_visitante', 'titulares_local')
+		exclude = ('jornada', 'equipo_local', 'equipo_visitante', 'goles_local', 'goles_visitante', 'alineacion_local', 'alineacion_visitante')
 
 ########################################################################
 

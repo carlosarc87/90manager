@@ -18,44 +18,46 @@
 			<h4>FINALIZADA</h4>
 		{% endif %}
 
-		<table style="width: 300px;">
-			{% if liga_acabada %}
-				<caption>Clasificacion final</caption>
-			{% else %}
-				<caption>Clasificacion (jornada {{ jornada_actual.numero }})</caption>
-			{% endif %}
+		{% if clasificacion %}
+			<table style="width: 300px;">
+				{% if liga_acabada %}
+					<caption>Clasificacion final</caption>
+				{% else %}
+					<caption>Clasificacion (jornada {{ jornada_actual.numero }})</caption>
+				{% endif %}
 
-			<thead>
-				<tr>
-					<th>Equipo</th>
-					<th>GF</th>
-					<th>GC</th>
-					<th>DG</th>
-					<th>Puntos</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for dato_clasificacion in clasificacion %}
+				<thead>
 					<tr>
-						<td>
-							<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/">{{ dato_clasificacion.equipo.nombre }}</a>
-						</td>
-						<td style="text-align:right;">
-							{{ dato_clasificacion.goles_favor }}
-						</td>
-						<td style="text-align:right;">
-							{{ dato_clasificacion.goles_contra }}
-						</td>
-						<td style="text-align:right;">
-							{{ dato_clasificacion.goles_favor}} - {{dato_clasificacion.goles_contra }}
-						</td>
-						<td style="text-align:right;">
-							{{ dato_clasificacion.puntos }}
-						</td>
+						<th>Equipo</th>
+						<th>GF</th>
+						<th>GC</th>
+						<th>DG</th>
+						<th>Puntos</th>
 					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{% for dato_clasificacion in clasificacion %}
+						<tr>
+							<td>
+								<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/">{{ dato_clasificacion.equipo.nombre }}</a>
+							</td>
+							<td style="text-align:right;">
+								{{ dato_clasificacion.goles_favor }}
+							</td>
+							<td style="text-align:right;">
+								{{ dato_clasificacion.goles_contra }}
+							</td>
+							<td style="text-align:right;">
+								{{ dato_clasificacion.goles_favor}} - {{dato_clasificacion.goles_contra }}
+							</td>
+							<td style="text-align:right;">
+								{{ dato_clasificacion.puntos }}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
 
 		<table style="margin-top:20px; width: 300px;">
 			<caption>Listado de jornadas</caption>
@@ -113,7 +115,7 @@
 							{% if equipo.usuario %}
 								{{ equipo.usuario }}
 							{% else %}
-								Bot
+								Bot: Anico
 							{% endif %}
 						</td>
 					</tr>

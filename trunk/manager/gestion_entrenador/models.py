@@ -447,8 +447,7 @@ class Partido(models.Model):
 
 	def jugar(self):
 		''' Juega el partido '''
-		num_goles = []
-		sucesos_partido = []
+		num_goles = [0, 0]
 
 		# Obtener jugadores titulares y suplentes de los 2 equipos
 		titulares_local = self.equipo_local.jugador_set.filter(titular = True)
@@ -613,13 +612,21 @@ class Partido(models.Model):
 						seg_restantes += ((min_descuento * 60) + aleatorio(0, 30))
 
 						texto = "TIEMPO DESCUENTO (" + str(min_descuento) + " minutos)"
-						suceso = Suceso(segundos_jugados - (segundos_jugados % 60), texto)
-						sucesos_partido.append(suceso)
+						if id_equipo_atacante == 0:
+							equipo_suceso = self.equipo_local
+						else:
+							equipo_suceso = self.equipo_visitante
+						suceso = Suceso(segundo_partido = segundos_jugados - (segundos_jugados % 60), tipo = texto, equipo = equipo_suceso)
+						self.suceso_set.add(suceso)
 						print "Tiempo añadido: " + str(min_descuento) + " minutos"
 					else:
 						texto = "FIN DE LA " + str(num_parte) + "ª PARTE"
-						suceso = Suceso(segundos_jugados, texto)
-						sucesos_partido.append(suceso)
+						if id_equipo_atacante == 0:
+							equipo_suceso = self.equipo_local
+						else:
+							equipo_suceso = self.equipo_visitante
+						suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
+						self.suceso_set.add(suceso)
 
 			num_parte += 1
 

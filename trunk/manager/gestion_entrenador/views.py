@@ -319,14 +319,16 @@ def jugar_partido(request, partido_id):
 	if partido.finalizado():
 		return devolverMensaje(request, "Este partido ya se jugo", "/partidos/ver/%d/" % partido.id)
 	if partido.equipo_local.usuario != None:
-		if partido.titulares_local.count() != 11:
-			return devolverMensaje(request, "Eh, que tienes que preparar el equipo antes del partido", "/partidos/ver/%d/" % partido.id)
+		pass
+#		if partido.titulares_local.count() != 11:
+#			return devolverMensaje(request, "Eh, que tienes que preparar el equipo antes del partido", "/partidos/ver/%d/" % partido.id)
 	else:
 		partido.titulares_local = partido.equipo_local.jugador_set.all()[:11]
 
 	if partido.equipo_visitante.usuario != None:
-		if partido.titulares_visitante.count() != 11:
-			return devolverMensaje(request, "Eh, que tienes que preparar el equipo antes del partido", "/partidos/ver/%d/" % partido.id)
+		pass
+#		if partido.titulares_visitante.count() != 11:
+#			return devolverMensaje(request, "Eh, que tienes que preparar el equipo antes del partido", "/partidos/ver/%d/" % partido.id)
 	else:
 		partido.titulares_visitante = partido.equipo_visitante.jugador_set.all()[:11]
 	partido.jugar()
@@ -424,8 +426,13 @@ def ver_partido(request, partido_id):
 	equipo_local = partido.equipo_local
 	equipo_visitante = partido.equipo_visitante
 
-	titulares_local = partido.titulares_local.all()
-	titulares_visitante = partido.titulares_visitante.all()
+	titulares_local = None
+	if partido.alineacion_local:
+		titulares_local = partido.alineacion_local.titulares.all()
+
+	titulares_visitante = None
+	if partido.alineacion_visitante:
+		titulares_visitante = partido.alineacion_visitante.titulares.all()
 
 	# Comprobamos si el partido ha acabado
 	finalizado = partido.finalizado()
