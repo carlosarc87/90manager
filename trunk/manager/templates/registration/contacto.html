@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+	<div id="contacto">
+		<form action="/cuentas/contacto/" method="post">
+			{% csrf_token %}
+			
+			<!--Nombre -->
+			{% if form_reg.username.errors %}
+				<div class="fila">
+					<div class="texto_error">{{ form_reg.first_name.errors }}</div>
+				</div>
+			{% endif %}
+
+			<div class="fila">
+				<div style="width: 100px"><label for="id_first_name">Nombre:</label></div>
+				<div>{{ form_reg.first_name }}</div>
+			</div>
+			
+			<!--Apellidos -->
+			{% if form_reg.username.errors %}
+				<div class="fila">
+					<div class="texto_error">{{ form_reg.last_name.errors }}</div>
+				</div>
+			{% endif %}
+
+			<div class="fila">
+				<div style="width: 100px"><label for="id_last_name">Apellidos:</label></div>
+				<div>{{ form_reg.last_name }}</div>
+			</div>
+			
+			<!-- Telefono -->
+			<div class="fila">
+				<div style="width: 100px"><label for="id_telefono">Nº de Telefono:</label></div>
+				<div>{{ form_reg.telefono }}</div>
+			</div>
+			
+			<!--E-mail -->
+			{% if form_reg.username.errors %}
+				<div class="fila">
+					<div class="texto_error">{{ form_reg.email.errors }}</div>
+				</div>
+			{% endif %}
+
+			<div class="fila">
+				<div style="width: 100px"><label for="id_email">E-Mail:</label></div>
+				<div>{{ form_reg.email }}</div>
+			</div>
+			
+			<!-- Comentarios -->
+			<div class="fila">
+				<div style="width: 100px"><label for="id_comentario">Comentarios:</label></div>
+				<div>{{ form_reg.comentarios }}</div>
+			</div>
+			
+			<div><input type="submit" name="contactar_con_nosotros" value="Enviar" /></div>
+		</form>
+	</div>
+{% endblock %}
+
