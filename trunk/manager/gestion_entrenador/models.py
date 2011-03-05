@@ -422,8 +422,8 @@ class Partido(models.Model):
 	equipo_local = models.ForeignKey(Equipo, related_name = "Local")
 	equipo_visitante = models.ForeignKey(Equipo, related_name = "Visitante")
 	
-	alineacion_local = models.ForeignKey(AlineacionEquipo, related_name = "AlineacionLocal")
-	alineacion_visitante = models.ForeignKey(AlineacionEquipo, related_name = "AlineacionVisitante")
+	alineacion_local = models.ForeignKey(AlineacionEquipo, related_name = "AlineacionLocal", null = True)
+	alineacion_visitante = models.ForeignKey(AlineacionEquipo, related_name = "AlineacionVisitante", null = True)
 
 	goles_local = models.IntegerField(null = True, blank = True)
 	goles_visitante = models.IntegerField(null = True, blank = True)
@@ -433,7 +433,7 @@ class Partido(models.Model):
 	titulares_local = models.ManyToManyField(Jugador, related_name = "Titulares_locales")
 	titulares_visitante = models.ManyToManyField(Jugador, related_name = "Titulares_visitantes")
 	
-	sucesos_partido = models.ForeignKey(Suceso)
+	sucesos_partido = models.ForeignKey(Suceso, null = True)
 
 	def finalizado(self):
 		''' Indica si un partido ya ha acabado '''
@@ -443,8 +443,16 @@ class Partido(models.Model):
 		''' Juega el partido '''
 		num_goles = []
 		sucesos_partido = []
-		alineacion_local = AlineacionEquipo(equipo_local, equipo_local.jugadores_set.all(), equipo_local.jugadores_set.all())
-		alineacion_visitante = AlineacionEquipo(equipo_visitante, equipo_visitante.jugadores_set.all(), equipo_local.jugadores_set.all())
+		
+		# Obtener jugadores titulares y suplentes de los 2 equipos
+		titulares_local = self.equipo_local.jugador_set.filter(titular = True)
+		suplentes_local = self.equipo_local.jugador_set.filter(suplente = True)
+		titulares_visitante = self.equipo_visitante.jugador_set.filter(titular = True)
+		suplentes_visitante = self.equipo_visitante.jugador_set.filter(suplente = True)
+		
+		# Obtener alineaciones de los 2 equipos
+		alineacion_local = AlineacionEquipo(equipo = self.equipo_local, titulares = titulares_local, suplentes = suplentes_local)
+		alineacion_visitante = AlineacionEquipo(equipo = self.equipo_visitante, titulares = titulares_visitante, suplentes = suplentes_visitante)
 		alineacion = []
 		alineacion[0] = alineacion_local
 		alineacion[1] = alineacion_visitante
