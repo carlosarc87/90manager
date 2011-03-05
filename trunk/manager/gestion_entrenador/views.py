@@ -519,8 +519,19 @@ def crear_equipo(request, liga_id):
 			equipo.liga = liga
 			equipo.save()
 			# Annadir 20 jugadores aleatorios
-			for j in range(0, 20):
-				jugador = Jugador(nombre="Jugador %d - %s - %d" % (liga.id, equipo.nombre, j), equipo = equipo)
+			for j in range(1, 20):
+				if (j == 1 or j == 20):
+					posicion = "PORTERO"
+				elif ((j >= 2 and j <= 5) or (j >= 12 and j <= 14)):
+					posicion = "DEFENSA"
+				elif ((j >= 6 and j <= 9) or (j >= 15 and j <= 17)):
+					posicion = "CENTROCAMPISTA"
+				else:
+					posicion = "DELANTERO"
+					
+				jugador = Jugador(equipo, "", 0, 0, 0, 0, 0, 0)
+				jugador.JugadorAleatorio(posicion, 50)
+				jugador.setNumero(j)
 				jugador.save()
 				equipo.agregarJugador(jugador)
 			return devolverMensaje(request, "Se ha creado correctamente", "/equipos/ver/%d/" % equipo.id)

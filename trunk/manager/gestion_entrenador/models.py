@@ -3,6 +3,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User, UserManager
+from manager.gestion_entrenador.func import *
 
 import random
 
@@ -51,8 +52,19 @@ class Liga(models.Model):
 			equipo = Equipo(nombre="Equipo %d - %d" % (self.id, i), usuario = None, liga = self)
 			equipo.save()
 			# Generar jugadores
-			for j in range(0, 20):
-				jugador = Jugador(nombre="Jugador %d - %d - %d" % (self.id, i, j), equipo = equipo)
+			for j in range(1, 20):
+				if (j == 1 or j == 20):
+					posicion = "PORTERO"
+				elif ((j >= 2 and j <= 5) or (j >= 12 and j <= 14)):
+					posicion = "DEFENSA"
+				elif ((j >= 6 and j <= 9) or (j >= 15 and j <= 17)):
+					posicion = "CENTROCAMPISTA"
+				else:
+					posicion = "DELANTERO"
+					
+				jugador = Jugador(equipo, "", 0, 0, 0, 0, 0, 0)
+				jugador.JugadorAleatorio(posicion, 50)
+				jugador.setNumero(j)
 				jugador.save()
 				equipo.agregarJugador(jugador)
 
@@ -199,7 +211,8 @@ class Jugador(models.Model):
 	def __unicode__(self):
 		return self.nombre
 	
-	def __init__(self, nombre, ataque, defensa, velocidad, pases, anotacion, portero):
+	def __init__(self, equipo, nombre, ataque, defensa, velocidad, pases, anotacion, portero):
+		self.equipo = equipo
 		self.nombre = nombre
 
 		self.ataque = ataque
@@ -209,7 +222,7 @@ class Jugador(models.Model):
 		self.anotacion = anotacion
 		self.portero = portero
 		
-		self.posicion = self.mejorPosicion()
+		self.posicion = self.mejorPosicion
 		
 		self.titular = False
 		self.suplente = False
@@ -220,7 +233,7 @@ class Jugador(models.Model):
 		lista_apellidos = []
 		
 		# Obtener nombres de jugadores
-		fich = open("nombres_hombres.txt", "r")
+		fich = open("media/doc/nombres_hombres.txt", "r")
 		while(True):
 			nombre = fich.readline()
 			if not nombre: break
@@ -230,7 +243,7 @@ class Jugador(models.Model):
 		fich.close()
 		
 		# Obtener apellidos de jugadores
-		fich = open("apellidos.txt", "r")
+		fich = open("media/doc/apellidos.txt", "r")
 		while(True):
 			apellido = fich.readline()
 			if not apellido: break
@@ -288,7 +301,7 @@ class Jugador(models.Model):
 			self.anotacion = aleatorio(0, nivel)
 			self.portero = aleatorio(0, nivel)
 		
-		jug.setPosicion(posicion)
+		self.posicion = posicion
 		return self
 
 	def mejorPosicion():
@@ -312,12 +325,12 @@ class Jugador(models.Model):
 ########################################################################
 
 class AlineacionEquipo(models.Model):
-	nombre = models.CharField(max_length = 200)
+	equipo = models.ForeignKey(Equipo)
 	titulares = models.ManyToManyField(Jugador, related_name = "Jugadores_titulares")
 	suplentes = models.ManyToManyField(Jugador, related_name = "Jugadores_suplentes")
 	
-	def init(self, nombre, titulares, suplentes):
-		self.nombre = nombre
+	def init(self, equipo, titulares, suplentes):
+		self.equipo = equipo
 		
 		for jugador in titulares:
 			self.titulares.append(titulares[i])
@@ -475,8 +488,8 @@ class Partido(models.Model):
 		''' Juega el partido '''
 		num_goles = []
 		sucesos_partido = []
-		alineacion_local = AlineacionEquipo(equipo_local, equipo_local.jugadores_set.all())
-		alineacion_visitante = AlineacionEquipo(equipo_visitante, equipo_visitante.jugadores_set.all())
+		alineacion_local = AlineacionEquipo(equipo_local, equipo_local.jugadores_set.all(), equipo_local.jugadores_set.all())
+		alineacion_visitante = AlineacionEquipo(equipo_visitante, equipo_visitante.jugadores_set.all(), equipo_local.jugadores_set.all())
 		alineacion = []
 		alineacion[0] = alineacion_local
 		alineacion[1] = alineacion_visitante

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Copyright 2011 by
     * Juan Miguel Lechuga Pérez
@@ -20,8 +21,11 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from gestion_equipos import *
+from manager.gestion_entrenador import *
+
+import random
 
 ########################################################################
 
-
+def aleatorio(min, max):
+	return random.randint(min, max)
