@@ -42,7 +42,7 @@ table caption{
 	text-align: center;
 }
 
-table thead{
+table thead, tfoot{
 	background-color: #ccc;
 	border: solid 1px #444;
 	color: #666;
@@ -185,7 +185,7 @@ table tr{
 	width: 950px;
 }
 
-.cuadro_valor_habilidad{
+.cuadro_num_azul_der{
 	color: #0000aa;
 	text-align: right;
 }

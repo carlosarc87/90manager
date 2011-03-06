@@ -7,11 +7,28 @@
 
 {% block contenido %}
 
-	<h4>Jugadores</h4>
-	<ul>
-		{% for jugador in jugadores %}
-			<li><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></li>
-		{% endfor %}
-	</ul>
+	<table>
+		<caption>Jugadores</caption>
+		<thead>
+			<td>Num.</td>
+			<td>Posici&oacute;n</td>
+			<td>Nombre</td>
+			<td>Valor (&euro;)</td>
+		</thead>
+		<tbody>
+			{% for jugador in jugadores %}
+				<tr>
+					<td class="cuadro_num_azul_der">{{ jugador.numero }}</td>
+					<td>{{ jugador.posicion }}</td>
+					<td><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></td>
+					<td class="cuadro_num_azul_der">{{ jugador.valorMercado }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>
+			<td colspan="3" style="text-align:right;">Valor total del equipo</td>
+			<td class="cuadro_num_azul_der">{{ valor_equipo }}</td>
+		</tfoot>
+	</table>
 
 {% endblock %}

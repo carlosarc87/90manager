@@ -42,19 +42,57 @@
 	</table>
 
 	{% if finalizado %}
-		<h4>Titulares del equipo local</h4>
-		<ul>
-			{% for titular in titulares_local %}
-				<li><a href="/jugadores/ver/{{ titular.id }}">{{ titular.nombre }}</a></li>
-			{% endfor %}
-		</ul>
+		<!-- Titulares local -->
+		<table>
+			<caption>Titulares del equipo local</caption>
+			<thead>
+				<td>Num.</td>
+				<td>Posici&oacute;n</td>
+				<td>Nombre</td>
+			</thead>
+			<tbody>
+				{% for titular in titulares_local %}
+					<tr>
+						<td class="cuadro_num_azul_der">{{ titular.numero }}</td>
+						<td>{{ titular.posicion }}</td>
+						<td><a href="/jugadores/ver/{{ titular.id }}/">{{ titular.nombre }}</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 
-		<h4>Titulares del equipo visitante</h4>
-		<ul>
-			{% for titular in titulares_visitante %}
-				<li><a href="/jugadores/ver/{{ titular.id }}">{{ titular.nombre }}</a></li>
-			{% endfor %}
-		</ul>
+		<!-- Titulares visitante -->
+		<table>
+			<caption>Titulares del equipo visitante</caption>
+			<thead>
+				<td>Num.</td>
+				<td>Posici&oacute;n</td>
+				<td>Nombre</td>
+			</thead>
+			<tbody>
+				{% for titular in titulares_visitante %}
+					<tr>
+						<td class="cuadro_num_azul_der">{{ titular.numero }}</td>
+						<td>{{ titular.posicion }}</td>
+						<td><a href="/jugadores/ver/{{ titular.id }}/">{{ titular.nombre }}</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<!-- Sucesos -->
+		<table>
+			<caption>SUCESOS</caption>
+			<tbody>
+				{% for suceso in sucesos_partido %}
+					<tr>
+						<td class="cuadro_num_azul_der">{{ suceso.getMinuto }}:{{ suceso.getSegundo }}</td>
+						<td>{{ suceso.equipo.nombre }}</td>
+						<td>{{ suceso.tipo }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	{% else %}
 		<h4>SIN INICIAR</h4>
 		<ul>

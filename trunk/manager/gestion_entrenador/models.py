@@ -281,10 +281,38 @@ class Jugador(models.Model):
 		return "PORTERO"
 
 	def setNumero(self, numero):
-		self.numero = numero;
+		self.numero = numero
 
 	def setPosicion(self, posicion):
-		self.posicion = posicion;
+		self.posicion = posicion
+		
+	def valorMercado(self):
+		if (self.posicion == "PORTERO"):
+			media_hab_principales = self.portero
+			media_hab_secundarias = self.pases
+			media_hab_poco_importantes = (self.ataque + self.defensa + self.velocidad + self.anotacion) / 4
+			
+		elif (self.posicion == "DEFENSA"):
+			media_hab_principales = self.defensa
+			media_hab_secundarias = (self.velocidad + self.pases) / 2
+			media_hab_poco_importantes = (self.ataque + self.anotacion + self.portero) / 3
+			
+		elif (self.posicion == "CENTROCAMPISTA"):
+			media_hab_principales = (self.velocidad + self.pases) / 2
+			media_hab_secundarias = (self.ataque + self.defensa + self.anotacion) / 3
+			media_hab_poco_importantes = self.portero
+			
+		elif (self.posicion == "DELANTERO"):
+			media_hab_principales = (self.ataque + self.anotacion) / 2
+			media_hab_secundarias = (self.velocidad + self.pases) / 2
+			media_hab_poco_importantes = (self.defensa + self.portero) / 2
+			
+		else:
+			media_hab_principales = 0
+			media_hab_secundarias = 0
+			media_hab_poco_importantes = 0
+		
+		return (int)((1.15 ** media_hab_principales) + (1.1 ** media_hab_secundarias) + (1.05 ** media_hab_poco_importantes))
 
 ########################################################################
 
@@ -303,12 +331,10 @@ class AlineacionEquipo(models.Model):
 
 			if(posicion == "DEFENSA"):
 				valor += (int)(ataque * 0.25)
-			else:
-				if(posicion == "CENTROCAMPISTA"):
-					valor += (int)(ataque * 0.75)
-				else:
-					if(posicion == "DELANTERO"):
-						valor += ataque
+			elif(posicion == "CENTROCAMPISTA"):
+				valor += (int)(ataque * 0.75)
+			elif(posicion == "DELANTERO"):
+				valor += ataque
 
 		return valor / (num_jugadores_campo - 1)
 
@@ -322,12 +348,10 @@ class AlineacionEquipo(models.Model):
 
 			if(posicion == "DEFENSA"):
 				valor += defensa
-			else:
-				if(posicion == "CENTROCAMPISTA"):
-					valor += (int)(defensa * 0.75)
-				else:
-					if(posicion == "DELANTERO"):
-						valor += (int)(defensa * 0.25)
+			elif(posicion == "CENTROCAMPISTA"):
+				valor += (int)(defensa * 0.75)
+			elif(posicion == "DELANTERO"):
+				valor += (int)(defensa * 0.25)
 
 		return valor / (num_jugadores_campo - 1)
 
@@ -340,12 +364,10 @@ class AlineacionEquipo(models.Model):
 			pases = titulares[i].pases
 			if(posicion == "DEFENSA"):
 				valor += (int)(pases * 0.75)
-			else:
-				if(posicion == "CENTROCAMPISTA"):
-					valor += pases
-				else:
-					if(posicion == "DELANTERO"):
-						valor += (int)(pases * 0.75)
+			elif(posicion == "CENTROCAMPISTA"):
+				valor += pases
+			elif(posicion == "DELANTERO"):
+				valor += (int)(pases * 0.75)
 
 		return valor / (num_jugadores_campo - 1)
 
@@ -358,12 +380,10 @@ class AlineacionEquipo(models.Model):
 			velocidad = titulares[i].velocidad
 			if(posicion == "DEFENSA"):
 				valor += (int)(velocidad * 0.75)
-			else:
-				if(posicion == "CENTROCAMPISTA"):
-					valor += velocidad
-				else:
-					if(posicion == "DELANTERO"):
-						valor += (int)(velocidad * 0.75)
+			elif(posicion == "CENTROCAMPISTA"):
+				valor += velocidad
+			elif(posicion == "DELANTERO"):
+				valor += (int)(velocidad * 0.75)
 
 		return valor / (num_jugadores_campo - 1)
 
@@ -376,12 +396,10 @@ class AlineacionEquipo(models.Model):
 			anotacion = titulares[i].anotacion
 			if(posicion == "DEFENSA"):
 				valor += (int)(anotacion * 0.5)
-			else:
-				if(posicion == "CENTROCAMPISTA"):
-					valor += (int)(anotacion * 0.75)
-				else:
-					if(posicion == "DELANTERO"):
-						valor += anotacion
+			elif(posicion == "CENTROCAMPISTA"):
+				valor += (int)(anotacion * 0.75)
+			elif(posicion == "DELANTERO"):
+				valor += anotacion
 
 		return valor / (num_jugadores_campo - 1)
 
@@ -523,11 +541,12 @@ class Partido(models.Model):
 
 				# Crear jugada
 				num_acciones = (aleatorio(2, 20) + aleatorio(2, 20) + aleatorio(2, 20)) / 3
-				seg_accion = 2 + ((100 - velocidad[id_equipo_atacante]) / 10)
+				seg_accion = 2 + (int)((100.0 - velocidad[id_equipo_atacante]) / 10) + aleatorio(0, 2)
 
-				#print "\t" + "num_acciones: " + str(num_acciones) + " (" + str(seg_accion) + " seg / accion)"
+				print "\t" + "num_acciones: " + str(num_acciones) + " (" + str(seg_accion) + " seg / accion)"
 				formula = (1.0 * ataque[id_equipo_atacante]) / pases[id_equipo_atacante]
-				prob_regate = 100 - (100 / (formula + 1))
+				prob_regate = probabilidadExito(formula)
+				print "Prob Pase/Regate (" + str(prob_regate) + "%) "
 				accion = 1
 				while (accion <= num_acciones) and (id_equipo_defensor != id_equipo_atacante):
 					#print "\t" + str(accion) + ".- "
@@ -538,14 +557,14 @@ class Partido(models.Model):
 						# Regate
 						if(aleatorio(1, 100) <= prob_regate):
 							formula = (1.0 * ataque[id_equipo_atacante] / defensa[id_equipo_defensor])
-							prob_exito = (100 - (100 / (formula + 1)))
+							prob_exito = probabilidadExito(formula)
 							print "Regate (" + str(prob_exito) + "%) "
 							if(aleatorio(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
 						# Pase
 						else:
 							formula = (pases[id_equipo_atacante] * 2.0) / (defensa[id_equipo_defensor] + velocidad[id_equipo_defensor])
-							prob_exito = (100 - (100 / (formula + 1)))
+							prob_exito = probabilidadExito(formula)
 							print "Pase (" + str(prob_exito) + "%) "
 							if(aleatorio(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
@@ -558,17 +577,17 @@ class Partido(models.Model):
 						# Si el balón va a portería
 						if(aleatorio(1, 100) <= prob_exito):
 							formula = (1.0 * anotacion[id_equipo_atacante] / portero[id_equipo_defensor])
-							prob_exito = (100 - (100 / (formula + 1)))
+							prob_exito = probabilidadExito(formula)
 							print "Disparo a puerta (" + str(prob_exito) + "%) "
 							if(aleatorio(1, 100) > prob_exito):
 								texto = "Disparo parado"
+								print texto
 								if id_equipo_atacante == 0:
 									equipo_suceso = self.equipo_local
 								else:
 									equipo_suceso = self.equipo_visitante
 								suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
 								self.suceso_set.add(suceso)
-								print "fallado."
 
 								id_equipo_atacante = id_equipo_defensor
 							# Marcar gol
@@ -576,13 +595,13 @@ class Partido(models.Model):
 								num_goles[id_equipo_atacante] += 1
 
 								texto = "Gol"
+								print texto
 								if id_equipo_atacante == 0:
 									equipo_suceso = self.equipo_local
 								else:
 									equipo_suceso = self.equipo_visitante
 								suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
 								self.suceso_set.add(suceso)
-								print "¡GOL!"
 
 								# Ahora sacará el equipo contrario
 								id_equipo_atacante = id_equipo_defensor
@@ -593,6 +612,7 @@ class Partido(models.Model):
 						# Fuera
 						else:
 							texto = "Disparo fuera"
+							print texto
 							if id_equipo_atacante == 0:
 								equipo_suceso = self.equipo_local
 							else:
@@ -612,15 +632,16 @@ class Partido(models.Model):
 						seg_restantes += ((min_descuento * 60) + aleatorio(0, 30))
 
 						texto = "TIEMPO DESCUENTO (" + str(min_descuento) + " minutos)"
+						print texto
 						if id_equipo_atacante == 0:
 							equipo_suceso = self.equipo_local
 						else:
 							equipo_suceso = self.equipo_visitante
 						suceso = Suceso(segundo_partido = segundos_jugados - (segundos_jugados % 60), tipo = texto, equipo = equipo_suceso)
 						self.suceso_set.add(suceso)
-						print "Tiempo añadido: " + str(min_descuento) + " minutos"
 					else:
 						texto = "FIN DE LA " + str(num_parte) + "ª PARTE"
+						print texto
 						if id_equipo_atacante == 0:
 							equipo_suceso = self.equipo_local
 						else:
