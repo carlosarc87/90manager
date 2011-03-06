@@ -124,3 +124,13 @@ class ActivarLigaForm(forms.ModelForm):
 	class Meta:
 		model = Liga
 		exclude = ('creador', 'fecha_creacion', 'publica', 'nombre')
+
+########################################################################################
+
+
+class contactoForm(forms.ModelForm):
+	''' Formulario para rellenar el "contacta con nosotros" '''
+
+	 class Meta:
+        model = Contacto
+        fields = ('nombre', 'apellidos', 'telefono', 'email', 'comentarios')
