@@ -19,6 +19,9 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
 	(r'^/?$', 'manager.gestion_entrenador.views.index'),
 
+	#Habilitar la funcion de contacto
+	(r'^contacto/', 'manager.gestion_entrenador.views.contacto'),
+
 	# Modulo de login
     (r'^cuentas/logout/$', 'django.contrib.auth.views.logout'),
    	(r'^cuentas/login/$', 'django.contrib.auth.views.login'),
