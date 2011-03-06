@@ -41,6 +41,16 @@ class Liga(models.Model):
 		''' Devuelve si una liga ya ha empezado a jugarse '''
 		return self.jornada_set.count() > 0
 
+	def obtenerJornadaActual(self):
+		''' Devuelve la jornada actual de la liga o None en caso de haber acabado '''
+		# Obtenemos las jornadas no jugadas
+		jornadas_restantes = self.jornada_set.filter(jugada = False)
+		jornada_actual = None
+		if len(jornadas_restantes) > 0:
+			# No ha acabado aun
+			jornada_actual = jornadas_restantes[0]
+		return jornada_actual
+
 	def agregarEquipo(self, equipo):
 		''' Agrega un equipo a la liga '''
 		self.equipos_set.add(equipo)
@@ -152,7 +162,7 @@ class Jornada(models.Model):
 
 					clasificacion_local.save()
 					clasificacion_visitante.save()
-					print clasificacion_local.puntos
+					#print clasificacion_local.puntos
 			else:
 				for partido in partidos:
 					jornada_anterior = self.liga.jornada_set.get(numero = self.numero - 1)
@@ -285,33 +295,33 @@ class Jugador(models.Model):
 
 	def setPosicion(self, posicion):
 		self.posicion = posicion
-		
+
 	def valorMercado(self):
 		if (self.posicion == "PORTERO"):
 			media_hab_principales = self.portero
 			media_hab_secundarias = self.pases
 			media_hab_poco_importantes = (self.ataque + self.defensa + self.velocidad + self.anotacion) / 4
-			
+
 		elif (self.posicion == "DEFENSA"):
 			media_hab_principales = self.defensa
 			media_hab_secundarias = (self.velocidad + self.pases) / 2
 			media_hab_poco_importantes = (self.ataque + self.anotacion + self.portero) / 3
-			
+
 		elif (self.posicion == "CENTROCAMPISTA"):
 			media_hab_principales = (self.velocidad + self.pases) / 2
 			media_hab_secundarias = (self.ataque + self.defensa + self.anotacion) / 3
 			media_hab_poco_importantes = self.portero
-			
+
 		elif (self.posicion == "DELANTERO"):
 			media_hab_principales = (self.ataque + self.anotacion) / 2
 			media_hab_secundarias = (self.velocidad + self.pases) / 2
 			media_hab_poco_importantes = (self.defensa + self.portero) / 2
-			
+
 		else:
 			media_hab_principales = 0
 			media_hab_secundarias = 0
 			media_hab_poco_importantes = 0
-		
+
 		return (int)((1.15 ** media_hab_principales) + (1.1 ** media_hab_secundarias) + (1.05 ** media_hab_poco_importantes))
 
 ########################################################################
@@ -498,23 +508,25 @@ class Partido(models.Model):
 		portero = [alineacion[0].getValorPortero(), alineacion[1].getValorPortero()]
 		# --------------------------------------
 
-		print "-------------------------------------------"
-		#print alineacion[0].getNombre()
-		print "Ataque: " + str(alineacion[0].getValorAtaque())
-		print "Defensa: " + str(alineacion[0].getValorDefensa())
-		print "Pases: " + str(alineacion[0].getValorPases())
-		print "Velocidad: " + str(alineacion[0].getValorVelocidad())
-		print "Anotacion: " + str(alineacion[0].getValorAnotacion())
-		print "Portero: " + str(alineacion[0].getValorPortero())
-		print "-------------------------------------------"
-		#print alineacion[1].getNombre()
-		print "Ataque: " + str(alineacion[1].getValorAtaque())
-		print "Defensa: " + str(alineacion[1].getValorDefensa())
-		print "Pases: " + str(alineacion[1].getValorPases())
-		print "Velocidad: " + str(alineacion[1].getValorVelocidad())
-		print "Anotacion: " + str(alineacion[1].getValorAnotacion())
-		print "Portero: " + str(alineacion[1].getValorPortero())
-		print "-------------------------------------------"
+		los_gatos_nos_dominaran = True
+		if not los_gatos_nos_dominaran:
+			print "-------------------------------------------"
+			#print alineacion[0].getNombre()
+			print "Ataque: " + str(alineacion[0].getValorAtaque())
+			print "Defensa: " + str(alineacion[0].getValorDefensa())
+			print "Pases: " + str(alineacion[0].getValorPases())
+			print "Velocidad: " + str(alineacion[0].getValorVelocidad())
+			print "Anotacion: " + str(alineacion[0].getValorAnotacion())
+			print "Portero: " + str(alineacion[0].getValorPortero())
+			print "-------------------------------------------"
+			#print alineacion[1].getNombre()
+			print "Ataque: " + str(alineacion[1].getValorAtaque())
+			print "Defensa: " + str(alineacion[1].getValorDefensa())
+			print "Pases: " + str(alineacion[1].getValorPases())
+			print "Velocidad: " + str(alineacion[1].getValorVelocidad())
+			print "Anotacion: " + str(alineacion[1].getValorAnotacion())
+			print "Portero: " + str(alineacion[1].getValorPortero())
+			print "-------------------------------------------"
 
 		# Continuar jugando mientras no se hayan acabado las 2 partes del partido
 		while(num_parte <= 2):
@@ -543,10 +555,10 @@ class Partido(models.Model):
 				num_acciones = (aleatorio(2, 20) + aleatorio(2, 20) + aleatorio(2, 20)) / 3
 				seg_accion = 2 + (int)((100.0 - velocidad[id_equipo_atacante]) / 10) + aleatorio(0, 2)
 
-				print "\t" + "num_acciones: " + str(num_acciones) + " (" + str(seg_accion) + " seg / accion)"
+				#print "\t" + "num_acciones: " + str(num_acciones) + " (" + str(seg_accion) + " seg / accion)"
 				formula = (1.0 * ataque[id_equipo_atacante]) / pases[id_equipo_atacante]
 				prob_regate = probabilidadExito(formula)
-				print "Prob Pase/Regate (" + str(prob_regate) + "%) "
+				#print "Prob Pase/Regate (" + str(prob_regate) + "%) "
 				accion = 1
 				while (accion <= num_acciones) and (id_equipo_defensor != id_equipo_atacante):
 					#print "\t" + str(accion) + ".- "
@@ -558,14 +570,14 @@ class Partido(models.Model):
 						if(aleatorio(1, 100) <= prob_regate):
 							formula = (1.0 * ataque[id_equipo_atacante] / defensa[id_equipo_defensor])
 							prob_exito = probabilidadExito(formula)
-							print "Regate (" + str(prob_exito) + "%) "
+							#print "Regate (" + str(prob_exito) + "%) "
 							if(aleatorio(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
 						# Pase
 						else:
 							formula = (pases[id_equipo_atacante] * 2.0) / (defensa[id_equipo_defensor] + velocidad[id_equipo_defensor])
 							prob_exito = probabilidadExito(formula)
-							print "Pase (" + str(prob_exito) + "%) "
+							#print "Pase (" + str(prob_exito) + "%) "
 							if(aleatorio(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
 
@@ -578,10 +590,10 @@ class Partido(models.Model):
 						if(aleatorio(1, 100) <= prob_exito):
 							formula = (1.0 * anotacion[id_equipo_atacante] / portero[id_equipo_defensor])
 							prob_exito = probabilidadExito(formula)
-							print "Disparo a puerta (" + str(prob_exito) + "%) "
+							#print "Disparo a puerta (" + str(prob_exito) + "%) "
 							if(aleatorio(1, 100) > prob_exito):
 								texto = "Disparo parado"
-								print texto
+								#print texto
 								if id_equipo_atacante == 0:
 									equipo_suceso = self.equipo_local
 								else:
@@ -595,7 +607,7 @@ class Partido(models.Model):
 								num_goles[id_equipo_atacante] += 1
 
 								texto = "Gol"
-								print texto
+								#print texto
 								if id_equipo_atacante == 0:
 									equipo_suceso = self.equipo_local
 								else:
@@ -612,7 +624,7 @@ class Partido(models.Model):
 						# Fuera
 						else:
 							texto = "Disparo fuera"
-							print texto
+							#print texto
 							if id_equipo_atacante == 0:
 								equipo_suceso = self.equipo_local
 							else:
@@ -632,7 +644,7 @@ class Partido(models.Model):
 						seg_restantes += ((min_descuento * 60) + aleatorio(0, 30))
 
 						texto = "TIEMPO DESCUENTO (" + str(min_descuento) + " minutos)"
-						print texto
+						#print texto
 						if id_equipo_atacante == 0:
 							equipo_suceso = self.equipo_local
 						else:
@@ -641,7 +653,7 @@ class Partido(models.Model):
 						self.suceso_set.add(suceso)
 					else:
 						texto = "FIN DE LA " + str(num_parte) + "ª PARTE"
-						print texto
+						#print texto
 						if id_equipo_atacante == 0:
 							equipo_suceso = self.equipo_local
 						else:

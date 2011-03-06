@@ -99,7 +99,7 @@
 			{% if tiene_equipo %}
 				<li><a href="/partidos/preparar/{{ partido.id }}/">Preparar partido</a></li>
 			{% endif %}
-			{% if es_creador %}
+			{% if es_creador and es_jugable %}
 				<li><a href="/partidos/jugar/{{ partido.id }}/">Jugar</a></li>
 			{% endif %}
 		</ul>

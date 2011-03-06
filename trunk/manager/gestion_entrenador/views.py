@@ -125,13 +125,13 @@ def ver_equipo(request, equipo_id):
 
 	# Obtenemos el equipo
 	equipo = Equipo.objects.get(id = equipo_id)
-	
+
 	# Obtenemos los jugadores
 	jugadores = equipo.jugador_set.all()
 	valor_equipo = 0
 	for jugador in jugadores:
 		valor_equipo += jugador.valorMercado()
-	
+
 	# Obtenemos la liga
 	liga = equipo.liga
 
@@ -210,8 +210,6 @@ def ver_liga(request, liga_id):
 
 	activada = liga.activada()
 
-	jornada_actual = None
-
 	clasificacion = None
 
 	liga_acabada = False
@@ -227,11 +225,8 @@ def ver_liga(request, liga_id):
 
 	if activada:
 		# Comprobamos si la liga ha acabado
-		if len(jornadas_restantes) > 0:
-			# No ha acabado aun
-			jornada_actual = jornadas_restantes[0]
-		else:
-			# Ha acabado
+		jornada_actual = liga.obtenerJornadaActual()
+		if not jornada_actual:
 			liga_acabada = True
 
 		if jornada_actual:
@@ -239,7 +234,7 @@ def ver_liga(request, liga_id):
 				jornada_anterior = liga.jornada_set.get(numero = jornada_actual.numero - 1)
 				clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
 				clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
-		
+
 		if liga_acabada:
 			jornada_anterior = liga.jornada_set.all()[len(liga.jornada_set.all()) - 1]
 			clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
@@ -251,7 +246,7 @@ def ver_liga(request, liga_id):
 			for c in clasificacion:
 				c.posicion = posicion
 				c.goles_diferencia = c.goles_favor - c.goles_contra
-				
+
 				if jornada_anterior != None:
 					c.partidos_ganados = 0
 					c.partidos_empatados = 0
@@ -260,9 +255,9 @@ def ver_liga(request, liga_id):
 					c.partidos_ganados = 0
 					c.partidos_empatados = 0
 					c.partidos_perdidos = 0
-				
+
 				c.partidos_jugados = c.partidos_ganados + c.partidos_empatados + c.partidos_perdidos
-				
+
 				posicion += 1
 
 	# Cargamos la plantilla con los parametros y la devolvemos
@@ -343,6 +338,11 @@ def jugar_partido(request, partido_id):
 	partido = Partido.objects.get(id = partido_id)
 	if partido.finalizado():
 		return devolverMensaje(request, "Este partido ya se jugo", "/partidos/ver/%d/" % partido.id)
+
+	jornada_actual = partido.jornada.liga.obtenerJornadaActual()
+	if partido.jornada != jornada_actual:
+		return devolverMensaje(request, "Este partido no se puede jugar ya que no es la jornada aun", "/partidos/ver/%d/" % partido.id)
+
 	if partido.equipo_local.usuario != None:
 		pass
 #		if partido.titulares_local.count() != 11:
@@ -411,6 +411,8 @@ def ver_jornada(request, jornada_id):
 	# Es la jornada actual si se jugo la anterior pero no si misma
 	if jornada_anterior != None:
 		es_jornada_actual = jornada_anterior.jugada == True and jornada.jugada == False
+	elif jornada_anterior == None and jornada.jugada == False: # 1º jornada
+		es_jornada_actual = True
 	else:
 		es_jornada_actual = False
 
@@ -445,11 +447,11 @@ def ver_partido(request, partido_id):
 	# Obtenemos el partido
 	partido = Partido.objects.get(id = partido_id)
 	sucesos_partido = partido.suceso_set.all()
-	
+
 	# Obtenemos la liga y la jornada
 	jornada = partido.jornada
 	liga = jornada.liga
-	
+
 	# Obtenemos los equipos que juegan en el partido
 	equipo_local = partido.equipo_local
 	equipo_visitante = partido.equipo_visitante
@@ -481,6 +483,11 @@ def ver_partido(request, partido_id):
 		tiene_equipo = True
 	es_creador = liga.creador == usuario
 
+	es_jugable = False
+	jornada_actual = liga.obtenerJornadaActual()
+	if partido.jornada == jornada_actual and not finalizado:
+		es_jugable = True
+
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("partidos/ver_partido.html")
 	c = Context({"jornada" : jornada,
@@ -496,6 +503,7 @@ def ver_partido(request, partido_id):
 				 "titulares_visitante" : titulares_visitante,
 				 "es_creador" : es_creador,
 				 "tiene_equipo" : tiene_equipo,
+				 "es_jugable" : es_jugable,
 				})
 	return HttpResponse(t.render(c))
 

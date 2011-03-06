@@ -8,7 +8,6 @@
 	<h2>Liga: {{ liga.nombre }}</h2>
 
 	{% if activada %}
-
 		{% if jornada_actual %}
 			<h4>Jornada actual: <a href="/jornadas/ver/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></h4>
 			{% if es_creador %}

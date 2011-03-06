@@ -128,9 +128,9 @@ class ActivarLigaForm(forms.ModelForm):
 ########################################################################################
 
 
-class contactoForm(forms.ModelForm):
-	''' Formulario para rellenar el "contacta con nosotros" '''
+#class contactoForm(forms.ModelForm):
+#	''' Formulario para rellenar el "contacta con nosotros" '''
+#	class Meta:
+#        model = Contacto
+#        fields = ('nombre', 'apellidos', 'telefono', 'email', 'comentarios')
 
-	class Meta:
-        model = Contacto
-        fields = ('nombre', 'apellidos', 'telefono', 'email', 'comentarios')
