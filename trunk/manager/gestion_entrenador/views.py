@@ -218,6 +218,7 @@ def ver_liga(request, liga_id):
 	jornadas_restantes = liga.jornada_set.filter(jugada = False)
 
 	activada = liga.activada()
+	jornada_actual = None
 
 	clasificacion = None
 
@@ -232,7 +233,6 @@ def ver_liga(request, liga_id):
 	else:
 		equipo_propio = None
 
-	jornada_actual = None
 	if activada:
 		# Comprobamos si la liga ha acabado
 		jornada_actual = liga.obtenerJornadaActual()
