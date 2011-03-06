@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block situacion %}
+	<li><a href="/ligas/ver/{{ partido.jornada.liga_id }}/">{{ partido.jornada.liga.nombre }}</a></li>
+	<li><a href="/jornadas/ver/{{ partido.jornada.id }}/">Jornada {{ partido.jornada.numero }}</a></li>
+	<li><a href="/partidos/ver/{{ partido.id }}/">Partido {{ partido.id }}</a></li>
+	<li>{{ equipo.nombre }}</li>
+{% endblock %}
+
+{% block contenido %}
+	<h2>Preparar partido</h2>
+
+	<form action="/partidos/preparar/{{ partido.id }}/" method="post">
+		{% csrf_token %}
+		{{ form.errors }}
+		<!-- Titulares local -->
+		{% if form.titulares_local %}
+			<div class="fila">
+				{% if form.titulares_local.errors %}
+					<p class="texto_error">{{ form.titulares_local.errors }}</p>
+				{% endif %}
+			</div>
+			<div class="fila">
+				<label for="titulares_local">Titulares local:</label>
+			</div>
+			<div class="fila">
+				{{ form.titulares_local }}
+			</div>
+		{% endif %}
+		<!-- Titulares visitante -->
+		{% if form.titulares_visitante %}
+			<div class="fila">
+				{% if form.titulares_visitante.errors %}
+					<p class="texto_error">{{ form.titulares_visitante.errors }}</p>
+				{% endif %}
+			</div>
+			<div class="fila">
+				<label for="titulares_visitante">Titulares visitante:</label>
+			</div>
+			<div class="fila">
+				{{ form.titulares_visitante }}
+			</div>
+		{% endif %}
+		<!-- Boton Aceptar -->
+		<div class="fila"><input type="submit" value="Aceptar" /></div>
+	</form>
+{% endblock %}
