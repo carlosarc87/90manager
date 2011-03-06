@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.db import transaction
+from django.contrib.auth import authenticate, login
 
 from django.db.models import Q
 
@@ -59,12 +60,20 @@ def registrar_usuario(request):
 		if form.is_valid():
 			# Solucion para los problemas de la password
 			usuario = form.save(commit = False)
+			password = form.cleaned_data['password']
 			usuario.is_staff = False
 			usuario.is_active = True
 			usuario.is_superuser = False
 			usuario.date_joined = datetime.datetime.now()
 			usuario.save()
-			return devolverMensaje(request, "Se ha registrado correctamente.", "/cuentas/perfil/")
+			# Loguear al usuario
+			usuario_reg = authenticate(username = usuario.username, password = password)
+			if usuario_reg is not None:
+				login(request, usuario_reg)
+				return devolverMensaje(request, "Se ha registrado correctamente.", "/cuentas/perfil/")
+			else:
+				return devolverMensaje(request, "ERROR.", "/cuentas/perfil/")
+
 	else:
 		form = UsuarioForm()
 
