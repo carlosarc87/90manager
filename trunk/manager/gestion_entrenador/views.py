@@ -697,12 +697,13 @@ def activar_liga(request, liga_id):
 def contacto(request):
 	''' Muestra la página para rellenar el formulario de "contacta con nosotros" '''
 	if request.method == 'POST':
-		form = contactoForm(request.POST)
+		form = ContactoForm(request.POST)
 		if form.is_valid():
-			contacto.save()
 			return devolverMensaje(request, "Se ha rellenado correctamente el formulario de contacto.", "/")
 	else:
-		form = contactoForm()
+		form = ContactoForm()
 
-	return render_to_response("registration/contacto.html", {"form_reg": form})
+	return render_to_response("registration/contacto.html", {"form" : form})
+
+########################################################################
 

@@ -127,6 +127,13 @@ class ActivarLigaForm(forms.ModelForm):
 
 ########################################################################################
 
+class ContactoForm(forms.Form):
+    emisor = forms.EmailField()
+    asunto = forms.CharField(max_length = 100)
+    mensaje = forms.CharField()
+
+########################################################################################
+
 
 #class contactoForm(forms.ModelForm):
 #	''' Formulario para rellenar el "contacta con nosotros" '''
