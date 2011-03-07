@@ -1,17 +1,23 @@
+<!-- Para HTML 5
+<!DOCTYPE html>
+-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
 <head>
+    <title>{% block title %}90manager{% endblock %}</title>
+
     <link rel="stylesheet" href="/media/css/style.css" media="screen" />
 	<link rel="icon" href="/media/img/icons/favicon.ico" />
-    <title>{% block title %}90manager{% endblock %}</title>
+	{% block head_css %}{% endblock %}
+	{% block head_js %}{% endblock %}
 </head>
 
 <body>
 	<!-- Cabecera -->
 	<div id="header">
 		<div class="contenido">
-			<img src="/media/img/logo.png" alt="logo" title="" />
+			<img src="/media/img/logo.png" alt="logo" title="" height="100px" width="200px" />
 			{% include "registration/login.html" %}
 		</div>
 	</div>
