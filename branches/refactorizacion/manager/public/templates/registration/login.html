@@ -1,0 +1,30 @@
+<div id="login">
+	{% if usuario %}
+		<h1>Usuario: {{ usuario }}</h1>
+	{% else %}
+		{% if form.errors %}
+			<p class="texto_error">Usuario y/o contraseña no válidos</p>
+		{% endif %}
+
+		<form action="{% url django.contrib.auth.views.login %}" method="post">
+			<div class="fila">
+				{% csrf_token %}
+				<!-- Usuario -->
+				<div style="width:60px;"><label for="username">Usuario:</label></div>
+				<div style="width:140px;"><input type="text" name="username" value="" style="width:120px;"/></div>
+
+				<!-- Clave -->
+				<div style="width:80px;"><label for="password">Contraseña:</label></div>
+				<div style="width:130px;"><input type="password" name="password" value="" style="width:120px;" /></div>
+
+				<!-- Boton entrar -->
+				<input type="submit" name="login" value="Entrar" style="float: right;" />
+			</div>
+		</form>
+
+		<div class="fila" style="text-align:right;">
+			<a href="/cuentas/registrar/">Registro</a>
+			<a href="#">Recordar contraseña</a>
+		</div>
+	{% endif %}
+</div>

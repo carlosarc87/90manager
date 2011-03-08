@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+<form action="/ligas/crear/" method="post">
+	{% csrf_token %}
+
+	<!-- Nombre de la liga -->
+    <div class="fila">
+        {% if form.nombre.errors %}
+			<p class="texto_error">{{ form.nombre.errors }}</p>
+		{% endif %}
+        <div style="width: 150px;"><label for="id_nombre">Nombre de la liga:</label></div>
+		<div style="width: 150px;">{{ form.nombre }}</div>
+    </div>
+
+	<!-- Visibilidad -->
+    <div class="fila">
+        {% if form.publica.errors %}
+			<p class="texto_error">{{ form.publica.errors }}</p>
+		{% endif %}
+        <div style="width: 150px;"><label for="id_visibilidad">Publica:</label></div>
+        <div style="width: 150px;">{{ form.publica }}</div>
+    </div>
+
+	<!-- Boton crear -->
+	<div class="fila"><input type="submit" value="Crear" /></div>
+</form>
+{% endblock %}
+
