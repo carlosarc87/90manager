@@ -29,22 +29,6 @@ from gestion_entrenador.models import *
 
 ########################################################################
 
-class UsuarioForm(forms.ModelForm):
-	''' Formulario para registrar un usuario '''
-	class Meta:
-		model = Usuario
-		exclude = ('is_staff', 'is_active', 'is_superuser', 'last_login', 'date_joined', 'user_ptr_id', 'groups', 'user_permissions')
-
-########################################################################
-
-class EquipoForm(forms.ModelForm):
-	''' Formulario para crear un equipo '''
-	class Meta:
-		model = Equipo
-		exclude = ('usuario', 'liga')
-
-########################################################################
-
 class PrepararEquipoLocalForm(forms.ModelForm):
 	''' Formulario de preparacion de equipos locales '''
 	titulares_local = forms.fields.MultipleChoiceField()
@@ -125,14 +109,7 @@ class ActivarLigaForm(forms.ModelForm):
 		model = Liga
 		exclude = ('creador', 'fecha_creacion', 'publica', 'nombre')
 
-########################################################################################
 
-class ContactoForm(forms.Form):
-    emisor = forms.EmailField()
-    asunto = forms.CharField(max_length = 100)
-    mensaje = forms.CharField()
-
-########################################################################################
 
 
 #class contactoForm(forms.ModelForm):

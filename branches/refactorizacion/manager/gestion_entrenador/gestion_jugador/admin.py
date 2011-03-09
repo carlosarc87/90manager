@@ -25,13 +25,6 @@ Copyright 2011 by
 # clase se añade una linea
 
 from django.contrib import admin
-from manager.gestion_entrenador.models import *
+from gestion_entrenador.gestion_jugador import Jugador
 
-admin.site.register(Usuario)
-admin.site.register(Equipo)
 admin.site.register(Jugador)
-admin.site.register(Liga)
-admin.site.register(Jornada)
-admin.site.register(Partido)
-admin.site.register(ClasificacionEquipoJornada)
-

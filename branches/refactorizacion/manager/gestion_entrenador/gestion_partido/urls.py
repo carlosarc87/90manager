@@ -22,3 +22,11 @@ Copyright 2011 by
 
 """
 
+from django.conf.urls.defaults import *
+
+urls = patterns('',
+   	# Modulo de partidos
+   	(r'^ver/(?P<partido_id>\d+)/$', 'gestion_entrenador.views.ver_partido'),
+   	(r'^preparar/(?P<partido_id>\d+)/$', 'gestion_entrenador.views.preparar_partido'),
+   	(r'^jugar/(?P<partido_id>\d+)/$', 'mgestion_entrenador.views.jugar_partido'),
+)

@@ -25,23 +25,7 @@ Copyright 2011 by
 """
 
 from django import forms
-from gestion_entrenador.models import *
-
-########################################################################
-
-class UsuarioForm(forms.ModelForm):
-	''' Formulario para registrar un usuario '''
-	class Meta:
-		model = Usuario
-		exclude = ('is_staff', 'is_active', 'is_superuser', 'last_login', 'date_joined', 'user_ptr_id', 'groups', 'user_permissions')
-
-########################################################################
-
-class EquipoForm(forms.ModelForm):
-	''' Formulario para crear un equipo '''
-	class Meta:
-		model = Equipo
-		exclude = ('usuario', 'liga')
+from gestion_entrenador.gestion_partido.models import Partido
 
 ########################################################################
 
@@ -91,53 +75,3 @@ class PrepararEquipoVisitanteForm(forms.ModelForm):
 		exclude = ('jornada', 'equipo_local', 'equipo_visitante', 'goles_local', 'goles_visitante', 'alineacion_local', 'alineacion_visitante')
 
 ########################################################################
-
-class LigaForm(forms.ModelForm):
-	''' Formulario para crear ligas '''
-	class Meta:
-		model = Liga
-		exclude = ('creador', 'fecha_creacion', 'num_equipos')
-
-########################################################################
-
-class ActivarLigaForm(forms.ModelForm):
-	''' Formulario de activacion de una liga '''
-	equipos = forms.fields.MultipleChoiceField(required = False)
-
-	def __init__(self, *args, **kwargs):
-		''' Constructor que establece la lista de valores de los titulares '''
-		super(ActivarLigaForm, self).__init__(*args, **kwargs)
-		# Establecemos los valores de la lista multiple como los jugadores del equipo visitante
-		self.fields['equipos'].choices = [[choice.id, choice.nombre] for choice in self.instance.equipo_set.all()]
-		numero = len(self.instance.equipo_set.all())
-		self.fields['num_equipos'] = forms.IntegerField(initial = str(123))
-
-	def clean_num_equipos(self):
-		''' Comprueba que haya un numero de equipos positivo y par y en caso afirmativo los devuelve '''
-		valor = self.cleaned_data['num_equipos'] + len(self.instance.equipo_set.all())
-		if valor % 2 != 0:
-			raise forms.ValidationError("Debe de introducir un valor para que el numero de equipos sea par")
-		if valor <= 0:
-			raise forms.ValidationError("Deben de haber mas de 0 equipos")
-		return valor
-
-	class Meta:
-		model = Liga
-		exclude = ('creador', 'fecha_creacion', 'publica', 'nombre')
-
-########################################################################################
-
-class ContactoForm(forms.Form):
-    emisor = forms.EmailField()
-    asunto = forms.CharField(max_length = 100)
-    mensaje = forms.CharField()
-
-########################################################################################
-
-
-#class contactoForm(forms.ModelForm):
-#	''' Formulario para rellenar el "contacta con nosotros" '''
-#	class Meta:
-#        model = Contacto
-#        fields = ('nombre', 'apellidos', 'telefono', 'email', 'comentarios')
-

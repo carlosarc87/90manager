@@ -21,4 +21,13 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+from django.conf.urls.defaults import *
 
+urls = patterns('',
+   	# Modulo de ligas
+   	(r'^crear/$', 'gestion_entrenador.views.crear_liga'),
+   	(r'^publicas/$', 'gestion_entrenador.views.ver_ligas_publicas'),
+   	(r'^ver/(?P<liga_id>\d+)/$', 'gestion_entrenador.views.ver_liga'),
+   	(r'^avanzar/(?P<liga_id>\d+)/$', 'gestion_entrenador.views.avanzar_jornada_liga'),
+   	(r'^activar/(?P<liga_id>\d+)/$', 'gestion_entrenador.views.activar_liga'),
+)

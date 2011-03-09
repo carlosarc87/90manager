@@ -21,10 +21,15 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-# Archivo para añadir las clases al panel de administración. Por cada
-# clase se añade una linea
+from django.conf.urls.defaults import *
 
-from django.contrib import admin
-from manager.gestion_entrenador.gestion_partido.models import Partido
+urls = patterns('',
+	#Habilitar la funcion de contacto
+	(r'^contacto/', 'manager.gestion_entrenador.views.contacto'),
 
-admin.site.register(Partido)
+	# Modulo de login
+    (r'^logout/$', 'django.contrib.auth.views.logout'),
+   	(r'^login/$', 'django.contrib.auth.views.login'),
+    (r'^perfil/$', 'gestion_usuario.views.perfil_usuario'),
+	(r'^registrar/', 'gestion_usuario.views.registrar_usuario'),
+)

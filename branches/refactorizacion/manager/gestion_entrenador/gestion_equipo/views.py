@@ -30,8 +30,6 @@ from django.shortcuts import render_to_response
 from django.db import transaction
 from django.contrib.auth import authenticate, login
 
-from django.db.models import Q
-
 import datetime
 import random
 

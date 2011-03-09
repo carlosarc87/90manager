@@ -22,3 +22,9 @@ Copyright 2011 by
 
 """
 
+from django.conf.urls.defaults import *
+
+urlpatterns = patterns('',
+   	# Modulo de jugadores
+   	(r'^ver/(?P<jugador_id>\d+)/$', 'manager.gestion_entrenador.views.ver_jugador'),
+)

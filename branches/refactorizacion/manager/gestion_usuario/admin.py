@@ -22,7 +22,7 @@ Copyright 2011 by
 
 """
 from django.contrib import admin
-from models import *
+from models import Usuario
 
 admin.site.register(Usuario)
 

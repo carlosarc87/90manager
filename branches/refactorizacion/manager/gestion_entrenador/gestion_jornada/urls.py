@@ -22,3 +22,9 @@ Copyright 2011 by
 
 """
 
+from django.conf.urls.defaults import *
+
+urls = patterns('',
+   	# Modulo de jornadas
+   	(r'^jornadas/ver/(?P<jornada_id>\d+)/$', 'manager.gestion_entrenador.views.ver_jornada'),
+)

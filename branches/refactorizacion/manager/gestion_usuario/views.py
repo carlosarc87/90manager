@@ -28,13 +28,10 @@ from django.shortcuts import render_to_response
 from django.db import transaction
 from django.contrib.auth import authenticate, login
 
-from django.db.models import Q
-
 import datetime
-import random
 
-from models import *
-from forms import *
+from models import Usuario
+from forms import UsuarioForm, ContactoForm
 
 ########################################################################
 
@@ -73,7 +70,7 @@ def registrar_usuario(request):
 def perfil_usuario(request):
 	''' Muestra el perfil del usuario logueado '''
 	usuario = obtenerUsuario(request)
-	if usuario == None:
+	if usuario is None:
 		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
 	# Obtenemos las ligas creadas por el usuario
 	ligas_creadas = Liga.objects.filter(creador = usuario)
@@ -88,5 +85,18 @@ def perfil_usuario(request):
 				 "equipos" : equipos,
 				})
 	return HttpResponse(t.render(c))
+
+########################################################################
+
+def contacto(request):
+	''' Muestra la página para rellenar el formulario de "contacta con nosotros" '''
+	if request.method == 'POST':
+		form = ContactoForm(request.POST)
+		if form.is_valid():
+			return devolverMensaje(request, "Se ha rellenado correctamente el formulario de contacto.", "/")
+	else:
+		form = ContactoForm()
+
+	return render_to_response("registration/contacto.html", {"form" : form})
 
 ########################################################################

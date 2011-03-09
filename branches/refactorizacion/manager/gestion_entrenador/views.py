@@ -65,12 +65,6 @@ def devolverMensaje(request, mensaje, url_salida = None):
 ############################ VISTAS ####################################
 ########################################################################
 
-def index(request):
-	''' Devuelve la pagina principal '''
-	t = loader.get_template("index.html")
-	return render_to_response("index.html", {})
-
-
 @login_required
 def ver_ligas_publicas(request):
 	''' Muestra las ligas publicas que haya en el sistema '''
@@ -88,41 +82,7 @@ def ver_ligas_publicas(request):
 	return HttpResponse(t.render(c))
 
 ########################################################################
-
-@login_required
-def ver_equipo(request, equipo_id):
-	''' Muestra los datos de un equipo '''
-	# Obtenemos el usuario
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
-
-	if Equipo.objects.filter(id = equipo_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe un equipo con identificador %s" % equipo_id)
-
-	# Obtenemos el equipo
-	equipo = Equipo.objects.get(id = equipo_id)
-
-	# Obtenemos los jugadores
-	jugadores = equipo.jugador_set.all()
-	valor_equipo = 0
-	for jugador in jugadores:
-		valor_equipo += jugador.valorMercado()
-
-	# Obtenemos la liga
-	liga = equipo.liga
-
-	# Cargamos la plantilla con los parametros y la devolvemos
-	t = loader.get_template("equipos/ver_equipo.html")
-	c = Context({"usuario" : usuario,
-				 "liga" : liga,
-				 "equipo" : equipo,
-				 "jugadores" : jugadores,
-				 "valor_equipo" : valor_equipo
-				})
-	return HttpResponse(t.render(c))
-
-########################################################################
+################################################
 
 @login_required
 def ver_jugador(request, jugador_id):
@@ -543,65 +503,6 @@ def preparar_partido(request, partido_id):
 ########################################################################
 
 @login_required
-def crear_equipo(request, liga_id):
-	''' Muestra la pagina para crear un equipo '''
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
-
-	if Liga.objects.filter(id = liga_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
-
-	liga = Liga.objects.get(id = liga_id)
-
-	if liga.activada():
-		return devolverMensaje(request, "Esta liga ya no acepta mas equipos", "/ligas/ver/%d/" % liga.id)
-
-	if liga.equipo_set.filter(usuario = usuario).count() > 0:
-		return devolverMensaje(request, "Ya tienes un equipo en esta liga", "/ligas/ver/%d/" % liga.id)
-
-	if request.method == 'POST':
-		form = EquipoForm(request.POST)
-		if form.is_valid():
-			equipo = form.save(commit = False)
-			equipo.usuario = usuario
-			equipo.liga = liga
-			equipo.save()
-			# Annadir 20 jugadores aleatorios
-			for j in range(1, 20):
-				# Establecer posición
-				if (j == 1 or j == 20):
-					posicion = "PORTERO"
-				elif ((j >= 2 and j <= 5) or (j >= 12 and j <= 14)):
-					posicion = "DEFENSA"
-				elif ((j >= 6 and j <= 9) or (j >= 15 and j <= 17)):
-					posicion = "CENTROCAMPISTA"
-				else:
-					posicion = "DELANTERO"
-
-				# Establecer si es titular o suplente
-				if (j <= 11):
-					titular = True
-					suplente = False
-				else:
-					titular = False
-					suplente = True
-
-				jugador = Jugador(equipo = equipo, nombre = nombreJugadorAleatorio(), titular = titular, suplente = suplente, transferible = False)
-				jugador.setNumero(j)
-				jugador.setPosicion(posicion)
-				jugador.setHabilidadesAleatorias(posicion, 50)
-				jugador.save()
-				equipo.agregarJugador(jugador)
-			return devolverMensaje(request, "Se ha creado correctamente", "/equipos/ver/%d/" % equipo.id)
-	else:
-		form = EquipoForm()
-
-	return render_to_response("equipos/crear_equipo.html", {"form": form, "usuario" : usuario, "liga" : liga })
-
-########################################################################
-
-@login_required
 def crear_liga(request):
 	''' Muestra y gestiona el formulario para crear una liga '''
 	usuario = obtenerUsuario(request)
@@ -658,20 +559,4 @@ def activar_liga(request, liga_id):
 		form = ActivarLigaForm(instance = liga)
 
 	return render_to_response("ligas/activar_liga.html", {"form" : form, "usuario" : usuario, "liga" : liga })
-
-
-########################################################################
-
-def contacto(request):
-	''' Muestra la página para rellenar el formulario de "contacta con nosotros" '''
-	if request.method == 'POST':
-		form = ContactoForm(request.POST)
-		if form.is_valid():
-			return devolverMensaje(request, "Se ha rellenado correctamente el formulario de contacto.", "/")
-	else:
-		form = ContactoForm()
-
-	return render_to_response("registration/contacto.html", {"form" : form})
-
-########################################################################
 
