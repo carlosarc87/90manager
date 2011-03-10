@@ -21,12 +21,7 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+from django.contrib import admin
+from models import Usuario
 
-from django.conf.urls.defaults import *
 
-urls = patterns('',
-   	# Modulo de partidos
-   	(r'^ver/(?P<partido_id>\d+)/$', 'gestion_entrenador.views.ver_partido'),
-   	(r'^preparar/(?P<partido_id>\d+)/$', 'gestion_entrenador.views.preparar_partido'),
-   	(r'^jugar/(?P<partido_id>\d+)/$', 'gestion_entrenador.views.jugar_partido'),
-)

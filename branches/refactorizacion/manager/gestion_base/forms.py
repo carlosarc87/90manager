@@ -22,11 +22,13 @@ Copyright 2011 by
 
 """
 
-from django.conf.urls.defaults import *
+from django import forms
 
-urls = patterns('',
-   	# Modulo de partidos
-   	(r'^ver/(?P<partido_id>\d+)/$', 'gestion_entrenador.views.ver_partido'),
-   	(r'^preparar/(?P<partido_id>\d+)/$', 'gestion_entrenador.views.preparar_partido'),
-   	(r'^jugar/(?P<partido_id>\d+)/$', 'gestion_entrenador.views.jugar_partido'),
-)
+########################################################################
+
+class ContactoForm(forms.Form):
+    emisor = forms.EmailField()
+    asunto = forms.CharField(max_length = 100)
+    mensaje = forms.CharField()
+
+########################################################################
