@@ -5,6 +5,8 @@ import os.path
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+RUTA = os.path.dirname(__file__)
+
 # Mandar reporte de error por correo a los siguientes destinatarios cuando DEBUG = False
 ADMINS = (
      ('Juanmi', 'ciberjm@gmail.com'),
@@ -53,7 +55,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(os.path.dirname(__file__), "site_media")
+MEDIA_ROOT = os.path.join(os.path.dirname(__file__), "public/site_media")
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -93,7 +95,7 @@ LOGOUT_URL = "/cuentas/logout/"
 LOGIN_REDIRECT_URL = "/cuentas/perfil/"
 
 TEMPLATE_DIRS = (
-	"templates/",
+	"public/templates/",
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -105,10 +107,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
 
 	# Aplicaciones caseras
     'gestion_base',

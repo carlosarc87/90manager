@@ -26,5 +26,5 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
    	# Modulo de jornadas
-   	(r'^ver/(?P<jornada_id>\d+)/$', 'gestion_sistema.gestion_jornadas.views.ver_jornada'),
+   	(r'^ver/(?P<jornada_id>\d+)/$', 'gestion_sistema.gestion_jornada.views.ver_jornada'),
 )

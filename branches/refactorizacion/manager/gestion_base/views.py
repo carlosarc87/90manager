@@ -33,6 +33,14 @@ import datetime
 from forms import ContactoForm
 
 from gestion_base.func import devolverMensaje
+from gestion_usuario.func import obtenerUsuario
+
+########################################################################
+
+def index(request):
+	''' Devuelve la pagina principal '''
+	t = loader.get_template("index.html")
+	return render_to_response("index.html", {})
 
 ########################################################################
 
@@ -53,6 +61,3 @@ def changelog(request):
 	return HttpResponse("Aun no implementado.")
 
 ########################################################################
-
-def index(request):
-	return HttpResponse("Index")

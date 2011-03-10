@@ -22,12 +22,18 @@ Copyright 2011 by
 
 """
 
-from django.conf.urls.defaults import *
+from django.shortcuts import render_to_response
 
-urlpatterns = patterns('',
-	# Modulo de login
-    (r'^logout/$', 'django.contrib.auth.views.logout'),
-   	(r'^login/$', 'django.contrib.auth.views.login'),
-    (r'^perfil/$', 'gestion_usuario.views.perfil_usuario'),
-	(r'^registrar/', 'gestion_usuario.views.registrar_usuario'),
-)
+from models import Usuario
+
+########################################################################
+
+def obtenerUsuario(request):
+	''' Obtiene un usuario desde un request filtrando al administrador '''
+	if Usuario.objects.filter(id = request.user.id).count() > 0:
+		usuario = Usuario.objects.get(id = request.user.id)
+	else:
+		usuario = None
+	return usuario
+
+########################################################################

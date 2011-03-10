@@ -36,7 +36,10 @@ import datetime
 import random
 
 from models import Partido
-from forms import PartidoEquipoLocalForm, PartidoEquipoVisitanteForm
+from forms import PrepararEquipoLocalForm, PrepararEquipoVisitanteForm
+
+from gestion_base.func import devolverMensaje
+from gestion_usuario.func import obtenerUsuario
 
 ########################################################################
 

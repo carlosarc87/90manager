@@ -22,6 +22,7 @@ Copyright 2011 by
 
 """
 from django.db import models
+from random import randint
 
 from gestion_sistema.gestion_equipo.models import Equipo
 
@@ -52,44 +53,44 @@ class Jugador(models.Model):
 
 	def setHabilidadesAleatorias(self, posicion, nivel):
 		if(posicion == "DELANTERO"):
-			self.ataque = aleatorio((int)(nivel * 0.8), nivel)
-			self.defensa = aleatorio(0, (int)(nivel * 0.3))
-			self.velocidad = aleatorio((int)(nivel * 0.5), nivel)
-			self.pases = aleatorio((int)(nivel * 0.5), (int)(nivel * 0.8))
-			self.anotacion = aleatorio((int)(nivel * 0.8), nivel)
-			self.portero = aleatorio(0, (int)(nivel * 0.1))
+			self.ataque = randint((int)(nivel * 0.8), nivel)
+			self.defensa = randint(0, (int)(nivel * 0.3))
+			self.velocidad = randint((int)(nivel * 0.5), nivel)
+			self.pases = randint((int)(nivel * 0.5), (int)(nivel * 0.8))
+			self.anotacion = randint((int)(nivel * 0.8), nivel)
+			self.portero = randint(0, (int)(nivel * 0.1))
 
 		elif(posicion == "CENTROCAMPISTA"):
-			self.ataque = aleatorio((int)(nivel * 0.5), (int)(nivel * 0.8))
-			self.defensa = aleatorio((int)(nivel * 0.5), (int)(nivel * 0.8))
-			self.velocidad = aleatorio((int)(nivel * 0.5), nivel)
-			self.pases = aleatorio((int)(nivel * 0.7), nivel)
-			self.anotacion = aleatorio((int)(nivel * 0.3), (int)(nivel * 0.8))
-			self.portero = aleatorio(0, (int)(nivel * 0.1))
+			self.ataque = randint((int)(nivel * 0.5), (int)(nivel * 0.8))
+			self.defensa = randint((int)(nivel * 0.5), (int)(nivel * 0.8))
+			self.velocidad = randint((int)(nivel * 0.5), nivel)
+			self.pases = randint((int)(nivel * 0.7), nivel)
+			self.anotacion = randint((int)(nivel * 0.3), (int)(nivel * 0.8))
+			self.portero = randint(0, (int)(nivel * 0.1))
 
 		elif(posicion == "DEFENSA"):
-			self.ataque = aleatorio(0, (int)(nivel * 0.3))
-			self.defensa = aleatorio((int)(nivel * 0.8), nivel)
-			self.velocidad = aleatorio((int)(nivel * 0.5), nivel)
-			self.pases = aleatorio((int)(nivel * 0.5), (int)(nivel * 0.8))
-			self.anotacion = aleatorio(0, (int)(nivel * 0.5))
-			self.portero = aleatorio(0, (int)(nivel * 0.3))
+			self.ataque = randint(0, (int)(nivel * 0.3))
+			self.defensa = randint((int)(nivel * 0.8), nivel)
+			self.velocidad = randint((int)(nivel * 0.5), nivel)
+			self.pases = randint((int)(nivel * 0.5), (int)(nivel * 0.8))
+			self.anotacion = randint(0, (int)(nivel * 0.5))
+			self.portero = randint(0, (int)(nivel * 0.3))
 
 		elif(posicion == "PORTERO"):
-			self.ataque = aleatorio(0, (int)(nivel * 0.3))
-			self.defensa = aleatorio(0, (int)(nivel * 0.3))
-			self.velocidad = aleatorio((int)(nivel * 0.5), nivel)
-			self.pases = aleatorio((int)(nivel * 0.3), (int)(nivel * 0.7))
-			self.anotacion = aleatorio(0, (int)(nivel * 0.1))
-			self.portero = aleatorio((int)(nivel * 0.8), nivel)
+			self.ataque = randint(0, (int)(nivel * 0.3))
+			self.defensa = randint(0, (int)(nivel * 0.3))
+			self.velocidad = randint((int)(nivel * 0.5), nivel)
+			self.pases = randint((int)(nivel * 0.3), (int)(nivel * 0.7))
+			self.anotacion = randint(0, (int)(nivel * 0.1))
+			self.portero = randint((int)(nivel * 0.8), nivel)
 
 		else:
-			self.ataque = aleatorio(0, nivel)
-			self.defensa = aleatorio(0, nivel)
-			self.velocidad = aleatorio(0, nivel)
-			self.pases = aleatorio(0, nivel)
-			self.anotacion = aleatorio(0, nivel)
-			self.portero = aleatorio(0, nivel)
+			self.ataque = randint(0, nivel)
+			self.defensa = randint(0, nivel)
+			self.velocidad = randint(0, nivel)
+			self.pases = randint(0, nivel)
+			self.anotacion = randint(0, nivel)
+			self.portero = randint(0, nivel)
 
 		return self
 

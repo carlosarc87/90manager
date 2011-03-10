@@ -21,13 +21,3 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-
-from django.conf.urls.defaults import *
-
-urlpatterns = patterns('',
-	# Modulo de login
-    (r'^logout/$', 'django.contrib.auth.views.logout'),
-   	(r'^login/$', 'django.contrib.auth.views.login'),
-    (r'^perfil/$', 'gestion_usuario.views.perfil_usuario'),
-	(r'^registrar/', 'gestion_usuario.views.registrar_usuario'),
-)

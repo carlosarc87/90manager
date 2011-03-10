@@ -22,12 +22,13 @@ Copyright 2011 by
 
 """
 
-from django.conf.urls.defaults import *
+########################################################################
 
-urlpatterns = patterns('',
-	# Modulo de login
-    (r'^logout/$', 'django.contrib.auth.views.logout'),
-   	(r'^login/$', 'django.contrib.auth.views.login'),
-    (r'^perfil/$', 'gestion_usuario.views.perfil_usuario'),
-	(r'^registrar/', 'gestion_usuario.views.registrar_usuario'),
-)
+# Devuelve la probabilidad dada la fórmula
+def probabilidadExito(formula):
+	v = (150 - (100 / (formula + 1)))
+	if v >= 100:
+		v = 100
+	return v * 0.95
+
+########################################################################

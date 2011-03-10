@@ -36,6 +36,12 @@ import random
 from models import Equipo
 from forms import EquipoForm
 
+from gestion_base.func import devolverMensaje
+from gestion_usuario.func import obtenerUsuario
+from gestion_sistema.gestion_liga.models import Liga
+from gestion_sistema.gestion_jugador.models import Jugador
+from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio
+
 ########################################################################
 
 @login_required

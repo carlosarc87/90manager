@@ -24,6 +24,8 @@ Copyright 2011 by
 
 from django.shortcuts import render_to_response
 
+from gestion_usuario.func import obtenerUsuario
+
 ########################################################################
 
 def devolverMensaje(request, mensaje, url_salida = None):

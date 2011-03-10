@@ -37,6 +37,9 @@ import random
 
 from models import Jornada
 
+from gestion_base.func import devolverMensaje
+from gestion_usuario.func import obtenerUsuario
+
 ########################################################################
 
 @login_required

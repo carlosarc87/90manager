@@ -37,6 +37,9 @@ import random
 
 from models import Jugador
 
+from gestion_base.func import devolverMensaje
+from gestion_usuario.func import obtenerUsuario
+
 ########################################################################
 
 @login_required

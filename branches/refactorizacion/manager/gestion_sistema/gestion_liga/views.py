@@ -39,6 +39,13 @@ from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_equipo.forms import EquipoForm
 
 from models import Liga
+from forms import LigaForm, ActivarLigaForm
+
+from gestion_base.func import devolverMensaje
+from gestion_usuario.func import obtenerUsuario
+from gestion_usuario.models import Usuario
+
+from func import rellenarLiga, generarJornadas
 
 ########################################################################
 
@@ -248,8 +255,8 @@ def activar_liga(request, liga_id):
 			#for equipo in equipos_descartados:
 			#	Equipo.delete(Equipo.objects.get(id = equipo)) # A lo bruten xD
 			liga.save()
-			liga.rellenarLiga()
-			liga.generarJornadas();
+			rellenarLiga(liga)
+			generarJornadas(liga);
 			return devolverMensaje(request, "Se ha generado la liga correctamente", "/ligas/ver/%d/" % liga.id)
 	else:
 		form = ActivarLigaForm(instance = liga)

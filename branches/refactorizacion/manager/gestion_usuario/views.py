@@ -33,13 +33,18 @@ import datetime
 from models import Usuario
 from forms import UsuarioForm, ContactoForm
 
+from gestion_base.func import devolverMensaje
+from gestion_usuario.func import obtenerUsuario
+
+from gestion_sistema.gestion_liga.models import Liga
+
 ########################################################################
 
 # Vista para registrar a un usuario
 def registrar_usuario(request):
 	''' Vista para registrar a un usuario '''
-	if obtenerUsuario(request) != None:
-		return devolverMensaje(request, "No puede registrar usuarios estando logueado.", "/")
+#	if obtenerUsuario(request) != None:
+#		return devolverMensaje(request, "No puede registrar usuarios estando logueado.", "/")
 	if request.method == 'POST':
 		form = UsuarioForm(request.POST)
 		if form.is_valid():

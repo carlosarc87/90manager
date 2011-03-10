@@ -26,5 +26,5 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('',
 	#Habilitar la funcion de contacto
 	(r'^$', 'gestion_base.views.index'),
-	(r'^contacto/', 'views.contacto'),
+	(r'^contacto/', 'gestion_base.views.contacto'),
 )

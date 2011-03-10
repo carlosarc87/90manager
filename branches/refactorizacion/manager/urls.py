@@ -21,10 +21,10 @@ urlpatterns = patterns('',
 	# Modulos
 	(r'^cuentas/', include('gestion_usuario.urls')),
 	(r'^equipos/', include('gestion_sistema.gestion_equipo.urls')),
-	(r'^liga/', include('gestion_sistema.gestion_liga.urls')),
-	(r'^jornada/', include('gestion_sistema.gestion_jornada.urls')),
-	(r'^partido/', include('gestion_sistema.gestion_partido.urls')),
-	(r'^jugador/', include('gestion_sistema.gestion_jugador.urls')),
+	(r'^ligas/', include('gestion_sistema.gestion_liga.urls')),
+	(r'^jornadas/', include('gestion_sistema.gestion_jornada.urls')),
+	(r'^partidos/', include('gestion_sistema.gestion_partido.urls')),
+	(r'^jugadores/', include('gestion_sistema.gestion_jugador.urls')),
 
 	# Gestion basica de la web
 	(r'', include('gestion_base.urls')),

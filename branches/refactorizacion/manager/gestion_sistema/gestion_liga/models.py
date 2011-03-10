@@ -25,12 +25,14 @@ from django.db import models
 
 from gestion_usuario.models import Usuario
 
+import random
+
 ########################################################################
 
 # Liga
 class Liga(models.Model):
 	''' Representa una liga '''
-	#creador = models.ForeignKey(Usuario)
+	creador = models.ForeignKey(Usuario)
 	nombre = models.CharField(max_length = 200)
 	num_equipos = models.IntegerField(null=True, default=0)
 	publica = models.BooleanField(default=True) # Visibilidad de la liga
@@ -52,80 +54,6 @@ class Liga(models.Model):
 	def agregarEquipo(self, equipo):
 		''' Agrega un equipo a la liga '''
 		self.equipos_set.add(equipo)
-
-	def rellenarLiga(self):
-		''' Rellena los huecos vacios de una liga con equipos controlados por bots '''
-		# Generar los equipos
-		for i in range(self.equipo_set.count(), self.num_equipos):
-			equipo = Equipo(nombre="Equipo %d - %d" % (self.id, i), usuario = None, liga = self)
-			equipo.save()
-			# Generar jugadores
-			for j in range(1, 20):
-				# Establecer posición
-				if (j == 1 or j == 20):
-					posicion = "PORTERO"
-				elif ((j >= 2 and j <= 5) or (j >= 12 and j <= 14)):
-					posicion = "DEFENSA"
-				elif ((j >= 6 and j <= 9) or (j >= 15 and j <= 17)):
-					posicion = "CENTROCAMPISTA"
-				else:
-					posicion = "DELANTERO"
-
-				# Establecer si es titular o suplente
-				if (j <= 11):
-					titular = True
-					suplente = False
-				else:
-					titular = False
-					suplente = True
-
-				jugador = Jugador(equipo = equipo, nombre = nombreJugadorAleatorio(), titular = titular, suplente = suplente, transferible = False)
-				jugador.setNumero(j)
-				jugador.setPosicion(posicion)
-				jugador.setHabilidadesAleatorias(posicion, 50)
-				jugador.save()
-				equipo.agregarJugador(jugador)
-
-	def generarJornadas(self):
-		''' Genera las jornadas de una liga '''
-		jornadas = []
-		num_jornadas_ida = self.num_equipos - 1
-		num_emparejamientos_jornada = self.num_equipos / 2
-		# Creamos una copia de los equipos
-		id_equipos = list(self.equipo_set.all())
-		random.shuffle(id_equipos)
-
-		# Crear jornadas de ida
-		j = 0
-		while j < num_jornadas_ida:
-			emparejamientos_jornada = []
-			for emp in range(0, num_emparejamientos_jornada):
-				emparejamiento = [id_equipos[emp], id_equipos[self.num_equipos - emp - 1]]
-				emparejamientos_jornada.append(emparejamiento)
-			# Annadir todos los emparejamientos a la jornada
-			jornadas.append(emparejamientos_jornada)
-
-			# Colocar segundo equipo al final del vector. El primer equipo siempre queda fijo
-			equipo_pal_fondo = id_equipos.pop(1)
-			id_equipos.append(equipo_pal_fondo)
-			j += 1
-
-		ultima_jornada = num_jornadas_ida * 2
-		while (j < ultima_jornada):
-			emparejamientos_jornada = []
-			for emp in range(0, num_emparejamientos_jornada):
-				emparejamiento = [jornadas[j - num_jornadas_ida][emp][1], jornadas[j - num_jornadas_ida][emp][0]]
-				emparejamientos_jornada.append(emparejamiento)
-			# Annadir todos los emparejamientos a la jornada
-			jornadas.append(emparejamientos_jornada)
-			j += 1
-
-		for i in range(len(jornadas)):
-			jornada = Jornada(liga = self, numero = i, jugada = False)
-			jornada.save()
-			for emparejamiento in jornadas[i]:
-				partido = Partido(jornada = jornada, equipo_local = emparejamiento[0], equipo_visitante = emparejamiento[1], jugado = False)
-				partido.save()
 
 	def __unicode__(self):
 		''' Devuelve una cadena de texto que representa la clase '''
