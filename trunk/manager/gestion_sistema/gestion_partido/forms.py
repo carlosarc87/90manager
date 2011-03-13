@@ -29,49 +29,36 @@ from models import Partido
 
 ########################################################################
 
-class PrepararEquipoLocalForm(forms.ModelForm):
+class PrepararEquipoForm(forms.Form):
 	''' Formulario de preparacion de equipos locales '''
-	titulares_local = forms.fields.MultipleChoiceField()
+	jugadores_disponibles = forms.fields.MultipleChoiceField()
+	defensas = forms.fields.MultipleChoiceField()
+	centrocampistas = forms.fields.MultipleChoiceField()
+	portero = forms.fields.ChoiceField()
+	delanteros = forms.fields.MultipleChoiceField()
+	suplentes = forms.fields.MultipleChoiceField()
 
 	def __init__(self, *args, **kwargs):
 		''' Constructor que establece la lista de valores de los titulares '''
-		super(PrepararEquipoLocalForm, self).__init__(*args, **kwargs)
+		super(PrepararEquipoForm, self).__init__(*args, **kwargs)
 		# Establecemos los valores de la lista multiple como los jugadores del equipo local
-		jugadores = self.instance.equipo_local.jugador_set.all()
-		self.fields['titulares_local'].choices = [[choice.id, choice.nombre] for choice in jugadores]
+		jugadores = self.instance.equipo.jugador_set.all()
+		self.fields['jugadores_disponibles'].choices = [[choice.id, choice.nombre] for choice in jugadores]
 
-	def clean_titulares_local(self):
-		''' Valida que se hayan seleccionado 11 jugadores y los devuelve '''
-		valor = self.cleaned_data['titulares_local']
-		if len(valor) != 11:
-			raise forms.ValidationError("Solo puedes seleccionar 11 jugadores.")
-		return valor
+	def clean(self):
+		''' Valida los datos del formulario '''
+		datos = self.cleaned_data
+		lista = list(datos.get("defensas"))
+		lista += list(datos.get("portero"))
+		lista += list(datos.get("delanteros"))
+		lista += list(datos.get("centrocampistas"))
+		print "Lista de datos: "
+		print lista
+		if len(lista) != 11:
+			raise forms.ValidationError("Tienes que indicar exactamente 11 titulares.")
+#		if len(datos.get("suplentes") != 5):
+#			raise forms.ValidationError("Tienes que indicar exactamente 5 suplentes.");
+		return datos
 
-	class Meta:
-		model = Partido
-		exclude = ('jornada', 'equipo_local', 'equipo_visitante', 'goles_local', 'goles_visitante', 'alineacion_visitante', 'alineacion_local')
-
-########################################################################
-
-class PrepararEquipoVisitanteForm(forms.ModelForm):
-	''' Formulario de preparacion de equipos locales '''
-	titulares_visitante = forms.fields.MultipleChoiceField()
-
-	def __init__(self, *args, **kwargs):
-		''' Constructor que establece la lista de valores de los titulares '''
-		super(PrepararEquipoVisitanteForm, self).__init__(*args, **kwargs)
-		# Establecemos los valores de la lista multiple como los jugadores del equipo visitante
-		self.fields['titulares_visitante'].choices = [[choice.id, choice.nombre] for choice in self.instance.equipo_visitante.jugador_set.all()]
-
-	def clean_titulares_visitante(self):
-		''' Valida que se hayan seleccionado 11 jugadores y los devuelve'''
-		valor = self.cleaned_data['titulares_visitante']
-		if len(valor) != 11:
-			raise forms.ValidationError("Solo puedes seleccionar 11 jugadores.")
-		return valor
-
-	class Meta:
-		model = Partido
-		exclude = ('jornada', 'equipo_local', 'equipo_visitante', 'goles_local', 'goles_visitante', 'alineacion_local', 'alineacion_visitante')
 
 ########################################################################

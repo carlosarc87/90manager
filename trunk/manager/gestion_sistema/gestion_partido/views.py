@@ -36,7 +36,7 @@ import datetime
 import random
 
 from models import Partido
-from forms import PrepararEquipoLocalForm, PrepararEquipoVisitanteForm
+from forms import PrepararEquipoForm
 
 from gestion_base.func import devolverMensaje
 from gestion_usuario.func import obtenerUsuario
@@ -105,13 +105,9 @@ def ver_partido(request, partido_id):
 	equipo_local = partido.equipo_local
 	equipo_visitante = partido.equipo_visitante
 
-	titulares_local = None
-	if partido.alineacion_local:
-		titulares_local = partido.alineacion_local.titulares.all()
+	titulares_local = partido.alineacion_local.getTitulares()
 
-	titulares_visitante = None
-	if partido.alineacion_visitante:
-		titulares_visitante = partido.alineacion_visitante.titulares.all()
+	titulares_visitante = partido.alineacion_visitante.getTitulares()
 
 	# Comprobamos si el partido ha acabado
 	finalizado = partido.finalizado()
@@ -177,40 +173,28 @@ def preparar_partido(request, partido_id):
 	if (partido.equipo_local.usuario == usuario): # Juega como local
 		equipo = partido.equipo_local
 		if request.method == 'POST':
-			form = PrepararEquipoLocalForm(request.POST, instance = partido)
+			form = PrepararEquipoForm(request.POST, instance = partido.alineacion_local)
 			if form.is_valid():
 				form.save()
-				titulares = form.cleaned_data["titulares_local"]
-				suplentes = partido.equipo_local.jugador_set.all()
-				for j in suplentes:
-					if j in titulares:
-						suplentes.remove(j)
-				partido.crearAlineacion(True, titulares, suplentes)
 				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
 		else:
-			form = PrepararEquipoLocalForm(instance = partido)
+			form = PrepararEquipoForm(alineacion = partido.alineacion_local)
 
 	elif (partido.equipo_visitante.usuario == usuario): # Juega como visitante
 		equipo = partido.equipo_visitante
 		if request.method == 'POST':
-			form = PrepararEquipoVisitanteForm(request.POST, instance = partido)
+			form = PrepararEquipoForm(request.POST, instance = partido.alineacion_visitante)
 			if form.is_valid():
 				form.save()
-				titulares = form.cleaned_data["titulares_visitante"]
-				suplentes = partido.equipo_visitante.jugador_set.all()
-				for j in suplentes:
-					if j in titulares:
-						suplentes.remove(j)
-				partido.crearAlineacion(False, titulares, suplentes)
 				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
 		else:
-			form = PrepararEquipoVisitanteForm(instance = partido)
+			form = PrepararEquipoVisitanteForm(alineacion = partido.alineacion_visitante)
 
 	else: # No juega como naaaaaaaaaaaaaaa
 		return devolverMensaje(request, "No tienes equipo en este partido", "/partidos/ver/%d/" % partido.id)
 
 	jugadores = equipo.jugador_set.all()
-	
+
 	return render_to_response("partidos/preparar_partido.html", {"form": form, "usuario" : usuario, "partido" : partido, "equipo" : equipo, "jugadores" : jugadores })
 
 ########################################################################

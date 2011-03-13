@@ -30,92 +30,162 @@ from gestion_sistema.gestion_jornada.models import Jornada
 from random import randint
 from func import probabilidadExito
 
+POSICIONES = (
+	('BA', 'BANQUILLO'),
+	('PO', 'PORTERO'),
+	('DF', 'DEFENSA'),
+	('CC', 'CENTROCAMPISTA'),
+	('DL', 'DELANTERO'),
+)
+
+########################################################################
+
+class JugadorPartido(models.Model):
+	''' Representa los atributos de un jugador en un partido '''
+	jugador = models.ForeignKey(Jugador)
+	posicion = models.CharField(max_length = 2, choices = POSICIONES)
+
+	ataque = models.IntegerField(null = False, blank = False)
+	defensa = models.IntegerField(null = False, blank = False)
+	velocidad = models.IntegerField(null = False, blank = False)
+	pases = models.IntegerField(null = False, blank = False)
+	anotacion = models.IntegerField(null = False, blank = False)
+	portero = models.IntegerField(null = False, blank = False)
+
+	def __init__(self, *args, **kwargs):
+		super(JugadorPartido, self).__init__(*args, **kwargs)
+		self.ataque = self.jugador.ataque
+		self.defensa = self.jugador.defensa
+		self.velocidad = self.jugador.velocidad
+		self.pases = self.jugador.pases
+		self.anotacion = self.jugador.anotacion
+		self.portero = self.jugador.portero
+
 ########################################################################
 
 class AlineacionEquipo(models.Model):
 	''' Representa la alineación de un equipo en un partido '''
 	equipo = models.ForeignKey(Equipo)
-	titulares = models.ManyToManyField(Jugador, related_name = "Jugadores_titulares")
-	suplentes = models.ManyToManyField(Jugador, related_name = "Jugadores_suplentes")
+	jugadores = models.ManyToManyField(JugadorPartido, null = True, blank = True)
+
+	def getTitulares(self):
+		''' Devuelve los jugadores titulares '''
+		datos = self.getDatosTitulares()
+		lista = []
+		print datos
+		for dato in datos:
+			jugador = dato.jugador
+			lista.append(jugador)
+		print lista
+		return lista
+
+	def getSuplentes(self):
+		''' Devuelve los jugadores suplentes '''
+		datos = self.getDatosSuplentes()
+		lista = []
+		for dato in datos:
+			jugador = dato.jugador
+			lista.append(jugador)
+		return lista
+
+	def getDatosTitulares(self):
+		''' Devuelve los datos de los titulares '''
+		return self.jugadores.all().exclude(posicion = 'BA')
+
+	def getDatosSuplentes(self):
+		''' Devuelve los datos de los suplentes '''
+		return self.jugadores.filter(posicion = 'BA')
+
+	def setAleatoria(self):
+		jugadores_equipo = self.equipo.jugador_set.all()
+
+		for i in range(15):
+			posiciones = ['PO', 'DF', 'DF', 'DF', 'DF', 'CC', 'CC', 'CC', 'CC', 'DL', 'DL', 'BA', 'BA', 'BA', 'BA', 'BA']
+			jugador = JugadorPartido(jugador = jugadores_equipo[i], posicion = posiciones[i])
+			jugador.save()
+			self.jugadores.add(jugador)
+
+	def estaPreparada(self):
+		return len(self.jugadores.all()) > 0
 
 	def getValorAtaque(self):
 		valor = 0
-		titulares = self.titulares.all()
+		titulares = self.getDatosTitulares()
 		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
 			posicion = titulares[i].posicion
 			ataque = titulares[i].ataque
 
-			if(posicion == "DEFENSA"):
+			if(posicion == "DF"):
 				valor += (int)(ataque * 0.25)
-			elif(posicion == "CENTROCAMPISTA"):
+			elif(posicion == "CC"):
 				valor += (int)(ataque * 0.75)
-			elif(posicion == "DELANTERO"):
+			elif(posicion == "DL"):
 				valor += ataque
 
 		return valor / (num_jugadores_campo - 1)
 
 	def getValorDefensa(self):
 		valor = 0
-		titulares = self.titulares.all()
+		titulares = self.getDatosTitulares()
 		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
 			posicion = titulares[i].posicion
 			defensa = titulares[i].defensa
 
-			if(posicion == "DEFENSA"):
+			if(posicion == "DF"):
 				valor += defensa
-			elif(posicion == "CENTROCAMPISTA"):
+			elif(posicion == "CC"):
 				valor += (int)(defensa * 0.75)
-			elif(posicion == "DELANTERO"):
+			elif(posicion == "DL"):
 				valor += (int)(defensa * 0.25)
 
 		return valor / (num_jugadores_campo - 1)
 
 	def getValorPases(self):
 		valor = 0
-		titulares = self.titulares.all()
+		titulares = self.getDatosTitulares()
 		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
 			posicion = titulares[i].posicion
 			pases = titulares[i].pases
-			if(posicion == "DEFENSA"):
+			if(posicion == "DF"):
 				valor += (int)(pases * 0.75)
-			elif(posicion == "CENTROCAMPISTA"):
+			elif(posicion == "CC"):
 				valor += pases
-			elif(posicion == "DELANTERO"):
+			elif(posicion == "DL"):
 				valor += (int)(pases * 0.75)
 
 		return valor / (num_jugadores_campo - 1)
 
 	def getValorVelocidad(self):
 		valor = 0
-		titulares = self.titulares.all()
+		titulares = self.getDatosTitulares()
 		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
 			posicion = titulares[i].posicion
 			velocidad = titulares[i].velocidad
-			if(posicion == "DEFENSA"):
+			if(posicion == "DF"):
 				valor += (int)(velocidad * 0.75)
-			elif(posicion == "CENTROCAMPISTA"):
+			elif(posicion == "CC"):
 				valor += velocidad
-			elif(posicion == "DELANTERO"):
+			elif(posicion == "DL"):
 				valor += (int)(velocidad * 0.75)
 
 		return valor / (num_jugadores_campo - 1)
 
 	def getValorAnotacion(self):
 		valor = 0
-		titulares = self.titulares.all()
+		titulares = self.getDatosTitulares()
 		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
 			posicion = titulares[i].posicion
 			anotacion = titulares[i].anotacion
-			if(posicion == "DEFENSA"):
+			if(posicion == "DF"):
 				valor += (int)(anotacion * 0.5)
-			elif(posicion == "CENTROCAMPISTA"):
+			elif(posicion == "CC"):
 				valor += (int)(anotacion * 0.75)
-			elif(posicion == "DELANTERO"):
+			elif(posicion == "DL"):
 				valor += anotacion
 
 		return valor / (num_jugadores_campo - 1)
@@ -123,12 +193,12 @@ class AlineacionEquipo(models.Model):
 	def getValorPortero(self):
 		valor = 0
 		i = 0
-		titulares = self.titulares.all()
+		titulares = self.getDatosTitulares()
 		num_jugadores_campo = len(titulares)
 		while (i < num_jugadores_campo) and (valor == 0):
 			posicion = titulares[i].posicion
 
-			if(posicion == "PORTERO"):
+			if(posicion == "PO"):
 				valor = titulares[i].portero
 
 			i += 1
@@ -145,60 +215,46 @@ class Partido(models.Model):
 	equipo_local = models.ForeignKey(Equipo, related_name = "Local")
 	equipo_visitante = models.ForeignKey(Equipo, related_name = "Visitante")
 
-	alineacion_local = models.ForeignKey(AlineacionEquipo, related_name = "AlineacionLocal", null = True)
-	alineacion_visitante = models.ForeignKey(AlineacionEquipo, related_name = "AlineacionVisitante", null = True)
+	alineacion_local = models.ForeignKey(AlineacionEquipo, related_name = "AlineacionLocal")
+	alineacion_visitante = models.ForeignKey(AlineacionEquipo, related_name = "AlineacionVisitante")
 
 	goles_local = models.IntegerField(null = True, blank = True)
 	goles_visitante = models.IntegerField(null = True, blank = True)
 
 	jugado = models.BooleanField()
 
+	def __init__(self, *args, **kwargs):
+		super(Partido, self).__init__(*args, **kwargs)
+		self.alineacion_local = AlineacionEquipo(equipo = self.equipo_local)
+		self.alineacion_visitante = AlineacionEquipo(equipo = self.equipo_visitante)
+		self.alineacion_local.save()
+		self.alineacion_visitante.save()
+		self.alineacion_local_id = self.alineacion_local.id
+		self.alineacion_visitante_id = self.alineacion_visitante.id
+
 	def finalizado(self):
 		''' Indica si un partido ya ha acabado '''
 		return self.jugado
-
-	def crearAlineacion(self, local, titulares, suplentes):
-		if local:
-			equipo = self.equipo_local
-			if self.alineacion_local != None:
-				del self.alineacion_local
-		else:
-			equipo = self.equipo_visitante
-			if self.alineacion_visitante != None:
-				del self.alineacion_visitante
-
-		alineacion = AlineacionEquipo(equipo = equipo)
-		alineacion.save()
-
-		for jugador in titulares:
-			alineacion.titulares.add(jugador)
-		for jugador in suplentes:
-			alineacion.suplentes.add(jugador)
-
-		if local:
-			self.alineacion_local = alineacion
-		else:
-			self.alineacion_visitante = alineacion
 
 	def jugar(self):
 		''' Juega el partido '''
 		num_goles = [0, 0]
 
 		# Obtener jugadores titulares y suplentes de los 2 equipos
-		titulares_local = self.equipo_local.jugador_set.filter(titular = True)
-		suplentes_local = self.equipo_local.jugador_set.filter(suplente = True)
-		titulares_visitante = self.equipo_visitante.jugador_set.filter(titular = True)
-		suplentes_visitante = self.equipo_visitante.jugador_set.filter(suplente = True)
+		titulares_local = self.alineacion_local.getDatosTitulares()
+		suplentes_local = self.alineacion_local.getDatosSuplentes()
+		titulares_visitante = self.alineacion_visitante.getDatosTitulares()
+		suplentes_visitante = self.alineacion_visitante.getDatosSuplentes()
 
 		# Obtener alineaciones de los 2 equipos
 		alineacion_local = self.alineacion_local
 		alineacion_visitante = self.alineacion_visitante
 
-		if not alineacion_local:
-			self.crearAlineacion(True, self.equipo_local.jugador_set.all()[:11], self.equipo_local.jugador_set.all()[11:])
+		if not alineacion_local.estaPreparada():
+			self.alineacion_local.setAleatoria()
 			alineacion_local = self.alineacion_local
-		if not alineacion_visitante:
-			self.crearAlineacion(False, self.equipo_visitante.jugador_set.all()[:11], self.equipo_visitante.jugador_set.all()[11:])
+		if not alineacion_visitante.estaPreparada():
+			self.alineacion_visitante.setAleatoria()
 			alineacion_visitante = self.alineacion_visitante
 
 		alineacion = [alineacion_local, alineacion_visitante]

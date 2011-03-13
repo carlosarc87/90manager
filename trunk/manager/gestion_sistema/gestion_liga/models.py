@@ -27,8 +27,6 @@ from gestion_usuario.models import Usuario
 
 import random
 
-from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio
-
 ########################################################################
 
 # Liga
@@ -57,37 +55,11 @@ class Liga(models.Model):
 		''' Rellena los huecos vacios de una liga con equipos controlados por bots '''
 		# Generar los equipos
 		from gestion_sistema.gestion_equipo.models import Equipo
-		from gestion_sistema.gestion_jugador.models import Jugador
 
 		for i in range(self.equipo_set.count(), self.num_equipos):
 			equipo = Equipo(nombre="Equipo %d - %d" % (self.id, i), usuario = None, liga = self)
 			equipo.save()
-			# Generar jugadores
-			for j in range(1, 20):
-				# Establecer posición
-				if (j == 1 or j == 20):
-					posicion = "PORTERO"
-				elif ((j >= 2 and j <= 5) or (j >= 12 and j <= 14)):
-					posicion = "DEFENSA"
-				elif ((j >= 6 and j <= 9) or (j >= 15 and j <= 17)):
-					posicion = "CENTROCAMPISTA"
-				else:
-					posicion = "DELANTERO"
-
-				# Establecer si es titular o suplente
-				if (j <= 11):
-					titular = True
-					suplente = False
-				else:
-					titular = False
-					suplente = True
-
-				jugador = Jugador(equipo = equipo, nombre = nombreJugadorAleatorio(), titular = titular, suplente = suplente, transferible = False)
-				jugador.setNumero(j)
-				jugador.setPosicion(posicion)
-				jugador.setHabilidadesAleatorias(posicion, 50)
-				jugador.save()
-				equipo.agregarJugador(jugador)
+			equipo.generarJugadoresAleatorios()
 
 	def generarJornadas(self):
 		''' Genera las jornadas de una liga '''

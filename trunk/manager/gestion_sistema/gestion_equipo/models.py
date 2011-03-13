@@ -40,6 +40,28 @@ class Equipo(models.Model):
 		''' Añade un jugador al equipo '''
 		self.jugador_set.add(jugador)
 
+	def generarJugadoresAleatorios(self):
+		''' Genera un conjunto de jugadores aleatorios para el equipo '''
+		from gestion_sistema.gestion_jugador.models import Jugador
+		from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio
+		# Generar jugadores
+		for j in range(1, 20):
+			# Establecer posición
+			if (j == 1 or j == 20):
+				posicion = "PORTERO"
+			elif ((j >= 2 and j <= 5) or (j >= 12 and j <= 14)):
+				posicion = "DEFENSA"
+			elif ((j >= 6 and j <= 9) or (j >= 15 and j <= 17)):
+				posicion = "CENTROCAMPISTA"
+			else:
+				posicion = "DELANTERO"
+
+			jugador = Jugador(equipo = self, nombre = nombreJugadorAleatorio(), transferible = False)
+			jugador.setNumero(j)
+			jugador.setHabilidadesAleatorias(posicion, 50)
+			jugador.save()
+			self.agregarJugador(jugador)
+
 	def __unicode__(self):
 		return self.nombre
 

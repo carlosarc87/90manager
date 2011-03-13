@@ -104,32 +104,7 @@ def crear_equipo(request, liga_id):
 			equipo.usuario = usuario
 			equipo.liga = liga
 			equipo.save()
-			# Annadir 20 jugadores aleatorios
-			for j in range(1, 20):
-				# Establecer posición
-				if (j == 1 or j == 20):
-					posicion = "PORTERO"
-				elif ((j >= 2 and j <= 5) or (j >= 12 and j <= 14)):
-					posicion = "DEFENSA"
-				elif ((j >= 6 and j <= 9) or (j >= 15 and j <= 17)):
-					posicion = "CENTROCAMPISTA"
-				else:
-					posicion = "DELANTERO"
-
-				# Establecer si es titular o suplente
-				if (j <= 11):
-					titular = True
-					suplente = False
-				else:
-					titular = False
-					suplente = True
-
-				jugador = Jugador(equipo = equipo, nombre = nombreJugadorAleatorio(), titular = titular, suplente = suplente, transferible = False)
-				jugador.setNumero(j)
-				jugador.setPosicion(posicion)
-				jugador.setHabilidadesAleatorias(posicion, 50)
-				jugador.save()
-				equipo.agregarJugador(jugador)
+			equipo.generarJugadoresAleatorios()
 			return devolverMensaje(request, "Se ha creado correctamente", "/equipos/ver/%d/" % equipo.id)
 	else:
 		form = EquipoForm()
