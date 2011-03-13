@@ -6,7 +6,7 @@
 			float: left;
 			width: 250px;
 		}
-		
+
 		#jugadores .cuadro_jugador{
 			background: #eee;
 			border: solid 1px #0055ff;
@@ -14,7 +14,7 @@
 			padding: 5px;
 			margin: 5px 0px;
 		}
-		
+
 		#jugadores .cuadro_jugador .numero_jugador{
 			color: #6666ff;
 			font-weight: bold;
@@ -23,7 +23,7 @@
 			text-align: right;
 			width: 20px;
 		}
-		
+
 		#jugadores .cuadro_jugador .nombre_jugador{
 			color: #3333ff;
 		}
@@ -35,7 +35,7 @@
 			text-align: center;
 			width: 444px;
 		}
-		
+
 		#campo_alineacion .cuadro_jugador{
 			background: url('/media/img/avatar_jugador.gif') no-repeat;
 			background-position: center top;
@@ -47,40 +47,40 @@
 			text-align: center;
 			width: 50px;
 		}
-		
+
 		#fila_delanteros{
 			background: rgb(0, 200, 0);
 			background: rgba(0, 200, 0, 0.4);
 			height: 130px;
 			margin: 125px 20px 0px 20px;
 		}
-		
+
 		#fila_centrocampistas{
 			height: 168px;
 			margin: 0px 20px;
 		}
-		
+
 		#fila_defensas{
 			background: rgb(0, 200, 0);
 			background: rgba(0, 200, 0, 0.4);
 			height: 130px;
 			margin: 0px 20px;
 		}
-		
+
 		#fila_portero{
 			height: 125px;
 			margin: 0px 20px;
 		}
-		
+
 		#form_alineacion{
-			
+
 		}
-		
+
 		#titulares{
 			float: left;
 			width: 300px;
 		}
-		
+
 		.texto_posicion{
 			font-size: 14px;
 			font-weight: bold;
@@ -91,49 +91,86 @@
 
 {% block head_js %}
 	<script type="text/javascript">
+		var jugador_pillado; // Jugador que se ha cogido
+		var jugadores_situados = 0; // Numero de jugadores situados en el campo
 		// Comienza el arrastrado. El “target” del evento será el elemento que está siendo arrastrado.
-		function dragStart(ev) {
-			ev.dataTransfer.effectAllowed = 'move';
-			ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
-			ev.dataTransfer.setDragImage(ev.target, 0, 0);
+		function dragStart(objeto, ev) {
+			//ev.dataTransfer.effectAllowed = 'move';
+			//ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+			//ev.dataTransfer.setDragImage(ev.target, 0, 0);
+
+			ev.dataTransfer.setData("Text", "jugador_cogido: " + objeto.innerHTML);
+			jugador_pillado = objeto;
+			//jugador_pillado.classname = 'jugador_pillado'; // Pa meterle CSS a los que tengas cogios
 			return true;
 		}
 
 		// Se dispara cuando un elemento que está siendo arrastrado entra en un contenedor.
-		function dragEnter(ev) {
-			var idelt = ev.dataTransfer.getData("Text");
-			return true;
+		function dragEnter(objeto, ev) {
+			//var idelt = ev.dataTransfer.getData("Text");
+			return false;
 		}
 
-		// El elemento ha sido movido dentro del contenedor.
-		function dragOver(ev) {
-			var idelt = ev.dataTransfer.getData("Text");
-			var objetivo = ev.target;
-			var id_objetivo = objetivo.getAttribute('id');
-			
+		// El elemento se mueve dentro del contenedor.
+		function dragOver(objeto, ev) {
+			//var idelt = ev.dataTransfer.getData("Text");
+			//var objetivo = ev.target;
+			//var id_objetivo = objetivo.getAttribute('id');
+
 			//var num_ele = 1; //objetivo.items.length;
-			
-			ev.dataTransfer.dropEffect = 'move';
+
+			//ev.dataTransfer.dropEffect = 'move';
 			/*
 			if(num_ele > 1){
 				alert("No se pueden colocar mas de 1 jugadores en la misma posicion");
 				return false; // Denegar el 'drop'
 			}*/
-			
-			return true; // Aceptar el 'drop'
+
+			return false; // Aceptar el 'drop'
 		}
 
 		// Se ha dejado de arrastrar el elemento, con éxito o no.
-		function dragEnd(ev) {
-			ev.dataTransfer.clearData("Text");
-			return true;
+		function dragEnd(objeto, ev) {
+			//ev.dataTransfer.clearData("Text");
+			return false;
 		}
 
-		// El elemento se ha arrastrado correctamente en el elemento contenedor.
-		function dragDrop(ev) {
-			var data = ev.dataTransfer;
-			ev.target.appendChild(document.getElementById(idelt));
-			ev.stopPropagation();
+		// El elemento se deja en el contenedor
+		function dragDrop(objeto, ev) {
+			var situar = true; // Indica si se suelta o no el jugador en esa posicion
+			// Para evitar soltar cualquier cosa
+			var data = ev.dataTransfer.getData("Text");
+			if (data.indexOf("jugador_cogido: ") != 0) {
+				alert("Solo se pueden soltar jugadores");
+			} else {
+				if (objeto.id == "fila_portero") {
+					if (objeto.getElementsByTagName('div').length > 1) {
+						alert("Ya hay un portero");
+						situar = false;
+					}
+				}
+			}
+
+			if (situar) {
+				// Calculamos los jugadores que se van a situar o no
+				if (jugador_pillado.parentNode.id == "jugadores" && objeto.id != "jugadores") {
+					jugadores_situados++;
+				} else if (jugador_pillado.parentNode.id != "jugadores" && objeto.id == "jugadores") {
+					jugadores_situados--;
+				}
+
+				if (jugadores_situados > 11) {
+					jugadores_situados--;
+					alert("Mucha peña estas metiendo tu ahí, eh");
+				} else {
+					jugador_pillado.parentNode.removeChild(jugador_pillado);
+					objeto.appendChild(jugador_pillado);
+					document.getElementById("num_jugadores").innerHTML = jugadores_situados;
+				}
+			}
+
+			//ev.target.appendChild(jugador_pillado);
+			//ev.stopPropagation();
 			return false; // return false so the event will not be propagated to the browser
 		}
 	</script>
@@ -150,50 +187,53 @@
 	<h2>Preparar partido</h2>
 
 	<form id="form_alineacion" action="/partidos/preparar/{{ partido.id }}/" method="post">
-		<div id="campo_alineacion">
-			<div id="fila_delanteros"
-					ondragenter="return dragEnter(event)"
-					ondrop="return dragDrop(event)"
-					ondragover="return dragOver(event)">
-			</div>
-			
-			<div id="fila_centrocampistas"
-					ondragenter="return dragEnter(event)"
-					ondrop="return dragDrop(event)"
-					ondragover="return dragOver(event)">
-			</div>
-			
-			<div id="fila_defensas"
-					ondragenter="return dragEnter(event)"
-					ondrop="return dragDrop(event)"
-					ondragover="return dragOver(event)">
-			</div>
-			
-			<div id="fila_portero"
-					ondragenter="return dragEnter(event)"
-					ondrop="return dragDrop(event)"
-					ondragover="return dragOver(event)">
-			</div>
-		</div>
-		
-		<div id="jugadores"
-				ondragenter="return dragEnter(event)"
-				ondrop="return dragDrop(event)"
-				ondragover="return dragOver(event)">
-				
-			{% for jugador in jugadores %}
-				<div class="cuadro_jugador" id="jug{{ jugador.numero }}" 
-						draggable="true"
-						ondragstart="return dragStart(event)"
-						ondragend="return dragEnd(event)">
-					<div class="numero_jugador">{{ jugador.numero }}</div>
-					<div class="nombre_jugador">{{ jugador.nombre }}</div>
+		<fieldset>
+			<legend>Alineación</legend>
+			Numero de jugadores: <label id = "num_jugadores">0</label>
+			<div id="campo_alineacion">
+				<div id="fila_delanteros"
+						ondragenter="return dragEnter(this, event)"
+						ondrop="return dragDrop(this, event)"
+						ondragover="return dragOver(this, event)">
 				</div>
-			{% endfor %}
-		</div>
-		
+
+				<div id="fila_centrocampistas"
+						ondragenter="return dragEnter(this, event)"
+						ondrop="return dragDrop(this, event)"
+						ondragover="return dragOver(this, event)">
+				</div>
+
+				<div id="fila_defensas"
+						ondragenter="return dragEnter(this, event)"
+						ondrop="return dragDrop(this, event)"
+						ondragover="return dragOver(this, event)">
+				</div>
+
+				<div id="fila_portero"
+						ondragenter="return dragEnter(this, event)"
+						ondrop="return dragDrop(this, event)"
+						ondragover="return dragOver(this, event)">
+				</div>
+			</div>
+			<div id="jugadores"
+					ondragenter="return dragEnter(this, event)"
+					ondrop="return dragDrop(this, event)"
+					ondragover="return dragOver(this, event)">
+
+				{% for jugador in jugadores %}
+					<div class="cuadro_jugador" id="jug{{ jugador.numero }}"
+							draggable="true"
+							ondragstart="return dragStart(this, event)"
+							ondragend="return dragEnd(this, event)">
+						<div class="numero_jugador">{{ jugador.numero }}</div>
+						<div class="nombre_jugador">{{ jugador.nombre }}</div>
+					</div>
+				{% endfor %}
+			</div>
+		</fieldset>
+
 		<!-- Boton Aceptar -->
 		<div class="fila"><input type="submit" value="Aceptar" /></div>
 	</form>
-	
+
 {% endblock %}
