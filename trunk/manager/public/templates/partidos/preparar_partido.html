@@ -1,5 +1,144 @@
 {% extends "base.html" %}
 
+{% block head_css %}
+	<style type="text/css">
+		#jugadores{
+			float: left;
+			width: 250px;
+		}
+		
+		#jugadores .cuadro_jugador{
+			background: #eee;
+			border: solid 1px #0055ff;
+			cursor: pointer;
+			padding: 5px;
+			margin: 5px 0px;
+		}
+		
+		#jugadores .cuadro_jugador .numero_jugador{
+			color: #6666ff;
+			font-weight: bold;
+			float: left;
+			padding-right: 10px;
+			text-align: right;
+			width: 20px;
+		}
+		
+		#jugadores .cuadro_jugador .nombre_jugador{
+			color: #3333ff;
+		}
+
+		#campo_alineacion{
+			background-image: url('/media/img/campo_futbol.jpg');
+			float: right;
+			height: 678px;
+			text-align: center;
+			width: 444px;
+		}
+		
+		#campo_alineacion .cuadro_jugador{
+			background: url('/media/img/avatar_jugador.gif') no-repeat;
+			background-position: center top;
+			display: inline-block;
+			font-size: 0.8em;
+			height: 30px;
+			margin: 5px;
+			padding: 66px 10px 0px 10px;
+			text-align: center;
+			width: 50px;
+		}
+		
+		#fila_delanteros{
+			background: rgb(0, 200, 0);
+			background: rgba(0, 200, 0, 0.4);
+			height: 130px;
+			margin: 125px 20px 0px 20px;
+		}
+		
+		#fila_centrocampistas{
+			height: 168px;
+			margin: 0px 20px;
+		}
+		
+		#fila_defensas{
+			background: rgb(0, 200, 0);
+			background: rgba(0, 200, 0, 0.4);
+			height: 130px;
+			margin: 0px 20px;
+		}
+		
+		#fila_portero{
+			height: 125px;
+			margin: 0px 20px;
+		}
+		
+		#form_alineacion{
+			
+		}
+		
+		#titulares{
+			float: left;
+			width: 300px;
+		}
+		
+		.texto_posicion{
+			font-size: 14px;
+			font-weight: bold;
+			margin-top: 10px;
+		}
+	</style>
+{% endblock %}
+
+{% block head_js %}
+	<script type="text/javascript">
+		// Comienza el arrastrado. El “target” del evento será el elemento que está siendo arrastrado.
+		function dragStart(ev) {
+			ev.dataTransfer.effectAllowed = 'move';
+			ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+			ev.dataTransfer.setDragImage(ev.target, 0, 0);
+			return true;
+		}
+
+		// Se dispara cuando un elemento que está siendo arrastrado entra en un contenedor.
+		function dragEnter(ev) {
+			var idelt = ev.dataTransfer.getData("Text");
+			return true;
+		}
+
+		// El elemento ha sido movido dentro del contenedor.
+		function dragOver(ev) {
+			var idelt = ev.dataTransfer.getData("Text");
+			var objetivo = ev.target;
+			var id_objetivo = objetivo.getAttribute('id');
+			
+			//var num_ele = 1; //objetivo.items.length;
+			
+			ev.dataTransfer.dropEffect = 'move';
+			/*
+			if(num_ele > 1){
+				alert("No se pueden colocar mas de 1 jugadores en la misma posicion");
+				return false; // Denegar el 'drop'
+			}*/
+			
+			return true; // Aceptar el 'drop'
+		}
+
+		// Se ha dejado de arrastrar el elemento, con éxito o no.
+		function dragEnd(ev) {
+			ev.dataTransfer.clearData("Text");
+			return true;
+		}
+
+		// El elemento se ha arrastrado correctamente en el elemento contenedor.
+		function dragDrop(ev) {
+			var data = ev.dataTransfer;
+			ev.target.appendChild(document.getElementById(idelt));
+			ev.stopPropagation();
+			return false; // return false so the event will not be propagated to the browser
+		}
+	</script>
+{% endblock %}
+
 {% block situacion %}
 	<li><a href="/ligas/ver/{{ partido.jornada.liga_id }}/">{{ partido.jornada.liga.nombre }}</a></li>
 	<li><a href="/jornadas/ver/{{ partido.jornada.id }}/">Jornada {{ partido.jornada.numero }}</a></li>
@@ -10,38 +149,51 @@
 {% block contenido %}
 	<h2>Preparar partido</h2>
 
-	<form action="/partidos/preparar/{{ partido.id }}/" method="post">
-		{% csrf_token %}
-		{{ form.errors }}
-		<!-- Titulares local -->
-		{% if form.titulares_local %}
-			<div class="fila">
-				{% if form.titulares_local.errors %}
-					<p class="texto_error">{{ form.titulares_local.errors }}</p>
-				{% endif %}
+	<form id="form_alineacion" action="/partidos/preparar/{{ partido.id }}/" method="post">
+		<div id="campo_alineacion">
+			<div id="fila_delanteros"
+					ondragenter="return dragEnter(event)"
+					ondrop="return dragDrop(event)"
+					ondragover="return dragOver(event)">
 			</div>
-			<div class="fila">
-				<label for="titulares_local">Titulares local:</label>
+			
+			<div id="fila_centrocampistas"
+					ondragenter="return dragEnter(event)"
+					ondrop="return dragDrop(event)"
+					ondragover="return dragOver(event)">
 			</div>
-			<div class="fila">
-				{{ form.titulares_local }}
+			
+			<div id="fila_defensas"
+					ondragenter="return dragEnter(event)"
+					ondrop="return dragDrop(event)"
+					ondragover="return dragOver(event)">
 			</div>
-		{% endif %}
-		<!-- Titulares visitante -->
-		{% if form.titulares_visitante %}
-			<div class="fila">
-				{% if form.titulares_visitante.errors %}
-					<p class="texto_error">{{ form.titulares_visitante.errors }}</p>
-				{% endif %}
+			
+			<div id="fila_portero"
+					ondragenter="return dragEnter(event)"
+					ondrop="return dragDrop(event)"
+					ondragover="return dragOver(event)">
 			</div>
-			<div class="fila">
-				<label for="titulares_visitante">Titulares visitante:</label>
-			</div>
-			<div class="fila">
-				{{ form.titulares_visitante }}
-			</div>
-		{% endif %}
+		</div>
+		
+		<div id="jugadores"
+				ondragenter="return dragEnter(event)"
+				ondrop="return dragDrop(event)"
+				ondragover="return dragOver(event)">
+				
+			{% for jugador in jugadores %}
+				<div class="cuadro_jugador" id="jug{{ jugador.numero }}" 
+						draggable="true"
+						ondragstart="return dragStart(event)"
+						ondragend="return dragEnd(event)">
+					<div class="numero_jugador">{{ jugador.numero }}</div>
+					<div class="nombre_jugador">{{ jugador.nombre }}</div>
+				</div>
+			{% endfor %}
+		</div>
+		
 		<!-- Boton Aceptar -->
 		<div class="fila"><input type="submit" value="Aceptar" /></div>
 	</form>
+	
 {% endblock %}

@@ -209,6 +209,8 @@ def preparar_partido(request, partido_id):
 	else: # No juega como naaaaaaaaaaaaaaa
 		return devolverMensaje(request, "No tienes equipo en este partido", "/partidos/ver/%d/" % partido.id)
 
-	return render_to_response("partidos/preparar_partido.html", {"form": form, "usuario" : usuario, "partido" : partido, "equipo" : equipo })
+	jugadores = equipo.jugador_set.all()
+	
+	return render_to_response("partidos/preparar_partido.html", {"form": form, "usuario" : usuario, "partido" : partido, "equipo" : equipo, "jugadores" : jugadores })
 
 ########################################################################

@@ -218,7 +218,7 @@ class Partido(models.Model):
 		los_gatos_nos_dominaran = True
 		if not los_gatos_nos_dominaran:
 			print "-------------------------------------------"
-			#print alineacion[0].getNombre()
+			print alineacion[0].equipo.nombre
 			print "Ataque: " + str(alineacion[0].getValorAtaque())
 			print "Defensa: " + str(alineacion[0].getValorDefensa())
 			print "Pases: " + str(alineacion[0].getValorPases())
@@ -226,7 +226,7 @@ class Partido(models.Model):
 			print "Anotacion: " + str(alineacion[0].getValorAnotacion())
 			print "Portero: " + str(alineacion[0].getValorPortero())
 			print "-------------------------------------------"
-			#print alineacion[1].getNombre()
+			print alineacion[1].equipo.nombre
 			print "Ataque: " + str(alineacion[1].getValorAtaque())
 			print "Defensa: " + str(alineacion[1].getValorDefensa())
 			print "Pases: " + str(alineacion[1].getValorPases())
