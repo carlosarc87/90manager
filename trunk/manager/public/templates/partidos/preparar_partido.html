@@ -32,7 +32,7 @@
 			color: #3333ff;
 			display: none;
 		}
-		
+
 		#caja_alineacion{
 			float: right;
 		}
@@ -45,7 +45,7 @@
 			text-align: center;
 			width: 444px;
 		}
-		
+
 		#campo_suplentes{
 			background: rgb(0, 200, 0);
 			clear: both;
@@ -122,7 +122,38 @@
 		var jugador_pillado; // Jugador que se ha cogido
 		var jugadores_situados = 0; // Numero de jugadores situados en el campo
 		var jugadores_suplentes = 0; // Numero de jugadores situados en el banquillo
-		
+
+		// Actualiza los valores de los campos de numero de suplentes y jugadores
+		function actualizarNumeros() {
+			document.getElementById("num_jugadores").innerHTML = jugadores_situados;
+			document.getElementById("num_suplentes").innerHTML = jugadores_suplentes;
+		}
+
+		function getDatoLista(jugador, lista) {
+			var elementos = lista.options
+			var dato = null;
+			for (i = 0; i < elementos.length; i++) {
+				if ("jug" + elementos[i].value == jugador.id) {
+					dato = elementos[i]
+				}
+			}
+			return dato;
+		}
+
+		function deseleccionar(jugador, lista) {
+			var dato = getDatoLista(jugador, lista);
+			if (dato != null) {
+				dato.selected = false;
+			}
+		}
+
+		function seleccionar(jugador, lista) {
+			var dato = getDatoLista(jugador, lista);
+			if (dato != null) {
+				dato.selected = true;
+			}
+		}
+
 		// Comienza el arrastrado. El “target” del evento será el elemento que está siendo arrastrado.
 		function dragStart(objeto, ev) {
 			ev.dataTransfer.setData("Text", "jugador_cogido: " + objeto.innerHTML);
@@ -193,10 +224,10 @@
 					if (objeto.id == "fila_suplentes") {
 						jugadores_suplentes++;
 					}
-					else{
+					else if (objeto.id != "jugadores"){
 						jugadores_situados++;
 					}
-				} else{
+				} else {
 					if (objeto.id == "jugadores") {
 						jugadores_situados--;
 					}
@@ -210,8 +241,7 @@
 					var destino = objeto
 					jugador_pillado.parentNode.removeChild(jugador_pillado);
 					objeto.appendChild(jugador_pillado);
-					document.getElementById("num_jugadores").innerHTML = jugadores_situados;
-					document.getElementById("num_suplentes").innerHTML = jugadores_suplentes;
+					actualizarNumeros();
 
 					// Cambiar de una lista a otra
 					var lista_origen = document.getElementById("id_jugadores_disponibles");
@@ -248,26 +278,8 @@
 					} else {
 						alert("OTIAss")
 					}
-
-					// Buscamos el elemento de la lista de origen y lo borramos
-					var elementos = lista_origen.options
-					var dato;
-					for (i = 0; i < elementos.length; i++) {
-						if ("jug" + elementos[i].value == jugador_pillado.id) {
-							dato = elementos[i]
-						}
-					}
-					//lista_origen.remove(dato.index);
-					dato.selected = false;
-					elementos = lista_destino.options
-					for (i = 0; i < elementos.length; i++) {
-						if ("jug" + elementos[i].value == jugador_pillado.id) {
-							dato = elementos[i]
-						}
-					}
-					// Añadimos el elemento en la lista de destino
-					//lista_destino.add(dato, null);
-					dato.selected = true;
+					deseleccionar(jugador_pillado, lista_origen);
+					seleccionar(jugador_pillado, lista_destino);
 				}
 			}
 
@@ -298,12 +310,114 @@
 			pradera.selectedIndex = 0;
 
 			// Resetear las posiciones de las cajas
-			var lista_origen = document.getElementById("jugadores");
+			var lista_destino = document.getElementById("jugadores");
+			var lista_origen = document.getElementById("fila_delanteros");
+			while(lista_origen.hasChildNodes()){
+				var nodo = lista_origen.lastChild
+				lista_origen.removeChild(nodo);
+				lista_destino.appendChild(nodo);
+			}
+			var lista_origen = document.getElementById("fila_centrocampistas");
+			while(lista_origen.hasChildNodes()){
+				var nodo = lista_origen.lastChild
+				lista_origen.removeChild(nodo);
+				lista_destino.appendChild(nodo);
+			}
+			var lista_origen = document.getElementById("fila_defensas");
+			while(lista_origen.hasChildNodes()){
+				var nodo = lista_origen.lastChild
+				lista_origen.removeChild(nodo);
+				lista_destino.appendChild(nodo);
+			}
+			var lista_origen = document.getElementById("fila_suplentes");
+			while(lista_origen.hasChildNodes()){
+				var nodo = lista_origen.lastChild
+				lista_origen.removeChild(nodo);
+				lista_destino.appendChild(nodo);
+			}
+			var lista_origen = document.getElementById("fila_portero");
+			while(lista_origen.hasChildNodes()){
+				var nodo = lista_origen.lastChild
+				lista_origen.removeChild(nodo);
+				lista_destino.appendChild(nodo);
+			}
 
-			var lista = document.getElementById("fila_delanteros");
-
-
+			jugadores_situados = 0;
+			jugadores_suplentes = 0;
+			actualizarNumeros();
+			// alert("To limpio")
 		}
+
+		function establecerDatos() {
+			limpiarDatos();
+			var jugador;
+			var destino;
+			var lista;
+			{% if delanteros %}
+				destino = document.getElementById("fila_delanteros");
+				lista = document.getElementById("id_delanteros");
+				{% for j in delanteros %}
+					jugadores_situados++;
+					// Cogemos la caja
+					jugador = document.getElementById("jug{{ j.jugador.id }}");
+					jugador.parentNode.removeChild(jugador);
+					destino.appendChild(jugador);
+					seleccionar(jugador, lista);
+				{% endfor %}
+			{% endif %}
+			{% if portero %}
+				destino = document.getElementById("fila_portero");
+				lista = document.getElementById("id_portero");
+				jugadores_situados++;
+				// Cogemos la caja
+				jugador = document.getElementById("jug{{ portero.jugador.id }}");
+				jugador.parentNode.removeChild(jugador);
+				destino.appendChild(jugador);
+				seleccionar(jugador, lista);
+			{% endif %}
+
+			{% if centrocampistas %}
+				destino = document.getElementById("fila_centrocampistas");
+				lista = document.getElementById("id_centrocampistas");
+				{% for j in centrocampistas %}
+					jugadores_situados++;
+					// Cogemos la caja
+					jugador = document.getElementById("jug{{ j.jugador.id }}");
+					jugador.parentNode.removeChild(jugador);
+					destino.appendChild(jugador);
+					seleccionar(jugador, lista);
+				{% endfor %}
+			{% endif %}
+
+			{% if defensas %}
+				destino = document.getElementById("fila_defensas");
+				lista = document.getElementById("id_defensas");
+				{% for j in defensas %}
+					jugadores_situados++;
+					// Cogemos la caja
+					jugador = document.getElementById("jug{{ j.jugador.id }}");
+					jugador.parentNode.removeChild(jugador);
+					destino.appendChild(jugador);
+					seleccionar(jugador, lista);
+				{% endfor %}
+			{% endif %}
+
+			{% if suplentes %}
+				destino = document.getElementById("fila_suplentes");
+				lista = document.getElementById("id_suplentes");
+				{% for j in suplentes %}
+					jugadores_suplentes++;
+					// Cogemos la caja
+					jugador = document.getElementById("jug{{ j.jugador.id }}");
+					jugador.parentNode.removeChild(jugador);
+					destino.appendChild(jugador);
+					seleccionar(jugador, lista);
+				{% endfor %}
+			{% endif %}
+			actualizarNumeros();
+		}
+		window.onload = establecerDatos;
+
 	</script>
 {% endblock %}
 
@@ -315,7 +429,11 @@
 {% endblock %}
 
 {% block contenido %}
-	<h2>Preparar partido</h2>
+	{% if editar %}
+		<h2>Editar alineación para el partido</h2>
+	{% else %}
+		<h2>Preparar alineación para el partido</h2>
+	{% endif %}
 
 	<form id="form_alineacion" action="/partidos/preparar/{{ partido.id }}/" method="post">
 
@@ -324,10 +442,10 @@
 		{% endif %}
 		<fieldset>
 			<legend>Alineación</legend>
-			
+
 			<div>Número de jugadores en la alineación: <label id = "num_jugadores">0</label></div>
 			<div>Número de jugadores suplentes: <label id = "num_suplentes">0</label></div>
-			
+
 			<div id="caja_alineacion">
 				<div id="campo_titulares">
 					<div id="fila_delanteros"
@@ -354,7 +472,7 @@
 							ondragover="return dragOver(this, event)">
 					</div>
 				</div>
-				
+
 				<div id="campo_suplentes">
 					<div id="fila_suplentes"
 							ondragenter="return dragEnter(this, event)"
@@ -363,7 +481,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div id="jugadores"
 					ondragenter="return dragEnter(this, event)"
 					ondrop="return dragDrop(this, event)"
@@ -382,7 +500,7 @@
 			</div>
 		</fieldset>
 
-		<div id="form_oculto">{{ form.as_p }}</div>
+		<div id="form_ocultoo">{{ form.as_p }}</div>
 
 		<!-- Boton Aceptar -->
 		<div class="fila"><input type="submit" value="Aceptar" /></div>

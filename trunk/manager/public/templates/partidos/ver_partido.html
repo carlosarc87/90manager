@@ -97,7 +97,13 @@
 		<h4>SIN INICIAR</h4>
 		<ul>
 			{% if tiene_equipo %}
-				<li><a href="/partidos/preparar/{{ partido.id }}/">Preparar partido</a></li>
+				<li><a href="/partidos/preparar/{{ partido.id }}/">
+					{% if editar %}
+						Editar alineacion para el partido
+					{% else %}
+						Preparar alineacion para el partido
+					{% endif %}
+				</a></li>
 			{% endif %}
 			{% if es_creador and es_jugable %}
 				<li><a href="/partidos/jugar/{{ partido.id }}/">Jugar</a></li>

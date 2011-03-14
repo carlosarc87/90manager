@@ -128,6 +128,41 @@ class AlineacionEquipo(models.Model):
 			lista.append(jugador)
 		return lista
 
+	def getDelanteros(self):
+		''' Devuelve los delanteros del equipo '''
+		lista = self.jugadores.filter(posicion = 'DL')
+		if len(lista) > 0:
+			return lista
+		return None
+
+	def getCentrocampistas(self):
+		''' Devuelve los centrocampistas del equipo '''
+		lista = self.jugadores.filter(posicion = 'CC')
+		if len(lista) > 0:
+			return lista
+		return None
+
+	def getDefensas(self):
+		''' Devuelve los defensas del equipo '''
+		lista = self.jugadores.filter(posicion = 'DF')
+		if len(lista) > 0:
+			return lista
+		return None
+
+	def getPortero(self):
+		''' Devuelve al portero del equipo '''
+		lista = self.jugadores.filter(posicion = 'PO')
+		if len(lista) > 0:
+			return lista[0]
+		return None
+
+	def getSuplentes(self):
+		''' Devuelve los suplentes del equipo '''
+		lista = self.jugadores.filter(posicion = 'BA')
+		if len(lista) > 0:
+			return lista
+		return None
+
 	def getDatosTitulares(self):
 		''' Devuelve los datos de los titulares '''
 		return self.jugadores.all().exclude(posicion = 'BA')

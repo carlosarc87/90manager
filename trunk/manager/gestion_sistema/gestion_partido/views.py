@@ -121,11 +121,16 @@ def ver_partido(request, partido_id):
 		else:
 			resultado = "Empate"
 
+	editar = False
 	tiene_equipo = False
 	if equipo_local.usuario == usuario:
 		tiene_equipo = True
+		if partido.alineacion_local.estaPreparada():
+			editar = True
 	elif equipo_visitante.usuario == usuario:
 		tiene_equipo = True
+		if partido.alineacion_visitante.estaPreparada():
+			editar = True
 	es_creador = liga.creador == usuario
 
 	es_jugable = False
@@ -149,6 +154,7 @@ def ver_partido(request, partido_id):
 				 "es_creador" : es_creador,
 				 "tiene_equipo" : tiene_equipo,
 				 "es_jugable" : es_jugable,
+				 "editar" : editar,
 				})
 	return HttpResponse(t.render(c))
 
@@ -172,46 +178,41 @@ def preparar_partido(request, partido_id):
 	# Comprobar si el usuario juega en el partido
 	if (partido.equipo_local.usuario == usuario): # Juega como local
 		equipo = partido.equipo_local
-		if request.method == 'POST':
-			form = PrepararEquipoForm(partido.alineacion_local, partido.equipo_local, request.POST)
-			if form.is_valid():
-				al = partido.alineacion_local
-				delanteros = form.cleaned_data['delanteros']
-				centrocampistas = form.cleaned_data['centrocampistas']
-				defensas = form.cleaned_data['defensas']
-				portero = form.cleaned_data['portero']
-				suplentes = form.cleaned_data['suplentes']
-				al.setAlineacion(portero, defensas, centrocampistas, delanteros, suplentes)
-				al.save()
-				# Preparar la alineacion perfectamente
-				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
-		else:
-			form = PrepararEquipoForm(partido.alineacion_local, partido.equipo_local)
-
+		alineacion = partido.alineacion_local
 	elif (partido.equipo_visitante.usuario == usuario): # Juega como visitante
 		equipo = partido.equipo_visitante
-		if request.method == 'POST':
-			form = PrepararEquipoForm(partido.alineacion_visitante, partido.equipo_visitante, request.POST)
-			if form.is_valid():
-				al = partido.alineacion_visitante
-				delanteros = form.cleaned_data['delanteros']
-				centrocampistas = form.cleaned_data['centrocampistas']
-				defensas = form.cleaned_data['defensas']
-				portero = form.cleaned_data['portero']
-				suplentes = form.cleaned_data['suplentes']
-				al.setAlineacion(portero, defensas, centrocampistas, delanteros, suplentes)
-				al.save()
-
-				# Preparar la alineacion perfectamente
-				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
-		else:
-			form = PrepararEquipoForm(partido.alineacion_visitante, partido.equipo_visitante)
-
+		alineacion = partido.alineacion_visitante
 	else: # No juega como naaaaaaaaaaaaaaa
 		return devolverMensaje(request, "No tienes equipo en este partido", "/partidos/ver/%d/" % partido.id)
 
+	editar = alineacion.estaPreparada();
+
+	if request.method == 'POST':
+		form = PrepararEquipoForm(alineacion, equipo, request.POST)
+		if form.is_valid():
+			delanteros = form.cleaned_data['delanteros']
+			centrocampistas = form.cleaned_data['centrocampistas']
+			defensas = form.cleaned_data['defensas']
+			portero = form.cleaned_data['portero']
+			suplentes = form.cleaned_data['suplentes']
+			alineacion.setAlineacion(portero, defensas, centrocampistas, delanteros, suplentes)
+			alineacion.save()
+			# Preparar la alineacion perfectamente
+			if editar:
+				return devolverMensaje(request, "Se ha editado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
+			else:
+				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
+	else:
+		form = PrepararEquipoForm(partido.alineacion_local, partido.equipo_local)
+
+	delanteros = alineacion.getDelanteros()
+	centrocampistas = alineacion.getCentrocampistas()
+	defensas = alineacion.getDefensas()
+	portero = alineacion.getPortero()
+	suplentes = alineacion.getSuplentes()
+
 	jugadores = equipo.jugador_set.all()
 
-	return render_to_response("partidos/preparar_partido.html", {"form": form, "usuario" : usuario, "partido" : partido, "equipo" : equipo, "jugadores" : jugadores })
+	return render_to_response("partidos/preparar_partido.html", {"form": form, "editar" : editar, "usuario" : usuario, "partido" : partido, "equipo" : equipo, "jugadores" : jugadores, "delanteros" : delanteros, "defensas" : defensas, "portero" : portero, "centrocampistas" : centrocampistas, "suplentes" : suplentes })
 
 ########################################################################
