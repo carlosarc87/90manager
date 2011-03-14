@@ -11,7 +11,7 @@
 		<caption>Jugadores</caption>
 		<thead>
 			<td>Num.</td>
-			<td>Posici&oacute;n</td>
+			<td>Mejor posici&oacute;n</td>
 			<td>Nombre</td>
 			<td>Valor (&euro;)</td>
 		</thead>
@@ -19,7 +19,7 @@
 			{% for jugador in jugadores %}
 				<tr>
 					<td class="cuadro_num_azul_der">{{ jugador.numero }}</td>
-					<td>{{ jugador.posicion }}</td>
+					<td>{{ jugador.mejorPosicion }}</td>
 					<td><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></td>
 					<td class="cuadro_num_azul_der">{{ jugador.valorMercado }}</td>
 				</tr>

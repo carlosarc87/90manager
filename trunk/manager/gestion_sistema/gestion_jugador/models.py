@@ -31,7 +31,8 @@ from gestion_sistema.gestion_equipo.models import Equipo
 # Jugador
 class Jugador(models.Model):
 	''' Representa un jugador '''
-	nombre = models.CharField(max_length = 200)
+	nombre = models.CharField(max_length = 80)
+	apodo = models.CharField(max_length = 30)
 	equipo = models.ForeignKey(Equipo)
 
 	numero = models.IntegerField(null = True, blank = True)
@@ -51,34 +52,34 @@ class Jugador(models.Model):
 	def setHabilidadesAleatorias(self, posicion, nivel):
 		if (posicion == "DELANTERO"):
 			self.ataque = randint((int)(nivel * 0.8), nivel)
-			self.defensa = randint(0, (int)(nivel * 0.3))
-			self.velocidad = randint((int)(nivel * 0.5), nivel)
-			self.pases = randint((int)(nivel * 0.5), (int)(nivel * 0.8))
+			self.defensa = randint(0, (int)(nivel * 0.2))
+			self.velocidad = randint((int)(nivel * 0.4), (int)(nivel * 0.6))
+			self.pases = randint((int)(nivel * 0.4), (int)(nivel * 0.6))
 			self.anotacion = randint((int)(nivel * 0.8), nivel)
-			self.portero = randint(0, (int)(nivel * 0.1))
+			self.portero = randint(0, (int)(nivel * 0.2))
 
 		elif (posicion == "CENTROCAMPISTA"):
-			self.ataque = randint((int)(nivel * 0.5), (int)(nivel * 0.8))
-			self.defensa = randint((int)(nivel * 0.5), (int)(nivel * 0.8))
-			self.velocidad = randint((int)(nivel * 0.5), nivel)
-			self.pases = randint((int)(nivel * 0.7), nivel)
-			self.anotacion = randint((int)(nivel * 0.3), (int)(nivel * 0.8))
-			self.portero = randint(0, (int)(nivel * 0.1))
+			self.ataque = randint((int)(nivel * 0.4), (int)(nivel * 0.6))
+			self.defensa = randint((int)(nivel * 0.4), (int)(nivel * 0.6))
+			self.velocidad = randint((int)(nivel * 0.8), nivel)
+			self.pases = randint((int)(nivel * 0.8), nivel)
+			self.anotacion = randint((int)(nivel * 0.4), (int)(nivel * 0.6))
+			self.portero = randint(0, (int)(nivel * 0.2))
 
 		elif (posicion == "DEFENSA"):
-			self.ataque = randint(0, (int)(nivel * 0.3))
+			self.ataque = randint(0, (int)(nivel * 0.2))
 			self.defensa = randint((int)(nivel * 0.8), nivel)
-			self.velocidad = randint((int)(nivel * 0.5), nivel)
-			self.pases = randint((int)(nivel * 0.5), (int)(nivel * 0.8))
-			self.anotacion = randint(0, (int)(nivel * 0.5))
-			self.portero = randint(0, (int)(nivel * 0.3))
+			self.velocidad = randint((int)(nivel * 0.4), (int)(nivel * 0.6))
+			self.pases = randint((int)(nivel * 0.4), (int)(nivel * 0.6))
+			self.anotacion = randint(0, (int)(nivel * 0.2))
+			self.portero = randint(0, (int)(nivel * 0.2))
 
 		elif (posicion == "PORTERO"):
-			self.ataque = randint(0, (int)(nivel * 0.3))
-			self.defensa = randint(0, (int)(nivel * 0.3))
-			self.velocidad = randint((int)(nivel * 0.5), nivel)
-			self.pases = randint((int)(nivel * 0.3), (int)(nivel * 0.7))
-			self.anotacion = randint(0, (int)(nivel * 0.1))
+			self.ataque = randint(0, (int)(nivel * 0.2))
+			self.defensa = randint(0, (int)(nivel * 0.2))
+			self.velocidad = randint(0, (int)(nivel * 0.2))
+			self.pases = randint((int)(nivel * 0.4), (int)(nivel * 0.6))
+			self.anotacion = randint(0, (int)(nivel * 0.2))
 			self.portero = randint((int)(nivel * 0.8), nivel)
 
 		else:
@@ -92,48 +93,55 @@ class Jugador(models.Model):
 		return self
 
 	def mejorPosicion(self):
-		# CENTROCAMPISTA o DELANTERO
-		if(self.ataque > self.defensa):
-			if(self.anotacion > self.pases):
-				return "DELANTERO"
-			else:
-				return "CENTROCAMPISTA"
-		# DEFENSA o CENTROCAMPISTA
-		elif(self.defensa > self.portero):
-			if(self.pases > self.defensa):
-				return "CENTROCAMPISTA"
-			else:
-				return "DEFENSA"
+		posiciones = []
+		
+		portero = ["PORTERO", self.portero + (self.pases * 0.6)]
+		posiciones.append(portero)
+		
+		defensa = ["DEFENSA", self.defensa + (((self.velocidad + self.pases) / 2.0) * 0.6)]
+		posiciones.append(defensa)
+		
+		centrocampista = ["CENTROCAMPISTA", ((self.velocidad + self.pases) / 2.0) + (((self.ataque + self.defensa + self.anotacion) / 3.0) * 0.6)]
+		posiciones.append(centrocampista)
+		
+		delantero = ["DELANTERO", ((self.ataque + self.anotacion) / 2.0) + (((self.velocidad + self.pases) / 2.0) * 0.6)]
+		posiciones.append(delantero)
+		
+		num_posiciones = len(posiciones)
 
-		return "PORTERO"
+		mejor = posiciones[0][0]
+		mejor_valor = posiciones[0][1]
+		for pos in range(1, num_posiciones):
+			if posiciones[pos][1] > mejor_valor:
+				mejor = posiciones[pos][0]
+				mejor_valor = posiciones[pos][1]
+
+		return mejor
 
 	def setNumero(self, numero):
 		self.numero = numero
-
-	def setPosicion(self, posicion):
-		self.posicion = posicion
 
 	def valorMercado(self):
 		posicion = self.mejorPosicion()
 		if (posicion == "PORTERO"):
 			media_hab_principales = self.portero
 			media_hab_secundarias = self.pases
-			media_hab_poco_importantes = (self.ataque + self.defensa + self.velocidad + self.anotacion) / 4
+			media_hab_poco_importantes = (self.ataque + self.defensa + self.velocidad + self.anotacion) / 4.0
 
 		elif (posicion == "DEFENSA"):
 			media_hab_principales = self.defensa
-			media_hab_secundarias = (self.velocidad + self.pases) / 2
-			media_hab_poco_importantes = (self.ataque + self.anotacion + self.portero) / 3
+			media_hab_secundarias = (self.velocidad + self.pases) / 2.0
+			media_hab_poco_importantes = (self.ataque + self.anotacion + self.portero) / 3.0
 
 		elif (posicion == "CENTROCAMPISTA"):
-			media_hab_principales = (self.velocidad + self.pases) / 2
-			media_hab_secundarias = (self.ataque + self.defensa + self.anotacion) / 3
+			media_hab_principales = (self.velocidad + self.pases) / 2.0
+			media_hab_secundarias = (self.ataque + self.defensa + self.anotacion) / 3.0
 			media_hab_poco_importantes = self.portero
 
 		elif (posicion == "DELANTERO"):
-			media_hab_principales = (self.ataque + self.anotacion) / 2
-			media_hab_secundarias = (self.velocidad + self.pases) / 2
-			media_hab_poco_importantes = (self.defensa + self.portero) / 2
+			media_hab_principales = (self.ataque + self.anotacion) / 2.0
+			media_hab_secundarias = (self.velocidad + self.pases) / 2.0
+			media_hab_poco_importantes = (self.defensa + self.portero) / 2.0
 
 		else:
 			media_hab_principales = 0

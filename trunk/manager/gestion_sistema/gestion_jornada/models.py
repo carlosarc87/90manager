@@ -41,7 +41,7 @@ class Jornada(models.Model):
 		if self.jugada:
 			clasificaciones = []
 			partidos = self.partido_set.all()
-			if self.numero == 0: # Jornada 0
+			if self.numero == 1: # Jornada 1
 				for partido in partidos:
 					clasificacion_local = ClasificacionEquipoJornada(jornada = self, equipo = partido.equipo_local, goles_favor = partido.goles_local, goles_contra = partido.goles_visitante, puntos = 0)
 					clasificacion_visitante = ClasificacionEquipoJornada(jornada = self, equipo = partido.equipo_visitante, goles_favor = partido.goles_visitante, goles_contra = partido.goles_local, puntos = 0)

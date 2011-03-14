@@ -76,17 +76,6 @@ table tr{
 	width: 780px;
 }
 
-#login{
-	float: right;
-	width: 500px;
-}
-
-#header{
-	background-color: #fff;
-	border-bottom: solid 1px #555555;
-	width: 100%;
-}
-
 #footer{
 	background-color: #fff;
 	border-top: solid 1px #555555;
@@ -101,6 +90,21 @@ table tr{
 	list-style: none;
 	margin: 0px;
 	padding: 0px;
+}
+
+#header{
+	background-color: #fff;
+	border-bottom: solid 1px #555555;
+	width: 100%;
+}
+
+#login{
+	float: right;
+	width: 500px;
+}
+
+#logo{
+	border: 0px;
 }
 
 #menu_lateral{

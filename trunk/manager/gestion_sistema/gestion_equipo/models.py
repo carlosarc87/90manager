@@ -56,9 +56,9 @@ class Equipo(models.Model):
 			else:
 				posicion = "DELANTERO"
 
-			jugador = Jugador(equipo = self, nombre = nombreJugadorAleatorio(), transferible = False)
+			nombre_aleatorio = nombreJugadorAleatorio()
+			jugador = Jugador(equipo = self, nombre = nombre_aleatorio, apodo = nombre_aleatorio, transferible = False)
 			jugador.setNumero(j)
-			jugador.setPosicion(posicion)
 			jugador.setHabilidadesAleatorias(posicion, 50)
 			jugador.save()
 			self.agregarJugador(jugador)

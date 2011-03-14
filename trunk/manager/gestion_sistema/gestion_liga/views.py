@@ -105,14 +105,17 @@ def ver_liga(request, liga_id):
 	if activada:
 		# Comprobamos si la liga ha acabado
 		jornada_actual = liga.obtenerJornadaActual()
+		
+		# Si la liga ha acabado
 		if not jornada_actual:
 			liga_acabada = True
-
-		if jornada_actual:
-			if jornada_actual.numero > 0:
+		else:
+			if jornada_actual.numero >= 2:
 				jornada_anterior = liga.jornada_set.get(numero = jornada_actual.numero - 1)
 				clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
 				clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
+			#else:
+				
 
 		if liga_acabada:
 			jornada_anterior = liga.jornada_set.all()[len(liga.jornada_set.all()) - 1]
