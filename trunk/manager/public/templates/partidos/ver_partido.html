@@ -53,9 +53,9 @@
 			<tbody>
 				{% for titular in titulares_local %}
 					<tr>
-						<td class="cuadro_num_azul_der">{{ titular.numero }}</td>
+						<td class="cuadro_num_azul_der">{{ titular.jugador.numero }}</td>
 						<td>{{ titular.posicion }}</td>
-						<td><a href="/jugadores/ver/{{ titular.id }}/">{{ titular.nombre }}</a></td>
+						<td><a href="/jugadores/ver/{{ titular.jugador.id }}/">{{ titular.jugador.nombre }}</a></td>
 					</tr>
 				{% endfor %}
 			</tbody>
@@ -72,9 +72,9 @@
 			<tbody>
 				{% for titular in titulares_visitante %}
 					<tr>
-						<td class="cuadro_num_azul_der">{{ titular.numero }}</td>
+						<td class="cuadro_num_azul_der">{{ titular.jugador.numero }}</td>
 						<td>{{ titular.posicion }}</td>
-						<td><a href="/jugadores/ver/{{ titular.id }}/">{{ titular.nombre }}</a></td>
+						<td><a href="/jugadores/ver/{{ titular.jugador.id }}/">{{ titular.jugador.nombre }}</a></td>
 					</tr>
 				{% endfor %}
 			</tbody>

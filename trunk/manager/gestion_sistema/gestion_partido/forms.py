@@ -38,12 +38,23 @@ class PrepararEquipoForm(forms.Form):
 	delanteros = forms.fields.MultipleChoiceField()
 	suplentes = forms.fields.MultipleChoiceField()
 
-	def __init__(self, *args, **kwargs):
+	def __init__(self, alineacion, equipo, *args, **kwargs):
 		''' Constructor que establece la lista de valores de los titulares '''
 		super(PrepararEquipoForm, self).__init__(*args, **kwargs)
 		# Establecemos los valores de la lista multiple como los jugadores del equipo local
-		jugadores = self.instance.equipo.jugador_set.all()
+		jugadores = equipo.jugador_set.all()
 		self.fields['jugadores_disponibles'].choices = [[choice.id, choice.nombre] for choice in jugadores]
+
+#	def clean_defensas(self):
+
+#	def clean_centrocampistas(self):
+
+#	def clean_portero(self):
+
+#	def clean_delanteros(self):
+
+#	def clean_suplentes(self):
+
 
 	def clean(self):
 		''' Valida los datos del formulario '''

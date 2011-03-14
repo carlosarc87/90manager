@@ -166,6 +166,11 @@
 					jugador_pillado.parentNode.removeChild(jugador_pillado);
 					objeto.appendChild(jugador_pillado);
 					document.getElementById("num_jugadores").innerHTML = jugadores_situados;
+					var lista_origen = document.getElementById("id_jugadores_disponibles")
+					var lista_destino = document.getElementById("id_defensas")
+					lista_origen.remove(0)
+					lista_destino.add("Rodolfo", 0)
+					alert(lista_destino)
 				}
 			}
 

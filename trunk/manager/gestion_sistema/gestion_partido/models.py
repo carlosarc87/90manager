@@ -72,11 +72,9 @@ class AlineacionEquipo(models.Model):
 		''' Devuelve los jugadores titulares '''
 		datos = self.getDatosTitulares()
 		lista = []
-		print datos
 		for dato in datos:
 			jugador = dato.jugador
 			lista.append(jugador)
-		print lista
 		return lista
 
 	def getSuplentes(self):
@@ -99,7 +97,7 @@ class AlineacionEquipo(models.Model):
 	def setAleatoria(self):
 		jugadores_equipo = self.equipo.jugador_set.all()
 
-		for i in range(15):
+		for i in range(16):
 			posiciones = ['PO', 'DF', 'DF', 'DF', 'DF', 'CC', 'CC', 'CC', 'CC', 'DL', 'DL', 'BA', 'BA', 'BA', 'BA', 'BA']
 			jugador = JugadorPartido(jugador = jugadores_equipo[i], posicion = posiciones[i])
 			jugador.save()
@@ -225,12 +223,13 @@ class Partido(models.Model):
 
 	def __init__(self, *args, **kwargs):
 		super(Partido, self).__init__(*args, **kwargs)
-		self.alineacion_local = AlineacionEquipo(equipo = self.equipo_local)
-		self.alineacion_visitante = AlineacionEquipo(equipo = self.equipo_visitante)
-		self.alineacion_local.save()
-		self.alineacion_visitante.save()
-		self.alineacion_local_id = self.alineacion_local.id
-		self.alineacion_visitante_id = self.alineacion_visitante.id
+		if not self.alineacion_local_id:
+			self.alineacion_local = AlineacionEquipo(equipo = self.equipo_local)
+			self.alineacion_visitante = AlineacionEquipo(equipo = self.equipo_visitante)
+			self.alineacion_local.save()
+			self.alineacion_visitante.save()
+			self.alineacion_local_id = self.alineacion_local.id
+			self.alineacion_visitante_id = self.alineacion_visitante.id
 
 	def finalizado(self):
 		''' Indica si un partido ya ha acabado '''
@@ -240,22 +239,22 @@ class Partido(models.Model):
 		''' Juega el partido '''
 		num_goles = [0, 0]
 
-		# Obtener jugadores titulares y suplentes de los 2 equipos
-		titulares_local = self.alineacion_local.getDatosTitulares()
-		suplentes_local = self.alineacion_local.getDatosSuplentes()
-		titulares_visitante = self.alineacion_visitante.getDatosTitulares()
-		suplentes_visitante = self.alineacion_visitante.getDatosSuplentes()
+		if not self.alineacion_local.estaPreparada():
+			print "preparing"
+			self.alineacion_local.setAleatoria()
+
+		if not self.alineacion_visitante.estaPreparada():
+			self.alineacion_visitante.setAleatoria()
 
 		# Obtener alineaciones de los 2 equipos
 		alineacion_local = self.alineacion_local
 		alineacion_visitante = self.alineacion_visitante
 
-		if not alineacion_local.estaPreparada():
-			self.alineacion_local.setAleatoria()
-			alineacion_local = self.alineacion_local
-		if not alineacion_visitante.estaPreparada():
-			self.alineacion_visitante.setAleatoria()
-			alineacion_visitante = self.alineacion_visitante
+		# Obtener jugadores titulares y suplentes de los 2 equipos
+		titulares_local = self.alineacion_local.getDatosTitulares()
+		suplentes_local = self.alineacion_local.getDatosSuplentes()
+		titulares_visitante = self.alineacion_visitante.getDatosTitulares()
+		suplentes_visitante = self.alineacion_visitante.getDatosSuplentes()
 
 		alineacion = [alineacion_local, alineacion_visitante]
 

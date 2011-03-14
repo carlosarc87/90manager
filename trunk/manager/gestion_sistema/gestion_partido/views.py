@@ -105,9 +105,9 @@ def ver_partido(request, partido_id):
 	equipo_local = partido.equipo_local
 	equipo_visitante = partido.equipo_visitante
 
-	titulares_local = partido.alineacion_local.getTitulares()
+	titulares_local = partido.alineacion_local.getDatosTitulares()
 
-	titulares_visitante = partido.alineacion_visitante.getTitulares()
+	titulares_visitante = partido.alineacion_visitante.getDatosTitulares()
 
 	# Comprobamos si el partido ha acabado
 	finalizado = partido.finalizado()
@@ -173,22 +173,22 @@ def preparar_partido(request, partido_id):
 	if (partido.equipo_local.usuario == usuario): # Juega como local
 		equipo = partido.equipo_local
 		if request.method == 'POST':
-			form = PrepararEquipoForm(request.POST, instance = partido.alineacion_local)
+			form = PrepararEquipoForm(partido.alineacion_local, partido.equipo_local, request.POST)
 			if form.is_valid():
 				form.save()
 				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
 		else:
-			form = PrepararEquipoForm(alineacion = partido.alineacion_local)
+			form = PrepararEquipoForm(partido.alineacion_local, partido.equipo_local)
 
 	elif (partido.equipo_visitante.usuario == usuario): # Juega como visitante
 		equipo = partido.equipo_visitante
 		if request.method == 'POST':
-			form = PrepararEquipoForm(request.POST, instance = partido.alineacion_visitante)
+			form = PrepararEquipoForm(partido.alineacion_visitante, partido.equipo_local, request.POST)
 			if form.is_valid():
 				form.save()
 				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
 		else:
-			form = PrepararEquipoVisitanteForm(alineacion = partido.alineacion_visitante)
+			form = PrepararEquipoForm(partido.alineacion_visitante, partido.equipo_local)
 
 	else: # No juega como naaaaaaaaaaaaaaa
 		return devolverMensaje(request, "No tienes equipo en este partido", "/partidos/ver/%d/" % partido.id)
