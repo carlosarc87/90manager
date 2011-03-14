@@ -73,12 +73,17 @@ class Liga(models.Model):
 		id_equipos = list(self.equipo_set.all())
 		random.shuffle(id_equipos)
 
-		# Crear jornadas de ida
+		# Crear jornadas de la ida
 		j = 0
 		while j < num_jornadas_ida:
 			emparejamientos_jornada = []
 			for emp in range(0, num_emparejamientos_jornada):
-				emparejamiento = [id_equipos[emp], id_equipos[self.num_equipos - emp - 1]]
+				# Alternar local y visitante
+				if (j % 2) == 0:
+					emparejamiento = [id_equipos[self.num_equipos - emp - 1], id_equipos[emp]]
+				else:
+					emparejamiento = [id_equipos[emp], id_equipos[self.num_equipos - emp - 1]]
+				# Annadir emparejamiento a la lista de emparejamientos de la jornada
 				emparejamientos_jornada.append(emparejamiento)
 			# Annadir todos los emparejamientos a la jornada
 			jornadas.append(emparejamientos_jornada)
@@ -88,6 +93,7 @@ class Liga(models.Model):
 			id_equipos.append(equipo_pal_fondo)
 			j += 1
 
+		# Jornadas de la vuelta
 		ultima_jornada = num_jornadas_ida * 2
 		while (j < ultima_jornada):
 			emparejamientos_jornada = []
@@ -98,8 +104,9 @@ class Liga(models.Model):
 			jornadas.append(emparejamientos_jornada)
 			j += 1
 
+		# Guardar jornadas y partidos
 		for i in range(len(jornadas)):
-			jornada = Jornada(liga = self, numero = i, jugada = False)
+			jornada = Jornada(liga = self, numero = i + 1, jugada = False)
 			jornada.save()
 			for emparejamiento in jornadas[i]:
 				partido = Partido(jornada = jornada, equipo_local = emparejamiento[0], equipo_visitante = emparejamiento[1], jugado = False)
