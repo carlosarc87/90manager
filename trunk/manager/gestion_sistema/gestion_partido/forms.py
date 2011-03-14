@@ -31,7 +31,7 @@ from models import Partido
 
 class PrepararEquipoForm(forms.Form):
 	''' Formulario de preparacion de equipos locales '''
-	jugadores_disponibles = forms.fields.MultipleChoiceField()
+	jugadores_disponibles = forms.fields.MultipleChoiceField(required = False)
 	defensas = forms.fields.MultipleChoiceField()
 	centrocampistas = forms.fields.MultipleChoiceField()
 	portero = forms.fields.ChoiceField()
@@ -60,25 +60,52 @@ class PrepararEquipoForm(forms.Form):
 
 #	def clean_suplentes(self):
 
-
 	def clean(self):
 		''' Valida los datos del formulario '''
 		datos = self.cleaned_data
-		print datos.get("defensas")
-		print datos.get("portero")
-		print datos.get("delanteros")
-		print datos.get("centrocampistas")
 
-		lista = list(datos.get("defensas"))
-		lista += [datos.get("portero")]
-		lista += list(datos.get("delanteros"))
-		lista += list(datos.get("centrocampistas"))
-		print "Lista de datos: "
-		print lista
+		# Comprobacion de que haya cumplimentado los campos
+		dato = datos.get("portero")
+		if dato:
+			lista = [dato]
+		else:
+			raise forms.ValidationError("Claro que sí, sin portero...")
+
+		dato = datos.get("defensas")
+		if dato:
+			lista += list(dato)
+		else:
+			raise forms.ValidationError("Pon algun defensa bonico")
+
+		dato = datos.get("centrocampistas")
+		if dato:
+			lista += list(dato)
+		else:
+			raise forms.ValidationError("Menudo extremista eres, o defendiendo o atacando, nadie en medio. Pues no.")
+
+		dato = datos.get("delanteros")
+		if dato:
+			lista += list(dato)
+		else:
+			raise forms.ValidationError("Algun delantero podría ser útil")
+
+		# Comprobacion de los suplentes
+		dato = datos.get("suplentes")
+		if dato:
+			lista_completa = lista + list(dato)
+			# Comprobacion de que sean únicos
+			for dato in lista_completa:
+				if lista_completa.count(dato) != 1:
+					raise forms.ValidationError("Los jugadores no son amebas, no pueden dividirse y estar en 2 sitios a la vez.")
+		else:
+			raise forms.ValidationError("Como se te rompa algun titular... no se que vas a hacer eh")
+
 		if len(lista) != 11:
 			raise forms.ValidationError("Tienes que indicar exactamente 11 titulares.")
-#		if len(datos.get("suplentes") != 5):
-#			raise forms.ValidationError("Tienes que indicar exactamente 5 suplentes.");
+
+		num_suplentes = 7
+		if len(datos.get("suplentes")) != num_suplentes:
+			raise forms.ValidationError("Tienes que indicar exactamente " + str(num_suplentes) + " suplentes.")
 		return datos
 
 

@@ -61,12 +61,54 @@ class JugadorPartido(models.Model):
 		self.anotacion = self.jugador.anotacion
 		self.portero = self.jugador.portero
 
+	def __unicode__(self):
+		''' Devuelve una cadena representativa del objeto '''
+		return self.posicion + " - " + self.jugador.nombre
+
 ########################################################################
 
 class AlineacionEquipo(models.Model):
 	''' Representa la alineación de un equipo en un partido '''
 	equipo = models.ForeignKey(Equipo)
 	jugadores = models.ManyToManyField(JugadorPartido, null = True, blank = True)
+
+	def borrarAlineacion(self):
+		''' Elimina la alineacion actual '''
+		for jugador in self.jugadores.all():
+			jugador.delete()
+
+	def setAlineacion(self, portero, defensas, centrocampistas, delanteros, suplentes):
+		''' Establece una alineacion de jugadores a partir de los ids '''
+		self.borrarAlineacion()
+
+		jugador = self.equipo.jugador_set.get(id = portero)
+		p = JugadorPartido(jugador = jugador, posicion = 'PO')
+		p.save()
+		self.jugadores.add(p)
+
+		for id_jugador in defensas:
+			jugador = self.equipo.jugador_set.get(id = id_jugador)
+			j = JugadorPartido(jugador = jugador, posicion = 'DF')
+			j.save()
+			self.jugadores.add(j)
+
+		for id_jugador in centrocampistas:
+			jugador = self.equipo.jugador_set.get(id = id_jugador)
+			j = JugadorPartido(jugador = jugador, posicion = 'CC')
+			j.save()
+			self.jugadores.add(j)
+
+		for id_jugador in delanteros:
+			jugador = self.equipo.jugador_set.get(id = id_jugador)
+			j = JugadorPartido(jugador = jugador, posicion = 'DL')
+			j.save()
+			self.jugadores.add(j)
+
+		for id_jugador in suplentes:
+			jugador = self.equipo.jugador_set.get(id = id_jugador)
+			j = JugadorPartido(jugador = jugador, posicion = 'BA')
+			j.save()
+			self.jugadores.add(j)
 
 	def getTitulares(self):
 		''' Devuelve los jugadores titulares '''

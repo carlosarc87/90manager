@@ -209,6 +209,35 @@
 			//ev.stopPropagation();
 			return false; // return false so the event will not be propagated to the browser
 		}
+
+		// Limpia los campos
+		function limpiarDatos() {
+			var campo = document.getElementById("id_delanteros");
+			for (i = 0; i < campo.options.length; i++) {
+				campo.options[i].selected = false;
+			}
+			campo = document.getElementById("id_centrocampistas");
+			for (i = 0; i < campo.options.length; i++) {
+				campo.options[i].selected = false;
+			}
+			campo = document.getElementById("id_defensas");
+			for (i = 0; i < campo.options.length; i++) {
+				campo.options[i].selected = false;
+			}
+			campo = document.getElementById("id_suplentes");
+			for (i = 0; i < campo.options.length; i++) {
+				campo.options[i].selected = false;
+			}
+			var pradera = document.getElementById("id_portero");
+			pradera.selectedIndex = 0;
+
+			// Resetear las posiciones de las cajas
+			var lista_origen = document.getElementById("jugadores");
+
+			var lista = document.getElementById("fila_delanteros");
+
+
+		}
 	</script>
 {% endblock %}
 
@@ -223,6 +252,10 @@
 	<h2>Preparar partido</h2>
 
 	<form id="form_alineacion" action="/partidos/preparar/{{ partido.id }}/" method="post">
+
+		{% if form.errors %}
+			<h1>{{ form.errors }}</h1>
+		{% endif %}
 		<fieldset>
 			<legend>Alineación</legend>
 			Numero de jugadores: <label id = "num_jugadores">0</label>
@@ -272,6 +305,7 @@
 
 		<!-- Boton Aceptar -->
 		<div class="fila"><input type="submit" value="Aceptar" /></div>
+		<input type="button" name="buttonLimpiar" value="Limpiar" OnClick="limpiarDatos();"><br>
 	</form>
 
 {% endblock %}

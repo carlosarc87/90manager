@@ -175,7 +175,14 @@ def preparar_partido(request, partido_id):
 		if request.method == 'POST':
 			form = PrepararEquipoForm(partido.alineacion_local, partido.equipo_local, request.POST)
 			if form.is_valid():
-				#form.save()
+				al = partido.alineacion_local
+				delanteros = form.cleaned_data['delanteros']
+				centrocampistas = form.cleaned_data['centrocampistas']
+				defensas = form.cleaned_data['defensas']
+				portero = form.cleaned_data['portero']
+				suplentes = form.cleaned_data['suplentes']
+				al.setAlineacion(portero, defensas, centrocampistas, delanteros, suplentes)
+				al.save()
 				# Preparar la alineacion perfectamente
 				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
 		else:
@@ -186,7 +193,15 @@ def preparar_partido(request, partido_id):
 		if request.method == 'POST':
 			form = PrepararEquipoForm(partido.alineacion_visitante, partido.equipo_visitante, request.POST)
 			if form.is_valid():
-				#form.save()
+				al = partido.alineacion_visitante
+				delanteros = form.cleaned_data['delanteros']
+				centrocampistas = form.cleaned_data['centrocampistas']
+				defensas = form.cleaned_data['defensas']
+				portero = form.cleaned_data['portero']
+				suplentes = form.cleaned_data['suplentes']
+				al.setAlineacion(portero, defensas, centrocampistas, delanteros, suplentes)
+				al.save()
+
 				# Preparar la alineacion perfectamente
 				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
 		else:
