@@ -95,43 +95,25 @@
 		var jugadores_situados = 0; // Numero de jugadores situados en el campo
 		// Comienza el arrastrado. El “target” del evento será el elemento que está siendo arrastrado.
 		function dragStart(objeto, ev) {
-			//ev.dataTransfer.effectAllowed = 'move';
-			//ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
-			//ev.dataTransfer.setDragImage(ev.target, 0, 0);
-
 			ev.dataTransfer.setData("Text", "jugador_cogido: " + objeto.innerHTML);
 			jugador_pillado = objeto;
-			//jugador_pillado.classname = 'jugador_pillado'; // Pa meterle CSS a los que tengas cogios
+			//jugador_pillado.chetos = "2";
+			//jugador_pillado.classname = 'jugador_pillado';
 			return true;
 		}
 
 		// Se dispara cuando un elemento que está siendo arrastrado entra en un contenedor.
 		function dragEnter(objeto, ev) {
-			//var idelt = ev.dataTransfer.getData("Text");
 			return false;
 		}
 
 		// El elemento se mueve dentro del contenedor.
 		function dragOver(objeto, ev) {
-			//var idelt = ev.dataTransfer.getData("Text");
-			//var objetivo = ev.target;
-			//var id_objetivo = objetivo.getAttribute('id');
-
-			//var num_ele = 1; //objetivo.items.length;
-
-			//ev.dataTransfer.dropEffect = 'move';
-			/*
-			if(num_ele > 1){
-				alert("No se pueden colocar mas de 1 jugadores en la misma posicion");
-				return false; // Denegar el 'drop'
-			}*/
-
 			return false; // Aceptar el 'drop'
 		}
 
 		// Se ha dejado de arrastrar el elemento, con éxito o no.
 		function dragEnd(objeto, ev) {
-			//ev.dataTransfer.clearData("Text");
 			return false;
 		}
 
@@ -163,14 +145,63 @@
 					jugadores_situados--;
 					alert("Mucha peña estas metiendo tu ahí, eh");
 				} else {
+					var origen = jugador_pillado.parentNode;
+					var destino = objeto
 					jugador_pillado.parentNode.removeChild(jugador_pillado);
 					objeto.appendChild(jugador_pillado);
 					document.getElementById("num_jugadores").innerHTML = jugadores_situados;
-					var lista_origen = document.getElementById("id_jugadores_disponibles")
-					var lista_destino = document.getElementById("id_defensas")
-					lista_origen.remove(0)
-					lista_destino.add("Rodolfo", 0)
-					alert(lista_destino)
+
+					// Cambiar de una lista a otra
+					var lista_origen = document.getElementById("id_jugadores_disponibles");
+					var lista_destino = document.getElementById("id_defensas");
+
+					if (origen.id == "jugadores") {
+						lista_origen = document.getElementById("id_jugadores_disponibles");
+					} else if (origen.id == "fila_delanteros") {
+						lista_origen = document.getElementById("id_delanteros");
+					} else if (origen.id == "fila_defensas") {
+						lista_origen = document.getElementById("id_defensas");
+					} else if (origen.id == "fila_portero") {
+						lista_origen = document.getElementById("id_portero");
+					} else if (origen.id == "fila_centrocampistas") {
+						lista_origen = document.getElementById("id_centrocampistas");
+					} else {
+						alert("OTIA")
+					}
+
+					if (destino.id == "jugadores") {
+						lista_destino = document.getElementById("id_jugadores_disponibles");
+					} else if (destino.id == "fila_delanteros") {
+						lista_destino = document.getElementById("id_delanteros");
+					} else if (destino.id == "fila_defensas") {
+						lista_destino = document.getElementById("id_defensas");
+					} else if (destino.id == "fila_portero") {
+						lista_destino = document.getElementById("id_portero");
+					} else if (destino.id == "fila_centrocampistas") {
+						lista_destino = document.getElementById("id_centrocampistas");
+					} else {
+						alert("OTIAss")
+					}
+
+					// Buscamos el elemento de la lista de origen y lo borramos
+					var elementos = lista_origen.options
+					var dato;
+					for (i = 0; i < elementos.length; i++) {
+						if ("jug" + elementos[i].value == jugador_pillado.id) {
+							dato = elementos[i]
+						}
+					}
+					//lista_origen.remove(dato.index);
+					dato.selected = false;
+					elementos = lista_destino.options
+					for (i = 0; i < elementos.length; i++) {
+						if ("jug" + elementos[i].value == jugador_pillado.id) {
+							dato = elementos[i]
+						}
+					}
+					// Añadimos el elemento en la lista de destino
+					//lista_destino.add(dato, null);
+					dato.selected = true;
 				}
 			}
 
@@ -226,7 +257,7 @@
 					ondragover="return dragOver(this, event)">
 
 				{% for jugador in jugadores %}
-					<div class="cuadro_jugador" id="jug{{ jugador.numero }}"
+					<div class="cuadro_jugador" id="jug{{ jugador.id }}"
 							draggable="true"
 							ondragstart="return dragStart(this, event)"
 							ondragend="return dragEnd(this, event)">

@@ -175,7 +175,8 @@ def preparar_partido(request, partido_id):
 		if request.method == 'POST':
 			form = PrepararEquipoForm(partido.alineacion_local, partido.equipo_local, request.POST)
 			if form.is_valid():
-				form.save()
+				#form.save()
+				# Preparar la alineacion perfectamente
 				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
 		else:
 			form = PrepararEquipoForm(partido.alineacion_local, partido.equipo_local)
@@ -183,12 +184,13 @@ def preparar_partido(request, partido_id):
 	elif (partido.equipo_visitante.usuario == usuario): # Juega como visitante
 		equipo = partido.equipo_visitante
 		if request.method == 'POST':
-			form = PrepararEquipoForm(partido.alineacion_visitante, partido.equipo_local, request.POST)
+			form = PrepararEquipoForm(partido.alineacion_visitante, partido.equipo_visitante, request.POST)
 			if form.is_valid():
-				form.save()
+				#form.save()
+				# Preparar la alineacion perfectamente
 				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
 		else:
-			form = PrepararEquipoForm(partido.alineacion_visitante, partido.equipo_local)
+			form = PrepararEquipoForm(partido.alineacion_visitante, partido.equipo_visitante)
 
 	else: # No juega como naaaaaaaaaaaaaaa
 		return devolverMensaje(request, "No tienes equipo en este partido", "/partidos/ver/%d/" % partido.id)

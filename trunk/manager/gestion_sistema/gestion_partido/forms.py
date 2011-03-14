@@ -44,6 +44,11 @@ class PrepararEquipoForm(forms.Form):
 		# Establecemos los valores de la lista multiple como los jugadores del equipo local
 		jugadores = equipo.jugador_set.all()
 		self.fields['jugadores_disponibles'].choices = [[choice.id, choice.nombre] for choice in jugadores]
+		self.fields['defensas'].choices = [[choice.id, choice.nombre] for choice in jugadores]
+		self.fields['centrocampistas'].choices = [[choice.id, choice.nombre] for choice in jugadores]
+		self.fields['portero'].choices = [[choice.id, choice.nombre] for choice in jugadores]
+		self.fields['delanteros'].choices = [[choice.id, choice.nombre] for choice in jugadores]
+		self.fields['suplentes'].choices = [[choice.id, choice.nombre] for choice in jugadores]
 
 #	def clean_defensas(self):
 
@@ -59,8 +64,13 @@ class PrepararEquipoForm(forms.Form):
 	def clean(self):
 		''' Valida los datos del formulario '''
 		datos = self.cleaned_data
+		print datos.get("defensas")
+		print datos.get("portero")
+		print datos.get("delanteros")
+		print datos.get("centrocampistas")
+
 		lista = list(datos.get("defensas"))
-		lista += list(datos.get("portero"))
+		lista += [datos.get("portero")]
 		lista += list(datos.get("delanteros"))
 		lista += list(datos.get("centrocampistas"))
 		print "Lista de datos: "
