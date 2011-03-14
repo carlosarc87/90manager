@@ -28,15 +28,32 @@
 			color: #3333ff;
 		}
 
-		#campo_alineacion{
+		#jugadores .cuadro_jugador .apodo_jugador{
+			color: #3333ff;
+			display: none;
+		}
+		
+		#caja_alineacion{
+			float: right;
+		}
+
+		#campo_titulares{
 			background-image: url('/media/img/campo_futbol.jpg');
+			clear: both;
 			float: right;
 			height: 678px;
 			text-align: center;
 			width: 444px;
 		}
+		
+		#campo_suplentes{
+			background: rgb(0, 200, 0);
+			clear: both;
+			float: right;
+			margin-top: 25px;
+		}
 
-		#campo_alineacion .cuadro_jugador{
+		#caja_alineacion .cuadro_jugador{
 			background: url('/media/img/avatar_jugador.gif') no-repeat;
 			background-position: center top;
 			display: inline-block;
@@ -46,6 +63,10 @@
 			padding: 66px 10px 0px 10px;
 			text-align: center;
 			width: 50px;
+		}
+
+		#caja_alineacion .cuadro_jugador .nombre_jugador{
+			display: none;
 		}
 
 		#fila_delanteros{
@@ -72,8 +93,15 @@
 			margin: 0px 20px;
 		}
 
-		#form_alineacion{
+		#fila_suplentes{
+			background: rgb(0, 200, 0);
+			height: 220px;
+			padding: 20px;
+			width: 404px;
+		}
 
+		#form_oculto{
+			display: none;
 		}
 
 		#titulares{
@@ -93,6 +121,8 @@
 	<script type="text/javascript">
 		var jugador_pillado; // Jugador que se ha cogido
 		var jugadores_situados = 0; // Numero de jugadores situados en el campo
+		var jugadores_suplentes = 0; // Numero de jugadores situados en el banquillo
+		
 		// Comienza el arrastrado. El “target” del evento será el elemento que está siendo arrastrado.
 		function dragStart(objeto, ev) {
 			ev.dataTransfer.setData("Text", "jugador_cogido: " + objeto.innerHTML);
@@ -126,8 +156,32 @@
 				alert("Solo se pueden soltar jugadores");
 			} else {
 				if (objeto.id == "fila_portero") {
-					if (objeto.getElementsByTagName('div').length > 1) {
+					if (objeto.getElementsByClassName('cuadro_jugador').length >= 1) {
 						alert("Ya hay un portero");
+						situar = false;
+					}
+				}
+				else if (objeto.id == "fila_defensas") {
+					if (objeto.getElementsByClassName('cuadro_jugador').length >= 5) {
+						alert("No se pueden agregar mas defensas");
+						situar = false;
+					}
+				}
+				else if (objeto.id == "fila_centrocampistas") {
+					if (objeto.getElementsByClassName('cuadro_jugador').length >= 5) {
+						alert("No se pueden agregar mas centrocampistas");
+						situar = false;
+					}
+				}
+				else if (objeto.id == "fila_delanteros") {
+					if (objeto.getElementsByClassName('cuadro_jugador').length >= 5) {
+						alert("No se pueden agregar mas delanteros");
+						situar = false;
+					}
+				}
+				else if(objeto.id == "fila_suplentes") {
+					if (objeto.getElementsByClassName('cuadro_jugador').length >= 7) {
+						alert("No se pueden agregar mas jugadores suplentes");
 						situar = false;
 					}
 				}
@@ -135,10 +189,17 @@
 
 			if (situar) {
 				// Calculamos los jugadores que se van a situar o no
-				if (jugador_pillado.parentNode.id == "jugadores" && objeto.id != "jugadores") {
-					jugadores_situados++;
-				} else if (jugador_pillado.parentNode.id != "jugadores" && objeto.id == "jugadores") {
-					jugadores_situados--;
+				if (jugador_pillado.parentNode.id == "jugadores") {
+					if (objeto.id == "fila_suplentes") {
+						jugadores_suplentes++;
+					}
+					else{
+						jugadores_situados++;
+					}
+				} else{
+					if (objeto.id == "jugadores") {
+						jugadores_situados--;
+					}
 				}
 
 				if (jugadores_situados > 11) {
@@ -150,6 +211,7 @@
 					jugador_pillado.parentNode.removeChild(jugador_pillado);
 					objeto.appendChild(jugador_pillado);
 					document.getElementById("num_jugadores").innerHTML = jugadores_situados;
+					document.getElementById("num_suplentes").innerHTML = jugadores_suplentes;
 
 					// Cambiar de una lista a otra
 					var lista_origen = document.getElementById("id_jugadores_disponibles");
@@ -165,6 +227,8 @@
 						lista_origen = document.getElementById("id_portero");
 					} else if (origen.id == "fila_centrocampistas") {
 						lista_origen = document.getElementById("id_centrocampistas");
+					} else if (origen.id == "fila_suplentes") {
+						lista_origen = document.getElementById("id_suplentes");
 					} else {
 						alert("OTIA")
 					}
@@ -179,6 +243,8 @@
 						lista_destino = document.getElementById("id_portero");
 					} else if (destino.id == "fila_centrocampistas") {
 						lista_destino = document.getElementById("id_centrocampistas");
+					} else if (destino.id == "fila_suplentes") {
+						lista_destino = document.getElementById("id_suplentes");
 					} else {
 						alert("OTIAss")
 					}
@@ -254,36 +320,50 @@
 	<form id="form_alineacion" action="/partidos/preparar/{{ partido.id }}/" method="post">
 
 		{% if form.errors %}
-			<h1>{{ form.errors }}</h1>
+			<div>{{ form.errors }}</div>
 		{% endif %}
 		<fieldset>
 			<legend>Alineación</legend>
-			Numero de jugadores: <label id = "num_jugadores">0</label>
-			<div id="campo_alineacion">
-				<div id="fila_delanteros"
-						ondragenter="return dragEnter(this, event)"
-						ondrop="return dragDrop(this, event)"
-						ondragover="return dragOver(this, event)">
-				</div>
+			
+			<div>Número de jugadores en la alineación: <label id = "num_jugadores">0</label></div>
+			<div>Número de jugadores suplentes: <label id = "num_suplentes">0</label></div>
+			
+			<div id="caja_alineacion">
+				<div id="campo_titulares">
+					<div id="fila_delanteros"
+							ondragenter="return dragEnter(this, event)"
+							ondrop="return dragDrop(this, event)"
+							ondragover="return dragOver(this, event)">
+					</div>
 
-				<div id="fila_centrocampistas"
-						ondragenter="return dragEnter(this, event)"
-						ondrop="return dragDrop(this, event)"
-						ondragover="return dragOver(this, event)">
-				</div>
+					<div id="fila_centrocampistas"
+							ondragenter="return dragEnter(this, event)"
+							ondrop="return dragDrop(this, event)"
+							ondragover="return dragOver(this, event)">
+					</div>
 
-				<div id="fila_defensas"
-						ondragenter="return dragEnter(this, event)"
-						ondrop="return dragDrop(this, event)"
-						ondragover="return dragOver(this, event)">
-				</div>
+					<div id="fila_defensas"
+							ondragenter="return dragEnter(this, event)"
+							ondrop="return dragDrop(this, event)"
+							ondragover="return dragOver(this, event)">
+					</div>
 
-				<div id="fila_portero"
-						ondragenter="return dragEnter(this, event)"
-						ondrop="return dragDrop(this, event)"
-						ondragover="return dragOver(this, event)">
+					<div id="fila_portero"
+							ondragenter="return dragEnter(this, event)"
+							ondrop="return dragDrop(this, event)"
+							ondragover="return dragOver(this, event)">
+					</div>
+				</div>
+				
+				<div id="campo_suplentes">
+					<div id="fila_suplentes"
+							ondragenter="return dragEnter(this, event)"
+							ondrop="return dragDrop(this, event)"
+							ondragover="return dragOver(this, event)">
+					</div>
 				</div>
 			</div>
+			
 			<div id="jugadores"
 					ondragenter="return dragEnter(this, event)"
 					ondrop="return dragDrop(this, event)"
@@ -296,12 +376,13 @@
 							ondragend="return dragEnd(this, event)">
 						<div class="numero_jugador">{{ jugador.numero }}</div>
 						<div class="nombre_jugador">{{ jugador.nombre }}</div>
+						<div class="apodo_jugador">{{ jugador.apodo }}</div>
 					</div>
 				{% endfor %}
 			</div>
 		</fieldset>
 
-		{{ form.as_p }}
+		<div id="form_oculto">{{ form.as_p }}</div>
 
 		<!-- Boton Aceptar -->
 		<div class="fila"><input type="submit" value="Aceptar" /></div>

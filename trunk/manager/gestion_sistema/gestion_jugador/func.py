@@ -26,13 +26,13 @@ from random import randint
 
 ########################################################################
 
-def nombreJugadorAleatorio():
-	# Crear listas
+def listaNombres(nombre_fichero):
+	""" Devuelve una lista con todos los nombres que hay en el fichero dado """
+	# Crear lista
 	lista_nombres = []
-	lista_apellidos = []
 
-	# Obtener nombres de jugadores
-	fich = open("public/site_media/doc/nombres_hombres.txt", "r")
+	# Obtener nombres
+	fich = open("public/site_media/doc/" + nombre_fichero, "r")
 	while(True):
 		nombre = fich.readline()
 		if not nombre:
@@ -40,28 +40,50 @@ def nombreJugadorAleatorio():
 		lista_nombres.append(nombre)
 
 	fich.close()
+	
+	return lista_nombres
 
-	# Obtener apellidos de jugadores
-	fich = open("public/site_media/doc/apellidos.txt", "r")
-	while(True):
-		apellido = fich.readline()
-		if not apellido:
-			break
+########################################################################
 
-		lista_apellidos.append(apellido)
+def quitar_acentos(cadena):
+	print "cadena: " + cadena
+	cadena = cadena.replace('Á', 'A')
+	cadena = cadena.replace('É', 'E')
+	cadena = cadena.replace('Í', 'I')
+	cadena = cadena.replace('Ó', 'O')
+	cadena = cadena.replace('Ú', 'U')
+	print "cadena_sin: " + cadena
+	return cadena
 
-	fich.close()
+########################################################################
 
+def nombreJugadorAleatorio(lista_nombres, lista_apellidos):
 	# Poner 1 o 2 nombres
 	num_nombres = randint(1, 2)
-	nombre_completo = lista_nombres[randint(0, len(lista_nombres) - 1)]
+	nombre1 = lista_nombres[randint(0, len(lista_nombres) - 1)]
+	nombre_completo = nombre1
+	aux = quitar_acentos(nombre1)
+	apodo = aux[0] + '. '
+	print "nombre1: " + nombre1
+	print "apodo1: " + apodo
 	if(num_nombres == 2):
-		nombre_completo += (" " + lista_nombres[randint(0, len(lista_nombres) - 1)])
+		nombre2 = lista_nombres[randint(0, len(lista_nombres) - 1)]
+		nombre_completo = nombre_completo + ' ' + nombre2
+		aux = quitar_acentos(nombre2)
+		apodo = apodo + aux[0] + '. '
+		print "nombre2: " + nombre2
+		print "apodo2: " + apodo
 
 	# Poner 2 apellidos
-	apellidos = lista_apellidos[randint(0, len(lista_apellidos) - 1)] + " " + lista_apellidos[randint(0, len(lista_apellidos) - 1)]
-
-	# Devolver nombre/s y apellidos
-	return nombre_completo + " " + apellidos
+	apellido1 = lista_apellidos[randint(0, len(lista_apellidos) - 1)]
+	apellido2 = lista_apellidos[randint(0, len(lista_apellidos) - 1)]
+	apellidos = apellido1 + ' ' + apellido2
+	apodo = apodo + apellido1
+	print "apellido1: " + apellido1
+	print "apellido2: " + apellido2
+	print "apodo3: " + apodo
+	
+	# Devolver nombre_completo y apodo
+	return nombre_completo + ' ' + apellidos, apodo
 
 ########################################################################

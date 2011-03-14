@@ -43,7 +43,12 @@ class Equipo(models.Model):
 	def generarJugadoresAleatorios(self):
 		''' Genera un conjunto de jugadores aleatorios para el equipo '''
 		from gestion_sistema.gestion_jugador.models import Jugador
-		from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio
+		from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio, listaNombres
+		
+		# Crear listas
+		lista_nombres = listaNombres("nombres_hombres.txt")
+		lista_apellidos = listaNombres("apellidos.txt")
+		
 		# Generar jugadores
 		for j in range(1, 21):
 			# Establecer posición
@@ -56,8 +61,8 @@ class Equipo(models.Model):
 			else:
 				posicion = "DELANTERO"
 
-			nombre_aleatorio = nombreJugadorAleatorio()
-			jugador = Jugador(equipo = self, nombre = nombre_aleatorio, apodo = nombre_aleatorio, transferible = False)
+			nombre_aleatorio, apodo_aux = nombreJugadorAleatorio(lista_nombres, lista_apellidos)
+			jugador = Jugador(equipo = self, nombre = nombre_aleatorio, apodo = apodo_aux, transferible = False)
 			jugador.setNumero(j)
 			jugador.setHabilidadesAleatorias(posicion, 50)
 			jugador.save()
