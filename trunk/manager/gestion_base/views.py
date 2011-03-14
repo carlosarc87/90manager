@@ -44,6 +44,13 @@ def index(request):
 
 ########################################################################
 
+def creditos(request):
+	''' Ir a la pagina de creditos '''
+	t = loader.get_template("creditos.html")
+	return render_to_response("creditos.html", {})
+
+########################################################################
+
 def contacto(request):
 	''' Muestra la página para rellenar el formulario de "contacta con nosotros" '''
 	if request.method == 'POST':

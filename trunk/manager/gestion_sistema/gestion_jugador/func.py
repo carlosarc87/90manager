@@ -46,13 +46,11 @@ def listaNombres(nombre_fichero):
 ########################################################################
 
 def quitar_acentos(cadena):
-	print "cadena: " + cadena
 	cadena = cadena.replace('Á', 'A')
 	cadena = cadena.replace('É', 'E')
 	cadena = cadena.replace('Í', 'I')
 	cadena = cadena.replace('Ó', 'O')
 	cadena = cadena.replace('Ú', 'U')
-	print "cadena_sin: " + cadena
 	return cadena
 
 ########################################################################
@@ -64,24 +62,19 @@ def nombreJugadorAleatorio(lista_nombres, lista_apellidos):
 	nombre_completo = nombre1
 	aux = quitar_acentos(nombre1)
 	apodo = aux[0] + '. '
-	print "nombre1: " + nombre1
-	print "apodo1: " + apodo
+	
+	# Si se pone un segundo nombre
 	if(num_nombres == 2):
 		nombre2 = lista_nombres[randint(0, len(lista_nombres) - 1)]
 		nombre_completo = nombre_completo + ' ' + nombre2
 		aux = quitar_acentos(nombre2)
 		apodo = apodo + aux[0] + '. '
-		print "nombre2: " + nombre2
-		print "apodo2: " + apodo
 
 	# Poner 2 apellidos
 	apellido1 = lista_apellidos[randint(0, len(lista_apellidos) - 1)]
 	apellido2 = lista_apellidos[randint(0, len(lista_apellidos) - 1)]
 	apellidos = apellido1 + ' ' + apellido2
 	apodo = apodo + apellido1
-	print "apellido1: " + apellido1
-	print "apellido2: " + apellido2
-	print "apodo3: " + apodo
 	
 	# Devolver nombre_completo y apodo
 	return nombre_completo + ' ' + apellidos, apodo
