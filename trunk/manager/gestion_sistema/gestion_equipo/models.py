@@ -31,7 +31,7 @@ from gestion_usuario.models import Usuario
 # Equipo
 class Equipo(models.Model):
 	''' Representa un equipo en el sistema '''
-	nombre = models.CharField(max_length=200)
+	nombre = models.CharField(max_length = 50)
 	usuario = models.ForeignKey(Usuario, null = True)
 	liga = models.ForeignKey(Liga)
 
@@ -45,7 +45,7 @@ class Equipo(models.Model):
 		from gestion_sistema.gestion_jugador.models import Jugador
 		from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio
 		# Generar jugadores
-		for j in range(1, 20):
+		for j in range(1, 21):
 			# Establecer posición
 			if (j == 1 or j == 20):
 				posicion = "PORTERO"
@@ -58,6 +58,7 @@ class Equipo(models.Model):
 
 			jugador = Jugador(equipo = self, nombre = nombreJugadorAleatorio(), transferible = False)
 			jugador.setNumero(j)
+			jugador.setPosicion(posicion)
 			jugador.setHabilidadesAleatorias(posicion, 50)
 			jugador.save()
 			self.agregarJugador(jugador)
