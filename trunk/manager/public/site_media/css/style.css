@@ -81,15 +81,13 @@ table tr{
 	border-top: solid 1px #555555;
 	border-bottom: solid 1px #555555;
 	clear: both;
-	padding: 10px 0px 10px 0px;
+	padding: 20px 0px 20px 0px;
 	text-align: center;
 	width: 100%;
 }
 
-#footer ul{
-	list-style: none;
-	margin: 0px;
-	padding: 0px;
+#footer a + a{
+	margin-left: 20px;
 }
 
 #header{
