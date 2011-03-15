@@ -203,7 +203,7 @@ def preparar_partido(request, partido_id):
 			else:
 				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
 	else:
-		form = PrepararEquipoForm(partido.alineacion_local, partido.equipo_local)
+		form = PrepararEquipoForm(alineacion, equipo)
 
 	delanteros = alineacion.getDelanteros()
 	centrocampistas = alineacion.getCentrocampistas()
