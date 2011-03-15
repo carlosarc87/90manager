@@ -118,7 +118,9 @@
 {% endblock %}
 
 {% block head_js %}
-	<script type="text/javascript">
+	<script type="text/javascript"><!--//--><![CDATA[//><!--
+		window.onload = establecerDatos;
+		
 		var jugador_pillado; // Jugador que se ha cogido
 		var jugadores_situados = 0; // Numero de jugadores situados en el campo
 		var jugadores_suplentes = 0; // Numero de jugadores situados en el banquillo
@@ -416,14 +418,17 @@
 			{% endif %}
 			actualizarNumeros();
 		}
+		//--><!]]>
 	</script>
 {% endblock %}
 
 {% block situacion %}
-	<li><a href="/ligas/ver/{{ partido.jornada.liga_id }}/">{{ partido.jornada.liga.nombre }}</a></li>
-	<li><a href="/jornadas/ver/{{ partido.jornada.id }}/">Jornada {{ partido.jornada.numero }}</a></li>
-	<li><a href="/partidos/ver/{{ partido.id }}/">Partido {{ partido.id }}</a></li>
-	<li>{{ equipo.nombre }}</li>
+	<ul id="menu_superior_situacion">
+		<li><a href="/ligas/ver/{{ partido.jornada.liga_id }}/">{{ partido.jornada.liga.nombre }}</a></li>
+		<li><a href="/jornadas/ver/{{ partido.jornada.id }}/">Jornada {{ partido.jornada.numero }}</a></li>
+		<li><a href="/partidos/ver/{{ partido.id }}/">Partido {{ partido.id }}</a></li>
+		<li>{{ equipo.nombre }}</li>
+	</ul>
 {% endblock %}
 
 {% block contenido %}
@@ -441,8 +446,8 @@
 		<fieldset>
 			<legend>Alineación</legend>
 
-			<div>Número de jugadores en la alineación: <label id = "num_jugadores">0</label></div>
-			<div>Número de jugadores suplentes: <label id = "num_suplentes">0</label></div>
+			<div>Número de jugadores en la alineación: <label id="num_jugadores">0</label></div>
+			<div>Número de jugadores suplentes: <label id="num_suplentes">0</label></div>
 
 			<div id="caja_alineacion">
 				<div id="campo_titulares">
@@ -504,8 +509,6 @@
 
 		<!-- Boton Aceptar -->
 		<div class="fila"><input type="submit" value="Aceptar" /></div>
-		<input type="button" name="buttonLimpiar" value="Limpiar" OnClick="limpiarDatos();"><br>
+		<div class="fila"><input type="button" name="buttonLimpiar" value="Limpiar" onclick="limpiarDatos();" /></div>
 	</form>
-
-<script type="text/javascript">window.onload = establecerDatos;</script>
 {% endblock %}

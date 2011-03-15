@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
 {% block situacion %}
-	<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
-	<li><a href="/jornadas/ver/{{ jornada.id }}/">Jornada {{ jornada.numero }}</a></li>
-	<li>Partido {{ partido.id }}</li>
+	<ul id="menu_superior_situacion">
+		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+		<li><a href="/jornadas/ver/{{ jornada.id }}/">Jornada {{ jornada.numero }}</a></li>
+		<li>Partido {{ partido.id }}</li>
+	</ul>
 {% endblock %}
 
 {% block contenido %}
 
-	<table style="margin-bottom: 20px;">
+	<table class="tabla1">
 		<caption>Partido {{ partido.id }}</caption>
 
 		<tbody>
@@ -43,12 +45,14 @@
 
 	{% if finalizado %}
 		<!-- Titulares local -->
-		<table>
+		<table class="tabla1">
 			<caption>Titulares del equipo local</caption>
 			<thead>
-				<td>Num.</td>
-				<td>Posici&oacute;n</td>
-				<td>Nombre</td>
+				<tr>
+					<td>Num.</td>
+					<td>Posici&oacute;n</td>
+					<td>Nombre</td>
+				</tr>
 			</thead>
 			<tbody>
 				{% for titular in titulares_local %}
@@ -62,12 +66,14 @@
 		</table>
 
 		<!-- Titulares visitante -->
-		<table>
+		<table class="tabla1">
 			<caption>Titulares del equipo visitante</caption>
 			<thead>
-				<td>Num.</td>
-				<td>Posici&oacute;n</td>
-				<td>Nombre</td>
+				<tr>
+					<td>Num.</td>
+					<td>Posici&oacute;n</td>
+					<td>Nombre</td>
+				</tr>
 			</thead>
 			<tbody>
 				{% for titular in titulares_visitante %}
@@ -81,7 +87,7 @@
 		</table>
 
 		<!-- Sucesos -->
-		<table>
+		<table class="tabla1">
 			<caption>SUCESOS</caption>
 			<tbody>
 				{% for suceso in sucesos_partido %}
@@ -95,20 +101,25 @@
 		</table>
 	{% else %}
 		<h4>SIN INICIAR</h4>
-		<ul>
-			{% if tiene_equipo %}
-				<li><a href="/partidos/preparar/{{ partido.id }}/">
-					{% if editar %}
-						Editar alineacion para el partido
-					{% else %}
-						Preparar alineacion para el partido
-					{% endif %}
-				</a></li>
-			{% endif %}
-			{% if es_creador and es_jugable %}
+		
+		{% if tiene_equipo %}
+			<ul>
+				<li>
+					<a href="/partidos/preparar/{{ partido.id }}/">
+						{% if editar %}
+							Editar alineacion para el partido
+						{% else %}
+							Preparar alineacion para el partido
+						{% endif %}
+					</a>
+				</li>
+			</ul>
+		{% endif %}
+		{% if es_creador and es_jugable %}
+			<ul>
 				<li><a href="/partidos/jugar/{{ partido.id }}/">Jugar</a></li>
-			{% endif %}
-		</ul>
+			</ul>
+		{% endif %}
 	{% endif %}
 
 {% endblock %}

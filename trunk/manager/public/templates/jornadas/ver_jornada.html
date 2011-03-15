@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
 {% block situacion %}
-	<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
-	<li>Jornada {{ jornada.numero }}</li>
+	<ul id="menu_superior_situacion">
+		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+		<li>Jornada {{ jornada.numero }}</li>
+	</ul>
 {% endblock %}
 
 {% block contenido %}
@@ -26,7 +28,7 @@
 		{% endif %}
 	{% endif %}
 
-	<table style="width: 400px;">
+	<table class="tabla1" style="width: 400px;">
 		<caption>Listado de encuentros</caption>
 		<thead>
 			<tr>
@@ -59,7 +61,7 @@
 	</table>
 
 	{% if clasificacion_anterior.count %}
-		<table style="margin-top: 20px; width: 400px;">
+		<table class="tabla1" style="width: 400px;">
 			<caption>Clasificación antes de la jornada</caption>
 			<thead>
 				<tr>
@@ -92,7 +94,7 @@
 
 
 	{% if clasificacion.count %}
-		<table style="margin-top: 20px; width: 400px;">
+		<table class="tabla1" style="width: 400px;">
 			<caption>Clasificación antes de la jornada</caption>
 			<thead>
 				<tr>

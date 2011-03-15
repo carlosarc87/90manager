@@ -4,10 +4,8 @@
 	<div id="contacto">
 		<form action="/contacto/" method="post">
 			{% csrf_token %}
-			<form action="/contacto/" method="post">
-				{{ form.as_p }}
-				<input type="submit" value="Enviar" />
-			</form>
+			{{ form.as_p }}
+			<input type="submit" value="Enviar" />
 		</form>
 	</div>
 {% endblock %}

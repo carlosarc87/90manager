@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
 {% block situacion %}
-	<li><a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a></li>
-	<li><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
-	<li>{{ jugador.nombre }}</li>
+	<ul id="menu_superior_situacion">
+		<li><a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a></li>
+		<li><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
+		<li>{{ jugador.nombre }}</li>
+	</ul>
 {% endblock %}
 
 {% block contenido %}
@@ -15,7 +17,7 @@
 		<li>Valor de mercado: {{ jugador.valorMercado }} &euro;</li>
 	</ul>
 
-	<table>
+	<table class="tabla1">
 		<caption>Habilidades de campo</caption>
 		<thead>
 			<tr>
@@ -28,37 +30,37 @@
 			<tr>
 				<td>Ataque</td>
 				<td class="cuadro_num_azul_der">{{ jugador.ataque }}</td>
-			<tr>
+			</tr>
 
 			<!-- Defensa -->
 			<tr>
 				<td>Defensa</td>
 				<td class="cuadro_num_azul_der">{{ jugador.defensa }}</td>
-			<tr>
+			</tr>
 
 			<!-- Velocidad -->
 			<tr>
 				<td>Velocidad</td>
 				<td class="cuadro_num_azul_der">{{ jugador.velocidad }}</td>
-			<tr>
+			</tr>
 
 			<!-- Pases -->
 			<tr>
 				<td>Pases</td>
 				<td class="cuadro_num_azul_der">{{ jugador.pases }}</td>
-			<tr>
+			</tr>
 
 			<!-- Anotacion -->
 			<tr>
 				<td>Anotaci&oacute;n</td>
 				<td class="cuadro_num_azul_der">{{ jugador.anotacion }}</td>
-			<tr>
+			</tr>
 
 			<!-- Portero -->
 			<tr>
 				<td>Portero</td>
 				<td class="cuadro_num_azul_der">{{ jugador.portero }}</td>
-			<tr>
+			</tr>
 		</tbody>
 	</table>
 

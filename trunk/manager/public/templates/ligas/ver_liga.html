@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block situacion %}
-	<li>{{ liga.nombre }}</li>
+	<ul id="menu_superior_situacion">
+		<li>{{ liga.nombre }}</li>
+	</ul>
 {% endblock %}
 
 {% block contenido %}
@@ -18,7 +20,7 @@
 		{% endif %}
 
 		{% if clasificacion %}
-			<table>
+			<table class="tabla1">
 				{% if liga_acabada %}
 					<caption>Clasificacion final</caption>
 				{% else %}
@@ -78,7 +80,7 @@
 			</table>
 		{% endif %}
 
-		<table style="margin-top:20px; width: 300px;">
+		<table class="tabla1" style="width: 300px;">
 			<caption>Listado de jornadas</caption>
 			<thead>
 				<tr>
@@ -116,7 +118,7 @@
 	{% endif %}
 
 	{% if equipos.count %}
-		<table style="margin-top: 20px; width: 300px;">
+		<table class="tabla1" style="width: 300px;">
 			<caption>Listado de equipos</caption>
 			<thead>
 				<tr>

@@ -15,60 +15,6 @@ h1, h2, h3, h4{
 	margin-top: 0px;
 }
 
-table{
-	background: #fff;
-	border: solid 1px #444;
-	border-spacing: 1px;
-	margin-bottom: 10px;
-}
-
-table a{
-	color: #5555aa;
-	text-decoration: none;
-}
-
-table a:hover{
-	text-decoration: underline;
-}
-
-table caption{
-	background-color: #ddd;
-	border-top: solid 1px #444;
-	border-right: solid 1px #444;
-	border-left: solid 1px #444;
-	color: #666;
-	font-size: 16px;
-	font-weight: bold;
-	padding: 5px 0px 5px 0px;
-	text-align: center;
-}
-
-table thead, tfoot{
-	background-color: #ccc;
-	border: solid 1px #444;
-	color: #666;
-	font-size: 14px;
-	font-weight: bold;
-}
-
-table tbody{
-	background-color: #eee;
-	border: solid 1px #444;
-	color: #444;
-}
-
-table td{
-	padding: 4px;
-}
-
-table th{
-}
-
-table tr{
-	border: solid 1px #444;
-	border-spacing: 1px;
-}
-
 #contenido_centro{
 	clear: right;
 	float: left;
@@ -88,6 +34,10 @@ table tr{
 
 #footer a + a{
 	margin-left: 20px;
+}
+
+#footer img{
+	border: 0px;
 }
 
 #header{
@@ -180,7 +130,7 @@ table tr{
 	margin-top: 10px;
 	margin-bottom: 40px;
 	padding: 20px;
-	width: 300px;
+	width: 350px;
 }
 
 .contenido{
@@ -215,6 +165,57 @@ table tr{
 
 .fila div{
 	float: left;
+}
+
+.tabla1{
+	background: #fff;
+	border: solid 1px #444;
+	border-spacing: 1px;
+	margin-bottom: 10px;
+}
+
+.tabla1 a{
+	color: #5555aa;
+	text-decoration: none;
+}
+
+.tabla1 a:hover{
+	text-decoration: underline;
+}
+
+.tabla1 caption{
+	background-color: #ddd;
+	border-top: solid 1px #444;
+	border-right: solid 1px #444;
+	border-left: solid 1px #444;
+	color: #666;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 5px 0px 5px 0px;
+	text-align: center;
+}
+
+.tabla1 thead, .tabla1 tfoot{
+	background-color: #ccc;
+	border: solid 1px #444;
+	color: #666;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.tabla1 tbody{
+	background-color: #eee;
+	border: solid 1px #444;
+	color: #444;
+}
+
+.tabla1 td{
+	padding: 4px;
+}
+
+.tabla1 tr{
+	border: solid 1px #444;
+	border-spacing: 1px;
 }
 
 .texto_error{

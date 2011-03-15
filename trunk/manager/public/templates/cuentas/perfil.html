@@ -7,18 +7,25 @@
 
 	<h2>Perfil principal de {{ usuario.username }}</h2>
 
-	<table style="margin-bottom: 20px; width: 200px;">
+	<table class="tabla1" style="width: 300px;">
 		<caption>Ligas creadas</caption>
+		<thead>
+			<tr>
+				<th>Liga</th>
+				<th>Num. equipos</th>
+			</tr>
+		</thead>
 		<tbody>
 			{% for liga in ligas_creadas %}
 				<tr>
 					<td><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
+					<td>{{ liga.num_equipos }}</td>
 				</tr>
 			{% endfor %}
-		<tbody>
+		</tbody>
 	</table>
 
-	<table style="width: 200px;">
+	<table class="tabla1" style="width: 300px;">
 		<caption>Ligas en las que participa</caption>
 		<thead>
 			<tr>
@@ -33,7 +40,7 @@
 					<td><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></td>
 				</tr>
 			{% endfor %}
-		<tbody>
+		</tbody>
 	</table>
 
 {% endblock %}
