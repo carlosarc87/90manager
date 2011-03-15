@@ -28,4 +28,8 @@ urlpatterns = patterns('',
 	(r'^$', 'gestion_base.views.index'),
 	(r'^creditos/', 'gestion_base.views.creditos'),
 	(r'^contacto/', 'gestion_base.views.contacto'),
+	(r'^blog/', 'gestion_base.views.bajoConstruccion'),
+	(r'^wiki/', 'gestion_base.views.bajoConstruccion'),
+	(r'^siguenos/', 'gestion_base.views.bajoConstruccion'),
+	(r'^changelog/', 'gestion_base.views.bajoConstruccion'),
 )

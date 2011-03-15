@@ -68,3 +68,8 @@ def changelog(request):
 	return HttpResponse("Aun no implementado.")
 
 ########################################################################
+
+def bajoConstruccion(request):
+	return HttpResponse("La página que deseas visitar aún no está acabada =(")
+
+########################################################################

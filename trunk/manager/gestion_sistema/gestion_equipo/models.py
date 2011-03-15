@@ -22,6 +22,7 @@ Copyright 2011 by
 
 """
 from django.db import models
+from django.db.models import Q, F
 
 from gestion_sistema.gestion_liga.models import Liga
 from gestion_usuario.models import Usuario
@@ -40,15 +41,65 @@ class Equipo(models.Model):
 		''' Añade un jugador al equipo '''
 		self.jugador_set.add(jugador)
 
+	def getPartidos(self, liga):
+		''' Devuelve los partidos de una liga en los que juega '''
+		from gestion_sistema.gestion_partido.models import Partido
+		q = Partido.objects.filter(Q(equipo_local = self) | Q(equipo_visitante = self))
+		jornadas = list(liga.jornada_set.all())
+		lista = q.filter(jornada__in = jornadas)
+		return lista
+
+	def getPartidosHastaJornada(self, jornada):
+		''' Devuelve los partidos jugados hasta la jornada '''
+		# Obtenemos la liga
+		liga = jornada.liga
+		# Obtenemos los partidos en los que juega
+		partidos = self.getPartidos(liga)
+		return partidos.filter(jornada__lt = jornada)
+
+	def getPartidosGanados(self, jornada):
+		''' Devuelve los partidos ganados hasta la jornada '''
+		# Partidos hasta la jornada
+		partidos = self.getPartidosHastaJornada(jornada)
+		# Partidos jugados
+		partidos_jugados = partidos.filter(jugado = True)
+		# Partidos ganados como visitante
+		partidos_ganados = partidos_jugados.filter(
+			Q(Q(equipo_local = self) & Q(goles_local__gt = F('goles_visitante'))) |
+			Q(Q(equipo_visitante = self) & Q(goles_local__lt = F('goles_visitante'))))
+		return partidos_ganados
+
+	def getPartidosPerdidos(self, jornada):
+		''' Devuelve los partidos perdidos hasta la jornada '''
+		# Partidos hasta la jornada
+		partidos = self.getPartidosHastaJornada(jornada)
+		# Partidos jugados
+		partidos_jugados = partidos.filter(jugado = True)
+		# Partidos perdidos como visitante
+		partidos_perdidos = partidos_jugados.filter(
+			Q(Q(equipo_local = self) & Q(goles_local__lt = F('goles_visitante'))) |
+			Q(Q(equipo_visitante = self) & Q(goles_local__gt = F('goles_visitante'))))
+		return partidos_perdidos
+
+	def getPartidosEmpatados(self, jornada):
+		''' Devuelve los partidos empatados hasta la jornada '''
+		# Partidos hasta la jornada
+		partidos = self.getPartidosHastaJornada(jornada)
+		# Partidos jugados
+		partidos_jugados = partidos.filter(jugado = True)
+		# Partidos perdidos como visitante
+		partidos_empatados = partidos_jugados.filter(goles_local = F('goles_visitante'))
+		return partidos_empatados
+
 	def generarJugadoresAleatorios(self):
 		''' Genera un conjunto de jugadores aleatorios para el equipo '''
 		from gestion_sistema.gestion_jugador.models import Jugador
 		from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio, listaNombres
-		
+
 		# Crear listas
 		lista_nombres = listaNombres("nombres_hombres.txt")
 		lista_apellidos = listaNombres("apellidos.txt")
-		
+
 		# Generar jugadores
 		for j in range(1, 21):
 			# Establecer posición
