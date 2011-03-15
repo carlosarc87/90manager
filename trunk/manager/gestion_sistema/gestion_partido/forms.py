@@ -36,19 +36,25 @@ class PrepararEquipoForm(forms.Form):
 	centrocampistas = forms.fields.MultipleChoiceField()
 	portero = forms.fields.ChoiceField()
 	delanteros = forms.fields.MultipleChoiceField()
-	suplentes = forms.fields.MultipleChoiceField()
+	suplentes = forms.fields.MultipleChoiceField(required = False)
 
 	def __init__(self, alineacion, equipo, *args, **kwargs):
 		''' Constructor que establece la lista de valores de los titulares '''
 		super(PrepararEquipoForm, self).__init__(*args, **kwargs)
 		# Establecemos los valores de la lista multiple como los jugadores del equipo local
 		jugadores = equipo.jugador_set.all()
-		self.fields['jugadores_disponibles'].choices = [[choice.id, choice.nombre] for choice in jugadores]
-		self.fields['defensas'].choices = [[choice.id, choice.nombre] for choice in jugadores]
-		self.fields['centrocampistas'].choices = [[choice.id, choice.nombre] for choice in jugadores]
-		self.fields['portero'].choices = [[choice.id, choice.nombre] for choice in jugadores]
-		self.fields['delanteros'].choices = [[choice.id, choice.nombre] for choice in jugadores]
-		self.fields['suplentes'].choices = [[choice.id, choice.nombre] for choice in jugadores]
+		lista_jugadores = [[choice.id, choice.nombre] for choice in jugadores]
+
+		self.fields['jugadores_disponibles'].choices = lista_jugadores
+		self.fields['defensas'].choices = lista_jugadores
+		self.fields['centrocampistas'].choices = lista_jugadores
+		self.fields['delanteros'].choices = lista_jugadores
+		self.fields['suplentes'].choices = lista_jugadores
+
+		valor_nulo = [0, "Nadie"]
+		lista_porteros = list(lista_jugadores)
+		lista_porteros.insert(0, valor_nulo)
+		self.fields['portero'].choices = lista_porteros
 
 #	def clean_defensas(self):
 
@@ -66,7 +72,7 @@ class PrepararEquipoForm(forms.Form):
 
 		# Comprobacion de que haya cumplimentado los campos
 		dato = datos.get("portero")
-		if dato:
+		if dato is not 0:
 			lista = [dato]
 		else:
 			raise forms.ValidationError("Claro que sí, sin portero...")
@@ -97,15 +103,14 @@ class PrepararEquipoForm(forms.Form):
 			for dato in lista_completa:
 				if lista_completa.count(dato) != 1:
 					raise forms.ValidationError("Los jugadores no son amebas, no pueden dividirse y estar en 2 sitios a la vez.")
-		else:
-			raise forms.ValidationError("Como se te rompa algun titular... no se que vas a hacer eh")
 
-		if len(lista) != 11:
-			raise forms.ValidationError("Tienes que indicar exactamente 11 titulares.")
+		num_jugadores = len(lista)
+		if num_jugadores not in range(7, 12):
+			raise forms.ValidationError("Tienes que indicar entre 7 y 11 titulares.")
 
 		num_suplentes = 7
-		if len(datos.get("suplentes")) != num_suplentes:
-			raise forms.ValidationError("Tienes que indicar exactamente " + str(num_suplentes) + " suplentes.")
+		if len(datos.get("suplentes")) > num_suplentes:
+			raise forms.ValidationError("Tienes que indicar como mucho " + str(num_suplentes) + " suplentes.")
 		return datos
 
 
