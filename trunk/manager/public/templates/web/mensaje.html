@@ -1,0 +1,12 @@
+{% extends "base_web.html" %}
+
+{% block contenido %}
+
+<p>{{ mensaje }}</p>
+{% if url_salida %}
+	<form action = "{{ url_salida }}" method = "get">
+		<input type = "submit" name = "mensaje_salir" value="Volver" style="float: right;" />
+	</form>
+{% endif %}
+
+{% endblock %}

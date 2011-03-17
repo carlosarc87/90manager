@@ -1,0 +1,125 @@
+{% extends "base_juego.html" %}
+
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+		<li><a href="/jornadas/ver/{{ jornada.id }}/">Jornada {{ jornada.numero }}</a></li>
+		<li>Partido {{ partido.id }}</li>
+	</ul>
+{% endblock %}
+
+{% block contenido %}
+
+	<table class="tabla1">
+		<caption>Partido {{ partido.id }}</caption>
+
+		<tbody>
+			<tr>
+				<!-- Equipo local -->
+				<td>
+					{% if finalizado and partido.goles_local > partido.goles_visitante %}
+						<b><a href="/equipos/ver/{{ equipo_local.id }}/">{{ equipo_local }}</a></b>
+					{% else %}
+						<a href="/equipos/ver/{{ equipo_local.id }}/">{{ equipo_local }}</a>
+					{% endif %}
+				</td>
+				<!-- Equipo visitante -->
+				<td>
+					{% if finalizado and partido.goles_local < partido.goles_visitante %}
+						<b><a href="/equipos/ver/{{ equipo_visitante.id }}/">{{ equipo_visitante }}</a></b>
+					{% else %}
+						<a href="/equipos/ver/{{ equipo_visitante.id }}/">{{ equipo_visitante }}</a>
+					{% endif %}
+				</td>
+				<!-- Resultado -->
+				<th>
+					{% if finalizado %}
+						{{ partido.goles_local }} - {{ partido.goles_visitante }}
+					{% else %}
+						Aún no jugado.
+					{% endif %}
+				</th>
+			</tr>
+		</tbody>
+	</table>
+
+	{% if finalizado %}
+		<!-- Titulares local -->
+		<table class="tabla1">
+			<caption>Titulares del equipo local</caption>
+			<thead>
+				<tr>
+					<td>Num.</td>
+					<td>Posici&oacute;n</td>
+					<td>Nombre</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for titular in titulares_local %}
+					<tr>
+						<td class="cuadro_num_azul_der">{{ titular.jugador.numero }}</td>
+						<td>{{ titular.posicion }}</td>
+						<td><a href="/jugadores/ver/{{ titular.jugador.id }}/">{{ titular.jugador.nombre }}</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<!-- Titulares visitante -->
+		<table class="tabla1">
+			<caption>Titulares del equipo visitante</caption>
+			<thead>
+				<tr>
+					<td>Num.</td>
+					<td>Posici&oacute;n</td>
+					<td>Nombre</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for titular in titulares_visitante %}
+					<tr>
+						<td class="cuadro_num_azul_der">{{ titular.jugador.numero }}</td>
+						<td>{{ titular.posicion }}</td>
+						<td><a href="/jugadores/ver/{{ titular.jugador.id }}/">{{ titular.jugador.nombre }}</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<!-- Sucesos -->
+		<table class="tabla1">
+			<caption>SUCESOS</caption>
+			<tbody>
+				{% for suceso in sucesos_partido %}
+					<tr>
+						<td class="cuadro_num_azul_der">{{ suceso.getMinuto }}:{{ suceso.getSegundo }}</td>
+						<td>{{ suceso.equipo.nombre }}</td>
+						<td>{{ suceso.tipo }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<h4>SIN INICIAR</h4>
+
+		{% if tiene_equipo %}
+			<ul>
+				<li>
+					<a href="/partidos/preparar/{{ partido.id }}/">
+						{% if editar %}
+							Editar alineacion para el partido
+						{% else %}
+							Preparar alineacion para el partido
+						{% endif %}
+					</a>
+				</li>
+			</ul>
+		{% endif %}
+		{% if es_creador and es_jugable %}
+			<ul>
+				<li><a href="/partidos/jugar/{{ partido.id }}/">Jugar</a></li>
+			</ul>
+		{% endif %}
+	{% endif %}
+
+{% endblock %}

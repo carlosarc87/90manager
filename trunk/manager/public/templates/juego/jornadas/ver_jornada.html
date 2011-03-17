@@ -1,0 +1,127 @@
+{% extends "base_juego.html" %}
+
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+		<li>Jornada {{ jornada.numero }}</li>
+	</ul>
+{% endblock %}
+
+{% block contenido %}
+
+	{% if jornada_anterior %}
+		<a href="/jornadas/ver/{{ jornada_anterior.id }}/">Ver Jornada {{ jornada_anterior.numero }}</a>
+	{% endif %}
+	{% if jornada_siguiente %}
+		<a href="/jornadas/ver/{{ jornada_siguiente.id }}/">Ver Jornada {{ jornada_siguiente.numero }}</a>
+	{% endif %}
+
+	<h2>Datos de la jornada</h2>
+
+	{% if jornada.jugada %}
+		<h4>FINALIZADA</h4>
+	{% else %}
+		{% if es_creador %}
+			{% if es_jornada_actual %}
+				<h4><a href="/ligas/avanzar/{{ liga.id }}">FINALIZAR JORNADA</a></h4>
+			{% endif %}
+		{% endif %}
+	{% endif %}
+
+	<table class="tabla1" style="width: 400px;">
+		<caption>Listado de encuentros</caption>
+		<thead>
+			<tr>
+				<th>Local</th>
+				<th>Visitante</th>
+				<th>Resultado</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for emparejamiento in emparejamientos %}
+				<tr>
+					<td>
+						<a href="/equipos/ver/{{ emparejamiento.equipo_local.id }}/">{{ emparejamiento.equipo_local }}</a>
+					</td>
+					<td>
+						<a href="/equipos/ver/{{ emparejamiento.equipo_visitante.id }}/">{{ emparejamiento.equipo_visitante }}</a>
+					</td>
+					<th>
+						<a href="/partidos/ver/{{ emparejamiento.id }}/">
+							{% if emparejamiento.jugado %}
+								{{ emparejamiento.goles_local }} - {{ emparejamiento.goles_visitante }}
+							{% else %}
+								Aún no jugado.
+							{% endif %}
+						</a>
+					</th>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	{% if clasificacion_anterior.count %}
+		<table class="tabla1" style="width: 400px;">
+			<caption>Clasificación antes de la jornada</caption>
+			<thead>
+				<tr>
+					<th>Equipo</th>
+					<th>GF</th>
+					<th>GC</th>
+					<th>Puntos</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for dato_clasificacion in clasificacion_anterior %}
+					<tr>
+						<td>
+							<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/">{{ dato_clasificacion.equipo.nombre }}</a>
+						</td>
+						<td>
+							{{ dato_clasificacion.goles_favor }}
+						</td>
+						<td>
+							{{ dato_clasificacion.goles_contra }}
+						</td>
+						<td>
+							{{ dato_clasificacion.puntos }}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+
+
+	{% if clasificacion.count %}
+		<table class="tabla1" style="width: 400px;">
+			<caption>Clasificación antes de la jornada</caption>
+			<thead>
+				<tr>
+					<th>Equipo</th>
+					<th>GF</th>
+					<th>GC</th>
+					<th>Puntos</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for dato_clasificacion in clasificacion %}
+					<tr>
+						<td>
+							<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/">{{ dato_clasificacion.equipo.nombre }}</a>
+						</td>
+						<td>
+							{{ dato_clasificacion.goles_favor }}
+						</td>
+						<td>
+							{{ dato_clasificacion.goles_contra }}
+						</td>
+						<td>
+							{{ dato_clasificacion.puntos }}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base_juego.html" %}
+
+{% block contenido %}
+
+	<h2>Ligas públicas del sistema</h2>
+
+	<table class="tabla1">
+		<caption>Ligas</caption>
+		<thead>
+			<tr>
+				<th>Creador</th>
+				<th>Nombre de la liga</th>
+				<th>Num. equipos</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for liga in ligas %}
+				<tr>
+					<td>{{ liga.creador }}</td>
+					<td><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
+					<td>{{ liga.num_equipos }}</td>
+				</tr>
+			{% empty %}
+				<tr>
+					<td>No hay ligas publicas</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

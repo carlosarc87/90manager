@@ -1,0 +1,74 @@
+{% extends "base_web.html" %}
+
+{% block contenido %}
+	<div id="registro">
+		<form action="/cuentas/registrar/" method="post">
+			<table>
+				<tbody>
+					{% csrf_token %}
+					<!--Usuario -->
+					{% if form_reg.username.errors %}
+						<tr>
+							<td class="texto_error">{{ form_reg.username.errors }}</td>
+						</tr>
+					{% endif %}
+
+					<tr>
+						<td><label for="id_username">Nombre de usuario:</label></td>
+						<td>{{ form_reg.username }}</td>
+					</tr>
+
+					<!--Contrasena -->
+					{% if form_reg.username.errors %}
+						<tr>
+							<td class="texto_error">{{ form_reg.password.errors }}</td>
+						</tr>
+					{% endif %}
+
+					<tr>
+						<td><label for="id_password">Contraseña:</label></td>
+						<td><input type="password" name="password" value="" /></td>
+					</tr>
+
+					<!--Nombre -->
+					{% if form_reg.username.errors %}
+						<tr>
+							<td class="texto_error">{{ form_reg.first_name.errors }}</td>
+						</tr>
+					{% endif %}
+
+					<tr>
+						<td><label for="id_first_name">Nombre:</label></td>
+						<td>{{ form_reg.first_name }}</td>
+					</tr>
+
+					<!--Apellidos -->
+					{% if form_reg.username.errors %}
+						<tr>
+							<td class="texto_error">{{ form_reg.last_name.errors }}</td>
+						</tr>
+					{% endif %}
+
+					<tr>
+						<td><label for="id_last_name">Apellidos:</label></td>
+						<td>{{ form_reg.last_name }}</td>
+					</tr>
+
+					<!--E-mail -->
+					{% if form_reg.username.errors %}
+						<tr>
+							<td class="texto_error">{{ form_reg.email.errors }}</td>
+						</tr>
+					{% endif %}
+
+					<tr>
+						<td><label for="id_email">E-Mail:</label></td>
+						<td>{{ form_reg.email }}</td>
+					</tr>
+
+					<tr><td><input type="submit" name="registrar_usuario" value="Registrar" /></td></tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+{% endblock %}
