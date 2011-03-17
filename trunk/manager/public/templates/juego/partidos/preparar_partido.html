@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_juego.html" %}
 
 {% block head_css %}
 	<style type="text/css">
@@ -15,7 +15,7 @@
 			text-align: center;
 			width: 50px;
 		}
-		
+
 		.cuadro_jugador:hover{
 			background: url('/media/img/circulo_hover.png') no-repeat;
 			background-position: center top;
@@ -94,7 +94,7 @@
 		#form_oculto{
 			display: none;
 		}
-		
+
 		#jugadores{
 			border: dotted 2px #000;
 			float: left;
@@ -106,7 +106,7 @@
 {% block head_js %}
 	<script type="text/javascript"><!--//--><![CDATA[//><!--
 		window.onload = establecerDatos;
-		
+
 		var jugador_pillado; // Jugador que se ha cogido
 		var jugadores_situados = 0; // Numero de jugadores situados en el campo
 		var jugadores_suplentes = 0; // Numero de jugadores situados en el banquillo
