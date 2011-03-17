@@ -92,6 +92,19 @@ class Jugador(models.Model):
 
 		return self
 
+	def siglasPosicion(self):
+		mejor_posicion = self.mejorPosicion();
+		if mejor_posicion == 'PORTERO':
+			return 'PO'
+		elif mejor_posicion == 'DEFENSA':
+			return 'DF'
+		elif mejor_posicion == 'CENTROCAMPISTA':
+			return 'CC'
+		elif mejor_posicion == 'DELANTERO':
+			return 'DL'
+		else:
+			return '-'
+
 	def mejorPosicion(self):
 		posiciones = []
 		

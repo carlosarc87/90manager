@@ -2,117 +2,103 @@
 
 {% block head_css %}
 	<style type="text/css">
-		#jugadores{
-			float: left;
-			width: 250px;
-		}
 
-		#jugadores .cuadro_jugador{
-			background: #eee;
-			border: solid 1px #0055ff;
+		.cuadro_jugador{
+			background: url('/media/img/circulo.png') no-repeat;
+			background-position: center top;
+			color: #000;
 			cursor: pointer;
-			padding: 5px;
-			margin: 5px 0px;
+			display: inline-block;
+			font-size: 0.8em;
+			height: 70px;
+			margin: 5px;
+			text-align: center;
+			width: 50px;
+		}
+		
+		.cuadro_jugador:hover{
+			background: url('/media/img/circulo_hover.png') no-repeat;
+			background-position: center top;
+			color: #000066;
 		}
 
-		#jugadores .cuadro_jugador .numero_jugador{
-			color: #6666ff;
+		.cuadro_jugador .mejor_posicion_jugador{
 			font-weight: bold;
 			float: left;
-			padding-right: 10px;
-			text-align: right;
-			width: 20px;
+			margin: 10px 0px 12px;
+			width: 100%;
 		}
 
-		#jugadores .cuadro_jugador .nombre_jugador{
-			color: #3333ff;
+		.cuadro_jugador .apodo_jugador{
+			float: left;
+			width: 100%;
 		}
 
-		#jugadores .cuadro_jugador .apodo_jugador{
-			color: #3333ff;
-			display: none;
+		.cuadro_jugador .valor_jugador{
+			float: left;
+			width: 100%;
 		}
 
 		#caja_alineacion{
 			float: right;
+			width: 444px;
 		}
 
 		#campo_titulares{
-			background-image: url('/media/img/campo_futbol.jpg');
-			clear: both;
+			background-image: url('/media/img/campo_futbol_mitad.png');
 			float: right;
-			height: 678px;
+			height: 363px;
 			text-align: center;
-			width: 444px;
+			width: 100%;
 		}
 
 		#campo_suplentes{
 			background: rgb(0, 200, 0);
-			clear: both;
-			float: right;
-			margin-top: 25px;
-		}
-
-		#caja_alineacion .cuadro_jugador{
-			background: url('/media/img/avatar_jugador.gif') no-repeat;
-			background-position: center top;
-			display: inline-block;
-			font-size: 0.8em;
-			height: 30px;
-			margin: 5px;
-			padding: 66px 10px 0px 10px;
-			text-align: center;
-			width: 50px;
-		}
-
-		#caja_alineacion .cuadro_jugador .nombre_jugador{
-			display: none;
+			border: dotted 2px #fff;
+			float: left;
+			height: 80px;
+			width: 440px;
 		}
 
 		#fila_delanteros{
 			background: rgb(0, 200, 0);
 			background: rgba(0, 200, 0, 0.4);
-			height: 130px;
-			margin: 125px 20px 0px 20px;
+			height: 80px;
+			margin: 23px 20px 0px 20px;
 		}
 
 		#fila_centrocampistas{
-			height: 168px;
+			height: 80px;
 			margin: 0px 20px;
 		}
 
 		#fila_defensas{
 			background: rgb(0, 200, 0);
 			background: rgba(0, 200, 0, 0.4);
-			height: 130px;
+			height: 80px;
 			margin: 0px 20px;
 		}
 
 		#fila_portero{
-			height: 125px;
+			height: 75px;
+			margin: 0 auto;
 			margin: 0px 20px;
 		}
 
 		#fila_suplentes{
 			background: rgb(0, 200, 0);
-			height: 220px;
-			padding: 20px;
-			width: 404px;
+			height: 100%;
+			width: 100%;
 		}
 
 		#form_oculto{
 			display: none;
 		}
-
-		#titulares{
+		
+		#jugadores{
+			border: dotted 2px #000;
 			float: left;
-			width: 300px;
-		}
-
-		.texto_posicion{
-			font-size: 14px;
-			font-weight: bold;
-			margin-top: 10px;
+			width: 260px;
 		}
 	</style>
 {% endblock %}
@@ -495,15 +481,15 @@
 							draggable="true"
 							ondragstart="return dragStart(this, event)"
 							ondragend="return dragEnd(this, event)">
-						<div class="numero_jugador">{{ jugador.numero }}</div>
-						<div class="nombre_jugador">{{ jugador.nombre }}</div>
+						<div class="mejor_posicion_jugador">{{ jugador.siglasPosicion }}</div>
 						<div class="apodo_jugador">{{ jugador.apodo }}</div>
+						<div class="valor_jugador">{{ jugador.valorMercado }}</div>
 					</div>
 				{% endfor %}
 			</div>
 		</fieldset>
 
-		<div id="form_ocultoo">
+		<div id="form_oculto">
 			{{ form.as_p }}
 		</div>
 
