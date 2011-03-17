@@ -26,8 +26,8 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
 	# Modulo de login
-    (r'^logout/$', 'django.contrib.auth.views.logout'),
-   	(r'^login/$', 'django.contrib.auth.views.login'),
+    (r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'web/usuarios/logout.html'}),
+   	(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'web/usuarios/login.html'}),
     (r'^perfil/$', 'gestion_usuario.views.perfil_usuario'),
 	(r'^registrar/', 'gestion_usuario.views.registrar_usuario'),
 )
