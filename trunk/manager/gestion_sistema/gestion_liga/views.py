@@ -130,9 +130,13 @@ def ver_liga(request, liga_id):
 				c.goles_diferencia = c.goles_favor - c.goles_contra
 
 				if jornada_anterior != None:
-					c.partidos_ganados = len(c.equipo.getPartidosGanados(jornada_actual))
-					c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_actual))
-					c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_actual))
+					if not liga_acabada:
+						jornada_a_comprobar = jornada_actual
+					else:
+						jornada_a_comprobar = jornada_anterior
+					c.partidos_ganados = len(c.equipo.getPartidosGanados(jornada_a_comprobar))
+					c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_a_comprobar))
+					c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_a_comprobar))
 				else:
 					c.partidos_ganados = 0
 					c.partidos_empatados = 0
