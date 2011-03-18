@@ -1,6 +1,36 @@
 {% extends "base_web.html" %}
 
+{% block css_extra %}
+	<style type="text/css">
+		#registro{
+			background-color: #fff;
+			border: solid 1px #555555;
+			float: right;
+			margin: 20px;
+			padding: 20px;
+			width: 350px;
+		}
+		
+		#registro input{
+			float: right;
+		}
+		
+		#registro table{
+			width: 100%;
+		}
+		
+		#logo{
+			float: left;
+			margin: 20px 0px;
+			height: 175px;
+			width: 387px;
+		}
+	</style>
+{% endblock %}
+
 {% block contenido %}
+	<img id="logo" src="/media/img/logoAlter.gif" alt="logo_jugador" title="" />
+	
 	<div id="registro">
 		<form action="/cuentas/registrar/" method="post">
 			<table>
@@ -27,7 +57,7 @@
 
 					<tr>
 						<td><label for="id_password">Contraseña:</label></td>
-						<td><input type="password" name="password" value="" /></td>
+						<td><input id="id_password" type="password" name="password" value="" /></td>
 					</tr>
 
 					<!--Nombre -->
@@ -66,7 +96,10 @@
 						<td>{{ form_reg.email }}</td>
 					</tr>
 
-					<tr><td><input type="submit" name="registrar_usuario" value="Registrar" /></td></tr>
+					<tr>
+						<td></td>
+						<td><input type="submit" name="registrar_usuario" value="Registrar" /></td>
+					</tr>
 				</tbody>
 			</table>
 		</form>
