@@ -21,20 +21,6 @@
 	{% block head_js %}{% endblock %}
 	{% block head_extra %}{% endblock %}
 	{% block css_extra %}{% endblock %}
-
-	<!-- Aun por arreglar -->
-	<script language="JavaScript">
-		TargetDate = "03/18/2011 8:43 AM";
-		BackColor = "palegreen";
-		ForeColor = "navy";
-		CountActive = true;
-		CountStepper = +1;
-		LeadingZero = true;
-		DisplayFormat = "Han pasado %%D%% Días, %%H%% Horas, %%M%% Minutos, %%S%% Segundos desde que no se actualiza esto.";
-		FinishMessage = "¡Recien actualizado!";
-	</script>
-</head>
-
 <body>
 	{% block cabecera %}
 	{% endblock %}
@@ -70,63 +56,48 @@
 				{% endblock %}
 				<!-- No tocar que hay que arreglarlo un poco aun -->
 				<script language="JavaScript">
-					function calcage(secs, num1, num2) {
-					  s = ((Math.floor(secs/num1))%num2).toString();
-					  if (LeadingZero && s.length < 2)
-						s = "0" + s;
-					  return "<b>" + s + "</b>";
+					// Calcula el tiempo dependiendo de num1 y num2
+					function calcularTiempo(segundos, num1, num2) {
+						s = ((Math.floor(segundos / num1)) % num2).toString();
+						if (s.length < 2)
+							s = "0" + s;
+						return "<b>" + s + "</b>";
 					}
 
-					function CountBack(secs) {
-					  if (secs < 0) {
-						document.getElementById("cntdwn").innerHTML = FinishMessage;
-						return;
-					  }
-					  DisplayStr = DisplayFormat.replace(/%%D%%/g, calcage(secs,86400,100000));
-					  DisplayStr = DisplayStr.replace(/%%H%%/g, calcage(secs,3600,24));
-					  DisplayStr = DisplayStr.replace(/%%M%%/g, calcage(secs,60,60));
-					  DisplayStr = DisplayStr.replace(/%%S%%/g, calcage(secs,1,60));
+					// Actualiza el span con el texto
+					function contadorDesactualizado(segundos) {
+						if (segundos < 0) {
+							document.getElementById("contador_desactualizado").innerHTML = "¡Actualizado!";
+							return;
+						}
+						str_tiempo = formato_tiempo.replace(/%%D%%/g, calcularTiempo(segundos, 86400, 100000));
+						str_tiempo = str_tiempo.replace(/%%H%%/g, calcularTiempo(segundos, 3600, 24));
+						str_tiempo = str_tiempo.replace(/%%M%%/g, calcularTiempo(segundos, 60, 60));
+						str_tiempo = str_tiempo.replace(/%%S%%/g, calcularTiempo(segundos, 1, 60));
 
-					  document.getElementById("cntdwn").innerHTML = DisplayStr;
-					  if (CountActive)
-						setTimeout("CountBack(" + (secs+CountStepper) + ")", SetTimeOutPeriod);
+						document.getElementById("contador_desactualizado").innerHTML = str_tiempo;
+
+						setTimeout("contadorDesactualizado(" + (segundos + paso) + ")", timeout);
 					}
 
-					function putspan(backcolor, forecolor) {
-					 document.write("<span id='cntdwn' style='background-color:" + backcolor +
-									"; color:" + forecolor + "'></span>");
+					// Agrega un span a la página
+					function putSpan() {
+						document.write("<span id='contador_desactualizado'></span>");
 					}
 
-					if (typeof(BackColor)=="undefined")
-					  BackColor = "white";
-					if (typeof(ForeColor)=="undefined")
-					  ForeColor= "black";
-					if (typeof(TargetDate)=="undefined")
-					  TargetDate = "20/03/2011 8:40 AM";
-					if (typeof(DisplayFormat)=="undefined")
-					  DisplayFormat = "%%D%% Días, %%H%% Horas, %%M%% Minutos, %%S%% Segundos.";
-					if (typeof(CountActive)=="undefined")
-					  CountActive = true;
-					if (typeof(FinishMessage)=="undefined")
-					  FinishMessage = "";
-					if (typeof(CountStepper)!="number")
-					  CountStepper = -1;
-					if (typeof(LeadingZero)=="undefined")
-					  LeadingZero = true;
+					fechaUltimaActualizacion = "03/18/2011 14:28";
+					formato_tiempo = "%%D%% Días, %%H%% Horas, %%M%% Minutos, %%S%% Segundos.";
+					paso = +1;
 
-					CountStepper = Math.ceil(CountStepper);
-					if (CountStepper == 0)
-					  CountActive = false;
-					var SetTimeOutPeriod = (Math.abs(CountStepper)-1)*1000 + 990;
-					putspan(BackColor, ForeColor);
-					var dthen = new Date(TargetDate);
-					var dnow = new Date();
-					if(CountStepper>0)
-					  ddiff = new Date(dnow-dthen);
-					else
-					  ddiff = new Date(dthen-dnow);
-					gsecs = Math.floor(ddiff.valueOf()/1000);
-					CountBack(gsecs);
+					paso = Math.ceil(paso); // Filtrico
+
+					var timeout = (Math.abs(paso) - 1) * 1000 + 990;
+					putSpan();
+					var antes = new Date(fechaUltimaActualizacion);
+					var ahora = new Date();
+					dif = new Date(ahora - antes);
+					gsegs = Math.floor(dif.valueOf() / 1000);
+					contadorDesactualizado(gsegs);
 				</script>
 		{% endblock %}
 	</div>
