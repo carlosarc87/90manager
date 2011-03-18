@@ -116,8 +116,8 @@ def ver_liga(request, liga_id):
 				clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
 				clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
 			elif jornada_actual.numero == 1: # Generar clasificacion vacía
-				clasificacion = jornada_actual.clasificacionequipojornada_set.all()
-
+				clasificacion_sin_ordenar = jornada_actual.clasificacionequipojornada_set.all()
+				clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
 
 		if liga_acabada:
 			jornada_anterior = liga.jornada_set.all()[len(liga.jornada_set.all()) - 1]
@@ -140,9 +140,11 @@ def ver_liga(request, liga_id):
 					c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_a_comprobar))
 					c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_a_comprobar))
 				else:
-					c.partidos_ganados = 0
-					c.partidos_empatados = 0
-					c.partidos_perdidos = 0
+					# Comor getPartidos es sin la jornada destino, pues decimos que compruebe hasta la 2
+					jornada_a_comprobar = liga.jornada_set.get(numero = 2)
+					c.partidos_ganados = len(c.equipo.getPartidosGanados(jornada_a_comprobar))
+					c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_a_comprobar))
+					c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_a_comprobar))
 
 				c.partidos_jugados = c.partidos_ganados + c.partidos_empatados + c.partidos_perdidos
 
