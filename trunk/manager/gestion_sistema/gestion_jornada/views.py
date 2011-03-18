@@ -64,10 +64,10 @@ def ver_jornada(request, jornada_id):
 	# Obtenemos la clasificacion
 	clasificacion = None
 	clasificacion_anterior = None
-	if jornada.jugada:
-		clasificacion_sin_ordenar = jornada.clasificacionequipojornada_set.all()
-		# Funcion sorted devuelve una COPIA de la lista ordenada
-		clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
+#	if jornada.jugada:
+	clasificacion_sin_ordenar = jornada.clasificacionequipojornada_set.all()
+	# Funcion sorted devuelve una COPIA de la lista ordenada
+	clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
 
 	if jornada.numero >= 2:
 		jornada_anterior = liga.jornada_set.get(numero = jornada.numero - 1)

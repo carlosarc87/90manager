@@ -60,7 +60,7 @@
 		</tbody>
 	</table>
 
-	{% if clasificacion_anterior.count %}
+	{% if clasificacion_anterior %}
 		<table class="tabla1" style="width: 400px;">
 			<caption>Clasificación antes de la jornada</caption>
 			<thead>
@@ -93,9 +93,9 @@
 	{% endif %}
 
 
-	{% if clasificacion.count %}
+	{% if clasificacion %}
 		<table class="tabla1" style="width: 400px;">
-			<caption>Clasificación antes de la jornada</caption>
+			<caption>Clasificación de la jornada</caption>
 			<thead>
 				<tr>
 					<th>Equipo</th>
@@ -123,5 +123,7 @@
 				{% endfor %}
 			</tbody>
 		</table>
+	{% else %}
+		No hay clasificacion disponible aun
 	{% endif %}
 {% endblock %}

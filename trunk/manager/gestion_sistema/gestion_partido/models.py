@@ -26,6 +26,7 @@ from django.db import models
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_jugador.models import Jugador
 from gestion_sistema.gestion_jornada.models import Jornada
+from gestion_sistema.gestion_clasificacion.models import ClasificacionEquipoJornada
 
 from random import randint
 from func import probabilidadExito
@@ -505,6 +506,28 @@ class Partido(models.Model):
 		self.goles_local = num_goles[0]
 		self.goles_visitante = num_goles[1]
 		self.jugado = True
+		# Actualizar datos de la clasificacion dependiendo del ganador
+		clasificacion_local = self.jornada.obtenerClasificacionEquipo(self.equipo_local)
+		clasificacion_visitante = self.jornada.obtenerClasificacionEquipo(self.equipo_visitante)
+
+		# Actualizar los goles
+		clasificacion_local.goles_favor += self.goles_local
+		clasificacion_local.goles_contra += self.goles_visitante
+		clasificacion_visitante.goles_favor += self.goles_visitante
+		clasificacion_visitante.goles_contra += self.goles_local
+
+		# Actualizar las puntuaciones
+		if (self.goles_local > self.goles_visitante):
+			clasificacion_local.puntos = 3
+		elif (self.goles_local < self.goles_visitante):
+			clasificacion_visitante.puntos = 3
+		else:
+			clasificacion_local.puntos = 1
+			clasificacion_visitante.puntos = 1
+
+		# Guardar los cambios
+		clasificacion_local.save()
+		clasificacion_visitante.save()
 
 	def __unicode__(self):
 		''' Devuelve una cadena de texto que representa la clase '''

@@ -35,49 +35,37 @@ class Jornada(models.Model):
 	liga = models.ForeignKey(Liga)
 	jugada = models.BooleanField()
 
-	def obtenerClasificacion(self):
-		''' Obtiene la clasificacion de la jornada '''
+	def obtenerClasificacionEquipo(self, equipo):
+		''' Devuelve la posicion actual de un equipo en la jornada '''
+		return self.clasificacionequipojornada_set.get(equipo = equipo)
+
+	def generarClasificacion(self):
+		''' Genera la clasificacion vacia de la jornada '''
 		from gestion_sistema.gestion_clasificacion.models import ClasificacionEquipoJornada
-		if self.jugada:
-			clasificaciones = []
-			partidos = self.partido_set.all()
-			if self.numero == 1: # Jornada 1
-				for partido in partidos:
-					clasificacion_local = ClasificacionEquipoJornada(jornada = self, equipo = partido.equipo_local, goles_favor = partido.goles_local, goles_contra = partido.goles_visitante, puntos = 0)
-					clasificacion_visitante = ClasificacionEquipoJornada(jornada = self, equipo = partido.equipo_visitante, goles_favor = partido.goles_visitante, goles_contra = partido.goles_local, puntos = 0)
-					if (partido.goles_local > partido.goles_visitante):
-						clasificacion_local.puntos = 3
-					elif (partido.goles_local < partido.goles_visitante):
-						clasificacion_visitante.puntos = 3
-					else:
-						clasificacion_local.puntos = 1
-						clasificacion_visitante.puntos = 1
+		partidos = self.partido_set.all()
+		if self.numero == 1: # Jornada 1
+			for partido in partidos:
+				clasificacion_local = ClasificacionEquipoJornada(jornada = self, equipo = partido.equipo_local, goles_favor = 0, goles_contra = 0, puntos = 0)
+				clasificacion_visitante = ClasificacionEquipoJornada(jornada = self, equipo = partido.equipo_visitante, goles_favor = 0, goles_contra = 0, puntos = 0)
 
-					clasificacion_local.save()
-					clasificacion_visitante.save()
-					#print clasificacion_local.puntos
-			else:
-				for partido in partidos:
-					jornada_anterior = self.liga.jornada_set.get(numero = self.numero - 1)
-					clas_local_anterior = jornada_anterior.clasificacionequipojornada_set.get(equipo = partido.equipo_local)
-					clas_visitante_anterior = jornada_anterior.clasificacionequipojornada_set.get(equipo = partido.equipo_visitante)
-
-					clasificacion_local = ClasificacionEquipoJornada(jornada = self, equipo = partido.equipo_local, goles_favor = clas_local_anterior.goles_favor + partido.goles_local, goles_contra = clas_local_anterior.goles_contra + partido.goles_visitante, puntos = clas_local_anterior.puntos)
-					clasificacion_visitante = ClasificacionEquipoJornada(jornada = self, equipo = partido.equipo_visitante, goles_favor = clas_visitante_anterior.goles_favor + partido.goles_visitante, goles_contra = clas_visitante_anterior.goles_contra + partido.goles_local, puntos = clas_visitante_anterior.puntos)
-					if (partido.goles_local > partido.goles_visitante):
-						clasificacion_local.puntos += 3
-					elif (partido.goles_local < partido.goles_visitante):
-						clasificacion_visitante.puntos += 3
-					else:
-						clasificacion_local.puntos += 1
-						clasificacion_visitante.puntos += 1
-
-					clasificacion_local.save()
-					clasificacion_visitante.save()
-
-			return True
+				clasificacion_local.save()
+				clasificacion_visitante.save()
+				#print clasificacion_local.puntos
 		else:
-			return False
+			for partido in partidos:
+				jornada_anterior = self.liga.jornada_set.get(numero = self.numero - 1)
+				clas_local_anterior = jornada_anterior.clasificacionequipojornada_set.get(equipo = partido.equipo_local)
+				clas_visitante_anterior = jornada_anterior.clasificacionequipojornada_set.get(equipo = partido.equipo_visitante)
+
+				clasificacion_local = ClasificacionEquipoJornada(jornada = self, equipo = partido.equipo_local, goles_favor = clas_local_anterior.goles_favor, goles_contra = clas_local_anterior.goles_contra, puntos = clas_local_anterior.puntos)
+				clasificacion_visitante = ClasificacionEquipoJornada(jornada = self, equipo = partido.equipo_visitante, goles_favor = clas_visitante_anterior.goles_favor, goles_contra = clas_visitante_anterior.goles_contra, puntos = clas_visitante_anterior.puntos)
+
+				clasificacion_local.save()
+				clasificacion_visitante.save()
+
+
+
+
 
 	def __unicode__(self):
 		return "Jornada %d de liga %d" % (self.numero, self.liga.id)

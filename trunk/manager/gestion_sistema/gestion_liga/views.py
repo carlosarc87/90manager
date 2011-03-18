@@ -105,6 +105,7 @@ def ver_liga(request, liga_id):
 	if activada:
 		# Comprobamos si la liga ha acabado
 		jornada_actual = liga.obtenerJornadaActual()
+		jornada_anterior = None
 
 		# Si la liga ha acabado
 		if not jornada_actual:
@@ -114,7 +115,8 @@ def ver_liga(request, liga_id):
 				jornada_anterior = liga.jornada_set.get(numero = jornada_actual.numero - 1)
 				clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
 				clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
-			#else:
+			elif jornada_actual.numero == 1: # Generar clasificacion vacía
+				clasificacion = jornada_actual.clasificacionequipojornada_set.all()
 
 
 		if liga_acabada:
@@ -122,14 +124,14 @@ def ver_liga(request, liga_id):
 			clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
 			clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
 
-		if clasificacion != None:
+		if clasificacion is not None:
 			# Calcular variables extra para la clasificación
 			posicion = 1
 			for c in clasificacion:
 				c.posicion = posicion
 				c.goles_diferencia = c.goles_favor - c.goles_contra
 
-				if jornada_anterior != None:
+				if jornada_anterior is not None:
 					if not liga_acabada:
 						jornada_a_comprobar = jornada_actual
 					else:
@@ -205,7 +207,11 @@ def avanzar_jornada_liga(request, liga_id):
 				partido.save()
 	jornada.jugada = True
 	jornada.save()
-	jornada.obtenerClasificacion()
+
+	# Generar los datos de clasificacion de la siguiente jornada
+	siguiente_jornada = liga.obtenerJornadaActual()
+	if siguiente_jornada:
+		siguiente_jornada.generarClasificacion()
 	return ver_liga(request, liga_id) # Devolvemos a lo bruto a la vision de la liga
 
 ########################################################################
@@ -261,7 +267,12 @@ def activar_liga(request, liga_id):
 			#	Equipo.delete(Equipo.objects.get(id = equipo)) # A lo bruten xD
 			liga.save()
 			liga.rellenarLiga()
-			liga.generarJornadas();
+			liga.generarJornadas()
+
+			# Generar primera clasificacion de la liga
+			jornada = liga.obtenerJornadaActual()
+			jornada.generarClasificacion()
+
 			return devolverMensaje(request, "Se ha generado la liga correctamente", "/ligas/ver/%d/" % liga.id)
 	else:
 		form = ActivarLigaForm(instance = liga)
