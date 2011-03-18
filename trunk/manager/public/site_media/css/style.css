@@ -46,11 +46,6 @@ h1, h2, h3, h4{
 	width: 100%;
 }
 
-#login{
-	float: right;
-	width: 500px;
-}
-
 #logo{
 	border: 0px;
 }
@@ -153,18 +148,6 @@ h1, h2, h3, h4{
 
 .errorlist li{
 	padding: 5px;
-}
-
-.fila{
-	clear: both;
-	float: left;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	width: 100%;
-}
-
-.fila div{
-	float: left;
 }
 
 .tabla1{
