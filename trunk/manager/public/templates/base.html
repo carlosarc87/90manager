@@ -21,6 +21,7 @@
 	{% block head_js %}{% endblock %}
 	{% block head_extra %}{% endblock %}
 	{% block css_extra %}{% endblock %}
+	{% block js_extra %}{% endblock %}
 <body>
 	{% block cabecera %}
 	{% endblock %}
@@ -75,7 +76,7 @@
 						str_tiempo = str_tiempo.replace(/%%M%%/g, calcularTiempo(segundos, 60, 60));
 						str_tiempo = str_tiempo.replace(/%%S%%/g, calcularTiempo(segundos, 1, 60));
 
-						document.getElementById("contador_desactualizado").innerHTML = str_tiempo;
+						document.getElementById("contador_desactualizado").innerHTML = "Desactualizado desde hace " + str_tiempo;
 
 						setTimeout("contadorDesactualizado(" + (segundos + paso) + ")", timeout);
 					}

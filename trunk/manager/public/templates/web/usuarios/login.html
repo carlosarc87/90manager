@@ -84,4 +84,21 @@
 		<a href='http://90manager.com'>90manager</a> es un juego multijugador donde puedes ser
 		entrenador y presidente de un equipo de fútbol.
 	</p>
+
+	<div id="mensajico"></div>
+
+	<script language="JavaScript">
+		var r_text = new Array ();
+		r_text[0] = "Limones, limones everywhere";
+		r_text[1] = "En donde nunca sale el sol";
+		r_text[2] = "Ahora con mas lechuga";
+		r_text[3] = "Pino! resucita!";
+		r_text[4] = "JJ se nos frustró por las cervezas del hackathón";
+		r_text[5] = "Que ganas de que llegue el verano";
+		r_text[6] = " 2 + 2 son 4 y otros 2 son 6, 6 y 2 son 8 y 8, 16";
+		var i = Math.floor(7 * Math.random())
+
+		document.getElementById("mensajico").innerHTML = r_text[i];
+
+	</script>
 {% endblock %}
