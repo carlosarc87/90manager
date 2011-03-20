@@ -5,15 +5,64 @@
 {% endblock %}
 
 {% block enlaces_pie_pagina %}
-		<div class="contenido">
-			<a href="/admin/">Administración</a>
-			<a href="/contacto/">Contacta con nosotros</a>
-			<a href="/creditos/">Créditos</a>
-			<a href="/changelog/">Cambios</a>
-			<a href="/condiciones/">Condiciones de uso</a></a>
-			<a href="https://forja.rediris.es/projects/cusl5-90manager/">Forja</a>
-			<a href="http://90manager.wordpress.com/">Blog</a>
-			<a href="https://forja.rediris.es/plugins/wiki/index.php?id=862&amp;type=g">Wiki</a>
-			<a href="/siguenos/">Síguenos</a>
-		</div>
+	<div id="enlaces">
+		<a href="/contacto/">Contacta con nosotros</a>
+		<a href="/creditos/">Créditos</a>
+		<a href="/changelog/">Cambios</a>
+		<a href="/condiciones/">Condiciones de uso</a>
+		<a href="https://forja.rediris.es/projects/cusl5-90manager/">Forja</a>
+		<a href="http://90manager.wordpress.com/">Blog</a>
+		<a href="https://forja.rediris.es/plugins/wiki/index.php?id=862&amp;type=g">Wiki</a>
+		<a href="/siguenos/">Síguenos</a>
+	</div>
+{% endblock %}
+	
+{% block contador_desactualizacion %}
+	<div id="contador_desactualizacion">
+		<!-- No tocar que hay que arreglarlo un poco aun -->
+		<script type="text/javascript">
+			// Calcula el tiempo dependiendo de num1 y num2
+			function calcularTiempo(segundos, num1, num2) {
+				s = ((Math.floor(segundos / num1)) % num2).toString();
+				if (s.length < 2)
+					s = "0" + s;
+				return "<b>" + s + "</b>";
+			}
+
+			// Actualiza el span con el texto
+			function contadorDesactualizado(segundos) {
+				if (segundos < 0) {
+					document.getElementById("contador_desactualizado").innerHTML = "¡Actualizado!";
+					return;
+				}
+				str_tiempo = formato_tiempo.replace(/%%D%%/g, calcularTiempo(segundos, 86400, 100000));
+				str_tiempo = str_tiempo.replace(/%%H%%/g, calcularTiempo(segundos, 3600, 24));
+				str_tiempo = str_tiempo.replace(/%%M%%/g, calcularTiempo(segundos, 60, 60));
+				str_tiempo = str_tiempo.replace(/%%S%%/g, calcularTiempo(segundos, 1, 60));
+
+				document.getElementById("contador_desactualizado").innerHTML = "Última actualización hace " + str_tiempo;
+
+				setTimeout("contadorDesactualizado(" + (segundos + paso) + ")", timeout);
+			}
+
+			// Agrega un span a la página
+			function putSpan() {
+				document.write("<span id='contador_desactualizado'></span>");
+			}
+
+			fechaUltimaActualizacion = "03/20/2011 16:30";
+			formato_tiempo = "%%D%% días, %%H%% horas, %%M%% minutos y %%S%% segundos.";
+			paso = +1;
+
+			paso = Math.ceil(paso); // Filtrico
+
+			var timeout = (Math.abs(paso) - 1) * 1000 + 990;
+			putSpan();
+			var antes = new Date(fechaUltimaActualizacion);
+			var ahora = new Date();
+			dif = new Date(ahora - antes);
+			gsegs = Math.floor(dif.valueOf() / 1000);
+			contadorDesactualizado(gsegs);
+		</script>
+	</div>
 {% endblock %}
