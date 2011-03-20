@@ -518,12 +518,12 @@ class Partido(models.Model):
 
 		# Actualizar las puntuaciones
 		if (self.goles_local > self.goles_visitante):
-			clasificacion_local.puntos = 3
+			clasificacion_local.puntos += 3
 		elif (self.goles_local < self.goles_visitante):
-			clasificacion_visitante.puntos = 3
+			clasificacion_visitante.puntos += 3
 		else:
-			clasificacion_local.puntos = 1
-			clasificacion_visitante.puntos = 1
+			clasificacion_local.puntos += 1
+			clasificacion_visitante.puntos += 1
 
 		# Guardar los cambios
 		clasificacion_local.save()

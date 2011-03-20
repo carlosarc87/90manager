@@ -112,7 +112,7 @@ def ver_liga(request, liga_id):
 			liga_acabada = True
 		else:
 			if jornada_actual.numero >= 2:
-				jornada_anterior = liga.jornada_set.get(numero = jornada_actual.numero - 1)
+				jornada_anterior = liga.jornada_set.get(numero = jornada_actual.numero)
 				clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
 				clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
 			elif jornada_actual.numero == 1: # Generar clasificacion vacía
