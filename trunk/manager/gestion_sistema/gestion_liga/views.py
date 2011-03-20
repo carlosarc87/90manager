@@ -214,7 +214,7 @@ def avanzar_jornada_liga(request, liga_id):
 	siguiente_jornada = liga.obtenerJornadaActual()
 	if siguiente_jornada:
 		siguiente_jornada.generarClasificacion()
-	return ver_liga(request, liga_id) # Devolvemos a lo bruto a la vision de la liga
+	return HttpResponseRedirect("/ligas/ver/%s/" % (liga_id))
 
 ########################################################################
 

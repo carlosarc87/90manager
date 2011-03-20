@@ -66,7 +66,17 @@ def contacto(request):
 ########################################################################
 
 def changelog(request):
-	return HttpResponse("Aun no implementado.")
+	return render_to_response("web/changelog.html", {})
+
+########################################################################
+
+def siguenos(request):
+	return render_to_response("web/siguenos.html", {})
+
+########################################################################
+
+def condiciones(request):
+	return render_to_response("web/condiciones.html", {})
 
 ########################################################################
 
