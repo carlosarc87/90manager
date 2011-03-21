@@ -23,6 +23,7 @@ Copyright 2011 by
 """
 
 from random import randint
+from settings import RUTA
 
 ########################################################################
 
@@ -32,7 +33,7 @@ def listaNombres(nombre_fichero):
 	lista_nombres = []
 
 	# Obtener nombres
-	fich = open("public/site_media/doc/" + nombre_fichero, "r")
+	fich = open(RUTA + "public/site_media/doc/" + nombre_fichero, "r")
 	while(True):
 		nombre = fich.readline()
 		if not nombre:
@@ -40,7 +41,7 @@ def listaNombres(nombre_fichero):
 		lista_nombres.append(nombre)
 
 	fich.close()
-	
+
 	return lista_nombres
 
 ########################################################################
@@ -62,7 +63,7 @@ def nombreJugadorAleatorio(lista_nombres, lista_apellidos):
 	nombre_completo = nombre1
 	aux = quitar_acentos(nombre1)
 	apodo = aux[0] + '. '
-	
+
 	# Si se pone un segundo nombre
 	if(num_nombres == 2):
 		nombre2 = lista_nombres[randint(0, len(lista_nombres) - 1)]
@@ -75,7 +76,7 @@ def nombreJugadorAleatorio(lista_nombres, lista_apellidos):
 	apellido2 = lista_apellidos[randint(0, len(lista_apellidos) - 1)]
 	apellidos = apellido1 + ' ' + apellido2
 	apodo = apodo + apellido1
-	
+
 	# Devolver nombre_completo y apodo
 	return nombre_completo + ' ' + apellidos, apodo
 

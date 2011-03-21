@@ -15,7 +15,10 @@ else: # Hay personales, cargar configuracion de allí
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-RUTA = os.path.dirname(__file__)
+
+# Variables del proyecto
+URL_PROPIA = 'http://localhost:8000/'
+RUTA = os.path.dirname(__file__) + "/"
 
 # Mandar reporte de error por correo a los siguientes destinatarios cuando DEBUG = False
 if vper:
@@ -27,7 +30,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'datos.db',                      # Or path to database file if using sqlite3.
+        'NAME': RUTA + 'datos.db',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -72,7 +75,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(os.path.dirname(__file__), "public/site_media")
+MEDIA_ROOT = RUTA + "public/site_media"
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -118,12 +121,9 @@ LOGOUT_URL = "/cuentas/logout/"
 LOGIN_REDIRECT_URL = "/cuentas/perfil/"
 
 TEMPLATE_DIRS = (
-	"public/templates/",
-	"public/templates/juego/",
-	"public/templates/web/",
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+	RUTA + "public/templates/",
+	RUTA + "public/templates/juego/",
+	RUTA + "public/templates/web/",
 )
 
 INSTALLED_APPS = (
@@ -145,5 +145,3 @@ INSTALLED_APPS = (
     'gestion_sistema.gestion_jugador',
 )
 
-# URL del proyecto
-URL_PROPIA = 'http://localhost:8000/'
