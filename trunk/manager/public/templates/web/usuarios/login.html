@@ -115,6 +115,19 @@
 		r_text.push("Próximamente también futbolistas femeninas.");
 		r_text.push("¡Qué ganas de que llegue el verano!");
 		r_text.push("Si ves algo sin validar correctamente, Carlos lo sabrá.");
+		r_text.push("¡Con jugadores tan famosos como Eufemio Teunuco Malvérez de la Fuente!");
+		r_text.push("¿Documentación? ¿Qué es eso?");
+		r_text.push("Esto es un erasmus, un programador de videojuegos y un tio que sabe php y van y hacer una web en django...");
+		r_text.push("Hay webs que presumen que no van en internet explorer 6, la nuestra no va en Opera. Bueno, no hemos probado tampoco...");
+		r_text.push("¡Instalable con diskettes de 3'5!");
+		r_text.push("In Soviet Russia 90manager plays you!");
+		r_text.push("Tiene nombres mil... tiene nombres mil...");
+		r_text.push("Logro desbloqueado: Ver este mensaje");
+		r_text.push("404 - Gracia not found");
+		r_text.push("alt + F4 para activar los trucos");
+		r_text.push("IDDQD Forever");
+		r_text.push("¡GOOOOOL!");
+		r_text.push("Sacaremos gorricos para el Team Fortress 2");
 
 		var num_mensajicos = r_text.length;
 
@@ -148,7 +161,6 @@
 	<div id="login">
 		{% if form.errors %}
 			<p class="texto_error">Usuario y/o contraseña no válidos</p>
-			{{ form.errors }}
 		{% endif %}
 
 		<form action="{% url django.contrib.auth.views.login %}" method="post">

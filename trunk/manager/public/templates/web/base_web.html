@@ -40,7 +40,7 @@
 				str_tiempo = str_tiempo.replace(/%%M%%/g, calcularTiempo(segundos, 60, 60));
 				str_tiempo = str_tiempo.replace(/%%S%%/g, calcularTiempo(segundos, 1, 60));
 
-				document.getElementById("contador_desactualizado").innerHTML = "Última actualización hace " + str_tiempo;
+				document.getElementById("contador_desactualizado").innerHTML = "Esto lleva desactualizado " + str_tiempo;
 
 				setTimeout("contadorDesactualizado(" + (segundos + paso) + ")", timeout);
 			}
@@ -50,7 +50,7 @@
 				document.write("<span id='contador_desactualizado'></span>");
 			}
 
-			fechaUltimaActualizacion = "03/21/2011 18:00";
+			fechaUltimaActualizacion = "03/21/2011 23:12";
 			formato_tiempo = "%%D%% días, %%H%% horas, %%M%% minutos y %%S%% segundos.";
 			paso = +1;
 
