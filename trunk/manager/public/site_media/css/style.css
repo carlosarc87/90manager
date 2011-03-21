@@ -2,7 +2,7 @@ a{ color: #00aa00; }
 a:visited{ color: #aa0000; }
 
 body{
-	background: #88dd88; /* url('../img/fondo_cesped.jpg') no-repeat; */
+	background: #88dd88;
 	color: #000000;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 0.8em;
@@ -68,7 +68,7 @@ h1, h2, h3, h4{
 
 #menu_superior{
 	background: #55aa55;
-	font-size: 14px;
+	font-size: 1.1em;
 	height: 30px;
 	width: 100%;
 }
@@ -127,7 +127,7 @@ h1, h2, h3, h4{
 
 .errorlist{
 	color: #cc0000;
-	font-size: 1.2em;
+	font-size: 1em;
 	font-weight: bold;
 	margin: 0px 0px 15px 0px;
 	padding: 0px 0px 0px 15px;
@@ -159,7 +159,7 @@ h1, h2, h3, h4{
 	border-right: solid 1px #444;
 	border-left: solid 1px #444;
 	color: #666;
-	font-size: 16px;
+	font-size: 1.2em;
 	font-weight: bold;
 	padding: 5px 0px 5px 0px;
 	text-align: center;
@@ -169,7 +169,7 @@ h1, h2, h3, h4{
 	background-color: #ccc;
 	border: solid 1px #444;
 	color: #666;
-	font-size: 14px;
+	font-size: 1.1em;
 	font-weight: bold;
 }
 

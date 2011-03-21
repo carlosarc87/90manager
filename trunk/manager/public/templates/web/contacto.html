@@ -1,27 +1,58 @@
 {% extends "base_web.html" %}
 
+{% block css_extra %}
+    <style type="text/css">
+		h4{
+			margin: 10px 0px;
+			text-align: center;
+		}
+		
+		label{
+			float: left;
+			width: 100px;
+		}
+		
+		#contacto{
+			border: solid 1px #555;
+			margin: 10px auto;
+			padding: 20px;
+			width: 400px;
+		}
+		
+		#contenido_emisor{ clear: both; padding: 5px 0px; }
+		#contenido_asunto{ clear: both; padding: 5px 0px; }
+		#contenido_mensaje{ clear: both; padding: 5px 0px; }
+		#contenido_mensaje label{ padding: 5px 0px; width: 100%; }
+		#contenido_enviar{ clear: both; padding: 5px 0px; }
+		
+		#id_mensaje{ width: 90%; }
+    </style>
+{% endblock %}
+
 {% block contenido %}
 	<h4>Envíenos insultos, amenazas de muerte, citaciones para juzgado, etc mediante el siguiente formulario de contacto con los administradores</h4>
 
 	<div id="contacto">
 		<form action="/contacto/" method="post">
 			{% csrf_token %}
-			<p>
-				<label for = "id_sender">Emisor:</label>
-				<input type = "text" name = "emisor" id = "id_emisor"/>
-			</p>
+			<div id="contenido_emisor">
+				<label for="id_emisor">Emisor:</label>
+				<input id="id_emisor" type="text" name="emisor" />
+			</div>
 
-			<p>
-				<label for = "id_asunto">Asunto:</label>
-				<input id = "id_asunto" type = "text" name = "asunto" maxlength = "100" />
-			</p>
+			<div id="contenido_asunto">
+				<label for="id_asunto">Asunto:</label>
+				<input id="id_asunto" type="text" name="asunto" maxlength="100" />
+			</div>
 
-			<p>
-				<label for = "id_mensaje">Mensaje:</label>
-				<textarea name="mensaje"  id = "id_mensaje" rows="5" cols="50">Quiero un hijo vuestro</textarea>
-			</p>
-			<input type = "submit" value = "Enviar" />
+			<div id="contenido_mensaje">
+				<label for="id_mensaje">Mensaje:</label>
+				<textarea id="id_mensaje" name="mensaje" rows="5" cols="50">Quiero un hijo vuestro</textarea>
+			</div>
+
+			<div id="contenido_enviar">
+				<input type="submit" value="Enviar" />
+			</div>
 		</form>
 	</div>
 {% endblock %}
-
