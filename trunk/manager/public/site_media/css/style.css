@@ -86,9 +86,10 @@ h1, h2, h3, h4{
 
 #menu_superior_situacion{
 	float: left;
+	font-size: 0.9em;
 	height: 30px;
 	list-style-image: url('../img/icons/favicon.ico');
-	margin: 0px 0px 0px 150px;
+	margin: 0px;
 	padding: 0px;
 }
 

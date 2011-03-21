@@ -1,5 +1,35 @@
 {% extends "base_juego.html" %}
 
+{% block css_extra %}
+	<style type="text/css">
+		#linea_equipo_propio{
+			font-size: 1.1em;
+			font-weight: bold;
+		}
+		
+		#tabla_clasificacion{
+			width: 600px;
+		}
+		
+		#tabla_equipos{
+			width: 400px;
+		}
+		
+		#tabla_jornadas{
+			width: 400px;
+		}
+		
+		.jornada_jugada{
+			color: #00aa00;
+			font-weight: bold;
+		}
+		.jornada_no_jugada{
+			color: #aa0000;
+			font-weight: bold;
+		}
+	</style>
+{% endblock %}
+
 {% block situacion %}
 	<ul id="menu_superior_situacion">
 		<li>{{ liga.nombre }}</li>
@@ -20,7 +50,7 @@
 		{% endif %}
 
 		{% if clasificacion %}
-			<table class="tabla1">
+			<table class="tabla1" id="tabla_clasificacion">
 				{% if liga_acabada %}
 					<caption>Clasificacion final</caption>
 				{% else %}
@@ -43,7 +73,11 @@
 				</thead>
 				<tbody>
 					{% for dato_clasificacion in clasificacion %}
-						<tr>
+						{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+							<tr id="linea_equipo_propio">
+						{% else %}
+							<tr>
+						{% endif %}
 							<td class="cuadro_num_azul_der">
 								{{ dato_clasificacion.posicion }}
 							</td>
@@ -80,23 +114,25 @@
 			</table>
 		{% endif %}
 
-		<table class="tabla1" style="width: 300px;">
+		<table class="tabla1" id="tabla_jornadas">
 			<caption>Listado de jornadas</caption>
 			<thead>
 				<tr>
-					<th style="width:50%;">Jornada</th>
+					<th>Jornada</th>
 					<th>Jugada</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for jornada in jornadas %}
 					<tr>
-						<td style="text-align:right;"><a href="/jornadas/ver/{{ jornada.id }}/">{{ jornada.numero }}</a></td>
+						<td class="cuadro_num_azul_der">
+							<a href="/jornadas/ver/{{ jornada.id }}/">{{ jornada.numero }}</a>
+						</td>
 						<th>
 							{% if jornada.jugada %}
-								SI
+								<span class="jornada_jugada">SÍ</span>
 							{% else %}
-								NO
+								<span class="jornada_no_jugada">NO</span>
 							{% endif %}
 						</th>
 					</tr>
@@ -118,7 +154,7 @@
 	{% endif %}
 
 	{% if equipos.count %}
-		<table class="tabla1" style="width: 300px;">
+		<table class="tabla1" id="tabla_equipos">
 			<caption>Listado de equipos</caption>
 			<thead>
 				<tr>

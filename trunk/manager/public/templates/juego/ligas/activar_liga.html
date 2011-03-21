@@ -1,22 +1,39 @@
 {% extends "base_juego.html" %}
 
+{% block css_extra %}
+	<style type="text/css">
+		#contenido_equipos_apuntados{
+			margin: 10px 0px;
+		}
+		
+		#contenido_num_equipos{
+			margin: 10px 0px;
+		}
+	</style>
+{% endblock %}
+
 {% block contenido %}
 	<form action="/ligas/activar/{{ liga.id }}/" method="post">
 		{% csrf_token %}
-		<div>Equipos apuntados:</div>
-		{{ form.equipos.errors }}
-		{{ form.equipos }}
+		<h4>Equipos apuntados:</h4>
+		<div id="contenido_equipos_apuntados">
+			{{ form.equipos.errors }}
+			{{ form.equipos }}
+		</div>
 
 		<!-- Numero de equipos -->
-		<div class="fila">
+		<div id="contenido_num_equipos">
 			{% if form.num_equipos.errors %}
 				<p class="texto_error">{{ form.num_equipos.errors }}</p>
 			{% endif %}
-			<div style="width: 150px;"><label for="id_num_equipos">Numero de equipos controlados por la IA:</label></div>
-			<div style="width: 150px;"><input type="text" name="num_equipos" value="0" maxlength="3" style="width:50px;" /></div>
+			
+			<h4>Numero de equipos controlados por la IA:</h4>
+			<div id="caja_num_equipos">
+				<input type="text" id="id_num_equipos" name="num_equipos" value="0" maxlength="3" />
+			</div>
 		</div>
 
 		<!-- Boton crear -->
-		<div class="fila"><input type="submit" value="Activar" /></div>
+		<div id="contenido_boton_activar"><input type="submit" value="Activar" /></div>
 	</form>
 {% endblock %}

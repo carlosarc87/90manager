@@ -1,10 +1,18 @@
 {% extends "base_juego.html" %}
 
+{% block css_extra %}
+	<style type="text/css">
+		#tabla_habilidades{
+			width: 300px;
+		}
+	</style>
+{% endblock %}
+
 {% block situacion %}
 	<ul id="menu_superior_situacion">
 		<li><a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a></li>
 		<li><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
-		<li>{{ jugador.nombre }}</li>
+		<li><span>{{ jugador.nombre }}</span></li>
 	</ul>
 {% endblock %}
 
@@ -17,12 +25,12 @@
 		<li>Valor de mercado: {{ jugador.valorMercado }} &euro;</li>
 	</ul>
 
-	<table class="tabla1">
+	<table class="tabla1" id="tabla_habilidades">
 		<caption>Habilidades de campo</caption>
 		<thead>
 			<tr>
-				<th width="120px">Habilidad</th>
-				<th width="60px">Valor</th>
+				<th>Habilidad</th>
+				<th>Valor</th>
 			</tr>
 		</thead>
 		<tbody>

@@ -92,6 +92,27 @@
 			<tbody>
 				{% for suceso in sucesos_partido %}
 					<tr>
+						<td>
+							{% if suceso.tipo == "Gol" %}
+								<img src="/media/img/icons/favicon.ico" alt="Gol" title="Gol" />
+							{% endif %}
+							
+							{% if suceso.tipo == "Disparo fuera" %}
+								<img src="/media/img/icons/tiro_fallado.png" alt="Disparo fuera" title="Disparo fuera" />
+							{% endif %}
+							
+							{% if suceso.tipo == "Disparo parado" %}
+								<img src="/media/img/icons/tiro_fallado.png" alt="Disparo parado" title="Disparo parado" />
+							{% endif %}
+							
+							{% if suceso.tipo == "FIN DE LA 1ª PARTE" %}
+								<img src="/media/img/icons/silbato.png" alt="Fin primera parte" title="Fin primera parte" />
+							{% endif %}
+							
+							{% if suceso.tipo == "FIN DE LA 2ª PARTE" %}
+								<img src="/media/img/icons/silbato.png" alt="Fin partido" title="Fin partido" />
+							{% endif %}
+						</td>
 						<td class="cuadro_num_azul_der">{{ suceso.getMinuto }}:{{ suceso.getSegundo }}</td>
 						<td>{{ suceso.equipo.nombre }}</td>
 						<td>{{ suceso.tipo }}</td>
