@@ -50,9 +50,7 @@ from gestion_usuario.models import Usuario
 @login_required
 def ver_ligas_publicas(request):
 	''' Muestra las ligas publicas que haya en el sistema '''
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	usuario = request.user
 	# Obtenemos las ligas
 	ligas = Liga.objects.filter(publica = True)
 
@@ -69,9 +67,7 @@ def ver_ligas_publicas(request):
 def ver_liga(request, liga_id):
 	''' Muestra los datos de una liga determinada '''
 	# Obtenemos el usuario
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	usuario = request.user
 
 	if Liga.objects.filter(id = liga_id).count() == 0:
 		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
@@ -172,9 +168,7 @@ def ver_liga(request, liga_id):
 def avanzar_jornada_liga(request, liga_id):
 	''' Avanza una liga de jornada actual '''
 	# Obtenemos el usuario
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	usuario = request.user
 
 	if Liga.objects.filter(id = liga_id).count() == 0:
 		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
@@ -191,29 +185,8 @@ def avanzar_jornada_liga(request, liga_id):
 	if jornadas.count() == 0:
 		return devolverMensaje(request, "Esta liga ya esta acabada", "/ligas/ver/%d/" % liga.id)
 
-	# Sacar primera jornada no jugada
-	jornada = jornadas[0]
-	partidos = jornada.partido_set.all()
-	for partido in partidos:
-#		if partido.equipo_local.usuario != None or partido.equipo_visitante.usuario != None:
-#			if not partido.finalizado():
-#				return HttpResponse("EH! que aun quedan partidos de los usuarios por jugar")
-#		else:
-			if not partido.finalizado():
-				# Generar alineacion aleatoria
-#				if not partido.alineacion_local:
-#					partido.titulares_local = partido.equipo_local.jugador_set.all()[:11]
-#				if partido.titulares_visitante == None:
-#					partido.titulares_visitante = partido.equipo_visitante.jugador_set.all()[:11]
-				partido.jugar()
-				partido.save()
-	jornada.jugada = True
-	jornada.save()
+	liga.avanzarJornada()
 
-	# Generar los datos de clasificacion de la siguiente jornada
-	siguiente_jornada = liga.obtenerJornadaActual()
-	if siguiente_jornada:
-		siguiente_jornada.generarClasificacion()
 	return HttpResponseRedirect("/ligas/ver/%s/" % (liga_id))
 
 ########################################################################
@@ -244,9 +217,7 @@ def crear_liga(request):
 @transaction.commit_on_success
 def activar_liga(request, liga_id):
 	''' Formulario para activar una liga '''
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	usuario = request.user
 
 	if Liga.objects.filter(id = liga_id).count() == 0:
 		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)

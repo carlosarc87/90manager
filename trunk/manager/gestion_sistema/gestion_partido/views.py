@@ -47,9 +47,7 @@ from gestion_usuario.func import obtenerUsuario
 def jugar_partido(request, partido_id):
 	''' Juega un partido '''
 	# Obtenemos el usuario
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	usuario = request.user
 
 	if Partido.objects.filter(id = partido_id).count() == 0:
 		return devolverMensaje(request, "Error, no existe un partido con identificador %s" % partido_id)
@@ -77,6 +75,10 @@ def jugar_partido(request, partido_id):
 		partido.titulares_visitante = partido.equipo_visitante.jugador_set.all()[:11]
 	partido.jugar()
 	partido.save()
+
+	# Comprobamos si se acabó la jornada
+	if not jornada_actual.quedanPartidosPorJugar():
+		jornada_actual.liga.avanzarJornada()
 
 	return ver_partido(request, partido_id)
 

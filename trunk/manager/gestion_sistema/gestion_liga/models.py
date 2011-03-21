@@ -116,6 +116,23 @@ class Liga(models.Model):
 		''' Agrega un equipo a la liga '''
 		self.equipos_set.add(equipo)
 
+	def avanzarJornada(self):
+		''' Avanza una jornada en la liga '''
+		# Sacar primera jornada no jugada
+		jornada = self.obtenerJornadaActual()
+		if not jornada:
+			return False
+
+		jornada.jugarPartidosRestantes()
+
+		# Generar los datos de clasificacion de la siguiente jornada
+		siguiente_jornada = self.obtenerJornadaActual()
+		if siguiente_jornada:
+			siguiente_jornada.generarClasificacion()
+			siguiente_jornada.mantenerAlineaciones(jornada)
+
+		return True
+
 	def __unicode__(self):
 		''' Devuelve una cadena de texto que representa la clase '''
 		return self.nombre

@@ -111,6 +111,15 @@ class AlineacionEquipo(models.Model):
 			j.save()
 			self.jugadores.add(j)
 
+	def copiarAlineacion(self, alineacion):
+		''' Copia la alineacion desde otra alineacion '''
+		self.borrarAlineacion()
+		for jugador in alineacion.jugadores.all():
+			j = JugadorPartido(jugador = jugador.jugador, posicion = jugador.posicion)
+			j.save()
+			self.jugadores.add(j)
+
+
 	def getTitulares(self):
 		''' Devuelve los jugadores titulares '''
 		datos = self.getDatosTitulares()
@@ -318,7 +327,6 @@ class Partido(models.Model):
 		num_goles = [0, 0]
 
 		if not self.alineacion_local.estaPreparada():
-			print "preparing"
 			self.alineacion_local.setAleatoria()
 
 		if not self.alineacion_visitante.estaPreparada():
@@ -528,6 +536,7 @@ class Partido(models.Model):
 		# Guardar los cambios
 		clasificacion_local.save()
 		clasificacion_visitante.save()
+		self.save()
 
 	def __unicode__(self):
 		''' Devuelve una cadena de texto que representa la clase '''

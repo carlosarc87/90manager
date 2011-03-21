@@ -39,6 +39,10 @@ class Jornada(models.Model):
 		''' Devuelve la posicion actual de un equipo en la jornada '''
 		return self.clasificacionequipojornada_set.get(equipo = equipo)
 
+	def quedanPartidosPorJugar(self):
+		''' Devuelve si quedan partidos por jugar '''
+		return self.partido_set.filter(jugado = False).count() > 0
+
 	def generarClasificacion(self):
 		''' Genera la clasificacion vacia de la jornada '''
 		from gestion_sistema.gestion_clasificacion.models import ClasificacionEquipoJornada
@@ -50,7 +54,6 @@ class Jornada(models.Model):
 
 				clasificacion_local.save()
 				clasificacion_visitante.save()
-				#print clasificacion_local.puntos
 		else:
 			for partido in partidos:
 				jornada_anterior = self.liga.jornada_set.get(numero = self.numero - 1)
@@ -63,9 +66,49 @@ class Jornada(models.Model):
 				clasificacion_local.save()
 				clasificacion_visitante.save()
 
+	def jugarPartidosRestantes(self):
+		''' Juega todos los partidos de la jornada que no se han finalizado '''
+		partidos = self.partido_set.all()
+		for partido in partidos:
+			if not partido.finalizado():
+				partido.jugar()
+		self.jugada = True
+		self.save()
 
+	def mantenerAlineaciones(self, jornada_anterior):
+		''' Mantiene las alineaciones de los jugadores para los partidos de esta jornada '''
+		# Cogemos los partidos que tengan algun equipo
+		partidos = self.partido_set.exclude(equipo_local__usuario = None, equipo_visitante__usuario = None)
+		for partido in partidos:
+			if partido.equipo_local is not None:
+				equipo = partido.equipo_local
+				# Cogemos el partido que jugó la jornada anterior
+				qs = jornada_anterior.partido_set.filter(equipo_local = equipo)
+				if qs.count() > 0:
+					partido_anterior = qs[0]
+					alineacion_anterior = partido_anterior.alineacion_local
+				else:
+					qs = jornada_anterior.partido_set.filter(equipo_visitante = equipo)
+					partido_anterior = qs[0]
+					alineacion_anterior = partido_anterior.alineacion_visitante
 
+				# Una vez que tenemos la alineacion, copiamos para esta
+				partido.alineacion_local.copiarAlineacion(alineacion_anterior)
+			if partido.equipo_visitante is not None:
+				equipo = partido.equipo_visitante
+				# Cogemos el partido que jugó la jornada anterior
+				qs = jornada_anterior.partido_set.filter(equipo_local = equipo)
+				if qs.count() > 0:
+					partido_anterior = qs[0]
+					alineacion_anterior = partido_anterior.alineacion_local
+				else:
+					qs = jornada_anterior.partido_set.filter(equipo_visitante = equipo)
+					partido_anterior = qs[0]
+					alineacion_anterior = partido_anterior.alineacion_visitante
 
+				# Una vez que tenemos la alineacion, copiamos para esta
+				partido.alineacion_visitante.copiarAlineacion(alineacion_anterior)
+			partido.save()
 
 	def __unicode__(self):
 		return "Jornada %d de liga %d" % (self.numero, self.liga.id)
