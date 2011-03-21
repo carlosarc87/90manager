@@ -8,7 +8,7 @@
 			text-align: center;
 			width: 100%;
 		}
-		
+
 		#descripcion{
 			clear: both;
 			float: left;
@@ -24,38 +24,38 @@
 			padding: 20px;
 			width: 350px;
 		}
-		
+
 		#login #caja_clave{
 			clear: both;
 			padding: 5px 0px;
 			width: 100%;
 		}
-		
+
 		#login #caja_entrar{
 			clear: both;
 			height: 15px;
 			padding: 5px 0px;
 			width: 100%;
 		}
-		
+
 		#login #caja_recordar{
 			clear: both;
 			padding: 5px 0px;
 			width: 100%;
 		}
-		
+
 		#login #caja_registro{
 			clear: both;
 			padding: 5px 0px;
 			width: 100%;
 		}
-		
+
 		#login #caja_usuario{
 			clear: both;
 			padding: 5px 0px;
 			width: 100%;
 		}
-		
+
 		#login #entrar, #login #password, #login #username{
 			float: right;
 		}
@@ -66,7 +66,7 @@
 			height: 175px;
 			width: 387px;
 		}
-		
+
 		#mensajico{
 			cursor: pointer;
 			font-style: italic;
@@ -86,9 +86,9 @@
 			aleat = Math.round(aleat)
 			return parseInt(inferior) + aleat
 		}
-		
+
 		var r_text = new Array ();
-		
+
 		r_text.push("Ahora con más lechuga.");
 		r_text.push("Chuck no está entre los nombres de jugadores.");
 		r_text.push("JJ se nos frustró por las cervezas del hackathón.");
@@ -103,7 +103,15 @@
 		r_text.push("Próximamente también futbolistas femeninas.");
 		r_text.push("¡Qué ganas de que llegue el verano!");
 		r_text.push("Si ves algo sin validar correctamente, Carlos lo sabrá.");
-		
+		r_text.push("Hola, soy Edu. Feliz navidad");
+		r_text.push("La OSL-UGR nos prometió mujeres por meternos en el concurso. ¿Para cuando?");
+		r_text.push("Con mas fallos que Aula-BD");
+		r_text.push("Aunque un roedor pudiera roer robles, no tendria por que roer robles si pudiera roer robles, asi que un roedor no roeria robles por que pudiera roer una cantidad de robles.");
+		r_text.push("Patrocinado por Hostelería Silma, que nos hace tartas porque es el único rato que estamos callados");
+		r_text.push("No tendremos al gato cebolla, al pollo, o a las barbacoas, pero tenemos al Juanmi que como mascota vale");
+		r_text.push("El único proyecto de un juego de fútbol que puede aburrir a las masas en sus presentaciones");
+		r_text.push("¿Galletillas saladas?");
+
 		var num_mensajicos = r_text.length;
 
 		function cargarMensajico(ele){
@@ -111,15 +119,15 @@
 			r = aleatorio(0, 255);
 			g = 0;
 			b = aleatorio(0, 255);
-			
+
 			// Modificar color del texto
 			ele.style.color = "rgb(" + r + ", " + g + ", " + b + ")";
-			
+
 			// Imprimir un texto aleatorio de entre los disponibles
 			i = aleatorio(0, num_mensajicos - 1);
 			ele.innerHTML = r_text[i];
 		}
-		
+
 		// Al terminar de cargar la pagina cargar un mensajico
 		$(document).ready(function(){
 		   cargarMensajico(document.getElementById("mensajico"));
@@ -132,10 +140,11 @@
 
 {% block contenido %}
 	<img id="logo_login" src="/media/img/logoAlter.gif" alt="logo_jugador" title="" />
-	
+
 	<div id="login">
 		{% if form.errors %}
 			<p class="texto_error">Usuario y/o contraseña no válidos</p>
+			{{ form.errors }}
 		{% endif %}
 
 		<form action="{% url django.contrib.auth.views.login %}" method="post">
@@ -145,7 +154,7 @@
 				<label for="username">Usuario:</label>
 				<input id="username" type="text" name="username" value="" maxlength="50" />
 			</div>
-			
+
 			<!-- Clave -->
 			<div id="caja_clave">
 				<label for="password">Contraseña:</label>

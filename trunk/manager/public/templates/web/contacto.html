@@ -1,11 +1,26 @@
 {% extends "base_web.html" %}
 
 {% block contenido %}
+	<h4>Envíenos insultos, amenazas de muerte, citaciones para juzgado, etc mediante el siguiente formulario de contacto con los administradores</h4>
+
 	<div id="contacto">
 		<form action="/contacto/" method="post">
 			{% csrf_token %}
-			{{ form.as_p }}
-			<input type="submit" value="Enviar" />
+			<p>
+				<label for = "id_sender">Emisor:</label>
+				<input type = "text" name = "emisor" id = "id_emisor"/>
+			</p>
+
+			<p>
+				<label for = "id_asunto">Asunto:</label>
+				<input id = "id_asunto" type = "text" name = "asunto" maxlength = "100" />
+			</p>
+
+			<p>
+				<label for = "id_mensaje">Mensaje:</label>
+				<textarea name="mensaje"  id = "id_mensaje" rows="5" cols="50">Quiero un hijo vuestro</textarea>
+			</p>
+			<input type = "submit" value = "Enviar" />
 		</form>
 	</div>
 {% endblock %}

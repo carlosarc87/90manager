@@ -29,15 +29,16 @@ from models import Usuario
 
 class UsuarioForm(forms.ModelForm):
 	''' Formulario para registrar un usuario '''
+	aceptar_condiciones = forms.BooleanField()
+	email = forms.EmailField(required = True)
+
+	def clean_aceptar_condiciones(self):
+		if not self.cleaned_data['aceptar_condiciones']:
+			raise forms.ValidationError("Debes de aceptar las condiciones de uso para registrarte en el juego")
+
 	class Meta:
 		model = Usuario
 		exclude = ('is_staff', 'is_active', 'is_superuser', 'last_login', 'date_joined', 'user_ptr_id', 'groups', 'user_permissions')
 
 ########################################################################
 
-class ContactoForm(forms.Form):
-    emisor = forms.EmailField()
-    asunto = forms.CharField(max_length = 100)
-    mensaje = forms.CharField()
-
-########################################################################

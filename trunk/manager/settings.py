@@ -1,6 +1,16 @@
+# -*- coding: utf-8 -*-
 # Django settings for manager project.
 
 import os.path
+
+# Cargar datos sensibles (No deben de estar en el svn, son contraseñas y datos importantes)
+try:
+	import personales
+except: # No hay personales, cargar config por defecto
+	vper = None
+	print "No hay variables personales, asi que a tomar configuracion por defecto"
+else: # Hay personales, cargar configuracion de allí
+	vper = personales.datos_personales
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -8,12 +18,10 @@ TEMPLATE_DEBUG = DEBUG
 RUTA = os.path.dirname(__file__)
 
 # Mandar reporte de error por correo a los siguientes destinatarios cuando DEBUG = False
-ADMINS = (
-     ('Juanmi', 'ciberjm@gmail.com'),
-     ('Pino', 'jllopezpino@gmail.com'),
-     ('Carlos', 'carlos.kapazao@gmail.com'),
-)
-
+if vper:
+	ADMINS = vper['ADMINS']
+else:
+	ADMINS = (('nadie', 'nadie@na.net'))
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -26,6 +34,15 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
+
+# Configuracion del e-mail
+if vper:
+	EMAIL_HOST = vper['email_host']
+	EMAIL_HOST_USER = vper['email_host_user']
+	EMAIL_HOST_PASSWORD = vper['email_host_password']
+
+EMAIL_SUBJECT_PREFIX = '[90manager] '
+SERVER_EMAIL = 'noreply@90manager.com'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -77,6 +94,12 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'manager.gestion_usuario.auth_backend.UsuarioModelBackend',
+)
+
+CUSTOM_USER_MODEL = 'gestion_usuario.Usuario'
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -121,3 +144,6 @@ INSTALLED_APPS = (
     'gestion_sistema.gestion_clasificacion',
     'gestion_sistema.gestion_jugador',
 )
+
+# URL del proyecto
+URL_PROPIA = 'http://localhost:8000/'

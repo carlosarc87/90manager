@@ -10,15 +10,15 @@
 			padding: 20px;
 			width: 350px;
 		}
-		
+
 		#registro input{
 			float: right;
 		}
-		
+
 		#registro table{
 			width: 100%;
 		}
-		
+
 		#logo{
 			float: left;
 			margin: 20px 0px;
@@ -28,9 +28,12 @@
 	</style>
 {% endblock %}
 
+{% block cabecera %}
+{% endblock %}
+
 {% block contenido %}
 	<img id="logo" src="/media/img/logoAlter.gif" alt="logo_jugador" title="" />
-	
+
 	<div id="registro">
 		<form action="/cuentas/registrar/" method="post">
 			<table>
@@ -46,10 +49,11 @@
 					<tr>
 						<td><label for="id_username">Nombre de usuario:</label></td>
 						<td>{{ form_reg.username }}</td>
+						<td>*</td>
 					</tr>
 
 					<!--Contrasena -->
-					{% if form_reg.username.errors %}
+					{% if form_reg.password.errors %}
 						<tr>
 							<td class="texto_error">{{ form_reg.password.errors }}</td>
 						</tr>
@@ -58,10 +62,11 @@
 					<tr>
 						<td><label for="id_password">Contraseña:</label></td>
 						<td><input id="id_password" type="password" name="password" value="" /></td>
+						<td>*</td>
 					</tr>
 
 					<!--Nombre -->
-					{% if form_reg.username.errors %}
+					{% if form_reg.first_name.errors %}
 						<tr>
 							<td class="texto_error">{{ form_reg.first_name.errors }}</td>
 						</tr>
@@ -73,7 +78,7 @@
 					</tr>
 
 					<!--Apellidos -->
-					{% if form_reg.username.errors %}
+					{% if form_reg.last_name.errors %}
 						<tr>
 							<td class="texto_error">{{ form_reg.last_name.errors }}</td>
 						</tr>
@@ -85,7 +90,7 @@
 					</tr>
 
 					<!--E-mail -->
-					{% if form_reg.username.errors %}
+					{% if form_reg.email.errors %}
 						<tr>
 							<td class="texto_error">{{ form_reg.email.errors }}</td>
 						</tr>
@@ -94,14 +99,27 @@
 					<tr>
 						<td><label for="id_email">E-Mail:</label></td>
 						<td>{{ form_reg.email }}</td>
+						<td>*</td>
 					</tr>
 
+					<!--Condiciones -->
+					{% if form_reg.aceptar_condiciones.errors %}
+						<tr>
+							<td class="texto_error">{{ form_reg.aceptar_condiciones.errors }}</td>
+						</tr>
+					{% endif %}
+
+					<tr>
+						<td><label for="id_email">Acepto las <a href="/condiciones/" onclick="this.target='_blank'">condiciones de uso</a></label></td>
+						<td>{{ form_reg.aceptar_condiciones }}</td>
+					</tr>
 					<tr>
 						<td></td>
 						<td><input type="submit" name="registrar_usuario" value="Registrar" /></td>
 					</tr>
 				</tbody>
 			</table>
+			*: Campos obligatorios
 		</form>
 	</div>
 {% endblock %}

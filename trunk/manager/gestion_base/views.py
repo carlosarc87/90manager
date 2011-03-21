@@ -57,7 +57,22 @@ def contacto(request):
 	if request.method == 'POST':
 		form = ContactoForm(request.POST)
 		if form.is_valid():
-			return devolverMensaje(request, "Se ha rellenado correctamente el formulario de contacto.", "/")
+			from django.core.mail import mail_admins
+			mensaje_puro = form.cleaned_data['mensaje']
+			asunto = form.cleaned_data['asunto']
+			emisor = form.cleaned_data['emisor']
+
+			mensaje =  "-----------------------------------------------------------------\n"
+			mensaje += " Mensaje de contacto enviado mediante el formulario de 90manager \n"
+			mensaje += "  De: " + emisor + "\n"
+			mensaje += "  Enviado a las: " + str(datetime.datetime.now()) + " \n"
+			mensaje += "-----------------------------------------------------------------\n"
+			mensaje += "\n"
+			mensaje += mensaje_puro
+
+			# Mandar correo
+			mail_admins('[CONTACTO]: ' + asunto, mensaje)
+			return devolverMensaje(request, "Se nos ha enviado el mensaje, ¡Gracias! (O no, si nos has insultado xD).", "/")
 	else:
 		form = ContactoForm()
 
@@ -66,21 +81,25 @@ def contacto(request):
 ########################################################################
 
 def changelog(request):
+	''' Muestra el historial de versiones de la web '''
 	return render_to_response("web/changelog.html", {})
 
 ########################################################################
 
 def siguenos(request):
+	''' Muestra las páginas donde seguir el proyecto '''
 	return render_to_response("web/siguenos.html", {})
 
 ########################################################################
 
 def condiciones(request):
+	''' Muestra las condiciones de uso '''
 	return render_to_response("web/condiciones.html", {})
 
 ########################################################################
 
 def bajoConstruccion(request):
+	''' Mensaje para los enlaces que no estan construidos aun '''
 	return HttpResponse("La página que deseas visitar aún no está acabada =(")
 
 ########################################################################

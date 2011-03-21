@@ -25,16 +25,16 @@ from django.template import Context, loader
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.db import transaction
-from django.contrib.auth import authenticate, login
+from django.core.mail import send_mail
 
-import datetime
+import datetime, random, sha
 
-from models import Usuario
-from forms import UsuarioForm, ContactoForm
+from settings import URL_PROPIA
+
+from models import Usuario, ClaveRegistroUsuario
+from forms import UsuarioForm
 
 from gestion_base.func import devolverMensaje
-from gestion_usuario.func import obtenerUsuario
 
 from gestion_sistema.gestion_liga.models import Liga
 
@@ -43,40 +43,60 @@ from gestion_sistema.gestion_liga.models import Liga
 # Vista para registrar a un usuario
 def registrar_usuario(request):
 	''' Vista para registrar a un usuario '''
-#	if obtenerUsuario(request) != None:
-#		return devolverMensaje(request, "No puede registrar usuarios estando logueado.", "/")
+	if request.user.is_authenticated():
+		return devolverMensaje(request, "Ya estas registrado en el sistema", "/")
 	if request.method == 'POST':
 		form = UsuarioForm(request.POST)
 		if form.is_valid():
 			# Solucion para los problemas de la password
 			usuario = form.save(commit = False)
 			password = form.cleaned_data['password']
+			usuario.is_active = False
 			usuario.is_staff = False
-			usuario.is_active = True
 			usuario.is_superuser = False
 			usuario.date_joined = datetime.datetime.now()
+			usuario.set_password(password)
 			usuario.save()
-			# Loguear al usuario
-			usuario_reg = authenticate(username = usuario.username, password = password)
-			if usuario_reg is not None:
-				login(request, usuario_reg)
-				return devolverMensaje(request, "Se ha registrado correctamente.", "/cuentas/perfil/")
-			else:
-				return devolverMensaje(request, "ERROR.", "/cuentas/perfil/")
 
+			# Generamos la clave de activacion
+			salt = sha.new(str(random.random())).hexdigest()[:5]
+			clave = sha.new(salt + usuario.username).hexdigest()
+			# Dos días para activar la cuenta
+			fin_clave = datetime.datetime.today() + datetime.timedelta(2)
+
+			# Crear y guardar el perfil de la clave
+			perfil_clave = ClaveRegistroUsuario(usuario = usuario, clave = clave, expira = fin_clave)
+			perfil_clave.save()
+
+			asunto = 'Activación de la cuenta'
+			mensaje =  'Hola %s, gracias por registrarte en 90manager.\n' % (usuario.username)
+			mensaje += 'Para activar la cuenta, pulse el siguiente link:\n'
+			mensaje += URL_PROPIA + 'cuentas/confirmar/' + clave + '/' +'\n'
+			mensaje += 'La clave expirara en 48 horas\n'
+			mensaje += 'Muchas gracias de huevo, digo nuevo.\n'
+
+			send_mail(asunto, mensaje, 'noreply@90manager.com', [usuario.email])
+
+			# Loguear al usuario
+			#usuario.is_active = True
+			#usuario_reg = authenticate(username = usuario.username, password = password)
+			#if usuario_reg is not None:
+			#	login(request, usuario_reg)
+			#	return devolverMensaje(request, "Se ha registrado correctamente.", "/cuentas/perfil/")
+			#else:
+			#	return devolverMensaje(request, "ERROR.", "/cuentas/perfil/")
+			return devolverMensaje(request, "Se ha enviado un mensaje de confirmacion a tu correo", "/")
 	else:
 		form = UsuarioForm()
 
-	return render_to_response("web/usuarios/registrar_usuario.html", {"form_reg": form})
+	return render_to_response("web/usuarios/registrar_usuario.html", { "form_reg": form })
 
 ########################################################################
 
 @login_required
 def perfil_usuario(request):
 	''' Muestra el perfil del usuario logueado '''
-	usuario = obtenerUsuario(request)
-	if usuario is None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	usuario = request.user
 	# Obtenemos las ligas creadas por el usuario
 	ligas_creadas = Liga.objects.filter(creador = usuario)
 
@@ -92,3 +112,39 @@ def perfil_usuario(request):
 	return HttpResponse(t.render(c))
 
 ########################################################################
+
+def activar_usuario(request, clave):
+	if request.user.is_authenticated():
+		return devolverMensaje(request, "Ya estas activado en el sistema ya que estás registrado", "/")
+	if ClaveRegistroUsuario.objects.filter(clave = clave).count() == 0:
+		return devolverMensaje(request, "Error, no existe tal clave de activación", "/")
+	cru = ClaveRegistroUsuario.objects.get(clave = clave)
+	usuario = cru.usuario
+
+	if cru.expira < datetime.datetime.today():
+		usuario.delete()
+		cru.delete()
+		return devolverMensaje(request, "Error, la clave ya caducó, regístrese de nuevo", "/cuentas/registrar/")
+
+	# Activamos al usuario
+	usuario.is_active = True
+	usuario.save()
+
+	# Eliminamos la clave
+	#cru.delete()
+	return devolverMensaje(request, "Se activó al usuario correctamente", "/")
+
+########################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
