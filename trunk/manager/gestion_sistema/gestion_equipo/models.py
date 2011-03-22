@@ -91,7 +91,7 @@ class Equipo(models.Model):
 		partidos_empatados = partidos_jugados.filter(goles_local = F('goles_visitante'))
 		return partidos_empatados
 
-	def generarJugadoresAleatorios(self, sexo_permitido = 0):
+	def generarJugadoresAleatorios(self, sexo_permitido = 1):
 		''' Genera un conjunto de jugadores aleatorios para el equipo '''
 		from gestion_sistema.gestion_jugador.models import Jugador
 		from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio, listaNombres
@@ -149,7 +149,9 @@ class Equipo(models.Model):
 			hoy = date.today()
 			edad = hoy - fecha_nacimiento
 			anios = (int)(edad.days / 365)
-			max_nivel = max_nivel - (int)(abs(28 - anios) / 3)
+			
+			# Cada 2 años de diferencia con 28 se resta un punto al nivel máximo
+			max_nivel = max_nivel - (int)(abs(28 - anios) / 2)
 			
 			# Asignar variables al jugador
 			jugador = Jugador(equipo = self, nombre = nombre_aleatorio, apodo = apodo_aux, fecha_nacimiento = fecha_nacimiento, sexo = sexo, transferible = False)

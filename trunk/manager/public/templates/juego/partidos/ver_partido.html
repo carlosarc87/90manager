@@ -9,8 +9,8 @@
 {% endblock %}
 
 {% block contenido %}
-
-	<table class="tabla1">
+	<!-- Resultado del partido -->
+	<table class="tabla1" id="tabla_resultado">
 		<caption>Partido {{ partido.id }}</caption>
 
 		<tbody>
@@ -45,21 +45,31 @@
 
 	{% if finalizado %}
 		<!-- Titulares local -->
-		<table class="tabla1">
+		<table class="tabla1" id="tabla_titulares_local">
 			<caption>Titulares del equipo local</caption>
 			<thead>
 				<tr>
 					<td>Num.</td>
 					<td>Posici&oacute;n</td>
 					<td>Nombre</td>
+					<td>Valor</td>
 				</tr>
 			</thead>
+			<tfoot>
+				<tr>
+					<td></td>
+					<td>{{ num_df_local }}-{{ num_cc_local }}-{{ num_dl_local }}</td>
+					<td>Valor total</td>
+					<td class="cuadro_num_azul_der">{{ valor_equipo_local }}</td>
+				</tr>
+			</tfoot>
 			<tbody>
 				{% for titular in titulares_local %}
 					<tr>
 						<td class="cuadro_num_azul_der">{{ titular.jugador.numero }}</td>
 						<td>{{ titular.posicion }}</td>
 						<td><a href="/jugadores/ver/{{ titular.jugador.id }}/">{{ titular.jugador.nombre }}</a></td>
+						<td class="cuadro_num_azul_der">{{ titular.jugador.valorMercado }}</td>
 					</tr>
 				{% endfor %}
 			</tbody>
@@ -73,14 +83,24 @@
 					<td>Num.</td>
 					<td>Posici&oacute;n</td>
 					<td>Nombre</td>
+					<td>Valor</td>
 				</tr>
 			</thead>
+			<tfoot>
+				<tr>
+					<td></td>
+					<td>{{ num_df_visitante }}-{{ num_cc_visitante }}-{{ num_dl_visitante }}</td>
+					<td>Valor total</td>
+					<td class="cuadro_num_azul_der">{{ valor_equipo_visitante }}</td>
+				</tr>
+			</tfoot>
 			<tbody>
 				{% for titular in titulares_visitante %}
 					<tr>
 						<td class="cuadro_num_azul_der">{{ titular.jugador.numero }}</td>
 						<td>{{ titular.posicion }}</td>
 						<td><a href="/jugadores/ver/{{ titular.jugador.id }}/">{{ titular.jugador.nombre }}</a></td>
+						<td class="cuadro_num_azul_der">{{ titular.jugador.valorMercado }}</td>
 					</tr>
 				{% endfor %}
 			</tbody>

@@ -31,7 +31,6 @@ from gestion_sistema.gestion_liga.models import Liga
 class Jornada(models.Model):
 	''' Representa una jornada en el sistema '''
 	numero = models.IntegerField()
-	#fecha = models.DateField("Fecha")
 	liga = models.ForeignKey(Liga)
 	jugada = models.BooleanField()
 

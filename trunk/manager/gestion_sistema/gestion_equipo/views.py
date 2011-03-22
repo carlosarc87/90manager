@@ -60,9 +60,19 @@ def ver_equipo(request, equipo_id):
 
 	# Obtenemos los jugadores
 	jugadores = equipo.jugador_set.all()
+	
+	# Obtener datos de los jugadores
+	suma_edad = 0
 	valor_equipo = 0
 	for jugador in jugadores:
+		# Valor total del equipo
 		valor_equipo += jugador.valorMercado()
+		
+		# Edad del equipo
+		anios, dias = jugador.obtenerEdad()
+		suma_edad = suma_edad + anios
+
+	edad_media_equipo = (suma_edad * 1.0) / len(jugadores)
 
 	# Obtenemos la liga
 	liga = equipo.liga
@@ -73,7 +83,8 @@ def ver_equipo(request, equipo_id):
 				 "liga" : liga,
 				 "equipo" : equipo,
 				 "jugadores" : jugadores,
-				 "valor_equipo" : valor_equipo
+				 "valor_equipo" : valor_equipo,
+				 "edad_media_equipo" : edad_media_equipo
 				})
 	return HttpResponse(t.render(c))
 

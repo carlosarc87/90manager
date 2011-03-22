@@ -173,10 +173,10 @@ class Jugador(models.Model):
 		self.resistencia 	= randint(0, nivel)
 		
 		# Habilidades mentales
-		self.agresividad 	= randint(0, nivel)
-		self.concentracion	= randint(0, nivel)
-		self.estabilidad 	= randint(0, nivel)
-		self.moral 			= randint(0, nivel)
+		self.agresividad 	= randint(0, 100)
+		self.concentracion	= randint(0, 100)
+		self.estabilidad 	= randint(0, 100)
+		self.moral 			= 50
 		
 		return self
 

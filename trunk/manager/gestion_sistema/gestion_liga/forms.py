@@ -60,7 +60,7 @@ class ActivarLigaForm(forms.ModelForm):
 
 	class Meta:
 		model = Liga
-		exclude = ('creador', 'fecha_creacion', 'publica', 'nombre')
+		exclude = ('creador', 'fecha_creacion', 'publica', 'nombre', 'sexo_permitido', 'permitir_bots', 'inteligencia_bots', 'tipo_avance_jornadas', 'dinero_inicial', 'num_jugadores_inicial', 'nivel_medio_jugadores_inicio')
 
 ########################################################################################
 

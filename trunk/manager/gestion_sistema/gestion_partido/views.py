@@ -108,8 +108,42 @@ def ver_partido(request, partido_id):
 	equipo_visitante = partido.equipo_visitante
 
 	titulares_local = partido.alineacion_local.getDatosTitulares()
+	
+	# Obtener datos de los titulares del equipo local
+	valor_equipo_local = 0
+	num_df_local = 0
+	num_cc_local = 0
+	num_dl_local = 0
+	for t in titulares_local:
+		# Valor total del equipo
+		valor_equipo_local = valor_equipo_local + t.jugador.valorMercado()
+		
+		# Número de jugadores por posición
+		if t.posicion == 'DF':
+			num_df_local = num_df_local + 1
+		elif t.posicion == 'CC':
+			num_cc_local = num_cc_local + 1
+		elif t.posicion == 'DL':
+			num_dl_local = num_dl_local + 1
 
 	titulares_visitante = partido.alineacion_visitante.getDatosTitulares()
+	
+	# Obtener valor total de los titulares del equipo visitante
+	valor_equipo_visitante = 0
+	num_df_visitante = 0
+	num_cc_visitante = 0
+	num_dl_visitante = 0
+	for t in titulares_visitante:
+		# Valor total del equipo
+		valor_equipo_visitante = valor_equipo_visitante + t.jugador.valorMercado()
+		
+		# Número de jugadores por posición
+		if t.posicion == 'DF':
+			num_df_visitante = num_df_visitante + 1
+		elif t.posicion == 'CC':
+			num_cc_visitante = num_cc_visitante + 1
+		elif t.posicion == 'DL':
+			num_dl_visitante = num_dl_visitante + 1
 
 	# Comprobamos si el partido ha acabado
 	finalizado = partido.finalizado()
@@ -153,6 +187,14 @@ def ver_partido(request, partido_id):
 				 "resultado" : resultado,
 				 "titulares_local" : titulares_local,
 				 "titulares_visitante" : titulares_visitante,
+				 "valor_equipo_local" : valor_equipo_local,
+				 "valor_equipo_visitante" : valor_equipo_visitante,
+				 "num_df_local" : num_df_local,
+				 "num_cc_local" : num_cc_local,
+				 "num_dl_local" : num_dl_local,
+				 "num_df_visitante" : num_df_visitante,
+				 "num_cc_visitante" : num_cc_visitante,
+				 "num_dl_visitante" : num_dl_visitante,
 				 "es_creador" : es_creador,
 				 "tiene_equipo" : tiene_equipo,
 				 "es_jugable" : es_jugable,
