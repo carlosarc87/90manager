@@ -2,7 +2,24 @@
 
 {% block css_extra %}
 	<style type="text/css">
-		#tabla_habilidades{
+		#lesionado{
+			color: #aa5500;
+			font-weight: bold;
+		}
+		
+		#tabla_datos_personales{
+			width: 300px;
+		}
+		
+		#tabla_otros_datos{
+			width: 300px;
+		}
+		
+		#tabla_habilidades_juego{
+			width: 300px;
+		}
+		
+		#tabla_habilidades_mentales{
 			width: 300px;
 		}
 	</style>
@@ -20,13 +37,75 @@
 
 	<h2>{{ jugador.nombre }}</h2>
 
-	<ul>
-		<li>Mejor posici&oacute;n: {{ mejor_posicion }}</li>
-		<li>Valor de mercado: {{ jugador.valorMercado }} &euro;</li>
-	</ul>
+	<!-- Datos personales -->
+	<table class="tabla1" id="tabla_datos_personales">
+		<caption>Datos personales</caption>
+		<tbody>
+			<!-- Sexo -->
+			<tr>
+				<td>Sexo</td>
+				<td>
+					{% if jugador.sexo == 'M' %}
+						Masculino
+					{% else %}
+						Femenino
+					{% endif %}
+				</td>
+			</tr>
+			
+			<!-- Edad -->
+			<tr>
+				<td>Edad</td>
+				<td>{{ anios }} años y {{ dias }} días</td>
+			</tr>
+			
+			<!-- Altura -->
+			<tr>
+				<td>Altura</td>
+				<td>{{ jugador.altura }} cm.</td>
+			</tr>
 
-	<table class="tabla1" id="tabla_habilidades">
-		<caption>Habilidades de campo</caption>
+			<!-- Peso -->
+			<tr>
+				<td>Peso</td>
+				<td>{{ jugador.peso }} kg.</td>
+			</tr>
+
+			<!-- Estado -->
+			<tr>
+				<td>Estado</td>
+				<td>
+					{% if jugador.dias_lesionado > 0 %}
+						<span id="lesionado">Lesionado durante {{ jugador.dias_lesionado }} días</span>
+					{% else %}
+						En plena forma
+					{% endif %}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- Otros datos -->
+	<table class="tabla1" id="tabla_otros_datos">
+		<caption>Otros datos</caption>
+		<tbody>
+			<!-- Mejor posicion -->
+			<tr>
+				<td>Mejor posici&oacute;n</td>
+				<td>{{ mejor_posicion }}</td>
+			</tr>
+			
+			<!-- Valor de mercado -->
+			<tr>
+				<td>Valor de mercado</td>
+				<td>{{ jugador.valorMercado }} &euro;</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- Habilidades de juego -->
+	<table class="tabla1" id="tabla_habilidades_juego">
+		<caption>Habilidades de juego</caption>
 		<thead>
 			<tr>
 				<th>Habilidad</th>
@@ -72,4 +151,39 @@
 		</tbody>
 	</table>
 
+	<!-- Habilidades mentales -->
+	<table class="tabla1" id="tabla_habilidades_mentales">
+		<caption>Habilidades mentales</caption>
+		<thead>
+			<tr>
+				<th>Habilidad</th>
+				<th>Valor</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- Agresividad -->
+			<tr>
+				<td>Agresividad</td>
+				<td class="cuadro_num_azul_der">{{ jugador.agresividad }}</td>
+			</tr>
+
+			<!-- Concentracion -->
+			<tr>
+				<td>Concentración</td>
+				<td class="cuadro_num_azul_der">{{ jugador.concentracion }}</td>
+			</tr>
+
+			<!-- Estabilidad -->
+			<tr>
+				<td>Estabilidad</td>
+				<td class="cuadro_num_azul_der">{{ jugador.estabilidad }}</td>
+			</tr>
+
+			<!-- Moral -->
+			<tr>
+				<td>Moral</td>
+				<td class="cuadro_num_azul_der">{{ jugador.moral }}</td>
+			</tr>
+		</tbody>
+	</table>
 {% endblock %}

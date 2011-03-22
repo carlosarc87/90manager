@@ -34,8 +34,19 @@ class Liga(models.Model):
 	''' Representa una liga '''
 	creador = models.ForeignKey(Usuario)
 	nombre = models.CharField(max_length = 200)
-	num_equipos = models.IntegerField(null=True, default=0)
-	publica = models.BooleanField(default=True) # Visibilidad de la liga
+	num_equipos = models.IntegerField(null = True, default = 0)
+	publica = models.BooleanField(default = True) # Visibilidad de la liga
+	
+	# Reglas liga
+	sexo_permitido = models.IntegerField(default = 0)
+	permitir_bots = models.BooleanField(default = True) # Indica si se permiten (1) o no (0) bots en las ligas
+	inteligencia_bots = models.IntegerField(default = 3, null = True) # Nivel de inteligencia de los bots (1 - 5(muy alto))
+	tipo_avance_jornadas = models.IntegerField(default = 0) # Tipo de avance de las jornadas (0 - Manual, 1 - Auto, 2 - Esperar hora)
+	
+	# Reglas equipos
+	dinero_inicial = models.IntegerField(default = 20000)
+	num_jugadores_inicial = models.IntegerField(default = 20)
+	nivel_medio_jugadores_inicio = models.IntegerField(default = 50)
 
 	def activada(self):
 		''' Devuelve si una liga ya ha empezado a jugarse '''

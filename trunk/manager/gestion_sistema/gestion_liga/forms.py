@@ -33,7 +33,7 @@ class LigaForm(forms.ModelForm):
 	''' Formulario para crear ligas '''
 	class Meta:
 		model = Liga
-		exclude = ('creador', 'fecha_creacion', 'num_equipos')
+		exclude = ('creador', 'fecha_creacion', 'num_equipos', 'sexo_permitido', 'permitir_bots', 'inteligencia_bots', 'tipo_avance_jornadas', 'dinero_inicial', 'num_jugadores_inicial', 'nivel_medio_jugadores_inicio')
 
 ########################################################################
 

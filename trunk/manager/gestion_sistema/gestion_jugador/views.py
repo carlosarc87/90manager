@@ -58,6 +58,9 @@ def ver_jugador(request, jugador_id):
 
 	# Obtener mejor posición
 	mejor_posicion = jugador.mejorPosicion()
+	
+	# Obtener edad
+	anios, dias = jugador.obtenerEdad()
 
 	# Obtenemos el equipo
 	equipo = jugador.equipo
@@ -67,7 +70,9 @@ def ver_jugador(request, jugador_id):
 	c = Context({"equipo" : equipo,
 				 "usuario" : usuario,
 				 "jugador" : jugador,
-				 "mejor_posicion" : mejor_posicion
+				 "mejor_posicion" : mejor_posicion,
+				 "anios" : anios,
+				 "dias" : dias
 				})
 	return HttpResponse(t.render(c))
 
