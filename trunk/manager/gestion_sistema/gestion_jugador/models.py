@@ -42,7 +42,7 @@ class Jugador(models.Model):
 	numero = models.IntegerField(max_length = 2, null = True) # Dorsal en el equipo (0 - 99)
 	transferible = models.BooleanField() # Indica si está o no en la lista de jugadores transferibles
 
-	# Habilidades de juego
+	# Habilidades de campo
 	ataque = models.IntegerField(max_length = 3, blank = False) # Ataque (0 - 100)
 	defensa = models.IntegerField(max_length = 3, blank = False) # Defensa (0 - 100)
 	velocidad = models.IntegerField(max_length = 3, blank = False) # Velocidad (0 - 100)
@@ -81,8 +81,12 @@ class Jugador(models.Model):
 		return anios, dias
 	
 	def setAparienciaAleatoria(self):
-		self.altura = randint(160, 200)
-		self.peso = (self.altura - 100) * (randint(7, 15) / 10)
+		if self.sexo == 'M':
+			self.altura = (randint(160, 200) + randint(160, 200)) / 2
+			self.peso = (int) ((self.altura - 100) * (randint(8, 12) / 10.0))
+		else:
+			self.altura = (randint(155, 190) + randint(155, 190)) / 2
+			self.peso = (int) ((self.altura - 110) * (randint(8, 12) / 10.0))
 		
 		# Color de la piel
 		a = randint(1, 1000)

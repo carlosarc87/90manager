@@ -97,8 +97,10 @@ def ver_partido(request, partido_id):
 
 	# Obtenemos el partido
 	partido = Partido.objects.get(id = partido_id)
-	sucesos_partido = partido.suceso_set.all()
 
+	# Obtener sucesos del partido
+	partido.sucesos = partido.suceso_set.all()
+	
 	# Obtenemos la liga y la jornada
 	jornada = partido.jornada
 	liga = jornada.liga
@@ -107,56 +109,7 @@ def ver_partido(request, partido_id):
 	equipo_local = partido.equipo_local
 	equipo_visitante = partido.equipo_visitante
 
-	titulares_local = partido.alineacion_local.getDatosTitulares()
-	
-	# Obtener datos de los titulares del equipo local
-	valor_equipo_local = 0
-	num_df_local = 0
-	num_cc_local = 0
-	num_dl_local = 0
-	for t in titulares_local:
-		# Valor total del equipo
-		valor_equipo_local = valor_equipo_local + t.jugador.valorMercado()
-		
-		# Número de jugadores por posición
-		if t.posicion == 'DF':
-			num_df_local = num_df_local + 1
-		elif t.posicion == 'CC':
-			num_cc_local = num_cc_local + 1
-		elif t.posicion == 'DL':
-			num_dl_local = num_dl_local + 1
-
-	titulares_visitante = partido.alineacion_visitante.getDatosTitulares()
-	
-	# Obtener valor total de los titulares del equipo visitante
-	valor_equipo_visitante = 0
-	num_df_visitante = 0
-	num_cc_visitante = 0
-	num_dl_visitante = 0
-	for t in titulares_visitante:
-		# Valor total del equipo
-		valor_equipo_visitante = valor_equipo_visitante + t.jugador.valorMercado()
-		
-		# Número de jugadores por posición
-		if t.posicion == 'DF':
-			num_df_visitante = num_df_visitante + 1
-		elif t.posicion == 'CC':
-			num_cc_visitante = num_cc_visitante + 1
-		elif t.posicion == 'DL':
-			num_dl_visitante = num_dl_visitante + 1
-
-	# Comprobamos si el partido ha acabado
-	finalizado = partido.finalizado()
-	# Calculamos el resultado
-	resultado = 0
-	if finalizado:
-		if partido.goles_local > partido.goles_visitante:
-			resultado = "Ganador local"
-		elif partido.goles_local < partido.goles_visitante:
-			resultado = "Ganador visitante"
-		else:
-			resultado = "Empate"
-
+	# Comprobar si tiene equipo en el partido y se puede editar la alineación
 	editar = False
 	tiene_equipo = False
 	if equipo_local.usuario == usuario:
@@ -168,12 +121,155 @@ def ver_partido(request, partido_id):
 		if partido.alineacion_visitante.estaPreparada():
 			editar = True
 	es_creador = liga.creador == usuario
-
+		
+	# Comprobamos si el partido ha acabado
+	finalizado = partido.finalizado()
+	
+	# Comprobar si se puede jugar el partido
 	es_jugable = False
 	jornada_actual = liga.obtenerJornadaActual()
 	if partido.jornada == jornada_actual and not finalizado:
 		es_jugable = True
+	
+	# Si el partido ha finalizado
+	if finalizado:
+		# Obtener datos sobre los sucesos del partido
+		#--------------------------------------------------
+		# Equipo local
+		#--------------------------------------------------
+		q = partido.suceso_set.filter(equipo = equipo_local)
+		equipo_local.num_acciones = q.count()
+		
+		# Regates
+		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Regate realizado")
+		equipo_local.regates_realizados = q.count()
+		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Regate fallado")
+		equipo_local.regates_fallados = q.count()
+		
+		if equipo_local.regates_realizados + equipo_local.regates_fallados == 0:
+			equipo_local.porcentaje_regates_exito = 0
+		else:
+			equipo_local.porcentaje_regates_exito = (1.0 * equipo_local.regates_realizados) / (equipo_local.regates_realizados + equipo_local.regates_fallados)
 
+		equipo_local.regates_totales = equipo_local.regates_realizados + equipo_local.regates_fallados
+		
+		# Pases
+		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Pase realizado")
+		equipo_local.pases_realizados = q.count()
+		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Pase fallado")
+		equipo_local.pases_fallados = q.count()
+		
+		if equipo_local.pases_realizados + equipo_local.pases_fallados == 0:
+			equipo_local.porcentaje_pases_exito = 0
+		else:
+			equipo_local.porcentaje_pases_exito = (1.0 * equipo_local.pases_realizados) / (equipo_local.pases_realizados + equipo_local.pases_fallados)
+
+		equipo_local.pases_totales = equipo_local.pases_realizados + equipo_local.pases_fallados
+
+		# Disparos
+		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Disparo parado")
+		equipo_local.disparos_parados = q.count()
+		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Disparo fuera")
+		equipo_local.disparos_fuera = q.count()
+		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Gol")
+		equipo_local.goles = q.count()
+		#--------------------------------------------------
+
+		# Equipo visitante
+		#--------------------------------------------------
+		q = partido.suceso_set.filter(equipo = equipo_visitante)
+		equipo_visitante.num_acciones = q.count()
+		
+		# Regates
+		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Regate realizado")
+		equipo_visitante.regates_realizados = q.count()
+		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Regate fallado")
+		equipo_visitante.regates_fallados = q.count()
+		
+		if equipo_visitante.regates_realizados + equipo_visitante.regates_fallados == 0:
+			equipo_visitante.porcentaje_regates_exito = 0
+		else:
+			equipo_visitante.porcentaje_regates_exito = (1.0 * equipo_visitante.regates_realizados) / (equipo_visitante.regates_realizados + equipo_visitante.regates_fallados)
+
+		equipo_visitante.regates_totales = equipo_visitante.regates_realizados + equipo_visitante.regates_fallados
+		
+		# Pases
+		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Pase realizado")
+		equipo_visitante.pases_realizados = q.count()
+		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Pase fallado")
+		equipo_visitante.pases_fallados = q.count()
+		
+		if equipo_visitante.pases_realizados + equipo_visitante.pases_fallados == 0:
+			equipo_visitante.porcentaje_pases_exito = 0
+		else:
+			equipo_visitante.porcentaje_pases_exito = (1.0 * equipo_visitante.pases_realizados) / (equipo_visitante.pases_realizados + equipo_visitante.pases_fallados)
+
+		equipo_visitante.pases_totales = equipo_visitante.pases_realizados + equipo_visitante.pases_fallados
+
+		# Disparos
+		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Disparo parado")
+		equipo_visitante.disparos_parados = q.count()
+		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Disparo fuera")
+		equipo_visitante.disparos_fuera = q.count()
+		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Gol")
+		equipo_visitante.goles = q.count()
+		
+		equipo_local.remates_puerta = equipo_local.goles + equipo_local.disparos_parados + equipo_local.disparos_fuera
+		equipo_local.balones_perdidos = equipo_local.regates_fallados + equipo_local.pases_fallados + equipo_local.disparos_parados + equipo_local.disparos_fuera
+		equipo_local.balones_recuperados = equipo_visitante.regates_fallados + equipo_visitante.pases_fallados + equipo_visitante.disparos_parados
+		
+		equipo_visitante.remates_puerta = equipo_visitante.goles + equipo_visitante.disparos_parados + equipo_visitante.disparos_fuera
+		equipo_visitante.balones_perdidos = equipo_visitante.regates_fallados + equipo_visitante.pases_fallados + equipo_visitante.disparos_parados + equipo_visitante.disparos_fuera
+		equipo_visitante.balones_recuperados = equipo_local.regates_fallados + equipo_local.pases_fallados + equipo_local.disparos_parados
+		#--------------------------------------------------
+		
+		# Porcentajes
+		equipo_local.porc_posesion = round((100.0 * equipo_local.num_acciones) / (equipo_local.num_acciones + equipo_visitante.num_acciones), 1)
+		equipo_local.porc_regates_exito = round((100.0 * equipo_local.regates_realizados) / equipo_local.regates_totales, 1)
+		equipo_local.porc_pases_exito = round((100.0 * equipo_local.pases_realizados) / equipo_local.pases_totales, 1)
+		
+		equipo_visitante.porc_posesion = round((100.0 * equipo_visitante.num_acciones) / (equipo_local.num_acciones + equipo_visitante.num_acciones), 1)
+		equipo_visitante.porc_regates_exito = round((100.0 * equipo_visitante.regates_realizados) / equipo_visitante.regates_totales, 1)
+		equipo_visitante.porc_pases_exito = round((100.0 * equipo_visitante.pases_realizados) / equipo_visitante.pases_totales, 1)
+		
+		# Obtener datos de los titulares del equipo local
+		equipo_local.titulares = partido.alineacion_local.getDatosTitulares()
+		
+		equipo_local.valor_titulares = 0
+		equipo_local.num_df = 0
+		equipo_local.num_cc = 0
+		equipo_local.num_dl = 0
+		for t in equipo_local.titulares:
+			# Valor total del equipo
+			equipo_local.valor_titulares += t.jugador.valorMercado()
+			
+			# Número de jugadores por posición
+			if t.posicion == 'DF':
+				equipo_local.num_df += 1
+			elif t.posicion == 'CC':
+				equipo_local.num_cc += 1
+			elif t.posicion == 'DL':
+				equipo_local.num_dl += 1
+		
+		# Obtener valor total de los titulares del equipo visitante
+		equipo_visitante.titulares = partido.alineacion_visitante.getDatosTitulares()
+		
+		equipo_visitante.valor_titulares = 0
+		equipo_visitante.num_df = 0
+		equipo_visitante.num_cc = 0
+		equipo_visitante.num_dl = 0
+		for t in equipo_visitante.titulares:
+			# Valor total del equipo
+			equipo_visitante.valor_titulares += t.jugador.valorMercado()
+			
+			# Número de jugadores por posición
+			if t.posicion == 'DF':
+				equipo_visitante.num_df += 1
+			elif t.posicion == 'CC':
+				equipo_visitante.num_cc += 1
+			elif t.posicion == 'DL':
+				equipo_visitante.num_dl += 1
+				
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("juego/partidos/ver_partido.html")
 	c = Context({"jornada" : jornada,
@@ -181,20 +277,8 @@ def ver_partido(request, partido_id):
 				 "equipo_visitante" : equipo_visitante,
 				 "liga" : liga,
 				 "partido" : partido,
-				 "sucesos_partido" : sucesos_partido,
 				 "usuario" : usuario,
 				 "finalizado" : finalizado,
-				 "resultado" : resultado,
-				 "titulares_local" : titulares_local,
-				 "titulares_visitante" : titulares_visitante,
-				 "valor_equipo_local" : valor_equipo_local,
-				 "valor_equipo_visitante" : valor_equipo_visitante,
-				 "num_df_local" : num_df_local,
-				 "num_cc_local" : num_cc_local,
-				 "num_dl_local" : num_dl_local,
-				 "num_df_visitante" : num_df_visitante,
-				 "num_cc_visitante" : num_cc_visitante,
-				 "num_dl_visitante" : num_dl_visitante,
 				 "es_creador" : es_creador,
 				 "tiene_equipo" : tiene_equipo,
 				 "es_jugable" : es_jugable,

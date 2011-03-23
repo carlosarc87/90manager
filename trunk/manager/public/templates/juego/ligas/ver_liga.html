@@ -2,11 +2,6 @@
 
 {% block css_extra %}
 	<style type="text/css">
-		#linea_equipo_propio{
-			font-size: 1.1em;
-			font-weight: bold;
-		}
-		
 		#tabla_clasificacion{
 			width: 600px;
 		}
@@ -25,6 +20,19 @@
 		}
 		.jornada_no_jugada{
 			color: #aa0000;
+			font-weight: bold;
+		}
+		
+		.linea_clasificacion_ascenso{
+			background-color: #88ff88;
+		}
+		
+		.linea_clasificacion_descenso{
+			background-color: #ff8888;
+		}
+		
+		.linea_equipo_propio{
+			font-size: 1.1em;
 			font-weight: bold;
 		}
 	</style>
@@ -52,9 +60,9 @@
 		{% if clasificacion %}
 			<table class="tabla1" id="tabla_clasificacion">
 				{% if liga_acabada %}
-					<caption>Clasificacion final</caption>
+					<caption>Clasificación final</caption>
 				{% else %}
-					<caption>Clasificacion (jornada {{ jornada_actual.numero }})</caption>
+					<caption>Clasificación (jornada {{ jornada_actual.numero }})</caption>
 				{% endif %}
 
 				<thead>
@@ -73,11 +81,17 @@
 				</thead>
 				<tbody>
 					{% for dato_clasificacion in clasificacion %}
-						{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
-							<tr id="linea_equipo_propio">
-						{% else %}
-							<tr>
-						{% endif %}
+						<tr {% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+								class="linea_equipo_propio"
+							{% endif %}
+							{% if dato_clasificacion.posicion_ascenso %}
+								class="linea_clasificacion_ascenso"
+							{% endif %}
+							{% if dato_clasificacion.posicion_descenso %}
+								class="linea_clasificacion_descenso"
+							{% endif %}
+							>
+							
 							<td class="cuadro_num_azul_der">
 								{{ dato_clasificacion.posicion }}
 							</td>
@@ -158,13 +172,16 @@
 			<caption>Listado de equipos</caption>
 			<thead>
 				<tr>
-					<th style="width:50%;">Nombre</th>
+					<th>Nombre</th>
 					<th>Entrenador</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for equipo in equipos %}
-					<tr>
+					<tr {% if equipo_propio.nombre == equipo.nombre %}
+							class="linea_equipo_propio"
+						{% endif %}>
+						
 						<td>
 							<a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a>
 						</td>

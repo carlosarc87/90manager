@@ -74,8 +74,10 @@ def ver_liga(request, liga_id):
 
 	# Obtenemos la liga
 	liga = Liga.objects.get(id = liga_id)
+	
 	# Obtenemos los equipos que juegan en la liga
 	equipos = liga.equipo_set.all()
+	
 	# Obtenemos las jornadas
 	jornadas = liga.jornada_set.all()
 
@@ -123,8 +125,25 @@ def ver_liga(request, liga_id):
 		if clasificacion is not None:
 			# Calcular variables extra para la clasificación
 			posicion = 1
+			
+			ultima_posicion_ascenso = 1
+			primera_posicion_descenso = len(clasificacion)
+			
 			for c in clasificacion:
 				c.posicion = posicion
+				
+				# Comprobar si es posición de ascenso
+				if c.posicion <= ultima_posicion_ascenso:
+					c.posicion_ascenso = True
+				else:
+					c.posicion_ascenso = False
+					
+				# Comprobar si es posición de descenso
+				if c.posicion >= primera_posicion_descenso:
+					c.posicion_descenso = True
+				else:
+					c.posicion_descenso = False
+				
 				c.goles_diferencia = c.goles_favor - c.goles_contra
 
 				if jornada_anterior is not None:
