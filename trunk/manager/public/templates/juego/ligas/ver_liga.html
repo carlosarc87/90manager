@@ -81,16 +81,23 @@
 				</thead>
 				<tbody>
 					{% for dato_clasificacion in clasificacion %}
-						<tr {% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
-								class="linea_equipo_propio"
+						{% if dato_clasificacion.posicion_ascenso %}
+							{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+								<tr class="linea_equipo_propio + linea_clasificacion_ascenso">
+							{% else %}
+								<tr class="linea_clasificacion_ascenso">
 							{% endif %}
-							{% if dato_clasificacion.posicion_ascenso %}
-								class="linea_clasificacion_ascenso"
-							{% endif %}
+						{% else %}
 							{% if dato_clasificacion.posicion_descenso %}
-								class="linea_clasificacion_descenso"
+								{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+									<tr class="linea_equipo_propio + linea_clasificacion_descenso">
+								{% else %}
+									<tr class="linea_clasificacion_descenso">
+								{% endif %}
+							{% else %}
+								<tr>
 							{% endif %}
-							>
+						{% endif %}
 							
 							<td class="cuadro_num_azul_der">
 								{{ dato_clasificacion.posicion }}

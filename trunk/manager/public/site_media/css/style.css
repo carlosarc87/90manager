@@ -57,12 +57,14 @@ h1, h2, h3, h4{
 #header{
 	background-color: #fff;
 	border-bottom: solid 1px #555555;
+	text-align: center;
 	width: 100%;
 }
 
 #logo{
 	border: 0px;
 	height: 100px;
+	margin: 10px 0px;
 	width: 200px;
 }
 

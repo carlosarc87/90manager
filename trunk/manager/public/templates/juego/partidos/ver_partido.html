@@ -2,24 +2,6 @@
 
 {% block css_extra %}
 	<style type="text/css">
-		#col_local{
-			text-align: right;
-		}
-		
-		#col_local a{
-			font-size: 1.2em;
-		}
-		
-		#col_resultado{
-			font-size: 1.5em;
-			text-align: center;
-		}
-		
-		#col_visitante a{
-			color: #ff5555;
-			font-size: 1.2em;
-		}
-		
 		#fila_mensaje_estado th{
 			padding: 5px 0px;
 		}
@@ -35,7 +17,7 @@
 		
 		#tabla_resultado{
 			margin: 20px auto;
-			min-width: 400px;
+			width: 500px;
 		}
 		
 		#tabla_resumen{
@@ -54,6 +36,30 @@
 		#tabla_titulares_visitante{
 			background-color: #ff5555;
 			float: right;
+		}
+		
+		.col_local{
+			text-align: right;
+			width: 40%;
+		}
+		
+		.col_local a{
+			font-size: 1.2em;
+		}
+		
+		.col_resultado{
+			font-size: 1.5em;
+			text-align: center;
+		}
+		
+		.col_visitante{
+			width: 40%;
+		}
+		
+		.col_visitante a{
+			color: #ff5555;
+			font-size: 1.2em;
+			width: 40%;
 		}
 	</style>
 {% endblock %}
@@ -74,7 +80,7 @@
 		<tbody>
 			<tr>
 				<!-- Equipo local -->
-				<td id="col_local">
+				<td class="col_local">
 					{% if usuario == equipo_local.usuario %}
 						<b><a href="/equipos/ver/{{ equipo_local.id }}/">{{ equipo_local }}</a></b>
 					{% else %}
@@ -83,7 +89,7 @@
 				</td>
 				
 				<!-- Resultado -->
-				<td id="col_resultado">
+				<td class="col_resultado">
 					{% if finalizado %}
 						{% if partido.goles_local > partido.goles_visitante %}
 							<b>{{ partido.goles_local }}</b>
@@ -102,7 +108,7 @@
 				</td>
 				
 				<!-- Equipo visitante -->
-				<td id="col_visitante">
+				<td class="col_visitante">
 					{% if usuario == equipo_visitante.usuario %}
 						<b><a href="/equipos/ver/{{ equipo_visitante.id }}/">{{ equipo_visitante }}</a></b>
 					{% else %}
@@ -117,32 +123,41 @@
 				</tr>
 				
 			{% else %}
+				{% if tiene_equipo %}
+					<!-- Enlace a alineacion -->
+					<tr id="fila_editar_alineacion">
+						{% if usuario == equipo_local.usuario %}
+							<td class="col_local">
+						{% else %}
+							<td colspan="2"></td>
+							<td class="col_visitante">
+						{% endif %}
+						
+								<a href="/partidos/preparar/{{ partido.id }}/">
+									{% if editar %}
+										EDITAR ALINEACIÓN
+									{% else %}
+										PREPARAR ALINEACIÓN
+									{% endif %}
+								</a>
+							</td>
+						
+						{% if usuario == equipo_local.usuario %}
+							<td colspan="2"></td>
+						{% endif %}
+					</tr>
+				{% endif %}
+				
 				<tr id="fila_mensaje_estado">
 					<th colspan="3">SIN INICIAR</th>
 				</tr>
 				
-				{% if tiene_equipo %}
-					<!-- Enlace a alineacion -->
-					<tr id="fila_editar_alineacion">
-						{% if usuario == equipo_visitante.usuario %}
-							<td colspan="2"></td>
-						{% endif %}
-						<td>
-							<a href="/partidos/preparar/{{ partido.id }}/">
-								{% if editar %}
-									Editar alineación para el partido
-								{% else %}
-									Preparar alineación para el partido
-								{% endif %}
-							</a>
-						</td>
-					</tr>
-				{% endif %}
-				
 				{% if es_creador and es_jugable %}
 					<!-- Jugar partido -->
 					<tr id="fila_jugar_partido">
-						<th colspan="3"><a href="/partidos/jugar/{{ partido.id }}/">JUGAR</a></th>
+						<th colspan="3">
+							<a href="/partidos/jugar/{{ partido.id }}/">JUGAR</a>
+						</th>
 					</tr>
 				{% endif %}
 			{% endif %}

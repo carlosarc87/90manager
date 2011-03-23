@@ -381,7 +381,7 @@ class Partido(models.Model):
 		
 		# --------------------------------------
 
-		los_gatos_nos_dominaran = False
+		los_gatos_nos_dominaran = True
 		if not los_gatos_nos_dominaran:
 			print "-------------------------------------------"
 			print alineacion[0].equipo.nombre
@@ -453,7 +453,7 @@ class Partido(models.Model):
 				#print "\t" + "num_acciones: " + str(num_acciones) + " (" + str(seg_accion) + " seg / accion)"
 				formula = (1.0 * ataque[id_equipo_atacante]) / pases[id_equipo_atacante]
 				prob_regate = probabilidadExito(formula)
-				print "Prob Pase/Regate (" + str(prob_regate) + "%) "
+				#print "Prob Pase/Regate (" + str(prob_regate) + "%) "
 				accion = 1
 				while (accion <= num_acciones) and (id_equipo_defensor != id_equipo_atacante):
 					#print "\t" + str(accion) + ".- "
