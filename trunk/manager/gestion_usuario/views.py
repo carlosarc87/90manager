@@ -29,7 +29,7 @@ from django.core.mail import send_mail
 
 import datetime, random, sha
 
-from settings import URL_PROPIA
+from settings import URL_PROPIA, vper
 
 from models import Usuario, ClaveRegistroUsuario
 from forms import UsuarioForm
@@ -51,31 +51,37 @@ def registrar_usuario(request):
 			# Solucion para los problemas de la password
 			usuario = form.save(commit = False)
 			password = form.cleaned_data['password']
-			usuario.is_active = False
+			if vper:
+				usuario.is_active = False
+			else:
+				usuario.is_active = True
+
 			usuario.is_staff = False
 			usuario.is_superuser = False
 			usuario.date_joined = datetime.datetime.now()
 			usuario.set_password(password)
 			usuario.save()
 
-			# Generamos la clave de activacion
-			salt = sha.new(str(random.random())).hexdigest()[:5]
-			clave = sha.new(salt + usuario.username).hexdigest()
-			# Dos días para activar la cuenta
-			fin_clave = datetime.datetime.today() + datetime.timedelta(2)
+			if vper:
+				# Generamos la clave de activacion
+				salt = sha.new(str(random.random())).hexdigest()[:5]
+				clave = sha.new(salt + usuario.username).hexdigest()
 
-			# Crear y guardar el perfil de la clave
-			perfil_clave = ClaveRegistroUsuario(usuario = usuario, clave = clave, expira = fin_clave)
-			perfil_clave.save()
+				# Dos días para activar la cuenta
+				fin_clave = datetime.datetime.today() + datetime.timedelta(2)
 
-			asunto = 'Activación de la cuenta'
-			mensaje =  'Hola %s, gracias por registrarte en 90manager.\n' % (usuario.username)
-			mensaje += 'Para activar la cuenta, pulse el siguiente link:\n'
-			mensaje += URL_PROPIA + 'cuentas/confirmar/' + clave + '/' +'\n'
-			mensaje += 'La clave expirara en 48 horas\n'
-			mensaje += 'Muchas gracias de huevo, digo nuevo.\n'
+				# Crear y guardar el perfil de la clave
+				perfil_clave = ClaveRegistroUsuario(usuario = usuario, clave = clave, expira = fin_clave)
+				perfil_clave.save()
 
-			send_mail(asunto, mensaje, 'noreply@90manager.com', [usuario.email])
+				asunto = 'Activación de la cuenta'
+				mensaje =  'Hola %s, gracias por registrarte en 90manager.\n' % (usuario.username)
+				mensaje += 'Para activar la cuenta, pulse el siguiente link:\n'
+				mensaje += URL_PROPIA + 'cuentas/confirmar/' + clave + '/' +'\n'
+				mensaje += 'La clave expirara en 48 horas\n'
+				mensaje += 'Muchas gracias de huevo, digo nuevo.\n'
+
+				send_mail(asunto, mensaje, 'noreply@90manager.com', [usuario.email])
 
 			# Loguear al usuario
 			#usuario.is_active = True

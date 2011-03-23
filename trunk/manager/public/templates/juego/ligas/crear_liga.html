@@ -5,14 +5,14 @@
 		fieldset{
 			margin-bottom: 20px;
 		}
-	
+
 		#contenido_nombre{ padding: 5px 0px; }
 		#contenido_visibilidad{ padding: 5px 0px; }
 		#contenido_reglas{ padding: 5px 0px; }
 		#contenido_sexo_permitido{ padding: 5px 0px; }
 		#contenido_inteligencia_bots{ padding: 5px 0px; }
 		#contenido_boton_crear{ padding: 5px 0px; }
-		
+
 		#id_dinero_inicial{ text-align: right; width: 80px; }
 		#id_num_jugadores_inicial{ text-align: right; width: 40px; }
 		#id_nivel_medio_jugadores_inicio{ text-align: right; width: 40px; }
@@ -24,14 +24,13 @@
 
 	<form action="/ligas/crear/" method="post">
 		{% csrf_token %}
-
 		<!-- Nombre de la liga -->
 		<div id="contenido_nombre">
 			{% if form.nombre.errors %}
 				<p class="texto_error">{{ form.nombre.errors }}</p>
 			{% endif %}
 			<label for="id_nombre">Nombre de la liga:</label>
-			<div id="caja_nombre"><input type="text" id="id_nombre" name="nombre" maxlength="50" /></div>
+			<div id="caja_nombre">{{ form.nombre }}</div>
 		</div>
 
 		<!-- Visibilidad -->
@@ -39,99 +38,90 @@
 			{% if form.publica.errors %}
 				<p class="texto_error">{{ form.publica.errors }}</p>
 			{% endif %}
-			<label for="id_publica">Publica:</label>
+			{{ form.publica.label }}:
 			<div id="caja_visibilidad">{{ form.publica }}</div>
 		</div>
 
 		<!-- Reglas -->
 		<fieldset>
 			<legend>Reglas de la liga</legend>
-			
+
 			<div id="contenido_sexo_permitido">
 				{% if form.sexo_permitido.errors %}
 					<p class="texto_error">{{ form.sexo_permitido.errors }}</p>
 				{% endif %}
-				<span>Sexos permitidos:</span>
-					
+				<span>{{ form.sexo_permitido.label }}</span>
+
+
 				<div id="caja_sexo_permitido">
-					<input type="radio" name="sexo_permitido" value="0" checked="checked" /><span>Solo hombres</span>
-					<input type="radio" name="sexo_permitido" value="1" /><span>Solo mujeres</span>
-					<input type="radio" name="sexo_permitido" value="2" /><span>Hombres y mujeres</span>
+					{{ form.sexo_permitido }}
 				</div>
 			</div>
-			
+
 			<div id="contenido_inteligencia_bots">
 				{% if form.inteligencia_bots.errors %}
 					<p class="texto_error">{{ form.inteligencia_bots.errors }}</p>
 				{% endif %}
-				<label for="id_inteligencia_bots">Inteligencia de los bots:</label>
-				
-				<div id="caja_inteligencia_bots">	
-					<select id="id_inteligencia_bots" name="inteligencia_bots">
-						<option value="1">Muy baja</option>
-						<option value="2">Baja</option>
-						<option value="3" selected="selected">Media</option>
-						<option value="4">Alta</option>
-						<option value="5">Muy alta</option>
-					</select>
+				{{ form.inteligencia_bots.label }}
+
+				<div id="caja_inteligencia_bots">
+					{{ form.inteligencia_bots }}
 				</div>
 			</div>
-			
+
 			<!-- Tipo avance jornadas -->
 			<div id="contenido_tipo_avance_jornadas">
 				{% if form.tipo_avance_jornadas.errors %}
 					<p class="texto_error">{{ form.tipo_avance_jornadas.errors }}</p>
 				{% endif %}
-				<span>Tipo de avance de jornadas:</span>
-				
+				<span>{{ form.tipo_avance_jornadas.label }}</span>
+
 				<div id="caja_tipo_avance_jornadas">
-					<input type="radio" name="tipo_avance_jornadas" value="0" checked="checked" /><span>Manual</span>
-					<input type="radio" name="tipo_avance_jornadas" value="1" /><span>Automáticamente al finalizar los partidos de los usuarios</span>
-					<input type="radio" name="tipo_avance_jornadas" value="2" /><span>Automáticamente al finalizar todos los partidos</span>
+					{{ form.tipo_avance_jornadas }}
 				</div>
 			</div>
 		</fieldset>
 
 		<fieldset>
 			<legend>Reglas sobre los equipos participantes</legend>
-			
+
 			<!-- Dinero inicial -->
 			<div id="contenido_dinero_inicial">
 				{% if form.dinero_inicial.errors %}
 					<p class="texto_error">{{ form.dinero_inicial.errors }}</p>
 				{% endif %}
 				<label for="id_dinero_inicial">Dinero inicial:</label>
-				
+
 				<div id="caja_dinero_inicial">
-					<input type="text" id="id_dinero_inicial" name="dinero_inicial" value="20000" maxlength="15" />
+					{{ form.dinero_inicial }}
 				</div>
 			</div>
-			
+
 			<!-- Numero de jugadores inicial -->
 			<div id="contenido_num_jugadores_inicial">
 				{% if form.num_jugadores_inicial.errors %}
 					<p class="texto_error">{{ form.num_jugadores_inicial.errors }}</p>
 				{% endif %}
 				<label for="id_num_jugadores_inicial">Número de jugadores inicial:</label>
-				
+
 				<div id="caja_num_jugadores_inicial">
-					<input type="text" id="id_num_jugadores_inicial" name="num_jugadores_inicial" value="25" maxlength="3" />
+					{{ form.num_jugadores_inicial }}
 				</div>
 			</div>
-			
+
 			<!-- Nivel medio de los jugadores al inicio de la liga -->
 			<div id="contenido_nivel_medio_jugadores_inicio">
 				{% if form.nivel_medio_jugadores_inicio.errors %}
 					<p class="texto_error">{{ form.nivel_medio_jugadores_inicio.errors }}</p>
 				{% endif %}
 				<label for="id_nivel_medio_jugadores_inicio">Nivel medio de los jugadores al inicio de la liga:</label>
-				
+
 				<div id="caja_nivel_medio_jugadores_inicio">
-					<input type="text" id="id_nivel_medio_jugadores_inicio" name="nivel_medio_jugadores_inicio" value="50" maxlength="3" />
+					{{ form.nivel_medio_jugadores_inicio }}
 				</div>
 			</div>
 		</fieldset>
-		
+
 		<!-- Boton crear -->
 		<div id="contenido_boton_crear">
 			<input type="submit" value="Crear" />

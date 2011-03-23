@@ -24,16 +24,36 @@ Copyright 2011 by
 
 """
 
+from django.utils.safestring import mark_safe
+
 from django import forms
 from models import Liga
 
 ########################################################################
 
+TIPOS_IA = ((1, 'Muy baja'), (2, 'Baja'), (3, 'Media'), (4, 'Alta'), (5, 'Muy alta'))
+TIPOS_SEXO = ((0, 'Solo hombres'), (1, 'Solo mujeres'), (2, 'Hombres y mujeres'))
+TIPOS_AVANCE = ((0, 'Manual'), (1, 'Automáticamente al acabar los usuarios los partidos'), (2, 'Automáticamente al acabar todos los partidos'))
+
+########################################################################
+
+class HorizRadioRenderer(forms.RadioSelect.renderer):
+	''' Pone los radiobuttons horizontalmente '''
+	def render(self):
+		''' Mostrar los radiobuttons '''
+		return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+
+########################################################################
+
 class LigaForm(forms.ModelForm):
 	''' Formulario para crear ligas '''
+	inteligencia_bots = forms.ChoiceField(label = "Inteligencia de los robots", initial = 3, choices = TIPOS_IA)
+	sexo_permitido = forms.ChoiceField(label = "Sexos permitidos", widget = forms.RadioSelect(renderer = HorizRadioRenderer), initial = 0, choices = TIPOS_SEXO)
+	tipo_avance_jornadas = forms.ChoiceField(label = "Tipo de avance de jornadas", widget = forms.RadioSelect(renderer = HorizRadioRenderer), initial = 0, choices = TIPOS_AVANCE)
+
 	class Meta:
 		model = Liga
-		exclude = ('creador', 'fecha_creacion', 'num_equipos', 'sexo_permitido', 'permitir_bots', 'inteligencia_bots', 'tipo_avance_jornadas', 'dinero_inicial', 'num_jugadores_inicial', 'nivel_medio_jugadores_inicio')
+		exclude = ('creador', 'fecha_creacion', 'num_equipos')
 
 ########################################################################
 

@@ -21,10 +21,8 @@ URL_PROPIA = 'http://localhost:8000/'
 RUTA = os.path.dirname(__file__) + "/"
 
 # Mandar reporte de error por correo a los siguientes destinatarios cuando DEBUG = False
-if vper:
-	ADMINS = vper['ADMINS']
-else:
-	ADMINS = (('nadie', 'nadie@na.net'))
+ADMINS = (('Juanmi', 'ciberjm@gmail.com'), ('Pino', 'jllopezpino@gmail.com'), ('Carlos', 'carlos.kapazao@gmail.com'))
+
 MANAGERS = ADMINS
 
 DATABASES = {
