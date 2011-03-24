@@ -141,6 +141,8 @@ INSTALLED_APPS = (
     'gestion_sistema.gestion_partido',
     'gestion_sistema.gestion_clasificacion',
     'gestion_sistema.gestion_jugador',
+
+    'gestion_mercado.gestion_subasta',
 )
 
 DECIMAL_PLACES = 2
