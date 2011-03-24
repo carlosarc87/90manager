@@ -91,7 +91,7 @@ class Equipo(models.Model):
 		partidos_empatados = partidos_jugados.filter(goles_local = F('goles_visitante'))
 		return partidos_empatados
 
-	def generarJugadoresAleatorios(self, sexo_permitido = 1):
+	def generarJugadoresAleatorios(self, sexo_permitido = 0, num_jugadores_inicial = 25, max_nivel = 50):
 		''' Genera un conjunto de jugadores aleatorios para el equipo '''
 		from gestion_sistema.gestion_jugador.models import Jugador
 		from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio, listaNombres
@@ -101,35 +101,49 @@ class Equipo(models.Model):
 		hombres_participan = False
 		mujeres_participan = False
 		
-		num_jugadores_inicial = 25
-		
 		edad_min = 18
 		edad_max = 35
 		
-		# Crear listas
-		if sexo_permitido != 1: # Hombres participan
+		# Establecer variables dependiendo del sexo_permitido en la liga
+		if sexo_permitido == 0: # Solo hombres
 			hombres_participan = True
 			lista_nombres_hombres = listaNombres("nombres_hombres.txt")
-			max_nivel_hombres = 50
+			max_nivel_hombres = max_nivel
 		
-		if sexo_permitido != 0: # Mujeres participan
+		elif sexo_permitido == 1: # Solo mujeres
 			mujeres_participan = True
 			lista_nombres_mujeres = listaNombres("nombres_mujeres.txt")
-			max_nivel_mujeres = 45
+			max_nivel_mujeres = max_nivel
 			
+		else: # Hombres y mujeres
+			hombres_participan = True
+			mujeres_participan = True
+			lista_nombres_hombres = listaNombres("nombres_hombres.txt")
+			lista_nombres_mujeres = listaNombres("nombres_mujeres.txt")
+			max_nivel_hombres = max_nivel
+			max_nivel_mujeres = (int) (max_nivel * 0.8) # Las mujeres tendrán de media un nivel más bajo que los hombres
+		
+		# Array con todos los apellidos obtenidos del fichero dado
 		lista_apellidos = listaNombres("apellidos.txt")
 
+		# Array con todos los dorsales disponibles
+		#dorsales_disponibles = range(1, 100)
+		
 		# Generar jugadores
 		for j in range(1, num_jugadores_inicial + 1):
 			# Establecer posición
-			if (j == 1 or j >= 24):
+			if (j % 10 == 1):
 				posicion = "PORTERO"
-			elif ((j >= 2 and j <= 5) or (j >= 12 and j <= 15)):
+			elif (j % 10 >= 2) and (j % 10 <= 4):
 				posicion = "DEFENSA"
-			elif ((j >= 6 and j <= 9) or (j >= 16 and j <= 19)):
+			elif (j % 10 >= 5) and (j % 10 <= 7):
 				posicion = "CENTROCAMPISTA"
 			else:
 				posicion = "DELANTERO"
+			
+			# Establecer dorsal
+			#dorsal = dorsales_disponibles.pop(randint(0, len(dorsales_disponibles) - 1))
+			dorsal = j
 			
 			# Obtener datos de hombre o mujer según si participan o no
 			if ((j % 2 == 0) and hombres_participan) or (mujeres_participan == False):
@@ -155,7 +169,7 @@ class Equipo(models.Model):
 			
 			# Asignar variables al jugador
 			jugador = Jugador(equipo = self, nombre = nombre_aleatorio, apodo = apodo_aux, fecha_nacimiento = fecha_nacimiento, sexo = sexo, transferible = False)
-			jugador.setNumero(j)
+			jugador.setNumero(dorsal)
 			jugador.setHabilidadesAleatorias(posicion, max_nivel)
 			jugador.setAparienciaAleatoria()
 			

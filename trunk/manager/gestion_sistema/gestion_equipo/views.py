@@ -115,7 +115,7 @@ def crear_equipo(request, liga_id):
 			equipo.usuario = usuario
 			equipo.liga = liga
 			equipo.save()
-			equipo.generarJugadoresAleatorios()
+			equipo.generarJugadoresAleatorios(liga.sexo_permitido, liga.num_jugadores_inicial, liga.nivel_max_jugadores_inicio)
 			return devolverMensaje(request, "Se ha creado correctamente", "/equipos/ver/%d/" % equipo.id)
 	else:
 		form = EquipoForm()

@@ -95,7 +95,11 @@
 									<tr class="linea_clasificacion_descenso">
 								{% endif %}
 							{% else %}
-								<tr>
+								{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+									<tr class="linea_equipo_propio">
+								{% else %}
+									<tr>
+								{% endif %}
 							{% endif %}
 						{% endif %}
 							

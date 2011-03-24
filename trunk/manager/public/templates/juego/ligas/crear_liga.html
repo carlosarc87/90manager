@@ -15,7 +15,7 @@
 
 		#id_dinero_inicial{ text-align: right; width: 80px; }
 		#id_num_jugadores_inicial{ text-align: right; width: 40px; }
-		#id_nivel_medio_jugadores_inicio{ text-align: right; width: 40px; }
+		#id_nivel_max_jugadores_inicio{ text-align: right; width: 40px; }
 	</style>
 {% endblock %}
 
@@ -109,15 +109,15 @@
 				</div>
 			</div>
 
-			<!-- Nivel medio de los jugadores al inicio de la liga -->
-			<div id="contenido_nivel_medio_jugadores_inicio">
-				{% if form.nivel_medio_jugadores_inicio.errors %}
-					<p class="texto_error">{{ form.nivel_medio_jugadores_inicio.errors }}</p>
+			<!-- Nivel maximo de los jugadores al inicio de la liga -->
+			<div id="contenido_nivel_max_jugadores_inicio">
+				{% if form.nivel_max_jugadores_inicio.errors %}
+					<p class="texto_error">{{ form.nivel_max_jugadores_inicio.errors }}</p>
 				{% endif %}
-				<label for="id_nivel_medio_jugadores_inicio">Nivel medio de los jugadores al inicio de la liga:</label>
+				<label for="id_nivel_max_jugadores_inicio">Nivel máximo de los jugadores al inicio de la liga:</label>
 
-				<div id="caja_nivel_medio_jugadores_inicio">
-					{{ form.nivel_medio_jugadores_inicio }}
+				<div id="caja_nivel_max_jugadores_inicio">
+					{{ form.nivel_max_jugadores_inicio }}
 				</div>
 			</div>
 		</fieldset>

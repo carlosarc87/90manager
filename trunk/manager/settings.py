@@ -143,3 +143,7 @@ INSTALLED_APPS = (
     'gestion_sistema.gestion_jugador',
 )
 
+DECIMAL_PLACES = 2
+NUMBER_GROUPING = 3
+THOUSAND_SEPARATOR = '.'
+USE_THOUSAND_SEPARATOR = True

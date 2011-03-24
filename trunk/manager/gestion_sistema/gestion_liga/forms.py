@@ -73,14 +73,14 @@ class ActivarLigaForm(forms.ModelForm):
 		''' Comprueba que haya un numero de equipos positivo y par y en caso afirmativo los devuelve '''
 		valor = self.cleaned_data['num_equipos'] + len(self.instance.equipo_set.all())
 		if valor % 2 != 0:
-			raise forms.ValidationError("Debe de introducir un valor para que el numero de equipos sea par")
+			raise forms.ValidationError("Debe de introducir un valor para que el número de equipos sea par")
 		if valor <= 0:
-			raise forms.ValidationError("Deben de haber mas de 0 equipos")
+			raise forms.ValidationError("Debe haber al menos 2 equipos")
 		return valor
 
 	class Meta:
 		model = Liga
-		exclude = ('creador', 'fecha_creacion', 'publica', 'nombre', 'sexo_permitido', 'permitir_bots', 'inteligencia_bots', 'tipo_avance_jornadas', 'dinero_inicial', 'num_jugadores_inicial', 'nivel_medio_jugadores_inicio')
+		exclude = ('creador', 'fecha_creacion', 'publica', 'nombre', 'sexo_permitido', 'permitir_bots', 'inteligencia_bots', 'tipo_avance_jornadas', 'dinero_inicial', 'num_jugadores_inicial', 'nivel_max_jugadores_inicio')
 
 ########################################################################################
 
