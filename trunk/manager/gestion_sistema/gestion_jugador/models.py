@@ -25,6 +25,7 @@ from django.db import models
 from random import randint
 
 from gestion_sistema.gestion_equipo.models import Equipo
+from gestion_mercado.gestion_subasta.models import Subasta
 
 ########################################################################
 
@@ -36,6 +37,9 @@ class Jugador(models.Model):
 	apodo = models.CharField(max_length = 30) # Apodo
 	fecha_nacimiento = models.DateField() # Fecha de nacimiento
 	sexo = models.CharField(max_length = 1) # Sexo ('M' - Masculino, 'F' - Femenino)
+
+	# Subasta en la que esté
+	subasta = models.ForeignKey(Subasta, null = True, blank = True)
 
 	# Datos equipo
 	equipo = models.ForeignKey(Equipo) # Equipo al que pertenece

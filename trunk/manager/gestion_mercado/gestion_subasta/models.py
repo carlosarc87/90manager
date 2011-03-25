@@ -25,7 +25,6 @@ from django.db import models
 
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_liga.models import Liga
-from gestion_sistema.gestion_jugador.models import Jugador
 
 ########################################################################
 
@@ -38,8 +37,8 @@ class Subasta(models.Model):
 	expira = models.DateField()
 	estado = models.IntegerField(max_length = 1, default = 0)
 
-	jugador = models.OneToOneField(Jugador)
-	comprador = models.ForeignKey(Equipo, null = True, blank = True)
+	vendedor = models.ForeignKey(Equipo, related_name = 'vendedor')
+	comprador = models.ForeignKey(Equipo, related_name = 'comprador', null = True, blank = True)
 	liga = models.ForeignKey(Liga)
 
 ########################################################################
