@@ -25,6 +25,7 @@ from django.db import models
 
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_liga.models import Liga
+from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
 
 ########################################################################
 
@@ -39,6 +40,10 @@ class Subasta(models.Model):
 
 	vendedor = models.ForeignKey(Equipo, related_name = 'vendedor')
 	comprador = models.ForeignKey(Equipo, related_name = 'comprador', null = True, blank = True)
+
+	# Atributos del jugador que se subasta
+	atributos_jugador = models.OneToOneField(AtributosVariablesJugador)
+
 	liga = models.ForeignKey(Liga)
 
 ########################################################################

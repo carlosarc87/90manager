@@ -23,8 +23,8 @@ Copyright 2011 by
 """
 
 from django.shortcuts import render_to_response
-
-from gestion_usuario.func import obtenerUsuario
+from django import forms
+from django.utils.safestring import mark_safe
 
 ########################################################################
 
@@ -35,7 +35,7 @@ def devolverMensaje(request, mensaje, url_salida = None):
 		mensaje    -- mensaje a mostrar
 		url_salida -- url hacia la que redireccionar
 	'''
-	return render_to_response("mensaje.html", {"usuario" : obtenerUsuario(request), "mensaje" : mensaje, "url_salida" : url_salida})
+	return render_to_response("mensaje.html", {"usuario" : request.user, "mensaje" : mensaje, "url_salida" : url_salida})
 
 ########################################################################
 

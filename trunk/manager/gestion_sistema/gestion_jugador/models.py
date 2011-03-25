@@ -25,7 +25,6 @@ from django.db import models
 from random import randint
 
 from gestion_sistema.gestion_equipo.models import Equipo
-from gestion_mercado.gestion_subasta.models import Subasta
 
 ########################################################################
 
@@ -38,43 +37,16 @@ class Jugador(models.Model):
 	fecha_nacimiento = models.DateField() # Fecha de nacimiento
 	sexo = models.CharField(max_length = 1) # Sexo ('M' - Masculino, 'F' - Femenino)
 
-	# Subasta en la que esté
-	subasta = models.ForeignKey(Subasta, null = True, blank = True)
-
-	# Datos equipo
-	equipo = models.ForeignKey(Equipo) # Equipo al que pertenece
-	numero = models.IntegerField(max_length = 2, null = True) # Dorsal en el equipo (0 - 99)
-	ofertado = models.BooleanField(default = False) # Indica si está o no en la lista de jugadores transferibles
-
-	# Habilidades de campo
-	ataque = models.IntegerField(max_length = 3, blank = False) # Ataque (0 - 100)
-	defensa = models.IntegerField(max_length = 3, blank = False) # Defensa (0 - 100)
-	velocidad = models.IntegerField(max_length = 3, blank = False) # Velocidad (0 - 100)
-	pases = models.IntegerField(max_length = 3, blank = False) # Pases (0 - 100)
-	anotacion = models.IntegerField(max_length = 3, blank = False) # Anotación (0 - 100)
-	portero = models.IntegerField(max_length = 3, blank = False) # Portero (0 - 100)
-
-	# Habilidades físicas
-	resistencia = models.IntegerField(max_length = 3, blank = False) # Moral (0 - 100)
-
-	# Habilidades mentales
-	agresividad = models.IntegerField(max_length = 3, blank = False) # Agresividad (0 - 100)
-	concentracion = models.IntegerField(max_length = 3, blank = False) # Concentración (0 - 100)
-	estabilidad = models.IntegerField(max_length = 3, blank = False) # Estabilidad (0 - 100)
-	moral = models.IntegerField(max_length = 3, blank = False) # Moral (0 - 100)
-
-	# Estado del jugador
-	dias_lesionado = models.IntegerField(max_length = 3, default = 0, blank = False) # Total de días lesionado
-
 	# Apariencia física
-	altura = models.IntegerField(max_length = 3, blank = False) # Altura en cm.
-	peso = models.IntegerField(max_length = 3, blank = False) # Peso en kg.
 	color_piel = models.CharField(max_length = 30, blank = False) # Color de la piel
 	color_pelo = models.CharField(max_length = 30, blank = False) # Color del pelo
 	color_ojos = models.CharField(max_length = 30, blank = False) # Color de los ojos
 
 	def __unicode__(self):
 		return self.nombre
+
+	def setEquipo(self, equipo):
+		self.atributos.equipo = equipo
 
 	def obtenerEdad(self):
 		from datetime import date
@@ -260,5 +232,37 @@ class Jugador(models.Model):
 			media_hab_poco_importantes = 0
 
 		return (int)((1.15 ** media_hab_principales) + (1.1 ** media_hab_secundarias) + (1.05 ** media_hab_poco_importantes))
+
+########################################################################
+
+class AtributosVariablesJugador(models.Model):
+	''' Representa los atributos que pueden cambiar de un jugador a lo largo del tiempo '''
+	# Datos equipo
+	equipo = models.ForeignKey(Equipo) # Equipo al que pertenece
+	numero = models.IntegerField(max_length = 2, null = True) # Dorsal en el equipo (0 - 99)
+	ofertado = models.BooleanField(default = False) # Indica si está o no en la lista de jugadores transferibles
+
+	# Habilidades de campo
+	ataque = models.IntegerField(max_length = 3, blank = False) # Ataque (0 - 100)
+	defensa = models.IntegerField(max_length = 3, blank = False) # Defensa (0 - 100)
+	velocidad = models.IntegerField(max_length = 3, blank = False) # Velocidad (0 - 100)
+	pases = models.IntegerField(max_length = 3, blank = False) # Pases (0 - 100)
+	anotacion = models.IntegerField(max_length = 3, blank = False) # Anotación (0 - 100)
+	portero = models.IntegerField(max_length = 3, blank = False) # Portero (0 - 100)
+
+	# Habilidades físicas
+	resistencia = models.IntegerField(max_length = 3, blank = False) # Moral (0 - 100)
+
+	# Habilidades mentales
+	agresividad = models.IntegerField(max_length = 3, blank = False) # Agresividad (0 - 100)
+	concentracion = models.IntegerField(max_length = 3, blank = False) # Concentración (0 - 100)
+	estabilidad = models.IntegerField(max_length = 3, blank = False) # Estabilidad (0 - 100)
+	moral = models.IntegerField(max_length = 3, blank = False) # Moral (0 - 100)
+
+	altura = models.IntegerField(max_length = 3, blank = False) # Altura en cm.
+	peso = models.IntegerField(max_length = 3, blank = False) # Peso en kg.
+
+	# Jugador
+	jugador = models.OneToOneField(Jugador, related_name = 'atributos')
 
 ########################################################################

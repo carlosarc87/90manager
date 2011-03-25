@@ -97,24 +97,24 @@ class Equipo(models.Model):
 		from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio, listaNombres
 		from datetime import date, timedelta
 		from random import randint
-		
+
 		hombres_participan = False
 		mujeres_participan = False
-		
+
 		edad_min = 18
 		edad_max = 35
-		
+
 		# Establecer variables dependiendo del sexo_permitido en la liga
 		if sexo_permitido == 0: # Solo hombres
 			hombres_participan = True
 			lista_nombres_hombres = listaNombres("nombres_hombres.txt")
 			max_nivel_hombres = max_nivel
-		
+
 		elif sexo_permitido == 1: # Solo mujeres
 			mujeres_participan = True
 			lista_nombres_mujeres = listaNombres("nombres_mujeres.txt")
 			max_nivel_mujeres = max_nivel
-			
+
 		else: # Hombres y mujeres
 			hombres_participan = True
 			mujeres_participan = True
@@ -122,13 +122,13 @@ class Equipo(models.Model):
 			lista_nombres_mujeres = listaNombres("nombres_mujeres.txt")
 			max_nivel_hombres = max_nivel
 			max_nivel_mujeres = (int) (max_nivel * 0.8) # Las mujeres tendrán de media un nivel más bajo que los hombres
-		
+
 		# Array con todos los apellidos obtenidos del fichero dado
 		lista_apellidos = listaNombres("apellidos.txt")
 
 		# Array con todos los dorsales disponibles
 		#dorsales_disponibles = range(1, 100)
-		
+
 		# Generar jugadores
 		for j in range(1, num_jugadores_inicial + 1):
 			# Establecer posición
@@ -140,11 +140,11 @@ class Equipo(models.Model):
 				posicion = "CENTROCAMPISTA"
 			else:
 				posicion = "DELANTERO"
-			
+
 			# Establecer dorsal
 			#dorsal = dorsales_disponibles.pop(randint(0, len(dorsales_disponibles) - 1))
 			dorsal = j
-			
+
 			# Obtener datos de hombre o mujer según si participan o no
 			if ((j % 2 == 0) and hombres_participan) or (mujeres_participan == False):
 				lista_nombres = lista_nombres_hombres
@@ -154,28 +154,29 @@ class Equipo(models.Model):
 				lista_nombres = lista_nombres_mujeres
 				max_nivel = max_nivel_mujeres
 				sexo = 'F'
-			
-			# Establecer variables del jugador	
+
+			# Establecer variables del jugador
 			nombre_aleatorio, apodo_aux = nombreJugadorAleatorio(lista_nombres, lista_apellidos)
 			fecha_nacimiento = date.today() - timedelta(randint(edad_min, edad_max) * 365) + timedelta(randint(0, 365))
-			
+
 			# Reducir un poco el nivel máximo dependiendo de la edad
 			hoy = date.today()
 			edad = hoy - fecha_nacimiento
 			anios = (int)(edad.days / 365)
-			
+
 			# Cada 2 años de diferencia con 28 se resta un punto al nivel máximo
 			max_nivel = max_nivel - (int)(abs(28 - anios) / 2)
-			
+
 			# Asignar variables al jugador
-			jugador = Jugador(equipo = self, nombre = nombre_aleatorio, apodo = apodo_aux, fecha_nacimiento = fecha_nacimiento, sexo = sexo, transferible = False)
+			jugador = Jugador(nombre = nombre_aleatorio, apodo = apodo_aux, fecha_nacimiento = fecha_nacimiento, sexo = sexo)
+			jugador.setEquipo(self)
 			jugador.setNumero(dorsal)
 			jugador.setHabilidadesAleatorias(posicion, max_nivel)
 			jugador.setAparienciaAleatoria()
-			
+
 			# Guardar jugador
 			jugador.save()
-			
+
 			# Añadir jugador al equipo
 			self.agregarJugador(jugador)
 

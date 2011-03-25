@@ -24,8 +24,6 @@ Copyright 2011 by
 
 """
 
-from django.utils.safestring import mark_safe
-
 from gestion_base.func import HorizRadioRenderer
 from django import forms
 from models import Liga

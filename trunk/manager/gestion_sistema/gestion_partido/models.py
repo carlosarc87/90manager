@@ -24,7 +24,7 @@ Copyright 2011 by
 from django.db import models
 
 from gestion_sistema.gestion_equipo.models import Equipo
-from gestion_sistema.gestion_jugador.models import Jugador
+from gestion_sistema.gestion_jugador.models import Jugador, AtributosVariablesJugador
 from gestion_sistema.gestion_jornada.models import Jornada
 from gestion_sistema.gestion_clasificacion.models import ClasificacionEquipoJornada
 
@@ -41,49 +41,10 @@ POSICIONES = (
 
 ########################################################################
 
-class JugadorPartido(models.Model):
-	''' Representa los atributos de un jugador en un partido '''
-	# Datos principales
-	jugador = models.ForeignKey(Jugador)
-	posicion = models.CharField(max_length = 2, choices = POSICIONES)
-
-	# Habilidades de campo
-	ataque = models.IntegerField(null = False, blank = False) # Ataque (0 - 100)
-	defensa = models.IntegerField(null = False, blank = False) # Defensa (0 - 100)
-	velocidad = models.IntegerField(null = False, blank = False) # Velocidad (0 - 100)
-	pases = models.IntegerField(null = False, blank = False) # Pases (0 - 100)
-	anotacion = models.IntegerField(null = False, blank = False) # Anotación (0 - 100)
-	portero = models.IntegerField(null = False, blank = False) # Portero (0 - 100)
-	
-	# Habilidades físicas
-	resistencia = models.IntegerField(null = False, blank = False) # Resistencia (0 - 100)
-	
-	# Habilidades mentales
-	moral = models.IntegerField(null = False, blank = False) # Moral (0 - 100)
-
-	def __init__(self, *args, **kwargs):
-		super(JugadorPartido, self).__init__(*args, **kwargs)
-		self.ataque = self.jugador.ataque
-		self.defensa = self.jugador.defensa
-		self.velocidad = self.jugador.velocidad
-		self.pases = self.jugador.pases
-		self.anotacion = self.jugador.anotacion
-		self.portero = self.jugador.portero
-		
-		self.resistencia = self.jugador.resistencia
-		
-		self.moral = self.jugador.moral
-
-	def __unicode__(self):
-		''' Devuelve una cadena representativa del objeto '''
-		return self.posicion + " - " + self.jugador.nombre
-
-########################################################################
-
 class AlineacionEquipo(models.Model):
 	''' Representa la alineación de un equipo en un partido '''
 	equipo = models.ForeignKey(Equipo)
-	jugadores = models.ManyToManyField(JugadorPartido, null = True, blank = True)
+	jugadores = models.ManyToManyField(AtributosVariablesJugador, null = True, blank = True)
 
 	def borrarAlineacion(self):
 		''' Elimina la alineacion actual '''
@@ -301,7 +262,7 @@ class AlineacionEquipo(models.Model):
 			i += 1
 
 		return valor
-	
+
 	def getValorMoral(self):
 		valor = 0
 		titulares = self.getDatosTitulares()
@@ -371,14 +332,14 @@ class Partido(models.Model):
 		# --------------------------------------
 		# Se incrementa un 10% la moral de los locales
 		moral = [(1 + ((alineacion[0].getValorMoral() - 50) / 500.0))  * 1.1, 1 + ((alineacion[1].getValorMoral() - 50) / 500.0)]
-		
+
 		ataque = [(int) (alineacion[0].getValorAtaque() * moral[0]), alineacion[1].getValorAtaque() * moral[1]]
 		defensa = [(int) (alineacion[0].getValorDefensa() * moral[0]), alineacion[1].getValorDefensa() * moral[1]]
 		pases = [(int) (alineacion[0].getValorPases() * moral[0]), alineacion[1].getValorPases() * moral[1]]
 		velocidad = [(int) (alineacion[0].getValorVelocidad() * moral[0]), alineacion[1].getValorVelocidad() * moral[1]]
 		anotacion = [(int) (alineacion[0].getValorAnotacion() * moral[0]), alineacion[1].getValorAnotacion() * moral[1]]
 		portero = [(int) (alineacion[0].getValorPortero() * moral[0]), alineacion[1].getValorPortero() * moral[1]]
-		
+
 		# --------------------------------------
 
 		los_gatos_nos_dominaran = True
@@ -413,12 +374,12 @@ class Partido(models.Model):
 				if(equipo_comienza == 0): id_equipo_atacante = 1
 				else: id_equipo_atacante = 0
 				segundos_jugados = 45 * 60
-				
+
 			if id_equipo_atacante == 0:
 				equipo_suceso = self.equipo_local
 			else:
 				equipo_suceso = self.equipo_visitante
-				
+
 			texto = "Equipo comienza"
 			#print texto
 			suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
@@ -439,11 +400,11 @@ class Partido(models.Model):
 					equipo_suceso = self.equipo_local
 				else:
 					equipo_suceso = self.equipo_visitante
-				
+
 				# Crear jugada
 				num_acciones = (randint(2, 18) + randint(2, 18) + randint(2, 18)) / 3
 				seg_accion = 4 + (int)((100.0 - velocidad[id_equipo_atacante]) / 10) + randint(0, 5)
-				
+
 				if num_acciones <= 4:
 					texto = "Contraataque"
 					#print texto
@@ -469,7 +430,7 @@ class Partido(models.Model):
 							#print "Regate (" + str(prob_exito) + "%) "
 							if(randint(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
-								
+
 								texto = "Regate fallado"
 								#print texto
 								suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
@@ -486,7 +447,7 @@ class Partido(models.Model):
 							#print "Pase (" + str(prob_exito) + "%) "
 							if(randint(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
-								
+
 								texto = "Pase fallado"
 								#print texto
 								suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
@@ -537,9 +498,9 @@ class Partido(models.Model):
 							#print texto
 							suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
 							self.suceso_set.add(suceso)
-							
+
 							seg_descuento += 10
-						
+
 						# El equipo contrario se hace con el balón
 						id_equipo_atacante = id_equipo_defensor
 
@@ -569,7 +530,7 @@ class Partido(models.Model):
 		self.goles_local = num_goles[0]
 		self.goles_visitante = num_goles[1]
 		self.jugado = True
-		
+
 		# Actualizar datos de la clasificacion dependiendo del ganador
 		clasificacion_local = self.jornada.obtenerClasificacionEquipo(self.equipo_local)
 		clasificacion_visitante = self.jornada.obtenerClasificacionEquipo(self.equipo_visitante)
