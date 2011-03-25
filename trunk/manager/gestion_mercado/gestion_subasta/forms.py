@@ -26,3 +26,14 @@ Copyright 2011 by
 
 from django import forms
 from models import Subasta
+
+########################################################################
+
+class SubastaForm(forms.ModelForm):
+	''' Formulario para crear subastas '''
+
+	class Meta:
+		model = Subasta
+		exclude = ()
+
+########################################################################

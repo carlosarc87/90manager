@@ -40,7 +40,7 @@ class Jugador(models.Model):
 	# Datos equipo
 	equipo = models.ForeignKey(Equipo) # Equipo al que pertenece
 	numero = models.IntegerField(max_length = 2, null = True) # Dorsal en el equipo (0 - 99)
-	transferible = models.BooleanField() # Indica si está o no en la lista de jugadores transferibles
+	ofertado = models.BooleanField(default = False) # Indica si está o no en la lista de jugadores transferibles
 
 	# Habilidades de campo
 	ataque = models.IntegerField(max_length = 3, blank = False) # Ataque (0 - 100)
@@ -49,19 +49,19 @@ class Jugador(models.Model):
 	pases = models.IntegerField(max_length = 3, blank = False) # Pases (0 - 100)
 	anotacion = models.IntegerField(max_length = 3, blank = False) # Anotación (0 - 100)
 	portero = models.IntegerField(max_length = 3, blank = False) # Portero (0 - 100)
-	
+
 	# Habilidades físicas
 	resistencia = models.IntegerField(max_length = 3, blank = False) # Moral (0 - 100)
-	
+
 	# Habilidades mentales
 	agresividad = models.IntegerField(max_length = 3, blank = False) # Agresividad (0 - 100)
 	concentracion = models.IntegerField(max_length = 3, blank = False) # Concentración (0 - 100)
 	estabilidad = models.IntegerField(max_length = 3, blank = False) # Estabilidad (0 - 100)
 	moral = models.IntegerField(max_length = 3, blank = False) # Moral (0 - 100)
-	
+
 	# Estado del jugador
 	dias_lesionado = models.IntegerField(max_length = 3, default = 0, blank = False) # Total de días lesionado
-	
+
 	# Apariencia física
 	altura = models.IntegerField(max_length = 3, blank = False) # Altura en cm.
 	peso = models.IntegerField(max_length = 3, blank = False) # Peso en kg.
@@ -71,7 +71,7 @@ class Jugador(models.Model):
 
 	def __unicode__(self):
 		return self.nombre
-	
+
 	def obtenerEdad(self):
 		from datetime import date
 		hoy = date.today()
@@ -79,7 +79,7 @@ class Jugador(models.Model):
 		anios = (int)(edad.days / 365)
 		dias = edad.days % 365
 		return anios, dias
-	
+
 	def setAparienciaAleatoria(self):
 		if self.sexo == 'M':
 			self.altura = (randint(160, 200) + randint(160, 200)) / 2
@@ -87,7 +87,7 @@ class Jugador(models.Model):
 		else:
 			self.altura = (randint(155, 190) + randint(155, 190)) / 2
 			self.peso = (int) ((self.altura - 110) * (randint(8, 12) / 10.0))
-		
+
 		# Color de la piel
 		a = randint(1, 1000)
 		if a <= 100:
@@ -100,7 +100,7 @@ class Jugador(models.Model):
 			self.color_piel = "Oscura"
 		else:
 			self.color_piel = "Negra"
-			
+
 		# Color del pelo
 		a = randint(1, 1000)
 		if a <= 250:
@@ -115,7 +115,7 @@ class Jugador(models.Model):
 			self.color_pelo = "Rubio"
 		else:
 			self.color_pelo = "Blanco"
-			
+
 		# Color de los ojos
 		a = randint(1, 1000)
 		if a <= 300:
@@ -175,13 +175,13 @@ class Jugador(models.Model):
 
 		# Habilidades físicas
 		self.resistencia 	= randint(0, nivel)
-		
+
 		# Habilidades mentales
 		self.agresividad 	= randint(0, 100)
 		self.concentracion	= randint(0, 100)
 		self.estabilidad 	= randint(0, 100)
 		self.moral 			= 50
-		
+
 		return self
 
 	def siglasPosicion(self):
@@ -200,19 +200,19 @@ class Jugador(models.Model):
 	def mejorPosicion(self):
 		# Array donde se van a guardar las posiciones y sus valores según las habilidades del jugador
 		posiciones = []
-		
+
 		portero = ["PORTERO", self.portero + (self.pases * 0.6)]
 		posiciones.append(portero)
-		
+
 		defensa = ["DEFENSA", self.defensa + (((self.velocidad + self.pases) / 2.0) * 0.6)]
 		posiciones.append(defensa)
-		
+
 		centrocampista = ["CENTROCAMPISTA", ((self.velocidad + self.pases) / 2.0) + (((self.ataque + self.defensa + self.anotacion) / 3.0) * 0.6)]
 		posiciones.append(centrocampista)
-		
+
 		delantero = ["DELANTERO", ((self.ataque + self.anotacion) / 2.0) + (((self.velocidad + self.pases) / 2.0) * 0.6)]
 		posiciones.append(delantero)
-		
+
 		num_posiciones = len(posiciones)
 
 		# Obtener mejor posición

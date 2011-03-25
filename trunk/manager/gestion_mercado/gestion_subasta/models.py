@@ -38,7 +38,7 @@ class Subasta(models.Model):
 	expira = models.DateField()
 	estado = models.IntegerField(max_length = 1, default = 0)
 
-	jugador = models.ForeignKey(Jugador)
+	jugador = models.OneToOneField(Jugador)
 	comprador = models.ForeignKey(Equipo, null = True, blank = True)
 	liga = models.ForeignKey(Liga)
 

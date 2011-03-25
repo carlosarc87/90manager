@@ -38,3 +38,11 @@ def devolverMensaje(request, mensaje, url_salida = None):
 	return render_to_response("mensaje.html", {"usuario" : obtenerUsuario(request), "mensaje" : mensaje, "url_salida" : url_salida})
 
 ########################################################################
+
+class HorizRadioRenderer(forms.RadioSelect.renderer):
+	''' Pone los radiobuttons horizontalmente '''
+	def render(self):
+		''' Mostrar los radiobuttons '''
+		return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+
+########################################################################

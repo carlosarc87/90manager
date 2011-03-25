@@ -26,6 +26,7 @@ Copyright 2011 by
 
 from django.utils.safestring import mark_safe
 
+from gestion_base.func import HorizRadioRenderer
 from django import forms
 from models import Liga
 
@@ -34,14 +35,6 @@ from models import Liga
 TIPOS_IA = ((1, 'Muy baja'), (2, 'Baja'), (3, 'Media'), (4, 'Alta'), (5, 'Muy alta'))
 TIPOS_SEXO = ((0, 'Solo hombres'), (1, 'Solo mujeres'), (2, 'Hombres y mujeres'))
 TIPOS_AVANCE = ((0, 'Manual'), (1, 'Automáticamente al acabar los usuarios los partidos'), (2, 'Automáticamente al acabar todos los partidos'))
-
-########################################################################
-
-class HorizRadioRenderer(forms.RadioSelect.renderer):
-	''' Pone los radiobuttons horizontalmente '''
-	def render(self):
-		''' Mostrar los radiobuttons '''
-		return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
 
 ########################################################################
 
