@@ -24,7 +24,7 @@ Copyright 2011 by
 from django.db import models
 
 from gestion_sistema.gestion_equipo.models import Equipo
-from gestion_sistema.gestion_jugador.models import Jugador, AtributosVariablesJugador
+from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
 from gestion_sistema.gestion_jornada.models import Jornada
 from gestion_sistema.gestion_clasificacion.models import ClasificacionEquipoJornada
 
@@ -41,10 +41,25 @@ POSICIONES = (
 
 ########################################################################
 
+class JugadorPartido(models.Model):
+	''' Representa los atributos de un jugador en un partido '''
+	# Datos principales
+	atributos = models.ForeignKey(AtributosVariablesJugador)
+	posicion = models.CharField(max_length = 2, choices = POSICIONES)
+
+	def __init__(self, *args, **kwargs):
+		super(JugadorPartido, self).__init__(*args, **kwargs)
+
+	def __unicode__(self):
+		''' Devuelve una cadena representativa del objeto '''
+		return self.posicion + " - " + self.jugador.nombre
+
+########################################################################
+
 class AlineacionEquipo(models.Model):
 	''' Representa la alineación de un equipo en un partido '''
 	equipo = models.ForeignKey(Equipo)
-	jugadores = models.ManyToManyField(AtributosVariablesJugador, null = True, blank = True)
+	jugadores = models.ManyToManyField(JugadorPartido, null = True, blank = True)
 
 	def borrarAlineacion(self):
 		''' Elimina la alineacion actual '''
@@ -55,40 +70,40 @@ class AlineacionEquipo(models.Model):
 		''' Establece una alineacion de jugadores a partir de los ids '''
 		self.borrarAlineacion()
 
-		jugador = self.equipo.jugador_set.get(id = portero)
-		p = JugadorPartido(jugador = jugador, posicion = 'PO')
+		atributos = self.equipo.atributosvariablesjugador_set.get(jugador__id = portero)
+		p = JugadorPartido(atributos = atributos, posicion = 'PO')
 		p.save()
 		self.jugadores.add(p)
 
 		for id_jugador in defensas:
-			jugador = self.equipo.jugador_set.get(id = id_jugador)
-			j = JugadorPartido(jugador = jugador, posicion = 'DF')
-			j.save()
-			self.jugadores.add(j)
+			atributos = self.equipo.atributosvariablesjugador_set.get(jugador__id = id_jugador)
+			p = JugadorPartido(atributos = atributos, posicion = 'DF')
+			p.save()
+			self.jugadores.add(p)
 
 		for id_jugador in centrocampistas:
-			jugador = self.equipo.jugador_set.get(id = id_jugador)
-			j = JugadorPartido(jugador = jugador, posicion = 'CC')
-			j.save()
-			self.jugadores.add(j)
+			atributos = self.equipo.atributosvariablesjugador_set.get(jugador__id = id_jugador)
+			p = JugadorPartido(atributos = atributos, posicion = 'CC')
+			p.save()
+			self.jugadores.add(p)
 
 		for id_jugador in delanteros:
-			jugador = self.equipo.jugador_set.get(id = id_jugador)
-			j = JugadorPartido(jugador = jugador, posicion = 'DL')
-			j.save()
-			self.jugadores.add(j)
+			atributos = self.equipo.atributosvariablesjugador_set.get(jugador__id = id_jugador)
+			p = JugadorPartido(atributos = atributos, posicion = 'DL')
+			p.save()
+			self.jugadores.add(p)
 
 		for id_jugador in suplentes:
-			jugador = self.equipo.jugador_set.get(id = id_jugador)
-			j = JugadorPartido(jugador = jugador, posicion = 'BA')
-			j.save()
-			self.jugadores.add(j)
+			atributos = self.equipo.atributosvariablesjugador_set.get(jugador__id = id_jugador)
+			p = JugadorPartido(atributos = atributos, posicion = 'BA')
+			p.save()
+			self.jugadores.add(p)
 
 	def copiarAlineacion(self, alineacion):
 		''' Copia la alineacion desde otra alineacion '''
 		self.borrarAlineacion()
 		for jugador in alineacion.jugadores.all():
-			j = JugadorPartido(jugador = jugador.jugador, posicion = jugador.posicion)
+			j = JugadorPartido(atributos = jugador.atributos, posicion = jugador.posicion)
 			j.save()
 			self.jugadores.add(j)
 
@@ -98,7 +113,7 @@ class AlineacionEquipo(models.Model):
 		datos = self.getDatosTitulares()
 		lista = []
 		for dato in datos:
-			jugador = dato.jugador
+			jugador = dato.atributos.jugador
 			lista.append(jugador)
 		return lista
 
@@ -107,7 +122,7 @@ class AlineacionEquipo(models.Model):
 		datos = self.getDatosSuplentes()
 		lista = []
 		for dato in datos:
-			jugador = dato.jugador
+			jugador = dato.atributos.jugador
 			lista.append(jugador)
 		return lista
 
@@ -155,11 +170,11 @@ class AlineacionEquipo(models.Model):
 		return self.jugadores.filter(posicion = 'BA')
 
 	def setAleatoria(self):
-		jugadores_equipo = self.equipo.jugador_set.all()
+		jugadores_equipo = self.equipo.atributosvariablesjugador_set.all()
 
 		for i in range(16):
 			posiciones = ['PO', 'DF', 'DF', 'DF', 'DF', 'CC', 'CC', 'CC', 'CC', 'DL', 'DL', 'BA', 'BA', 'BA', 'BA', 'BA']
-			jugador = JugadorPartido(jugador = jugadores_equipo[i], posicion = posiciones[i])
+			jugador = JugadorPartido(atributos = jugadores_equipo[i], posicion = posiciones[i])
 			jugador.save()
 			self.jugadores.add(jugador)
 
@@ -172,7 +187,7 @@ class AlineacionEquipo(models.Model):
 		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
 			posicion = titulares[i].posicion
-			ataque = titulares[i].ataque
+			ataque = titulares[i].atributos.ataque
 
 			if(posicion == "DF"):
 				valor += (int)(ataque * 0.25)
@@ -189,7 +204,7 @@ class AlineacionEquipo(models.Model):
 		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
 			posicion = titulares[i].posicion
-			defensa = titulares[i].defensa
+			defensa = titulares[i].atributos.defensa
 
 			if(posicion == "DF"):
 				valor += defensa
@@ -206,7 +221,7 @@ class AlineacionEquipo(models.Model):
 		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
 			posicion = titulares[i].posicion
-			pases = titulares[i].pases
+			pases = titulares[i].atributos.pases
 			if(posicion == "DF"):
 				valor += (int)(pases * 0.75)
 			elif(posicion == "CC"):
@@ -222,7 +237,7 @@ class AlineacionEquipo(models.Model):
 		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
 			posicion = titulares[i].posicion
-			velocidad = titulares[i].velocidad
+			velocidad = titulares[i].atributos.velocidad
 			if(posicion == "DF"):
 				valor += (int)(velocidad * 0.75)
 			elif(posicion == "CC"):
@@ -238,7 +253,7 @@ class AlineacionEquipo(models.Model):
 		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
 			posicion = titulares[i].posicion
-			anotacion = titulares[i].anotacion
+			anotacion = titulares[i].atributos.anotacion
 			if(posicion == "DF"):
 				valor += (int)(anotacion * 0.5)
 			elif(posicion == "CC"):
@@ -257,7 +272,7 @@ class AlineacionEquipo(models.Model):
 			posicion = titulares[i].posicion
 
 			if(posicion == "PO"):
-				valor = titulares[i].portero
+				valor = titulares[i].atributos.portero
 
 			i += 1
 
@@ -268,7 +283,7 @@ class AlineacionEquipo(models.Model):
 		titulares = self.getDatosTitulares()
 		num_jugadores_campo = len(titulares)
 		for i in range(0, num_jugadores_campo):
-			valor += titulares[i].moral
+			valor += titulares[i].atributos.moral
 
 		return valor / num_jugadores_campo
 
@@ -342,7 +357,7 @@ class Partido(models.Model):
 
 		# --------------------------------------
 
-		los_gatos_nos_dominaran = True
+		los_gatos_nos_dominaran = False
 		if not los_gatos_nos_dominaran:
 			print "-------------------------------------------"
 			print alineacion[0].equipo.nombre

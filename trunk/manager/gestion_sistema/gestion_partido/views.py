@@ -65,14 +65,14 @@ def jugar_partido(request, partido_id):
 #		if partido.titulares_local.count() != 11:
 #			return devolverMensaje(request, "Eh, que tienes que preparar el equipo antes del partido", "/partidos/ver/%d/" % partido.id)
 	else:
-		partido.titulares_local = partido.equipo_local.jugador_set.all()[:11]
+		partido.titulares_local = partido.equipo_local.getJugadores()[:11]
 
 	if partido.equipo_visitante.usuario != None:
 		pass
 #		if partido.titulares_visitante.count() != 11:
 #			return devolverMensaje(request, "Eh, que tienes que preparar el equipo antes del partido", "/partidos/ver/%d/" % partido.id)
 	else:
-		partido.titulares_visitante = partido.equipo_visitante.jugador_set.all()[:11]
+		partido.titulares_visitante = partido.equipo_visitante.getJugadores()[:11]
 	partido.jugar()
 	partido.save()
 
@@ -80,7 +80,7 @@ def jugar_partido(request, partido_id):
 	if not jornada_actual.quedanPartidosPorJugar():
 		jornada_actual.liga.avanzarJornada()
 
-	return ver_partido(request, partido_id)
+	return HttpResponseRedirect("/partidos/ver/%s/" % (partido_id))
 
 ########################################################################
 
@@ -100,7 +100,7 @@ def ver_partido(request, partido_id):
 
 	# Obtener sucesos del partido
 	partido.sucesos = partido.suceso_set.all()
-	
+
 	# Obtenemos la liga y la jornada
 	jornada = partido.jornada
 	liga = jornada.liga
@@ -121,16 +121,16 @@ def ver_partido(request, partido_id):
 		if partido.alineacion_visitante.estaPreparada():
 			editar = True
 	es_creador = liga.creador == usuario
-		
+
 	# Comprobamos si el partido ha acabado
 	finalizado = partido.finalizado()
-	
+
 	# Comprobar si se puede jugar el partido
 	es_jugable = False
 	jornada_actual = liga.obtenerJornadaActual()
 	if partido.jornada == jornada_actual and not finalizado:
 		es_jugable = True
-	
+
 	# Si el partido ha finalizado
 	if finalizado:
 		# Obtener datos sobre los sucesos del partido
@@ -139,26 +139,26 @@ def ver_partido(request, partido_id):
 		#--------------------------------------------------
 		q = partido.suceso_set.filter(equipo = equipo_local)
 		equipo_local.num_acciones = q.count()
-		
+
 		# Regates
 		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Regate realizado")
 		equipo_local.regates_realizados = q.count()
 		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Regate fallado")
 		equipo_local.regates_fallados = q.count()
-		
+
 		if equipo_local.regates_realizados + equipo_local.regates_fallados == 0:
 			equipo_local.porcentaje_regates_exito = 0
 		else:
 			equipo_local.porcentaje_regates_exito = (1.0 * equipo_local.regates_realizados) / (equipo_local.regates_realizados + equipo_local.regates_fallados)
 
 		equipo_local.regates_totales = equipo_local.regates_realizados + equipo_local.regates_fallados
-		
+
 		# Pases
 		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Pase realizado")
 		equipo_local.pases_realizados = q.count()
 		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Pase fallado")
 		equipo_local.pases_fallados = q.count()
-		
+
 		if equipo_local.pases_realizados + equipo_local.pases_fallados == 0:
 			equipo_local.porcentaje_pases_exito = 0
 		else:
@@ -179,26 +179,26 @@ def ver_partido(request, partido_id):
 		#--------------------------------------------------
 		q = partido.suceso_set.filter(equipo = equipo_visitante)
 		equipo_visitante.num_acciones = q.count()
-		
+
 		# Regates
 		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Regate realizado")
 		equipo_visitante.regates_realizados = q.count()
 		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Regate fallado")
 		equipo_visitante.regates_fallados = q.count()
-		
+
 		if equipo_visitante.regates_realizados + equipo_visitante.regates_fallados == 0:
 			equipo_visitante.porcentaje_regates_exito = 0
 		else:
 			equipo_visitante.porcentaje_regates_exito = (1.0 * equipo_visitante.regates_realizados) / (equipo_visitante.regates_realizados + equipo_visitante.regates_fallados)
 
 		equipo_visitante.regates_totales = equipo_visitante.regates_realizados + equipo_visitante.regates_fallados
-		
+
 		# Pases
 		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Pase realizado")
 		equipo_visitante.pases_realizados = q.count()
 		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Pase fallado")
 		equipo_visitante.pases_fallados = q.count()
-		
+
 		if equipo_visitante.pases_realizados + equipo_visitante.pases_fallados == 0:
 			equipo_visitante.porcentaje_pases_exito = 0
 		else:
@@ -213,36 +213,36 @@ def ver_partido(request, partido_id):
 		equipo_visitante.disparos_fuera = q.count()
 		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Gol")
 		equipo_visitante.goles = q.count()
-		
+
 		equipo_local.remates_puerta = equipo_local.goles + equipo_local.disparos_parados + equipo_local.disparos_fuera
 		equipo_local.balones_perdidos = equipo_local.regates_fallados + equipo_local.pases_fallados + equipo_local.disparos_parados + equipo_local.disparos_fuera
 		equipo_local.balones_recuperados = equipo_visitante.regates_fallados + equipo_visitante.pases_fallados + equipo_visitante.disparos_parados
-		
+
 		equipo_visitante.remates_puerta = equipo_visitante.goles + equipo_visitante.disparos_parados + equipo_visitante.disparos_fuera
 		equipo_visitante.balones_perdidos = equipo_visitante.regates_fallados + equipo_visitante.pases_fallados + equipo_visitante.disparos_parados + equipo_visitante.disparos_fuera
 		equipo_visitante.balones_recuperados = equipo_local.regates_fallados + equipo_local.pases_fallados + equipo_local.disparos_parados
 		#--------------------------------------------------
-		
+
 		# Porcentajes
 		equipo_local.porc_posesion = round((100.0 * equipo_local.num_acciones) / (equipo_local.num_acciones + equipo_visitante.num_acciones), 1)
 		equipo_local.porc_regates_exito = round((100.0 * equipo_local.regates_realizados) / equipo_local.regates_totales, 1)
 		equipo_local.porc_pases_exito = round((100.0 * equipo_local.pases_realizados) / equipo_local.pases_totales, 1)
-		
+
 		equipo_visitante.porc_posesion = round((100.0 * equipo_visitante.num_acciones) / (equipo_local.num_acciones + equipo_visitante.num_acciones), 1)
 		equipo_visitante.porc_regates_exito = round((100.0 * equipo_visitante.regates_realizados) / equipo_visitante.regates_totales, 1)
 		equipo_visitante.porc_pases_exito = round((100.0 * equipo_visitante.pases_realizados) / equipo_visitante.pases_totales, 1)
-		
+
 		# Obtener datos de los titulares del equipo local
 		equipo_local.titulares = partido.alineacion_local.getDatosTitulares()
-		
+
 		equipo_local.valor_titulares = 0
 		equipo_local.num_df = 0
 		equipo_local.num_cc = 0
 		equipo_local.num_dl = 0
 		for t in equipo_local.titulares:
 			# Valor total del equipo
-			equipo_local.valor_titulares += t.jugador.valorMercado()
-			
+			equipo_local.valor_titulares += t.atributos.valorMercado()
+
 			# Número de jugadores por posición
 			if t.posicion == 'DF':
 				equipo_local.num_df += 1
@@ -250,18 +250,18 @@ def ver_partido(request, partido_id):
 				equipo_local.num_cc += 1
 			elif t.posicion == 'DL':
 				equipo_local.num_dl += 1
-		
+
 		# Obtener valor total de los titulares del equipo visitante
 		equipo_visitante.titulares = partido.alineacion_visitante.getDatosTitulares()
-		
+
 		equipo_visitante.valor_titulares = 0
 		equipo_visitante.num_df = 0
 		equipo_visitante.num_cc = 0
 		equipo_visitante.num_dl = 0
 		for t in equipo_visitante.titulares:
 			# Valor total del equipo
-			equipo_visitante.valor_titulares += t.jugador.valorMercado()
-			
+			equipo_visitante.valor_titulares += t.atributos.valorMercado()
+
 			# Número de jugadores por posición
 			if t.posicion == 'DF':
 				equipo_visitante.num_df += 1
@@ -269,7 +269,7 @@ def ver_partido(request, partido_id):
 				equipo_visitante.num_cc += 1
 			elif t.posicion == 'DL':
 				equipo_visitante.num_dl += 1
-				
+
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("juego/partidos/ver_partido.html")
 	c = Context({"jornada" : jornada,
@@ -339,7 +339,7 @@ def preparar_partido(request, partido_id):
 	portero = alineacion.getPortero()
 	suplentes = alineacion.getSuplentes()
 
-	jugadores = equipo.jugador_set.all()
+	jugadores = equipo.getJugadores()
 
 	return render_to_response("juego/partidos/preparar_partido.html", {"form": form, "editar" : editar, "usuario" : usuario, "partido" : partido, "equipo" : equipo, "jugadores" : jugadores, "delanteros" : delanteros, "defensas" : defensas, "portero" : portero, "centrocampistas" : centrocampistas, "suplentes" : suplentes })
 

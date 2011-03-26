@@ -5,57 +5,57 @@
 		#fila_mensaje_estado th{
 			padding: 5px 0px;
 		}
-		
+
 		#fila_jugar_partido th{
 			padding: 5px 0px;
 		}
-	
+
 		#titulares{
 			clear: both;
 			height: 400px;
 		}
-		
+
 		#tabla_resultado{
 			margin: 20px auto;
 			width: 500px;
 		}
-		
+
 		#tabla_resumen{
 			margin: 20px auto;
 		}
-		
+
 		#tabla_sucesos{
 			margin: 20px auto;
 		}
-	
+
 		#tabla_titulares_local{
 			background-color: #5555ff;
 			float: left;
 		}
-	
+
 		#tabla_titulares_visitante{
 			background-color: #ff5555;
 			float: right;
 		}
-		
+
 		.col_local{
 			text-align: right;
 			width: 40%;
 		}
-		
+
 		.col_local a{
 			font-size: 1.2em;
 		}
-		
+
 		.col_resultado{
 			font-size: 1.5em;
 			text-align: center;
 		}
-		
+
 		.col_visitante{
 			width: 40%;
 		}
-		
+
 		.col_visitante a{
 			color: #ff5555;
 			font-size: 1.2em;
@@ -87,7 +87,7 @@
 						<a href="/equipos/ver/{{ equipo_local.id }}/">{{ equipo_local }}</a>
 					{% endif %}
 				</td>
-				
+
 				<!-- Resultado -->
 				<td class="col_resultado">
 					{% if finalizado %}
@@ -106,7 +106,7 @@
 						0 - 0
 					{% endif %}
 				</td>
-				
+
 				<!-- Equipo visitante -->
 				<td class="col_visitante">
 					{% if usuario == equipo_visitante.usuario %}
@@ -116,12 +116,12 @@
 					{% endif %}
 				</td>
 			</tr>
-			
+
 			{% if finalizado %}
 				<tr id="fila_mensaje_estado">
 					<th colspan="3">FINALIZADO</th>
 				</tr>
-				
+
 			{% else %}
 				{% if tiene_equipo %}
 					<!-- Enlace a alineacion -->
@@ -132,7 +132,7 @@
 							<td colspan="2"></td>
 							<td class="col_visitante">
 						{% endif %}
-						
+
 								<a href="/partidos/preparar/{{ partido.id }}/">
 									{% if editar %}
 										EDITAR ALINEACIÓN
@@ -141,17 +141,17 @@
 									{% endif %}
 								</a>
 							</td>
-						
+
 						{% if usuario == equipo_local.usuario %}
 							<td colspan="2"></td>
 						{% endif %}
 					</tr>
 				{% endif %}
-				
+
 				<tr id="fila_mensaje_estado">
 					<th colspan="3">SIN INICIAR</th>
 				</tr>
-				
+
 				{% if es_creador and es_jugable %}
 					<!-- Jugar partido -->
 					<tr id="fila_jugar_partido">
@@ -163,7 +163,7 @@
 			{% endif %}
 		</tbody>
 	</table>
-	
+
 	{% if finalizado %}
 		<!-- Resumen -->
 		<table class="tabla1" id="tabla_resumen">
@@ -182,35 +182,35 @@
 					<td class="cuadro_num_azul_der">{{ equipo_local.porc_posesion }} %</td>
 					<td class="cuadro_num_azul_der">{{ equipo_visitante.porc_posesion }} %</td>
 				</tr>
-				
+
 				<!-- Balones perdidos -->
 				<tr>
 					<td>Balones perdidos</td>
 					<td class="cuadro_num_azul_der">{{ equipo_local.balones_perdidos }}</td>
 					<td class="cuadro_num_azul_der">{{ equipo_visitante.balones_perdidos }}</td>
 				</tr>
-				
+
 				<!-- Balones recuperados -->
 				<tr>
 					<td>Balones recuperados</td>
 					<td class="cuadro_num_azul_der">{{ equipo_local.balones_recuperados }}</td>
 					<td class="cuadro_num_azul_der">{{ equipo_visitante.balones_recuperados }}</td>
 				</tr>
-				
+
 				<!-- Regates con exito -->
 				<tr>
 					<td>Regates</td>
 					<td class="cuadro_num_azul_der">{{ equipo_local.regates_realizados }} / {{ equipo_local.regates_totales }} ({{ equipo_local.porc_regates_exito }} %)</td>
 					<td class="cuadro_num_azul_der">{{ equipo_visitante.regates_realizados }} / {{ equipo_visitante.regates_totales }} ({{ equipo_visitante.porc_regates_exito }} %)</td>
 				</tr>
-				
+
 				<!-- Pases con exito -->
 				<tr>
 					<td>Pases</td>
 					<td class="cuadro_num_azul_der">{{ equipo_local.pases_realizados }} / {{ equipo_local.pases_totales }} ({{ equipo_local.porc_pases_exito }} %)</td>
 					<td class="cuadro_num_azul_der">{{ equipo_visitante.pases_realizados }} / {{ equipo_visitante.pases_totales }} ({{ equipo_visitante.porc_pases_exito }} %)</td>
 				</tr>
-				
+
 				<!-- Remates a puerta -->
 				<tr>
 					<td>Remates a puerta</td>
@@ -219,7 +219,7 @@
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<!-- Titulares -->
 		<div id="titulares">
 			<!-- Titulares local -->
@@ -244,10 +244,10 @@
 				<tbody>
 					{% for titular in equipo_local.titulares %}
 						<tr>
-							<td class="cuadro_num_azul_der">{{ titular.jugador.numero }}</td>
+							<td class="cuadro_num_azul_der">{{ titular.atributos.numero }}</td>
 							<td>{{ titular.posicion }}</td>
-							<td><a href="/jugadores/ver/{{ titular.jugador.id }}/">{{ titular.jugador.nombre }}</a></td>
-							<td class="cuadro_num_azul_der">{{ titular.jugador.valorMercado }}</td>
+							<td><a href="/jugadores/ver/{{ titular.atributos.jugador.id }}/">{{ titular.atributos.jugador.nombre }}</a></td>
+							<td class="cuadro_num_azul_der">{{ titular.atributos.valorMercado }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -275,16 +275,16 @@
 				<tbody>
 					{% for titular in equipo_visitante.titulares %}
 						<tr>
-							<td class="cuadro_num_azul_der">{{ titular.jugador.numero }}</td>
+							<td class="cuadro_num_azul_der">{{ titular.atributos.numero }}</td>
 							<td>{{ titular.posicion }}</td>
-							<td><a href="/jugadores/ver/{{ titular.jugador.id }}/">{{ titular.jugador.nombre }}</a></td>
-							<td class="cuadro_num_azul_der">{{ titular.jugador.valorMercado }}</td>
+							<td><a href="/jugadores/ver/{{ titular.atributos.jugador.id }}/">{{ titular.atributos.jugador.nombre }}</a></td>
+							<td class="cuadro_num_azul_der">{{ titular.atributos.valorMercado }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
-		
+
 		<!-- Sucesos -->
 		<table class="tabla1" id="tabla_sucesos">
 			<caption>SUCESOS</caption>
@@ -295,19 +295,19 @@
 							{% if suceso.tipo == "Gol" %}
 								<img src="/media/img/icons/favicon.ico" alt="Gol" title="Gol" height="20" width="20" />
 							{% endif %}
-							
+
 							{% if suceso.tipo == "Disparo fuera" %}
 								<img src="/media/img/icons/tiro_fallado.png" alt="Disparo fuera" title="Disparo fuera" height="20" width="20" />
 							{% endif %}
-							
+
 							{% if suceso.tipo == "Disparo parado" %}
 								<img src="/media/img/icons/tiro_fallado.png" alt="Disparo parado" title="Disparo parado" height="20" width="20" />
 							{% endif %}
-							
+
 							{% if suceso.tipo == "FIN DE LA 1ª PARTE" %}
 								<img src="/media/img/icons/silbato.png" alt="Fin primera parte" title="Fin primera parte" height="16" width="15" />
 							{% endif %}
-							
+
 							{% if suceso.tipo == "FIN DE LA 2ª PARTE" %}
 								<img src="/media/img/icons/silbato.png" alt="Fin partido" title="Fin partido" height="16" width="15" />
 							{% endif %}

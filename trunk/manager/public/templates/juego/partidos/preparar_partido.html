@@ -347,7 +347,7 @@
 				{% for j in delanteros %}
 					jugadores_situados++;
 					// Cogemos la caja
-					jugador = document.getElementById("jug{{ j.jugador.id }}");
+					jugador = document.getElementById("jug{{ j.atributos.jugador.id }}");
 					jugador.parentNode.removeChild(jugador);
 					destino.appendChild(jugador);
 					seleccionar(jugador, lista);
@@ -358,7 +358,7 @@
 				lista = document.getElementById("id_portero");
 				jugadores_situados++;
 				// Cogemos la caja
-				jugador = document.getElementById("jug{{ portero.jugador.id }}");
+				jugador = document.getElementById("jug{{ portero.atributos.jugador.id }}");
 				jugador.parentNode.removeChild(jugador);
 				destino.appendChild(jugador);
 				seleccionar(jugador, lista);
@@ -370,7 +370,7 @@
 				{% for j in centrocampistas %}
 					jugadores_situados++;
 					// Cogemos la caja
-					jugador = document.getElementById("jug{{ j.jugador.id }}");
+					jugador = document.getElementById("jug{{ j.atributos.jugador.id }}");
 					jugador.parentNode.removeChild(jugador);
 					destino.appendChild(jugador);
 					seleccionar(jugador, lista);
@@ -383,7 +383,7 @@
 				{% for j in defensas %}
 					jugadores_situados++;
 					// Cogemos la caja
-					jugador = document.getElementById("jug{{ j.jugador.id }}");
+					jugador = document.getElementById("jug{{ j.atributos.jugador.id }}");
 					jugador.parentNode.removeChild(jugador);
 					destino.appendChild(jugador);
 					seleccionar(jugador, lista);
@@ -396,7 +396,7 @@
 				{% for j in suplentes %}
 					jugadores_suplentes++;
 					// Cogemos la caja
-					jugador = document.getElementById("jug{{ j.jugador.id }}");
+					jugador = document.getElementById("jug{{ j.atributos.jugador.id }}");
 					jugador.parentNode.removeChild(jugador);
 					destino.appendChild(jugador);
 					seleccionar(jugador, lista);
