@@ -58,12 +58,12 @@ def ver_jugador(request, jugador_id):
 
 	# Obtener mejor posición
 	mejor_posicion = jugador.mejorPosicion()
-	
+
 	# Obtener edad
 	anios, dias = jugador.obtenerEdad()
 
 	# Obtenemos el equipo
-	equipo = jugador.equipo
+	equipo = jugador.atributos.equipo
 
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("juego/jugadores/ver_jugador.html")

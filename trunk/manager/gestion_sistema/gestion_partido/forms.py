@@ -42,7 +42,7 @@ class PrepararEquipoForm(forms.Form):
 		''' Constructor que establece la lista de valores de los titulares '''
 		super(PrepararEquipoForm, self).__init__(*args, **kwargs)
 		# Establecemos los valores de la lista multiple como los jugadores del equipo local
-		jugadores = equipo.jugador_set.all()
+		jugadores = equipo.getJugadores()
 		lista_jugadores = [[choice.id, choice.nombre] for choice in jugadores]
 
 		self.fields['jugadores_disponibles'].choices = lista_jugadores

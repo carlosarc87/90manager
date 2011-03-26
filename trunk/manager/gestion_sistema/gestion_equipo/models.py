@@ -39,7 +39,15 @@ class Equipo(models.Model):
 	# Funciones
 	def agregarJugador(self, jugador):
 		''' Añade un jugador al equipo '''
-		self.jugador_set.add(jugador)
+		self.atributosvariablesjugador_set.add(jugador.atributos)
+
+	def getJugadores(self):
+		''' Devuelve los jugadores del equipo '''
+		atributos = self.atributosvariablesjugador_set.all()
+		jugadores = []
+		for atrib in atributos:
+			jugadores.append(atrib.jugador)
+		return jugadores
 
 	def getPartidos(self, liga):
 		''' Devuelve los partidos de una liga en los que juega '''
@@ -169,9 +177,10 @@ class Equipo(models.Model):
 
 			# Asignar variables al jugador
 			jugador = Jugador(nombre = nombre_aleatorio, apodo = apodo_aux, fecha_nacimiento = fecha_nacimiento, sexo = sexo)
-			jugador.setEquipo(self)
-			jugador.setNumero(dorsal)
-			jugador.setHabilidadesAleatorias(posicion, max_nivel)
+			jugador.save()
+			atributos = jugador.generarAtributos(self, dorsal, posicion, max_nivel)
+			atributos.save()
+
 			jugador.setAparienciaAleatoria()
 
 			# Guardar jugador

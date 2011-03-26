@@ -59,15 +59,15 @@ def ver_equipo(request, equipo_id):
 	equipo = Equipo.objects.get(id = equipo_id)
 
 	# Obtenemos los jugadores
-	jugadores = equipo.jugador_set.all()
-	
+	jugadores = equipo.getJugadores()
+
 	# Obtener datos de los jugadores
 	suma_edad = 0
 	valor_equipo = 0
 	for jugador in jugadores:
 		# Valor total del equipo
 		valor_equipo += jugador.valorMercado()
-		
+
 		# Edad del equipo
 		anios, dias = jugador.obtenerEdad()
 		suma_edad = suma_edad + anios
