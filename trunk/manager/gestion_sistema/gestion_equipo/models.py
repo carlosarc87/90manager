@@ -36,6 +36,8 @@ class Equipo(models.Model):
 	siglas = models.CharField(max_length = 3, unique = True)
 	usuario = models.ForeignKey(Usuario, null = True)
 	liga = models.ForeignKey(Liga)
+	
+	dinero = models.IntegerField(default = 0, max_length = 15)
 
 	# Funciones
 	def agregarJugador(self, jugador):
@@ -137,9 +139,10 @@ class Equipo(models.Model):
 
 		# Array con todos los dorsales disponibles
 		#dorsales_disponibles = range(1, 100)
-
+		print 'num_jugadores_inicial: ' + str(num_jugadores_inicial)
 		# Generar jugadores
 		for j in range(1, num_jugadores_inicial + 1):
+			print 'j: ' + str(j)
 			# Establecer posición
 			if (j % 10 == 1):
 				posicion = "PORTERO"
@@ -166,7 +169,7 @@ class Equipo(models.Model):
 
 			# Establecer variables del jugador
 			nombre_aleatorio, apodo_aux = nombreJugadorAleatorio(lista_nombres, lista_apellidos)
-			fecha_nacimiento = date.today() - timedelta(randint(edad_min, edad_max) * 365) + timedelta(randint(0, 365))
+			fecha_nacimiento = date.today() - timedelta(randint(edad_min, edad_max) * 365) + timedelta(randint(0, 364))
 
 			# Reducir un poco el nivel máximo dependiendo de la edad
 			hoy = date.today()

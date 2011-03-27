@@ -33,7 +33,7 @@ class EquipoForm(forms.ModelForm):
 	''' Formulario para crear un equipo '''
 	class Meta:
 		model = Equipo
-		exclude = ('usuario', 'liga')
+		exclude = ('usuario', 'liga', 'dinero')
 
 ########################################################################
 

@@ -171,12 +171,76 @@ class AlineacionEquipo(models.Model):
 
 	def setAleatoria(self):
 		jugadores_equipo = self.equipo.atributosvariablesjugador_set.all()
-
-		for i in range(16):
-			posiciones = ['PO', 'DF', 'DF', 'DF', 'DF', 'CC', 'CC', 'CC', 'CC', 'DL', 'DL', 'BA', 'BA', 'BA', 'BA', 'BA']
-			jugador = JugadorPartido(atributos = jugadores_equipo[i], posicion = posiciones[i])
+		jugadores_equipo = sorted(jugadores_equipo, key = lambda atributosvariablesjugador : atributosvariablesjugador.valorMercado, reverse = True)
+		
+		# Listas para guardar jugadores por posición y poder obtener luego los mejores
+		lista_PO = []
+		lista_DF = []
+		lista_CC = []
+		lista_DL = []
+		for jug in jugadores_equipo:
+			# Añadir el jugador a una lista dependiendo de su posición
+			if jug.mejorPosicion() == 'PO':
+				lista_PO.append(jug)
+			if jug.mejorPosicion() == 'DF':
+				lista_DF.append(jug)
+			if jug.mejorPosicion() == 'CC':
+				lista_CC.append(jug)
+			if jug.mejorPosicion() == 'DL':
+				lista_DL.append(jug)
+		
+		# Comprobar qué formación es con la que el equipo tiene mejor valor
+		# 1 PO, 3-5 DF, 2-5 CC, 1-5 DL
+		#max_DF = 5
+		#max_CC = 5
+		#max_DL = 5
+		
+		#mejor = []
+		
+		# De momento poner una 4-4-2 con los jugadores que haya
+		if len(lista_PO) > 0:
+			jugador = JugadorPartido(atributos = lista_PO.pop(0), posicion = 'PO')
 			jugador.save()
 			self.jugadores.add(jugador)
+		
+		for i in range(0, 4):
+			if len(lista_DF) > 0:
+				jugador = JugadorPartido(atributos = lista_DF.pop(0), posicion = 'DF')
+				jugador.save()
+				self.jugadores.add(jugador)
+		
+		for i in range(0, 4):
+			if len(lista_CC) > 0:
+				jugador = JugadorPartido(atributos = lista_CC.pop(0), posicion = 'CC')
+				jugador.save()
+				self.jugadores.add(jugador)
+				
+		for i in range(0, 2):
+			if len(lista_DL) > 0:
+				jugador = JugadorPartido(atributos = lista_DL.pop(0), posicion = 'DL')
+				jugador.save()
+				self.jugadores.add(jugador)
+		
+		# Colocar DF
+		#for DF in range(3, max_DF + 1):
+			#alineacion = []
+			#for i in range(0, DF):
+				#mejor.append(defensas)
+				
+			#num_jug_colocados = 1 + DF
+				
+			## Colocar CC
+			#for CC in range(2, max_CC + 1):
+				#num_jug_colocados += CC
+				
+				## Calcular máximo de DL que se pueden colocar
+				#DL = 11 - num_jug_colocados
+				
+				## Colocar DL
+				#print DF + '-' + CC + '-' + DL + ' = ' + valor_alineacion
+					
+					# Calcular valor de la alineación
+				
 
 	def estaPreparada(self):
 		return len(self.jugadores.all()) > 0
@@ -195,7 +259,7 @@ class AlineacionEquipo(models.Model):
 			elif(posicion == "DL"):
 				valor += ataque
 
-		return (int)(valor)
+		return (int)(valor / len(titulares))
 
 	def getValorDefensa(self):
 		valor = 0
@@ -211,7 +275,7 @@ class AlineacionEquipo(models.Model):
 			elif(posicion == "DL"):
 				valor += (defensa * 0.25)
 
-		return (int)(valor)
+		return (int)(valor / len(titulares))
 
 	def getValorPases(self):
 		valor = 0
@@ -220,13 +284,13 @@ class AlineacionEquipo(models.Model):
 			posicion = t.posicion
 			pases = t.atributos.pases
 			if(posicion == "DF"):
-				valor += (pases * 0.75)
+				valor += (pases * 0.5)
 			elif(posicion == "CC"):
 				valor += pases
 			elif(posicion == "DL"):
-				valor += (pases * 0.75)
+				valor += (pases * 0.5)
 
-		return (int)(valor)
+		return (int)(valor / len(titulares))
 
 	def getValorVelocidad(self):
 		valor = 0
@@ -235,13 +299,13 @@ class AlineacionEquipo(models.Model):
 			posicion = t.posicion
 			velocidad = t.atributos.velocidad
 			if(posicion == "DF"):
-				valor += (velocidad * 0.75)
+				valor += (velocidad * 0.5)
 			elif(posicion == "CC"):
 				valor += velocidad
 			elif(posicion == "DL"):
-				valor += (velocidad * 0.75)
+				valor += (velocidad * 0.5)
 
-		return (int)(valor)
+		return (int)(valor / len(titulares))
 
 	def getValorAnotacion(self):
 		valor = 0
@@ -250,13 +314,13 @@ class AlineacionEquipo(models.Model):
 			posicion = t.posicion
 			anotacion = t.atributos.anotacion
 			if(posicion == "DF"):
-				valor += (int)(anotacion * 0.5)
+				valor += (int)(anotacion * 0.25)
 			elif(posicion == "CC"):
 				valor += (int)(anotacion * 0.75)
 			elif(posicion == "DL"):
 				valor += anotacion
 
-		return (int)(valor)
+		return (int)(valor / len(titulares))
 
 	def getValorPortero(self):
 		valor = 0
@@ -275,7 +339,7 @@ class AlineacionEquipo(models.Model):
 		for t in titulares:
 			valor += t.atributos.moral
 
-		return (int)(valor)
+		return (int)(valor / len(titulares))
 
 ########################################################################
 
@@ -408,7 +472,7 @@ class Partido(models.Model):
 
 				# Crear jugada
 				num_acciones = (randint(2, 18) + randint(2, 18) + randint(2, 18)) / 3
-				seg_accion = 4 + (int)((100.0 - velocidad[id_equipo_atacante]) / 10) + randint(0, 5)
+				seg_accion = 3 + (int)((100.0 - velocidad[id_equipo_atacante]) / 10) + randint(0, 4)
 
 				if num_acciones <= 4:
 					texto = "Contraataque"
@@ -416,10 +480,10 @@ class Partido(models.Model):
 					suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
 					self.suceso_set.add(suceso)
 
-				print "\t" + "num_acciones: " + str(num_acciones) + " (" + str(seg_accion) + " seg / accion)"
+				#print "\t" + "num_acciones: " + str(num_acciones) + " (" + str(seg_accion) + " seg / accion)"
 				formula = (1.0 * ataque[id_equipo_atacante]) / pases[id_equipo_atacante]
 				prob_regate = probabilidadExito(formula)
-				print "Prob Pase/Regate (" + str(prob_regate) + "%) "
+				#print "Prob Pase/Regate (" + str(prob_regate) + "%) "
 				accion = 1
 				while (accion <= num_acciones) and (id_equipo_defensor != id_equipo_atacante):
 					#print "\t" + str(accion) + ".- "
@@ -432,7 +496,7 @@ class Partido(models.Model):
 						if p <= prob_regate:
 							formula = (1.0 * ataque[id_equipo_atacante] / defensa[id_equipo_defensor])
 							prob_exito = probabilidadExito(formula)
-							print "Regate (" + str(prob_exito) + "%) "
+							#print "Regate (" + str(prob_exito) + "%) "
 							if(randint(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
 
@@ -449,7 +513,7 @@ class Partido(models.Model):
 						elif p <= 100:
 							formula = (pases[id_equipo_atacante] * 2.0) / (defensa[id_equipo_defensor] + velocidad[id_equipo_defensor])
 							prob_exito = probabilidadExito(formula)
-							print "Pase (" + str(prob_exito) + "%) "
+							#print "Pase (" + str(prob_exito) + "%) "
 							if(randint(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
 
@@ -465,7 +529,7 @@ class Partido(models.Model):
 						# Moverse con el balón
 						else:
 							texto = "Movimiento con balón"
-							print texto
+							#print texto
 							suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
 							self.suceso_set.add(suceso)
 

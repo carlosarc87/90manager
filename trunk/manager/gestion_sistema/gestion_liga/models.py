@@ -46,7 +46,7 @@ class Liga(models.Model):
 	# Reglas equipos
 	dinero_inicial = models.IntegerField(default = 20000, max_length = 15)
 	num_jugadores_inicial = models.IntegerField(default = 20, max_length = 3)
-	nivel_max_jugadores_inicio = models.IntegerField(default = 50, max_length = 3)
+	nivel_max_jugadores_inicio = models.IntegerField(default = 50, max_length = 3) # Nivel máximo inicial de los jugadores al comienzo de la liga (10 - 100)
 
 	def activada(self):
 		''' Devuelve si una liga ya ha empezado a jugarse '''
@@ -105,8 +105,8 @@ class Liga(models.Model):
 		# -------------------------------------------------
 
 		for i in range(self.equipo_set.count(), self.num_equipos):
-			nombre, siglas = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
-			equipo = Equipo(nombre = nombre, siglas = siglas, usuario = None, liga = self)
+			nombre_eq, siglas_eq = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
+			equipo = Equipo(nombre = nombre_eq, siglas = siglas_eq, usuario = None, liga = self, dinero = self.dinero_inicial)
 			equipo.save()
 			equipo.generarJugadoresAleatorios(self.sexo_permitido, self.num_jugadores_inicial, self.nivel_max_jugadores_inicio)
 

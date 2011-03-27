@@ -72,7 +72,10 @@ def ver_equipo(request, equipo_id):
 		anios, dias = jugador.obtenerEdad()
 		suma_edad = suma_edad + anios
 
-	edad_media_equipo = (suma_edad * 1.0) / len(jugadores)
+	if len(jugadores) > 0:
+		edad_media_equipo = (suma_edad * 1.0) / len(jugadores)
+	else:
+		edad_media_equipo = 0
 
 	# Obtenemos la liga
 	liga = equipo.liga
@@ -114,6 +117,7 @@ def crear_equipo(request, liga_id):
 			equipo = form.save(commit = False)
 			equipo.usuario = usuario
 			equipo.liga = liga
+			equipo.dinero = liga.dinero_inicial
 			equipo.save()
 			equipo.generarJugadoresAleatorios(liga.sexo_permitido, liga.num_jugadores_inicial, liga.nivel_max_jugadores_inicio)
 			return devolverMensaje(request, "Se ha creado correctamente", "/equipos/ver/%d/" % equipo.id)
