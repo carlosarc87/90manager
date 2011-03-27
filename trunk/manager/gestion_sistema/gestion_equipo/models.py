@@ -139,10 +139,9 @@ class Equipo(models.Model):
 
 		# Array con todos los dorsales disponibles
 		#dorsales_disponibles = range(1, 100)
-		print 'num_jugadores_inicial: ' + str(num_jugadores_inicial)
+		
 		# Generar jugadores
 		for j in range(1, num_jugadores_inicial + 1):
-			print 'j: ' + str(j)
 			# Establecer posición
 			if (j % 10 == 1):
 				posicion = "PORTERO"

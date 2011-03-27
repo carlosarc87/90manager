@@ -15,7 +15,7 @@
 	<!-- Tabla jugadores -->
 	<table class="tabla1" id="tabla_jugadores">
 		<caption>Jugadores</caption>
-		{% if jugadores.count %}
+		{% if jugadores %}
 			<thead>
 				<tr>
 					<td>Num.</td>
@@ -52,7 +52,7 @@
 	<!-- Tabla cuentas -->
 	<table class="tabla1" id="tabla_cuentas">
 		<caption>Cuentas</caption>
-		{% if historial_cuentas.count %}
+		{% if historial_cuentas %}
 			<thead>
 				<tr>
 					<td>Fecha</td>
@@ -81,7 +81,7 @@
 	<!-- Tabla jugadores en compra -->
 	<table class="tabla1" id="tabla_jugadores_compra">
 		<caption>Jugadores en compra</caption>
-		{% if jugadores_compra.count %}
+		{% if jugadores_compra %}
 			<thead>
 				<tr>
 					<th title="Posición">Pos</th>
@@ -155,7 +155,7 @@
 	<!-- Tabla jugadores en venta -->
 	<table class="tabla1" id="tabla_jugadores_venta">
 		<caption>Jugadores en venta</caption>
-		{% if jugadores_venta.count %}
+		{% if jugadores_venta %}
 			<thead>
 				<tr>
 					<th title="Posición">Pos</th>

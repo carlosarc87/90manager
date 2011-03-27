@@ -171,7 +171,7 @@ class AlineacionEquipo(models.Model):
 
 	def setAleatoria(self):
 		jugadores_equipo = self.equipo.atributosvariablesjugador_set.all()
-		jugadores_equipo = sorted(jugadores_equipo, key = lambda atributosvariablesjugador : atributosvariablesjugador.valorMercado, reverse = True)
+		jugadores_equipo = sorted(jugadores_equipo, key = lambda atributosvariablesjugador : atributosvariablesjugador.valorMercado(), reverse = True)
 		
 		# Listas para guardar jugadores por posición y poder obtener luego los mejores
 		lista_PO = []
@@ -180,13 +180,13 @@ class AlineacionEquipo(models.Model):
 		lista_DL = []
 		for jug in jugadores_equipo:
 			# Añadir el jugador a una lista dependiendo de su posición
-			if jug.mejorPosicion() == 'PO':
+			if jug.mejorPosicion() == 'PORTERO':
 				lista_PO.append(jug)
-			if jug.mejorPosicion() == 'DF':
+			if jug.mejorPosicion() == 'DEFENSA':
 				lista_DF.append(jug)
-			if jug.mejorPosicion() == 'CC':
+			if jug.mejorPosicion() == 'CENTROCAMPISTA':
 				lista_CC.append(jug)
-			if jug.mejorPosicion() == 'DL':
+			if jug.mejorPosicion() == 'DELANTERO':
 				lista_DL.append(jug)
 		
 		# Comprobar qué formación es con la que el equipo tiene mejor valor
@@ -258,7 +258,9 @@ class AlineacionEquipo(models.Model):
 				valor += (ataque * 0.75)
 			elif(posicion == "DL"):
 				valor += ataque
-
+				
+		if len(titulares) == 0:
+			return 0
 		return (int)(valor / len(titulares))
 
 	def getValorDefensa(self):
@@ -274,7 +276,9 @@ class AlineacionEquipo(models.Model):
 				valor += (defensa * 0.75)
 			elif(posicion == "DL"):
 				valor += (defensa * 0.25)
-
+				
+		if len(titulares) == 0:
+			return 0
 		return (int)(valor / len(titulares))
 
 	def getValorPases(self):
@@ -289,7 +293,9 @@ class AlineacionEquipo(models.Model):
 				valor += pases
 			elif(posicion == "DL"):
 				valor += (pases * 0.5)
-
+				
+		if len(titulares) == 0:
+			return 0
 		return (int)(valor / len(titulares))
 
 	def getValorVelocidad(self):
@@ -304,7 +310,9 @@ class AlineacionEquipo(models.Model):
 				valor += velocidad
 			elif(posicion == "DL"):
 				valor += (velocidad * 0.5)
-
+				
+		if len(titulares) == 0:
+			return 0
 		return (int)(valor / len(titulares))
 
 	def getValorAnotacion(self):
@@ -319,7 +327,9 @@ class AlineacionEquipo(models.Model):
 				valor += (int)(anotacion * 0.75)
 			elif(posicion == "DL"):
 				valor += anotacion
-
+				
+		if len(titulares) == 0:
+			return 0
 		return (int)(valor / len(titulares))
 
 	def getValorPortero(self):
@@ -339,6 +349,8 @@ class AlineacionEquipo(models.Model):
 		for t in titulares:
 			valor += t.atributos.moral
 
+		if len(titulares) == 0:
+			return 0
 		return (int)(valor / len(titulares))
 
 ########################################################################
