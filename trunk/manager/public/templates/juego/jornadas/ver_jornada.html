@@ -1,5 +1,13 @@
 {% extends "base_juego.html" %}
 
+{% block css_extra %}
+	<style type="text/css">
+		#tabla_encuentros{
+			
+		}
+	</style>
+{% endblock %}
+
 {% block situacion %}
 	<ul id="menu_superior_situacion">
 		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
@@ -28,7 +36,7 @@
 		{% endif %}
 	{% endif %}
 
-	<table class="tabla1" style="width: 400px;">
+	<table class="tabla1" id="tabla_encuentros">
 		<caption>Listado de encuentros</caption>
 		<thead>
 			<tr>
@@ -61,7 +69,7 @@
 	</table>
 
 	{% if clasificacion_anterior %}
-		<table class="tabla1" style="width: 400px;">
+		<table class="tabla1" id="tabla_clasificacion_anterior">
 			<caption>Clasificación antes de la jornada</caption>
 			<thead>
 				<tr>
@@ -94,7 +102,7 @@
 
 
 	{% if clasificacion %}
-		<table class="tabla1" style="width: 400px;">
+		<table class="tabla1" id="tabla_clasificacion">
 			<caption>Clasificación de la jornada</caption>
 			<thead>
 				<tr>

@@ -22,7 +22,6 @@ Copyright 2011 by
 
 """
 
-from random import randint
 from settings import RUTA
 
 ########################################################################
@@ -36,6 +35,7 @@ def listaNombres(nombre_fichero):
 	fich = open(RUTA + "public/site_media/doc/" + nombre_fichero, "r")
 	while(True):
 		nombre = fich.readline()
+		nombre = nombre[:-1] # Quitar '\n'
 		if not nombre:
 			break
 		lista_nombres.append(nombre)
@@ -57,6 +57,8 @@ def quitar_acentos(cadena):
 ########################################################################
 
 def nombreJugadorAleatorio(lista_nombres, lista_apellidos):
+	from random import randint
+	
 	# Poner 1 o 2 nombres
 	num_nombres = randint(1, 2)
 	nombre1 = lista_nombres[randint(0, len(lista_nombres) - 1)]

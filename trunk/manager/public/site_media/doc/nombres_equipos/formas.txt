@@ -1,0 +1,10 @@
+Conos
+Cuadrados
+Cubos
+Deformes
+Elipses
+Escalenos
+Esferas
+Irregulares
+Rectangulares
+Rectángulos

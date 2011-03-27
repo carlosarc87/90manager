@@ -181,19 +181,19 @@
 					}
 				}
 				else if (objeto.id == "fila_defensas") {
-					if (objeto.getElementsByClassName('cuadro_jugador').length >= 5) {
+					if (objeto.getElementsByClassName('cuadro_jugador').length >= 6) {
 						alert("No se pueden agregar mas defensas");
 						situar = false;
 					}
 				}
 				else if (objeto.id == "fila_centrocampistas") {
-					if (objeto.getElementsByClassName('cuadro_jugador').length >= 5) {
+					if (objeto.getElementsByClassName('cuadro_jugador').length >= 6) {
 						alert("No se pueden agregar mas centrocampistas");
 						situar = false;
 					}
 				}
 				else if (objeto.id == "fila_delanteros") {
-					if (objeto.getElementsByClassName('cuadro_jugador').length >= 5) {
+					if (objeto.getElementsByClassName('cuadro_jugador').length >= 6) {
 						alert("No se pueden agregar mas delanteros");
 						situar = false;
 					}
@@ -207,18 +207,23 @@
 			}
 
 			if (situar) {
-				// Calculamos los jugadores que se van a situar o no
-				if (jugador_pillado.parentNode.id == "jugadores") {
-					if (objeto.id == "fila_suplentes") {
-						jugadores_suplentes++;
-					}
-					else if (objeto.id != "jugadores"){
-						jugadores_situados++;
-					}
-				} else {
-					if (objeto.id == "jugadores") {
-						jugadores_situados--;
-					}
+				// Calcular valores de los jugadores en alineacion y titulares
+				// Jugador cogido de los suplentes
+				if (jugador_pillado.parentNode.id == "fila_suplentes") {
+					jugadores_suplentes--;
+				}
+				// Jugador cogido de los titulares
+				else if (jugador_pillado.parentNode.id != "jugadores") {
+					jugadores_situados--;
+				}
+				
+				// Jugador colocado en suplentes
+				if (objeto.id == "fila_suplentes") {
+					jugadores_suplentes++;
+				}
+				// Jugador colocado en titulares
+				else if (objeto.id != "jugadores") {
+					jugadores_situados++;
 				}
 
 				if (jugadores_situados > 11) {
@@ -305,24 +310,28 @@
 				lista_origen.removeChild(nodo);
 				lista_destino.appendChild(nodo);
 			}
+			
 			var lista_origen = document.getElementById("fila_centrocampistas");
 			while(lista_origen.hasChildNodes()){
 				var nodo = lista_origen.lastChild
 				lista_origen.removeChild(nodo);
 				lista_destino.appendChild(nodo);
 			}
+			
 			var lista_origen = document.getElementById("fila_defensas");
 			while(lista_origen.hasChildNodes()){
 				var nodo = lista_origen.lastChild
 				lista_origen.removeChild(nodo);
 				lista_destino.appendChild(nodo);
 			}
+			
 			var lista_origen = document.getElementById("fila_suplentes");
 			while(lista_origen.hasChildNodes()){
 				var nodo = lista_origen.lastChild
 				lista_origen.removeChild(nodo);
 				lista_destino.appendChild(nodo);
 			}
+			
 			var lista_origen = document.getElementById("fila_portero");
 			while(lista_origen.hasChildNodes()){
 				var nodo = lista_origen.lastChild

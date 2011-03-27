@@ -65,10 +65,48 @@ class Liga(models.Model):
 	def rellenarLiga(self):
 		''' Rellena los huecos vacios de una liga con equipos controlados por bots '''
 		# Generar los equipos
+		from gestion_sistema.gestion_equipo.func import listaNombres, nombreEquipoAleatorio
 		from gestion_sistema.gestion_equipo.models import Equipo
+		
+		# -------------------------------------------------
+		# Obtener listas de nombres
+		# -------------------------------------------------
+		# Tipo club
+		lista_nombres_tipo_club = listaNombres('nombres_equipos/tipo_club.txt') # Tipos de club
+		lon_lista_nombres_tipo_club = len(lista_nombres_tipo_club)
+
+		# Parte 1
+		lista_parte1 = []
+
+		# Animales
+		lista_nombres_animales = listaNombres('nombres_equipos/animales.txt')
+		lista_parte1 += lista_nombres_animales
+
+		# Razas
+		lista_nombres_razas = listaNombres('nombres_equipos/razas.txt')
+		lista_parte1 += lista_nombres_razas
+
+		# Objetos
+		lista_nombres_objetos = listaNombres('nombres_equipos/objetos.txt')
+		lista_parte1 += lista_nombres_objetos
+
+		lon_lista_parte1 = len(lista_parte1)
+
+		# Parte 2
+		lista_parte2 = []
+
+		# Colores
+		lista_nombres_colores = listaNombres('nombres_equipos/colores.txt')
+		lista_parte2 += lista_nombres_colores
+
+		# Formas
+		lista_nombres_formas = listaNombres('nombres_equipos/formas.txt')
+		lista_parte2 += lista_nombres_formas
+		# -------------------------------------------------
 
 		for i in range(self.equipo_set.count(), self.num_equipos):
-			equipo = Equipo(nombre="Equipo %d - %d" % (self.id, i), usuario = None, liga = self)
+			nombre, siglas = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
+			equipo = Equipo(nombre = nombre, siglas = siglas, usuario = None, liga = self)
 			equipo.save()
 			equipo.generarJugadoresAleatorios(self.sexo_permitido, self.num_jugadores_inicial, self.nivel_max_jugadores_inicio)
 
