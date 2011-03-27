@@ -32,8 +32,49 @@ from models import Subasta
 class SubastaForm(forms.ModelForm):
 	''' Formulario para crear subastas '''
 
+	def clean_expira(self):
+		''' Comprueba que el numero de jornadas sea factible '''
+		valor = self.cleaned_data['expira']
+		# Comprobamos que sea positivo y no nulo
+		if valor < 1:
+			raise forms.ValidationError("Debes de introducir una duracion de jornadas positiva y no nula")
+		# Comprobamos que sea menor que las jornadas que quedan de liga
+		jornadas_restantes = 10000
+		if valor >= jornadas_restantes:
+			raise forms.ValidationError("Las subastas deben acabar antes de la ultima jornada de liga")
+
+		return valor
+
+	def clean_oferta(self):
+		''' Comprueba que el precio de subasta sea factible '''
+		valor = self.cleaned_data['oferta']
+		# Comprobamos que sea positivo y no nulo
+		if valor < 1:
+			raise forms.ValidationError("Debes de introducir un precio de subasta no nulo")
+
+		return valor
+
+	def clean_precio_compra(self):
+		''' Comprueba que el precio de compra sea mayor o igual que el de subasta '''
+		valor = self.cleaned_data['precio_compra']
+		if valor:
+			subasta = self.cleaned_data['oferta']
+
+			if valor < subasta:
+				raise forms.ValidationError("Debes de introducir un precio de compra superior al de subasta")
+
+		return valor
+
 	class Meta:
 		model = Subasta
-		exclude = ()
+		exclude = ('estado', 'vendedor', 'comprador', 'atributos_jugador', 'liga')
 
 ########################################################################
+	def clean_num_equipos(self):
+		''' Comprueba que haya un numero de equipos positivo y par y en caso afirmativo los devuelve '''
+		valor = self.cleaned_data['num_equipos'] + len(self.instance.equipo_set.all())
+		if valor % 2 != 0:
+			raise forms.ValidationError("Debe de introducir un valor para que el número de equipos sea par")
+		if valor <= 0:
+			raise forms.ValidationError("Debe haber al menos 2 equipos")
+		return valor

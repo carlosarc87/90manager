@@ -147,6 +147,8 @@ class AtributosVariablesJugador(models.Model):
 	''' Representa los atributos que pueden cambiar de un jugador a lo largo del tiempo '''
 	# Datos equipo
 	equipo = models.ForeignKey(Equipo) # Equipo al que pertenece
+	jugador = models.OneToOneField(Jugador, related_name = 'atributos') # Jugador al que pertenecen
+
 	numero = models.IntegerField(max_length = 2, null = True) # Dorsal en el equipo (0 - 99)
 	ofertado = models.BooleanField(default = False) # Indica si está o no en la lista de jugadores transferibles
 
@@ -169,9 +171,6 @@ class AtributosVariablesJugador(models.Model):
 
 	altura = models.IntegerField(max_length = 3, default = 0, blank = False) # Altura en cm.
 	peso = models.IntegerField(max_length = 3, default = 0, blank = False) # Peso en kg.
-
-	# Jugador
-	jugador = models.OneToOneField(Jugador, related_name = 'atributos')
 
 	# Para que no salgan habilidades con valor 0 el nivel debería ser al menos 10.
 	def setHabilidadesAleatorias(self, posicion, nivel):
@@ -261,7 +260,7 @@ class AtributosVariablesJugador(models.Model):
 	def valorMercado(self, posicion = None):
 		if not posicion:
 			posicion = self.mejorPosicion()
-		
+
 		if (posicion == "PORTERO"):
 			media_hab_principales = self.portero
 			media_hab_secundarias = self.pases
@@ -289,5 +288,14 @@ class AtributosVariablesJugador(models.Model):
 
 		return (int)((1.15 ** media_hab_principales) + (1.1 ** media_hab_secundarias) + (1.05 ** media_hab_poco_importantes))
 
+	def clone(self):
+		''' Devuelve una copia de si mismo '''
+		from django.db.models import AutoField
+		obj = self
+		initial = dict([(f.name, getattr(obj, f.name))
+					for f in obj._meta.fields
+					if not isinstance(f, AutoField) and\
+						not f in obj._meta.parents.values()])
+		return obj.__class__(**initial)
 
 ########################################################################

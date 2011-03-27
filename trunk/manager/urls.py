@@ -25,6 +25,7 @@ urlpatterns = patterns('',
 	(r'^jornadas/', include('gestion_sistema.gestion_jornada.urls')),
 	(r'^partidos/', include('gestion_sistema.gestion_partido.urls')),
 	(r'^jugadores/', include('gestion_sistema.gestion_jugador.urls')),
+	(r'^mercado/subastas/', include('gestion_mercado.gestion_subasta.urls')),
 
 	# Gestion basica de la web
 	(r'', include('gestion_base.urls')),

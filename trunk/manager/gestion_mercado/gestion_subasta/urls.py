@@ -26,7 +26,9 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
    	# Modulo de subastas
-#   	(r'^ver/$', 'gestion_mercado.gestion_subasta.views.ver_subastas'),
+   	(r'^ver/liga/(?P<liga_id>\d+)/$', 'gestion_mercado.gestion_subasta.views.ver_subastas_liga'),
+   	(r'^ver/equipo/(?P<equipo_id>\d+)/$', 'gestion_mercado.gestion_subasta.views.ver_subastas_equipo'),
+   	(r'^ver/(?P<subasta_id>\d+)/$', 'gestion_mercado.gestion_subasta.views.ver_subasta'),
 #   	(r'^apostar/$', 'gestion_mercado.gestion_subasta.views.apostar_subasta'),
-#   	(r'^crear/$', 'gestion_mercado.gestion_subasta.views.crear_subasta'),
+   	(r'^crear/(?P<jugador_id>\d+)/$', 'gestion_mercado.gestion_subasta.views.crear_subasta'),
 )

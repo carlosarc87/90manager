@@ -33,13 +33,13 @@ from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
 class Subasta(models.Model):
 	''' Representa una subasta de un jugador en el sistema '''
 	# Datos principales
-	oferta = models.IntegerField()
-	precio_compra = models.IntegerField()
-	expira = models.DateField()
-	estado = models.IntegerField(max_length = 1, default = 0)
+	oferta = models.PositiveIntegerField(default = 0)
+	precio_compra = models.PositiveIntegerField(null = True, blank = True)
+	expira = models.PositiveIntegerField(default = 1)
+	estado = models.PositiveIntegerField(max_length = 1, default = 0)
 
-	vendedor = models.ForeignKey(Equipo, related_name = 'vendedor')
-	comprador = models.ForeignKey(Equipo, related_name = 'comprador', null = True, blank = True)
+	vendedor = models.ForeignKey(Equipo, related_name = 'subastas_como_vendedor')
+	comprador = models.ForeignKey(Equipo, related_name = 'subastas_como_comprador', null = True, blank = True)
 
 	# Atributos del jugador que se subasta
 	atributos_jugador = models.OneToOneField(AtributosVariablesJugador)

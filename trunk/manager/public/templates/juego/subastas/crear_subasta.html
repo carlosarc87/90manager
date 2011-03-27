@@ -1,0 +1,43 @@
+{% extends "base_juego.html" %}
+
+{% block contenido %}
+
+	<h2>Subastando a {{ jugador.nombre }}</h2>
+
+	<form action="/mercado/subastas/crear/{{ jugador.id }}/" method="post">
+		{% csrf_token %}
+		<!-- Oferta inicial -->
+		<div id="contenido_oferta">
+			{% if form.oferta.errors %}
+				<p class="texto_error">{{ form.oferta.errors }}</p>
+			{% endif %}
+			<label for="id_oferta">Oferta inicial:</label>
+			<div id="caja_oferta">{{ form.oferta }}</div>
+		</div>
+
+		<!-- Compra directa -->
+		<div id="contenido_precio_compra">
+			{% if form.precio_compra.errors %}
+				<p class="texto_error">{{ form.precio_compra.errors }}</p>
+			{% endif %}
+			<label for="id_precio_compra">Precio de compra directa:</label>
+			<div id="caja_precio_compra">{{ form.precio_compra }}</div>
+		</div>
+
+		<!-- Compra directa -->
+		<div id="contenido_expira">
+			{% if form.expira.errors %}
+				<p class="texto_error">{{ form.expira.errors }}</p>
+			{% endif %}
+			<label for="id_precio_compra">Jornadas de duracion de la subasta:</label>
+			<div id="caja_precio_compra">{{ form.expira }}</div>
+		</div>
+
+		<!-- Boton crear -->
+		<div id="contenido_boton_crear">
+			<input type="submit" value="Crear" />
+		</div>
+	</form>
+
+
+{% endblock %}

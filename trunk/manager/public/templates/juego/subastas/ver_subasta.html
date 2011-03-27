@@ -1,0 +1,24 @@
+{% extends "base_juego.html" %}
+
+{% block contenido %}
+	<h2><a href="/jugadores/ver/{{ jugador.id }}/">{{ subasta.atributos_jugador.jugador.nombre }}</a></h2>
+
+	<ul>
+		<li>Oferta actual: {{ subasta.oferta }}</li>
+		<li>Precio de compra directa: {{ subasta.precio_compra }}</li>
+		<li>Dias que quedan: {{ subasta.expira }}</li>
+		<li>Estado de la subasta: {{ subasta.estado }}</li>
+		<li>Equipo vendedor: {{ subasta.vendedor }}</li>
+	</ul>
+
+	{% if subasta.comprador %}
+	<p>
+		<ul>
+			<li>Comprador actual: {{ subasta.comprador }}</li>
+		</ul>
+	</p>
+	{% else %}
+		<p>No hay comprador aun</p>
+	{% endif %}
+
+{% endblock %}

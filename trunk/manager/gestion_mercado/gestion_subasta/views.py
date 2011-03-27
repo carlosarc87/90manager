@@ -37,6 +37,8 @@ import datetime
 from models import Subasta
 from forms import SubastaForm
 from gestion_sistema.gestion_jugador.models import Jugador
+from gestion_sistema.gestion_liga.models import Liga
+from gestion_sistema.gestion_equipo.models import Equipo
 
 from gestion_base.func import devolverMensaje
 
@@ -52,28 +54,34 @@ def crear_subasta(request, jugador_id):
 
 	jugador = Jugador.objects.get(id = jugador_id)
 
-	if jugador.ofertado:
+	if jugador.atributos.ofertado:
 		return devolverMensaje(request, "Este jugador ya está en subasta", "/jugadores/ver/%d/" % jugador.id)
 
-	if jugador.equipo.usuario != usuario:
+	if jugador.atributos.equipo.usuario != usuario:
 		return devolverMensaje(request, "No eres propietario del equipo del jugador")
 
 	if request.method == 'POST':
 		form = SubastaForm(request.POST)
 		if form.is_valid():
 			subasta = form.save(commit = False)
+			subasta.liga = jugador.atributos.equipo.liga
+			subasta.estado = 0
+			subasta.vendedor = jugador.atributos.equipo
+			subasta.comprador = None
+			subasta.atributos_jugador = jugador.atributos
+
 			jugador.ofertado = True
 			subasta.save()
 			return devolverMensaje(request, "Se ha creado correctamente", "/mercado/subastas/ver/%d/" % subasta.id)
 	else:
 		form = SubastaForm()
 
-	return render_to_response("juego/mercado/subasta/crear_subasta.html", {"form": form, "usuario" : usuario, "jugador" : jugador })
+	return render_to_response("juego/subastas/crear_subasta.html", {"form": form, "usuario" : usuario, "jugador" : jugador })
 
 ########################################################################
 
 @login_required
-def ver_subastas(request, liga_id):
+def ver_subastas_liga(request, liga_id):
 	''' Muestra las subastas de una liga '''
 	usuario = request.user
 
@@ -84,7 +92,7 @@ def ver_subastas(request, liga_id):
 
 	subastas = liga.subasta_set.all()
 
-	return render_to_response("juego/mercado/subasta/ver_subastas.html", {"usuario" : usuario, "subastas" : subastas, "liga" : liga }
+	return render_to_response("juego/subastas/ver_subastas_liga.html", {"usuario" : usuario, "subastas" : subastas, "liga" : liga })
 
 ########################################################################
 
@@ -101,7 +109,7 @@ def ver_subasta(request, subasta_id):
 	subasta = Subasta.objects.get(id = subasta_id)
 
 	# Cargamos la plantilla con los parametros y la devolvemos
-	t = loader.get_template("juego/mercado/subasta/ver_subasta.html")
+	t = loader.get_template("juego/subastas/ver_subasta.html")
 	c = Context({"usuario" : usuario,
 				 "subasta" : subasta,
 				})
@@ -117,12 +125,14 @@ def ver_subastas_equipo(request, equipo_id):
 	if Equipo.objects.filter(id = equipo_id).count() == 0:
 		return devolverMensaje(request, "Error, no existe un equipo con identificador %s" % equipo_id)
 
-	equipo = equipo.objects.get(id = equipo_id)
+	equipo = Equipo.objects.get(id = equipo_id)
 
 #	jugadores_en_subasta
 
 #	subastas = equipo.subasta_set.all()
-	subastas = None
+	subastas = equipo.subastas_como_vendedor.all()
 
-	return render_to_response("juego/mercado/subasta/ver_subastas_equipo.html", {"usuario" : usuario, "subastas" : subastas, "equipo" : equipo }
+	return render_to_response("juego/subastas/ver_subastas_equipo.html", {"usuario" : usuario, "subastas" : subastas, "equipo" : equipo })
+
+########################################################################
 

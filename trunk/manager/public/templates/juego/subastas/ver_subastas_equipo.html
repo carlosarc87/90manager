@@ -1,0 +1,14 @@
+{% extends "base_juego.html" %}
+
+{% block contenido %}
+
+	<h2>Subastas de: {{ equipo.nombre }}</h2>
+
+	<ul>
+	{% for subasta in subastas %}
+		<li><a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.atributos_jugador.jugador.nombre }} por {{ subasta.oferta }} para dentro de {{ subasta.expira }} días</a></li>
+	{% empty %}
+		<li>No hay subastas =(</li>
+	{% endfor %}
+	</ul>
+{% endblock %}
