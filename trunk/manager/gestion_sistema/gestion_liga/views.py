@@ -23,7 +23,7 @@ Copyright 2011 by
 """
 
 # Vistas del sistema
-from django.template import Context, loader
+from django.template import Context, loader, RequestContext
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -42,7 +42,6 @@ from models import Liga
 from forms import LigaForm, ActivarLigaForm
 
 from gestion_base.func import devolverMensaje
-from gestion_usuario.func import obtenerUsuario
 from gestion_usuario.models import Usuario
 
 ########################################################################
@@ -74,10 +73,10 @@ def ver_liga(request, liga_id):
 
 	# Obtenemos la liga
 	liga = Liga.objects.get(id = liga_id)
-	
+
 	# Obtenemos los equipos que juegan en la liga
 	equipos = liga.equipo_set.all()
-	
+
 	# Obtenemos las jornadas
 	jornadas = liga.jornada_set.all()
 
@@ -125,25 +124,25 @@ def ver_liga(request, liga_id):
 		if clasificacion is not None:
 			# Calcular variables extra para la clasificación
 			posicion = 1
-			
+
 			ultima_posicion_ascenso = 1
 			primera_posicion_descenso = len(clasificacion)
-			
+
 			for c in clasificacion:
 				c.posicion = posicion
-				
+
 				# Comprobar si es posición de ascenso
 				if c.posicion <= ultima_posicion_ascenso:
 					c.posicion_ascenso = True
 				else:
 					c.posicion_ascenso = False
-					
+
 				# Comprobar si es posición de descenso
 				if c.posicion >= primera_posicion_descenso:
 					c.posicion_descenso = True
 				else:
 					c.posicion_descenso = False
-				
+
 				c.goles_diferencia = c.goles_favor - c.goles_contra
 
 				if jornada_anterior is not None:
@@ -213,9 +212,7 @@ def avanzar_jornada_liga(request, liga_id):
 @login_required
 def crear_liga(request):
 	''' Muestra y gestiona el formulario para crear una liga '''
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	usuario = request.user
 
 	if request.method == 'POST':
 		form = LigaForm(request.POST)
@@ -228,7 +225,9 @@ def crear_liga(request):
 	else:
 		form = LigaForm()
 
-	return render_to_response("juego/ligas/crear_liga.html", {"form" : form, "usuario" : usuario })
+	c = RequestContext(request, {"form" : form, "usuario" : usuario })
+
+	return render_to_response("juego/ligas/crear_liga.html", c)
 
 ########################################################################
 
@@ -269,7 +268,9 @@ def activar_liga(request, liga_id):
 	else:
 		form = ActivarLigaForm(instance = liga)
 
-	return render_to_response("juego/ligas/activar_liga.html", {"form" : form, "usuario" : usuario, "liga" : liga })
+	c = RequestContext(request, {"form" : form, "usuario" : usuario, "liga" : liga })
+
+	return render_to_response("juego/ligas/activar_liga.html", c)
 
 
 ########################################################################

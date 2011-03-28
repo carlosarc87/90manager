@@ -23,7 +23,7 @@ Copyright 2011 by
 """
 
 # Vistas del sistema
-from django.template import Context, loader
+from django.template import Context, loader, RequestContext
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -39,7 +39,6 @@ from models import Partido
 from forms import PrepararEquipoForm
 
 from gestion_base.func import devolverMensaje
-from gestion_usuario.func import obtenerUsuario
 
 ########################################################################
 
@@ -88,9 +87,7 @@ def jugar_partido(request, partido_id):
 def ver_partido(request, partido_id):
 	''' Muestra los datos de un partido '''
 	# Obtenemos el usuario
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	usuario = request.user
 
 	if Partido.objects.filter(id = partido_id).count() == 0:
 		return devolverMensaje(request, "Error, no existe un partido con identificador %s" % partido_id)
@@ -292,9 +289,7 @@ def ver_partido(request, partido_id):
 def preparar_partido(request, partido_id):
 	''' Muestra los datos para preparar un partido '''
 	partido = Partido.objects.get(id = partido_id)
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	usuario = request.user
 
 	if Partido.objects.filter(id = partido_id).count() == 0:
 		return devolverMensaje(request, "Error, no existe un partido con identificador %s" % partido_id)
@@ -341,6 +336,8 @@ def preparar_partido(request, partido_id):
 
 	jugadores = equipo.getJugadores()
 
-	return render_to_response("juego/partidos/preparar_partido.html", {"form": form, "editar" : editar, "usuario" : usuario, "partido" : partido, "equipo" : equipo, "jugadores" : jugadores, "delanteros" : delanteros, "defensas" : defensas, "portero" : portero, "centrocampistas" : centrocampistas, "suplentes" : suplentes })
+	c = RequestContext(request, {"form": form, "editar" : editar, "usuario" : usuario, "partido" : partido, "equipo" : equipo, "jugadores" : jugadores, "delanteros" : delanteros, "defensas" : defensas, "portero" : portero, "centrocampistas" : centrocampistas, "suplentes" : suplentes })
+
+	return render_to_response("juego/partidos/preparar_partido.html", c)
 
 ########################################################################

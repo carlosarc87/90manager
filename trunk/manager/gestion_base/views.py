@@ -21,7 +21,7 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.template import Context, loader
+from django.template import Context, loader, RequestContext
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -33,13 +33,12 @@ import datetime
 from forms import ContactoForm
 
 from gestion_base.func import devolverMensaje
-from gestion_usuario.func import obtenerUsuario
 
 ########################################################################
 
 def index(request):
 	''' Devuelve la pagina principal '''
-	if obtenerUsuario(request):
+	if request.user is not None:
 		return HttpResponseRedirect("/cuentas/perfil")
 	else:
 		return render_to_response("web/usuarios/login.html", {})
@@ -76,7 +75,9 @@ def contacto(request):
 	else:
 		form = ContactoForm()
 
-	return render_to_response("web/contacto.html", {"form" : form})
+	c = RequestContext(request, { "form" : form })
+
+	return render_to_response("web/contacto.html", c)
 
 ########################################################################
 

@@ -11,7 +11,7 @@
 	{% if jugadores.count %}
 		<div><b>Edad media del equipo: </b><span>{{ edad_media_equipo }} años</span></div>
 	{% endif %}
-	
+
 	<!-- Tabla jugadores -->
 	<table class="tabla1" id="tabla_jugadores">
 		<caption>Jugadores</caption>
@@ -46,9 +46,9 @@
 			</tr>
 		{% endif %}
 	</table>
-	
+
 	<div><b>Dinero actual: </b><span>{{ equipo.dinero }} €</span></div>
-	
+
 	<!-- Tabla cuentas -->
 	<table class="tabla1" id="tabla_cuentas">
 		<caption>Cuentas</caption>
@@ -77,7 +77,7 @@
 			</tr>
 		{% endif %}
 	</table>
-	
+
 	<!-- Tabla jugadores en compra -->
 	<table class="tabla1" id="tabla_jugadores_compra">
 		<caption>Jugadores en compra</caption>
@@ -102,42 +102,42 @@
 						<td>
 							{{ jugador.mejorPosicion }}
 						</td>
-						
+
 						<!-- Sexo -->
 						<td>
 							{{ jugador.sexo }}
 						</td>
-						
+
 						<!-- Nombre del jugador -->
 						<td>
 							<a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a>
 						</td>
-						
+
 						<!-- Equipo del jugador -->
 						<td>
 							<a href="/equipos/ver/{{ jugador.equipo.id }}/">{{ jugador.equipo.nombre }}</a>
 						</td>
-						
+
 						<!-- Valor -->
 						<td class="cuadro_num_azul_der">
 							{{ jugador.valorMercado }}
 						</td>
-						
+
 						<!-- Precio subasta -->
 						<td class="cuadro_num_azul_der">
 							<span onclick="realizarSubasta({{ jugador.id }}">{{ jugador.precio_subasta }}</span>
 						</td>
-						
+
 						<!-- Precio compra -->
 						<td class="cuadro_num_azul_der">
 							<span onclick="realizarCompra({{ jugador.id }}">{{ jugador.precio_compra }}</span>
 						</td>
-						
+
 						<!-- Equipo comprador -->
 						<td>
 							<a href="/equipos/ver/{{ jugador.equipo_comprador.id }}/">{{ jugador.equipo_comprador.nombre }}</a>
 						</td>
-						
+
 						<!-- Fecha fin subasta -->
 						<td class="cuadro_num_azul_der">
 							{{ jugador.fecha_fin_subasta }}
@@ -151,7 +151,7 @@
 			</tr>
 		{% endif %}
 	</table>
-	
+
 	<!-- Tabla jugadores en venta -->
 	<table class="tabla1" id="tabla_jugadores_venta">
 		<caption>Jugadores en venta</caption>
@@ -175,37 +175,37 @@
 						<td>
 							{{ jugador.mejorPosicion }}
 						</td>
-						
+
 						<!-- Sexo -->
 						<td>
 							{{ jugador.sexo }}
 						</td>
-						
+
 						<!-- Nombre del jugador -->
 						<td>
 							<a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a>
 						</td>
-						
+
 						<!-- Valor -->
 						<td class="cuadro_num_azul_der">
 							{{ jugador.valorMercado }}
 						</td>
-						
+
 						<!-- Precio subasta -->
 						<td class="cuadro_num_azul_der">
 							<span onclick="realizarSubasta({{ jugador.id }}">{{ jugador.precio_subasta }}</span>
 						</td>
-						
+
 						<!-- Precio compra -->
 						<td class="cuadro_num_azul_der">
 							<span onclick="realizarCompra({{ jugador.id }}">{{ jugador.precio_compra }}</span>
 						</td>
-						
+
 						<!-- Equipo comprador -->
 						<td>
 							<a href="/equipos/ver/{{ jugador.equipo_comprador.id }}/">{{ jugador.equipo_comprador.nombre }}</a>
 						</td>
-						
+
 						<!-- Fecha fin subasta -->
 						<td class="cuadro_num_azul_der">
 							{{ jugador.fecha_fin_subasta }}

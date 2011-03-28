@@ -21,19 +21,3 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-
-from django.shortcuts import render_to_response
-
-from models import Usuario
-
-########################################################################
-
-def obtenerUsuario(request):
-	''' Obtiene un usuario desde un request filtrando al administrador '''
-	if Usuario.objects.filter(id = request.user.id).count() > 0:
-		usuario = Usuario.objects.get(id = request.user.id)
-	else:
-		usuario = None
-	return usuario
-
-########################################################################

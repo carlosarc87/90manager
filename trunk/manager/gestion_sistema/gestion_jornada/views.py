@@ -38,7 +38,6 @@ import random
 from models import Jornada
 
 from gestion_base.func import devolverMensaje
-from gestion_usuario.func import obtenerUsuario
 
 ########################################################################
 
@@ -46,9 +45,7 @@ from gestion_usuario.func import obtenerUsuario
 def ver_jornada(request, jornada_id):
 	''' Muestra los datos de una jornada '''
 	# Obtenemos el usuario
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	usuario = request.user
 
 	if Jornada.objects.filter(id = jornada_id).count() == 0:
 		return devolverMensaje(request, "Error, no existe una jornada con identificador %s" % jornada_id)

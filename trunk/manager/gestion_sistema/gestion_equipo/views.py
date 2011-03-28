@@ -23,7 +23,7 @@ Copyright 2011 by
 """
 
 # Vistas del sistema
-from django.template import Context, loader
+from django.template import Context, loader, RequestContext
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -37,7 +37,7 @@ from models import Equipo
 from forms import EquipoForm
 
 from gestion_base.func import devolverMensaje
-from gestion_usuario.func import obtenerUsuario
+
 from gestion_sistema.gestion_liga.models import Liga
 from gestion_sistema.gestion_jugador.models import Jugador
 from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio
@@ -48,9 +48,7 @@ from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio
 def ver_equipo(request, equipo_id):
 	''' Muestra los datos de un equipo '''
 	# Obtenemos el usuario
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	usuario = request.user
 
 	if Equipo.objects.filter(id = equipo_id).count() == 0:
 		return devolverMensaje(request, "Error, no existe un equipo con identificador %s" % equipo_id)
@@ -96,9 +94,7 @@ def ver_equipo(request, equipo_id):
 @login_required
 def crear_equipo(request, liga_id):
 	''' Muestra la pagina para crear un equipo '''
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	usuario = request.user
 
 	if Liga.objects.filter(id = liga_id).count() == 0:
 		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
@@ -124,7 +120,9 @@ def crear_equipo(request, liga_id):
 	else:
 		form = EquipoForm()
 
-	return render_to_response("juego/equipos/crear_equipo.html", {"form": form, "usuario" : usuario, "liga" : liga })
+	c = RequestContext(request, {"form": form, "usuario" : usuario, "liga" : liga })
+
+	return render_to_response("juego/equipos/crear_equipo.html", c)
 
 ########################################################################
 

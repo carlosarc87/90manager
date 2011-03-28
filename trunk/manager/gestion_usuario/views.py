@@ -21,13 +21,13 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.template import Context, loader
+from django.template import Context, loader, RequestContext
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.core.mail import send_mail
 
-import datetime, random, sha
+import datetime, random, hashlib
 
 from settings import URL_PROPIA, vper
 
@@ -64,8 +64,8 @@ def registrar_usuario(request):
 
 			if vper:
 				# Generamos la clave de activacion
-				salt = sha.new(str(random.random())).hexdigest()[:5]
-				clave = sha.new(salt + usuario.username).hexdigest()
+				salt = hashlib.sha1.new(str(random.random())).hexdigest()[:5]
+				clave = hashlib.sha1.new(salt + usuario.username).hexdigest()
 
 				# Dos días para activar la cuenta
 				fin_clave = datetime.datetime.today() + datetime.timedelta(2)
@@ -95,7 +95,9 @@ def registrar_usuario(request):
 	else:
 		form = UsuarioForm()
 
-	return render_to_response("web/usuarios/registrar_usuario.html", { "form_reg": form })
+	c = RequestContext(request, { "form_reg": form })
+
+	return render_to_response("web/usuarios/registrar_usuario.html", c)
 
 ########################################################################
 
@@ -137,7 +139,7 @@ def activar_usuario(request, clave):
 	usuario.save()
 
 	# Eliminamos la clave
-	#cru.delete()
+	cru.delete()
 	return devolverMensaje(request, "Se activó al usuario correctamente", "/")
 
 ########################################################################

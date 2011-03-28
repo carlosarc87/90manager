@@ -23,7 +23,7 @@ Copyright 2011 by
 """
 
 # Vistas del sistema
-from django.template import Context, loader
+from django.template import Context, loader, RequestContext
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -76,7 +76,9 @@ def crear_subasta(request, jugador_id):
 	else:
 		form = SubastaForm()
 
-	return render_to_response("juego/subastas/crear_subasta.html", {"form": form, "usuario" : usuario, "jugador" : jugador })
+	c = RequestContext(request, {"form": form, "usuario" : usuario, "jugador" : jugador })
+
+	return render_to_response("juego/subastas/crear_subasta.html", c)
 
 ########################################################################
 
