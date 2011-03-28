@@ -21,6 +21,8 @@ h1, h2, h3, h4{
 	width: 780px;
 }
 
+/* footer */
+
 #footer{
 	background-color: #fff;
 	border-top: solid 1px #555555;
@@ -38,21 +40,32 @@ h1, h2, h3, h4{
 	border: 0px;
 }
 
-#footer #contador_desactualizacion{
+#contador_desactualizacion{
 	color: #888;
 	margin: 10px auto;
 	width: 950px;
 }
 
-#footer #enlaces{
+#enlaces_internos{
 	margin: 10px auto;
 	width: 950px;
 }
 
-#footer #logos{
+#enlaces_externos{
 	margin: 10px auto;
 	width: 950px;
 }
+
+#enlaces_externos a{
+	color: #5555cc;
+}
+
+#logos{
+	margin: 10px auto;
+	width: 950px;
+}
+
+/* header */
 
 #header{
 	background-color: #fff;

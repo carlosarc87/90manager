@@ -1,15 +1,30 @@
 {% extends "base_juego.html" %}
 {% load i18n %}
 
+{% block css_extra %}
+	<style type="text/css">
+		.liga_abierta{
+			color: #55aa55;
+			font-weight: bold;
+		}
+		
+		.liga_comenzada{
+			color: #aa5555;
+			font-weight: bold;
+		}
+	</style>
+{% endblock %}
+
 {% block contenido %}
 	<h2>Perfil principal de {{ usuario.username }}</h2>
 
-	<table class="tabla1" style="width: 300px;">
+	<table class="tabla1" id="tabla_ligas_creadas">
 		<caption>Ligas creadas</caption>
 		<thead>
 			<tr>
-				<th>Liga</th>
+				<th>Nombre de la liga</th>
 				<th>Num. equipos</th>
+				<th>Estado</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -17,6 +32,11 @@
 				<tr>
 					<td><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
 					<td>{{ liga.num_equipos }}</td>
+					{% if liga.activada %}
+						<td><span class="liga_comenzada">JORNADA {{ liga.obtenerJornadaActual.numero }}</span></td>
+					{% else %}
+						<td><span class="liga_abierta">ABIERTA</span></td>
+					{% endif %}
 				</tr>
 			{% empty %}
 				<tr>
@@ -26,19 +46,29 @@
 		</tbody>
 	</table>
 
-	<table class="tabla1" style="width: 300px;">
+	<table class="tabla1" id="tabla_ligas_participando">
 		<caption>Ligas en las que participa</caption>
 		<thead>
 			<tr>
-				<th>Liga</th>
+				<th>Creador</th>
+				<th>Nombre de la liga</th>
 				<th>Equipo</th>
+				<th>Num. equipos</th>
+				<th>Estado</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for equipo in equipos %}
 				<tr>
+					<td>{{ equipo.liga.creador }}</td>
 					<td><a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a></td>
 					<td><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></td>
+					<td>{{ equipo.liga.num_equipos }}</td>
+					{% if equipo.liga.activada %}
+						<td><span class="liga_comenzada">JORNADA {{ equipo.liga.obtenerJornadaActual.numero }}</span></td>
+					{% else %}
+						<td><span class="liga_abierta">ABIERTA</span></td>
+					{% endif %}
 				</tr>
 			{% empty %}
 				<tr>

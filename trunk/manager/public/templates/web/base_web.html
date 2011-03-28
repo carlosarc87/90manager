@@ -33,7 +33,7 @@
 			setTimeout("contadorDesactualizado(" + (segundos + paso) + ")", timeout);
 		}
 
-		fechaUltimaActualizacion = "03/21/2011 23:12";
+		fechaUltimaActualizacion = "03/28/2011 16:40";
 		formato_tiempo = "%%D%% días, %%H%% horas, %%M%% minutos y %%S%% segundos.";
 		paso = +1;
 		paso = Math.ceil(paso); // Filtrico
@@ -49,19 +49,6 @@
 			contadorDesactualizado(gsegs);
 		});
 	</script>
-{% endblock %}
-
-{% block enlaces_pie_pagina %}
-	<div id="enlaces">
-		<a href="/contacto/">Contacta con nosotros</a>
-		<a href="/creditos/">Créditos</a>
-		<a href="/changelog/">Cambios</a>
-		<a href="/condiciones/">Condiciones de uso</a>
-		<a href="https://forja.rediris.es/projects/cusl5-90manager/">Forja</a>
-		<a href="http://90manager.wordpress.com/">Blog</a>
-		<a href="https://forja.rediris.es/plugins/wiki/index.php?id=862&amp;type=g">Wiki</a>
-		<a href="/siguenos/">Síguenos</a>
-	</div>
 {% endblock %}
 
 {% block contador_desactualizacion %}

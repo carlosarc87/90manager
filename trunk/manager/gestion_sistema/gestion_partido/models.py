@@ -484,7 +484,7 @@ class Partido(models.Model):
 
 				# Crear jugada
 				num_acciones = (randint(2, 18) + randint(2, 18) + randint(2, 18)) / 3
-				seg_accion = 3 + (int)((100.0 - velocidad[id_equipo_atacante]) / 10) + randint(0, 4)
+				seg_accion = 2 + (int)((100.0 - velocidad[id_equipo_atacante]) / 10) + randint(0, 2)
 
 				if num_acciones <= 4:
 					texto = "Contraataque"
@@ -493,7 +493,7 @@ class Partido(models.Model):
 					self.suceso_set.add(suceso)
 
 				#print "\t" + "num_acciones: " + str(num_acciones) + " (" + str(seg_accion) + " seg / accion)"
-				formula = (1.0 * ataque[id_equipo_atacante]) / pases[id_equipo_atacante]
+				formula = ataque[id_equipo_atacante] / (10.0 * pases[id_equipo_atacante])
 				prob_regate = probabilidadExito(formula)
 				#print "Prob Pase/Regate (" + str(prob_regate) + "%) "
 				accion = 1
@@ -548,13 +548,17 @@ class Partido(models.Model):
 					# Disparo a puerta
 					else:
 						# Calcular probabilidad de que el disparo vaya a portería (95% de la anotación)
-						prob_exito = anotacion[id_equipo_atacante] * 0.95
+						prob_exito = (20 + anotacion[id_equipo_atacante])
+						if prob_exito > 100:
+							prob_exito = 100
+						prob_exito *= 0.95
+						print "Prob. disparo a porteria (" + str(prob_exito) + "%) "
 
 						# Si el balón va a portería
 						if(randint(1, 100) <= prob_exito):
 							formula = (1.0 * anotacion[id_equipo_atacante] / portero[id_equipo_defensor])
 							prob_exito = probabilidadExito(formula)
-							print "Disparo a puerta (" + str(prob_exito) + "%) "
+							#print "Disparo a puerta (" + str(prob_exito) + "%) "
 							if(randint(1, 100) > prob_exito):
 								texto = "Disparo parado"
 								#print texto

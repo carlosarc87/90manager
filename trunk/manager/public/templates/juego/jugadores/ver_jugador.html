@@ -2,8 +2,13 @@
 
 {% block css_extra %}
 	<style type="text/css">
+		#en_forma{
+			color: #55aa55;
+			font-weight: bold;
+		}
+		
 		#lesionado{
-			color: #aa5500;
+			color: #aa5555;
 			font-weight: bold;
 		}
 
@@ -48,9 +53,9 @@
 				<td>Sexo</td>
 				<td>
 					{% if jugador.sexo == 'M' %}
-						Masculino <img src="/media/img/icons/a/genero_masc.png" alt="M" title="" />
+						<img src="/media/img/icons/a/genero_masc.png" alt="M" title="Masculino" height="16" width="16" />
 					{% else %}
-						Femenino <img src="/media/img/icons/a/genero_fem.png" alt="F" title="" />
+						<img src="/media/img/icons/a/genero_fem.png" alt="F" title="Femenino" height="16" width="16" />
 					{% endif %}
 				</td>
 			</tr>
@@ -80,7 +85,7 @@
 					{% if jugador.dias_lesionado > 0 %}
 						<span id="lesionado">Lesionado durante {{ jugador.dias_lesionado }} días</span>
 					{% else %}
-						En plena forma
+						<span id="en_forma">En plena forma</span>
 					{% endif %}
 				</td>
 			</tr>

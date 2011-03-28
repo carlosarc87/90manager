@@ -1,5 +1,19 @@
 {% extends "base_juego.html" %}
 
+{% block css_extra %}
+	<style type="text/css">
+		.liga_abierta{
+			color: #55aa55;
+			font-weight: bold;
+		}
+		
+		.liga_comenzada{
+			color: #aa5555;
+			font-weight: bold;
+		}
+	</style>
+{% endblock %}
+
 {% block contenido %}
 
 	<h2>Ligas públicas del sistema</h2>
@@ -11,6 +25,7 @@
 				<th>Creador</th>
 				<th>Nombre de la liga</th>
 				<th>Num. equipos</th>
+				<th>Estado</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -19,6 +34,11 @@
 					<td>{{ liga.creador }}</td>
 					<td><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
 					<td>{{ liga.num_equipos }}</td>
+					{% if liga.activada %}
+						<td><span class="liga_comenzada">JORNADA {{ liga.obtenerJornadaActual.numero }}</span></td>
+					{% else %}
+						<td><span class="liga_abierta">ABIERTA</span></td>
+					{% endif %}
 				</tr>
 			{% empty %}
 				<tr>
