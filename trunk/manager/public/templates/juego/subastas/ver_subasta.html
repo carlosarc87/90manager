@@ -1,12 +1,21 @@
 {% extends "base_juego.html" %}
 
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li><a href="/ligas/ver/{{ subasta.atributos_jugador.equipo.liga.id }}/">{{ subasta.atributos_jugador.equipo.liga.nombre }}</a></li>
+		<li><a href="/equipos/ver/{{ subasta.atributos_jugador.equipo.id }}/">{{ subasta.atributos_jugador.equipo.nombre }}</a></li>
+		<li><a href="/jugadores/ver/{{ subasta.atributos_jugador.jugador.id }}/">{{ subasta.atributos_jugador.jugador.nombre }}</a></li>
+		<li><span>Subastar</span></li>
+	</ul>
+{% endblock %}
+
 {% block contenido %}
-	<h2><a href="/jugadores/ver/{{ jugador.id }}/">{{ subasta.atributos_jugador.jugador.nombre }}</a></h2>
+	<h2>{{ subasta.atributos_jugador.jugador.nombre }}</h2>
 
 	<ul>
 		<li>Oferta actual: {{ subasta.oferta }}</li>
 		<li>Precio de compra directa: {{ subasta.precio_compra }}</li>
-		<li>Dias que quedan: {{ subasta.expira }}</li>
+		<li>Días que quedan: {{ subasta.expira }}</li>
 		<li>Estado de la subasta: {{ subasta.estado }}</li>
 		<li>Equipo vendedor: {{ subasta.vendedor }}</li>
 	</ul>
@@ -18,7 +27,7 @@
 		</ul>
 	</p>
 	{% else %}
-		<p>No hay comprador aun</p>
+		<p>No hay comprador aún</p>
 	{% endif %}
 
 {% endblock %}

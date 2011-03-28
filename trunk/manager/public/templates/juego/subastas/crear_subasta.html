@@ -1,5 +1,14 @@
 {% extends "base_juego.html" %}
 
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li><a href="/ligas/ver/{{ jugador.atributos.equipo.liga.id }}/">{{ jugador.atributos.equipo.liga.nombre }}</a></li>
+		<li><a href="/equipos/ver/{{ jugador.atributos.equipo.id }}/">{{ jugador.atributos.equipo.nombre }}</a></li>
+		<li><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></li>
+		<li><span>Subastar</span></li>
+	</ul>
+{% endblock %}
+
 {% block contenido %}
 
 	<h2>Subastando a {{ jugador.nombre }}</h2>
@@ -29,8 +38,8 @@
 			{% if form.expira.errors %}
 				<p class="texto_error">{{ form.expira.errors }}</p>
 			{% endif %}
-			<label for="id_precio_compra">Jornadas de duracion de la subasta:</label>
-			<div id="caja_precio_compra">{{ form.expira }}</div>
+			<label for="id_expira">Jornadas de duracion de la subasta:</label>
+			<div id="caja_expira">{{ form.expira }}</div>
 		</div>
 
 		<!-- Boton crear -->
@@ -38,6 +47,4 @@
 			<input type="submit" value="Crear" />
 		</div>
 	</form>
-
-
 {% endblock %}

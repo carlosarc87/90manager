@@ -60,6 +60,8 @@
 			<h4>FINALIZADA</h4>
 		{% endif %}
 
+		<div><a href="/mercado/subastas/ver/liga/{{ liga.id }}/">Ver Mercado de subastas</a></div>
+
 		{% if clasificacion %}
 			<!-- Tabla clasificacion -->
 			<table class="tabla1" id="tabla_clasificacion">
@@ -169,74 +171,6 @@
 				{% endfor %}
 			</tbody>
 		</table>
-		
-		<!-- Mercado de jugadores -->
-		<table class="tabla1" id="tabla_mercado">
-			<caption>Mercado de jugadores</caption>
-			{% if jugadores_mercado.count %}
-				<thead>
-					<tr>
-						<th title="Posición">Pos</th>
-						<th>Sexo</th>
-						<th>Nombre</th>
-						<th>Equipo</th>
-						<th>Valor</th>
-						<th>Precio subasta</th>
-						<th>Precio compra</th>
-						<th>Fecha fin subasta</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for jugador in jugadores_mercado %}
-						<tr>
-							<!-- Posicion -->
-							<td>
-								{{ jugador.mejorPosicion }}
-							</td>
-							
-							<!-- Sexo -->
-							<td>
-								{{ jugador.sexo }}
-							</td>
-							
-							<!-- Nombre del jugador -->
-							<td>
-								<a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a>
-							</td>
-							
-							<!-- Equipo del jugador -->
-							<td>
-								<a href="/equipos/ver/{{ jugador.equipo.id }}/">{{ jugador.equipo.nombre }}</a>
-							</td>
-							
-							<!-- Valor -->
-							<td class="cuadro_num_azul_der">
-								{{ jugador.valorMercado }}
-							</td>
-							
-							<!-- Precio subasta -->
-							<td class="cuadro_num_azul_der">
-								<span onclick="realizarSubasta({{ jugador.id }}">{{ jugador.precio_subasta }}</span>
-							</td>
-							
-							<!-- Precio compra -->
-							<td class="cuadro_num_azul_der">
-								<span onclick="realizarCompra({{ jugador.id }}">{{ jugador.precio_compra }}</span>
-							</td>
-							
-							<!-- Fecha fin subasta -->
-							<td class="cuadro_num_azul_der">
-								{{ jugador.fecha_fin_subasta }}
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			{% else %}
-				<tr>
-					<th>No hay jugadores en el mercado</th>
-				</tr>
-			{% endif %}
-		</table>
 	{% else %}
 		<p>La liga no está activada aun
 		{% if es_creador %}
@@ -251,7 +185,7 @@
 		{% endif %}
 	{% endif %}
 
-	{% if equipos.count %}
+	{% if equipos %}
 		<table class="tabla1" id="tabla_equipos">
 			<caption>Listado de equipos</caption>
 			<thead>
