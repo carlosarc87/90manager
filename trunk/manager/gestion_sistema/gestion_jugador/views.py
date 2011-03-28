@@ -45,9 +45,7 @@ from gestion_base.func import devolverMensaje
 def ver_jugador(request, jugador_id):
 	''' Muestra los datos de un jugador '''
 	# Obtenemos el usuario
-	usuario = obtenerUsuario(request)
-	if usuario == None:
-		return devolverMensaje(request, "SHEEEEEEEEEE vuelve al redil.", "/admin/")
+	usuario = request.user
 
 	if Jugador.objects.filter(id = jugador_id).count() == 0:
 		return devolverMensaje(request, "Error, no existe un jugador con identificador %s" % jugador_id)
