@@ -67,7 +67,7 @@ class Liga(models.Model):
 		# Generar los equipos
 		from gestion_sistema.gestion_equipo.func import listaNombres, nombreEquipoAleatorio
 		from gestion_sistema.gestion_equipo.models import Equipo
-		
+
 		# -------------------------------------------------
 		# Obtener listas de nombres
 		# -------------------------------------------------
@@ -173,6 +173,16 @@ class Liga(models.Model):
 			return False
 
 		jornada.jugarPartidosRestantes()
+
+		# Actualizar subastas
+		for subasta in self.subasta_set.filter(estado = 0):
+			subasta.expira -= 1
+			if subasta.expira == 0:
+				# Completar el traslado
+				print "Subasta acabada"
+				subasta.delete()
+			else:
+				subasta.save()
 
 		# Generar los datos de clasificacion de la siguiente jornada
 		siguiente_jornada = self.obtenerJornadaActual()

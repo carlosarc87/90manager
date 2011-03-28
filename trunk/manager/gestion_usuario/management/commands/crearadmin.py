@@ -14,7 +14,7 @@ class Command(BaseCommand):
 		password = args[1]
 		email = args[2]
 
-		if Usuario.objects.filter(username = nombre).count:
+		if Usuario.objects.filter(username = nombre).count():
 			raise CommandError('Ya existe un usuario con ese nombre')
 
 		# Crear el usuario

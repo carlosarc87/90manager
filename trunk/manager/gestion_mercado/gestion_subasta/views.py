@@ -70,7 +70,8 @@ def crear_subasta(request, jugador_id):
 			subasta.comprador = None
 			subasta.atributos_jugador = jugador.atributos
 
-			jugador.ofertado = True
+			jugador.atributos.ofertado = True
+			jugador.atributos.save()
 			subasta.save()
 			return devolverMensaje(request, "Se ha creado correctamente", "/mercado/subastas/ver/%d/" % subasta.id)
 	else:
