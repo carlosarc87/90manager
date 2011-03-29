@@ -12,10 +12,12 @@
 
 	<h2>Subastas de {{ equipo.nombre }}</h2>
 
+	<h4>Ventas</h4>
+	
 	<!-- Mercado de jugadores -->
 	<table class="tabla1" id="tabla_mercado">
 		<caption>Subastas de jugadores</caption>
-		{% if subastas %}
+		{% if subastas_vendedor %}
 			<thead>
 				<tr>
 					<th title="Posición">Pos</th>
@@ -29,7 +31,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for subasta in subastas %}
+				{% for subasta in subastas_vendedor %}
 					<tr>
 						<!-- Posicion -->
 						<td>
@@ -84,6 +86,80 @@
 		{% else %}
 			<tr>
 				<th>No hay jugadores en subasta</th>
+			</tr>
+		{% endif %}
+	</table>
+	
+	<h4>Compras</h4>
+	
+	<!-- Mercado de jugadores -->
+	<table class="tabla1" id="tabla_mercado">
+		<caption>Subastas de jugadores</caption>
+		{% if subastas %}
+			<thead>
+				<tr>
+					<th title="Posición">Pos</th>
+					<th>Sexo</th>
+					<th>Nombre</th>
+					<th>Equipo</th>
+					<th>Valor</th>
+					<th>Precio subasta</th>
+					<th>Precio compra</th>
+					<th>Días restantes</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for subasta in subastas_comprador %}
+					<tr>
+						<!-- Posicion -->
+						<td>
+							{{ subasta.atributos_jugador.jugador.mejorPosicion }}
+						</td>
+						
+						<!-- Sexo -->
+						<td>
+							{% if subasta.atributos_jugador.jugador.sexo == 'M' %}
+								<img src="/media/img/icons/a/genero_masc.png" alt="M" title="" />
+							{% else %}
+								<img src="/media/img/icons/a/genero_fem.png" alt="F" title="" />
+							{% endif %}
+						</td>
+						
+						<!-- Nombre del jugador -->
+						<td>
+							<a href="/jugadores/ver/{{ subasta.atributos_jugador.jugador.id }}/">{{ subasta.atributos_jugador.jugador.nombre }}</a>
+						</td>
+						
+						<!-- Equipo Vendedor -->
+						<td>
+							<a href="/equipos/ver/{{ subasta.vendedor.id }}/">{{ subasta.vendedor }}</a>
+						</td>
+						
+						<!-- Valor -->
+						<td class="cuadro_num_azul_der">
+							{{ subasta.atributos_jugador.jugador.valorMercado }}
+						</td>
+						
+						<!-- Precio subasta -->
+						<td class="cuadro_num_azul_der">
+							<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.oferta }}</a>
+						</td>
+						
+						<!-- Precio compra -->
+						<td class="cuadro_num_azul_der">
+							<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.precio_compra }}</a>
+						</td>
+						
+						<!-- Dias restantes de subasta -->
+						<td class="cuadro_num_azul_der">
+							{{ subasta.expira }}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		{% else %}
+			<tr>
+				<th>No hay jugadores en compra</th>
 			</tr>
 		{% endif %}
 	</table>

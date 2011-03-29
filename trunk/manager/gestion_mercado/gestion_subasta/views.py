@@ -136,9 +136,10 @@ def ver_subastas_equipo(request, equipo_id):
 #	jugadores_en_subasta
 
 #	subastas = equipo.subasta_set.all()
-	subastas = equipo.subastas_como_vendedor.all()
+	subastas_comprador = equipo.subastas_como_comprador.all()
+	subastas_vendedor = equipo.subastas_como_vendedor.all()
 
-	return render_to_response("juego/subastas/ver_subastas_equipo.html", {"usuario" : usuario, "subastas" : subastas, "equipo" : equipo })
+	return render_to_response("juego/subastas/ver_subastas_equipo.html", {"usuario" : usuario, "subastas_comprador" : subastas_comprador, "subastas_vendedor" : subastas_vendedor, "equipo" : equipo })
 
 ########################################################################
 
