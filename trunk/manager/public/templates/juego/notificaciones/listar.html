@@ -1,0 +1,15 @@
+{% extends "base_juego.html" %}
+
+{% block contenido %}
+
+	<h2>Notificaciones</h2>
+
+	<ul>
+		{% for notificacion in notificaciones %}
+			<li><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.mensaje }}</a></li>
+		{% empty %}
+			<li>No tienes notificaciones</li>
+		{% endfor %}
+	</ul>
+
+{% endblock %}

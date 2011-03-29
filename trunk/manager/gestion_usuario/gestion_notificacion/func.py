@@ -22,14 +22,10 @@ Copyright 2011 by
 
 """
 
-from django.conf.urls.defaults import *
+from models import Notificacion
+import datetime
 
-urlpatterns = patterns('',
-	# Modulo de login
-    (r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'web/usuarios/logout.html'}),
-   	(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'web/usuarios/login.html'}),
-    (r'^perfil/$', 'gestion_usuario.views.perfil_usuario'),
-	(r'^registrar/$', 'gestion_usuario.views.registrar_usuario'),
-	(r'^confirmar/(?P<clave>\w+)/$', 'gestion_usuario.views.activar_usuario'),
-	(r'^notificaciones/', include('gestion_usuario.gestion_notificacion.urls')),
-)
+def notificar(usuario, mensaje, tipo = 0, redireccion = None, liga = None):
+	fecha = datetime.datetime.today()
+	n = Notificacion.objects.create(usuario = usuario, mensaje = mensaje, tipo = tipo, redirigir = redireccion, liga = liga, fecha_emision = fecha)
+	n.save()

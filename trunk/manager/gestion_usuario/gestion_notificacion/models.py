@@ -21,15 +21,29 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+from django.db import models
 
-from django.conf.urls.defaults import *
+from gestion_usuario.models import Usuario
+from gestion_sistema.gestion_liga.models import Liga
 
-urlpatterns = patterns('',
-	# Modulo de login
-    (r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'web/usuarios/logout.html'}),
-   	(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'web/usuarios/login.html'}),
-    (r'^perfil/$', 'gestion_usuario.views.perfil_usuario'),
-	(r'^registrar/$', 'gestion_usuario.views.registrar_usuario'),
-	(r'^confirmar/(?P<clave>\w+)/$', 'gestion_usuario.views.activar_usuario'),
-	(r'^notificaciones/', include('gestion_usuario.gestion_notificacion.urls')),
-)
+########################################################################
+
+# Tipos disponibles
+(
+NADA,
+PARTIDO,
+SUBASTA_REALIZADA,
+) = range(3)
+
+# Notificacion
+class Notificacion(models.Model):
+	''' Representa una notificacion de algun elemento de una liga para un usuario '''
+	usuario = models.ForeignKey(Usuario)
+	liga = models.ForeignKey(Liga, null = True, blank = True)
+	tipo = models.PositiveIntegerField(default = 0)
+	mensaje = models.CharField(max_length = 400)
+	redirigir = models.CharField(max_length = 400)
+	leida = models.BooleanField(default = False)
+	fecha_emision = models.DateTimeField()
+
+########################################################################

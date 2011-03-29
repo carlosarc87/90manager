@@ -27,6 +27,7 @@ from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
 from gestion_sistema.gestion_jornada.models import Jornada
 from gestion_sistema.gestion_clasificacion.models import ClasificacionEquipoJornada
+from gestion_usuario.gestion_notificacion.func import notificar
 
 from random import randint
 from func import probabilidadExito
@@ -172,7 +173,7 @@ class AlineacionEquipo(models.Model):
 	def setAleatoria(self):
 		jugadores_equipo = self.equipo.atributosvariablesjugador_set.all()
 		jugadores_equipo = sorted(jugadores_equipo, key = lambda atributosvariablesjugador : atributosvariablesjugador.valorMercado(), reverse = True)
-		
+
 		# Listas para guardar jugadores por posición y poder obtener luego los mejores
 		lista_PO = []
 		lista_DF = []
@@ -188,59 +189,59 @@ class AlineacionEquipo(models.Model):
 				lista_CC.append(jug)
 			if jug.mejorPosicion() == 'DELANTERO':
 				lista_DL.append(jug)
-		
+
 		# Comprobar qué formación es con la que el equipo tiene mejor valor
 		# 1 PO, 3-5 DF, 2-5 CC, 1-5 DL
 		#max_DF = 5
 		#max_CC = 5
 		#max_DL = 5
-		
+
 		#mejor = []
-		
+
 		# De momento poner una 4-4-2 con los jugadores que haya
 		if len(lista_PO) > 0:
 			jugador = JugadorPartido(atributos = lista_PO.pop(0), posicion = 'PO')
 			jugador.save()
 			self.jugadores.add(jugador)
-		
+
 		for i in range(0, 4):
 			if len(lista_DF) > 0:
 				jugador = JugadorPartido(atributos = lista_DF.pop(0), posicion = 'DF')
 				jugador.save()
 				self.jugadores.add(jugador)
-		
+
 		for i in range(0, 4):
 			if len(lista_CC) > 0:
 				jugador = JugadorPartido(atributos = lista_CC.pop(0), posicion = 'CC')
 				jugador.save()
 				self.jugadores.add(jugador)
-				
+
 		for i in range(0, 2):
 			if len(lista_DL) > 0:
 				jugador = JugadorPartido(atributos = lista_DL.pop(0), posicion = 'DL')
 				jugador.save()
 				self.jugadores.add(jugador)
-		
+
 		# Colocar DF
 		#for DF in range(3, max_DF + 1):
 			#alineacion = []
 			#for i in range(0, DF):
 				#mejor.append(defensas)
-				
+
 			#num_jug_colocados = 1 + DF
-				
+
 			## Colocar CC
 			#for CC in range(2, max_CC + 1):
 				#num_jug_colocados += CC
-				
+
 				## Calcular máximo de DL que se pueden colocar
 				#DL = 11 - num_jug_colocados
-				
+
 				## Colocar DL
 				#print DF + '-' + CC + '-' + DL + ' = ' + valor_alineacion
-					
+
 					# Calcular valor de la alineación
-				
+
 
 	def estaPreparada(self):
 		return len(self.jugadores.all()) > 0
@@ -258,7 +259,7 @@ class AlineacionEquipo(models.Model):
 				valor += (ataque * 0.75)
 			elif(posicion == "DL"):
 				valor += ataque
-				
+
 		if len(titulares) == 0:
 			return 0
 		return (int)(valor / len(titulares))
@@ -276,7 +277,7 @@ class AlineacionEquipo(models.Model):
 				valor += (defensa * 0.75)
 			elif(posicion == "DL"):
 				valor += (defensa * 0.25)
-				
+
 		if len(titulares) == 0:
 			return 0
 		return (int)(valor / len(titulares))
@@ -293,7 +294,7 @@ class AlineacionEquipo(models.Model):
 				valor += pases
 			elif(posicion == "DL"):
 				valor += (pases * 0.5)
-				
+
 		if len(titulares) == 0:
 			return 0
 		return (int)(valor / len(titulares))
@@ -310,7 +311,7 @@ class AlineacionEquipo(models.Model):
 				valor += velocidad
 			elif(posicion == "DL"):
 				valor += (velocidad * 0.5)
-				
+
 		if len(titulares) == 0:
 			return 0
 		return (int)(valor / len(titulares))
@@ -327,7 +328,7 @@ class AlineacionEquipo(models.Model):
 				valor += (int)(anotacion * 0.75)
 			elif(posicion == "DL"):
 				valor += anotacion
-				
+
 		if len(titulares) == 0:
 			return 0
 		return (int)(valor / len(titulares))
@@ -634,6 +635,9 @@ class Partido(models.Model):
 		else:
 			clasificacion_local.puntos += 1
 			clasificacion_visitante.puntos += 1
+
+		notificar(self.equipo_local.usuario, "Se ha jugado el partido", tipo = 0, redireccion = "/partidos/ver/%d/" % self.id, liga = self.equipo_local.liga)
+		notificar(self.equipo_visitante.usuario, "Se ha jugado el partido", tipo = 0, redireccion = "/partidos/ver/%d/" % self.id, liga = self.equipo_local.liga)
 
 		# Guardar los cambios
 		clasificacion_local.save()

@@ -191,7 +191,6 @@ class Liga(models.Model):
 			subasta.expira -= 1
 			if subasta.expira == 0:
 				# Completar el traslado
-				print "Subasta acabada"
 				subasta.finalizar()
 				subasta.delete()
 			else:

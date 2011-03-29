@@ -127,6 +127,10 @@
 		r_text.push("Si ves algo sin validar correctamente, Carlos lo sabrá.");
 		r_text.push("Sí, nosotros también nos entretenemos clickando en esto.");
 		r_text.push("Tiene nombres mil... tiene nombres mil...");
+		r_text.push("Un día de estos nos dá por implementar el recordar contraseña...");
+		r_text.push("Las tostadas de tomate de la cafetería de la ETSIIT son lo mejor");
+		r_text.push("Próximamente con música de Justin Castor y los YO? NAH! brothers");
+		r_text.push("Pulse [aquí] para recibir su fortuna");
 
 		var num_mensajicos = r_text.length;
 
@@ -143,7 +147,7 @@
 				// Imprimir un texto aleatorio de entre los disponibles
 				i = aleatorio(0, num_mensajicos - 1);
 				ele.innerHTML = r_text[i];
-				
+
 				$(ele).fadeToggle(300, "linear");
 			})
 		}

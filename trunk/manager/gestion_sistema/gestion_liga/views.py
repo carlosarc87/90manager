@@ -43,6 +43,7 @@ from forms import LigaForm, ActivarLigaForm
 
 from gestion_base.func import devolverMensaje
 from gestion_usuario.models import Usuario
+from gestion_usuario.gestion_notificacion.func import notificar
 
 ########################################################################
 
@@ -263,6 +264,11 @@ def activar_liga(request, liga_id):
 			# Generar primera clasificacion de la liga
 			jornada = liga.obtenerJornadaActual()
 			jornada.generarClasificacion()
+
+			for equipo in liga.equipo_set.exclude(usuario = None):
+				notificar(equipo.usuario, "La liga %s ha comenzado!" % liga.nombre, tipo = 0, redireccion = "/ligas/ver/%d/" % liga.id, liga = liga)
+
+			liga.save()
 
 			return devolverMensaje(request, "Se ha generado la liga correctamente", "/ligas/ver/%d/" % liga.id)
 	else:

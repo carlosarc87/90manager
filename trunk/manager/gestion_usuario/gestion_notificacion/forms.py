@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# Formularios del sistema. Los que deriven de una clase son rápidos de
+# crear.
 """
 Copyright 2011 by
     * Juan Miguel Lechuga Pérez
@@ -21,15 +23,3 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-
-from django.conf.urls.defaults import *
-
-urlpatterns = patterns('',
-	# Modulo de login
-    (r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'web/usuarios/logout.html'}),
-   	(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'web/usuarios/login.html'}),
-    (r'^perfil/$', 'gestion_usuario.views.perfil_usuario'),
-	(r'^registrar/$', 'gestion_usuario.views.registrar_usuario'),
-	(r'^confirmar/(?P<clave>\w+)/$', 'gestion_usuario.views.activar_usuario'),
-	(r'^notificaciones/', include('gestion_usuario.gestion_notificacion.urls')),
-)

@@ -25,11 +25,9 @@ Copyright 2011 by
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
-	# Modulo de login
-    (r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'web/usuarios/logout.html'}),
-   	(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'web/usuarios/login.html'}),
-    (r'^perfil/$', 'gestion_usuario.views.perfil_usuario'),
-	(r'^registrar/$', 'gestion_usuario.views.registrar_usuario'),
-	(r'^confirmar/(?P<clave>\w+)/$', 'gestion_usuario.views.activar_usuario'),
-	(r'^notificaciones/', include('gestion_usuario.gestion_notificacion.urls')),
+   	# Modulo de subastas
+   	(r'^listar/$', 'gestion_usuario.gestion_notificacion.views.listar_notificaciones'),
+   	(r'^ver/(?P<notificacion_id>\d+)/$', 'gestion_usuario.gestion_notificacion.views.ver_notificacion'),
+   	(r'^borrar/(?P<notificacion_id>\d+)/$', 'gestion_usuario.gestion_notificacion.views.borrar_notificacion'),
+   	(r'^listar_liga/(?P<liga_id>\d+)/$', 'gestion_usuario.gestion_notificacion.views.listar_notificaciones_liga'),
 )
