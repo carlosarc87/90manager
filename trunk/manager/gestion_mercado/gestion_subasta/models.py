@@ -46,4 +46,10 @@ class Subasta(models.Model):
 
 	liga = models.ForeignKey(Liga)
 
+	def finalizar(self):
+		subasta.atributos_jugador.ofertado = False
+		if comprador:
+			subasta.atributos_jugador.equipo = comprador
+		subasta.atributos_jugador.save()
+
 ########################################################################

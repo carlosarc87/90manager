@@ -26,6 +26,7 @@ Copyright 2011 by
 
 from django import forms
 from models import Subasta
+from math import ceil
 
 ########################################################################
 
@@ -65,11 +66,6 @@ class SubastaForm(forms.ModelForm):
 
 		return valor
 
-	class Meta:
-		model = Subasta
-		exclude = ('estado', 'vendedor', 'comprador', 'atributos_jugador', 'liga')
-
-########################################################################
 	def clean_num_equipos(self):
 		''' Comprueba que haya un numero de equipos positivo y par y en caso afirmativo los devuelve '''
 		valor = self.cleaned_data['num_equipos'] + len(self.instance.equipo_set.all())
@@ -78,3 +74,22 @@ class SubastaForm(forms.ModelForm):
 		if valor <= 0:
 			raise forms.ValidationError("Debe haber al menos 2 equipos")
 		return valor
+
+	class Meta:
+		model = Subasta
+		exclude = ('estado', 'vendedor', 'comprador', 'atributos_jugador', 'liga')
+
+########################################################################
+
+class ApostarForm(forms.Form):
+	''' Acepta una cantidad para apostar por una subasta '''
+	cantidad = forms.fields.IntegerField()
+
+	def __init__(self, subasta, *args, **kwargs):
+		''' Constructor que establece la cantidad minima de la subasta '''
+		super(ApostarForm, self).__init__(*args, **kwargs)
+
+		incremento = subasta.oferta * 1.10
+		self.fields['cantidad'].initial = ceil(incremento)
+
+########################################################################

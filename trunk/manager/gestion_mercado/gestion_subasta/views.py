@@ -35,7 +35,7 @@ from django.db.models import Q
 import datetime
 
 from models import Subasta
-from forms import SubastaForm
+from forms import SubastaForm, ApostarForm
 from gestion_sistema.gestion_jugador.models import Jugador
 from gestion_sistema.gestion_liga.models import Liga
 from gestion_sistema.gestion_equipo.models import Equipo
@@ -111,10 +111,13 @@ def ver_subasta(request, subasta_id):
 	# Obtenemos la subasta
 	subasta = Subasta.objects.get(id = subasta_id)
 
+	form = ApostarForm(subasta)
+
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("juego/subastas/ver_subasta.html")
 	c = Context({"usuario" : usuario,
 				 "subasta" : subasta,
+				 "form" : form,
 				})
 	return HttpResponse(t.render(c))
 

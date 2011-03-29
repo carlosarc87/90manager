@@ -62,11 +62,17 @@ def ver_jugador(request, jugador_id):
 	# Obtenemos el equipo
 	equipo = jugador.atributos.equipo
 
+	# Obtenemos si está en subasta
+	subasta = None
+	if jugador.atributos.ofertado:
+		subasta = jugador.atributos.subasta
+
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("juego/jugadores/ver_jugador.html")
 	c = Context({"equipo" : equipo,
 				 "usuario" : usuario,
 				 "jugador" : jugador,
+				 "subasta" : subasta,
 				 "mejor_posicion" : mejor_posicion,
 				 "anios" : anios,
 				 "dias" : dias
