@@ -14,7 +14,7 @@
 		// Indica confirmacion y envia el mensaje si confirma el usuario
 		function compraDirecta() {
 			var respuesta = confirm("¿Está seguro de querer comprar directamente por {{ subasta.compra_directa }}?")
-			if (respuesta){
+			if (respuesta) {
 				location.href = '/mercado/subastas/comprar/{{ subasta.id }}/';
 			}
 		}
@@ -26,7 +26,11 @@
 
 	{% if subasta.estado == 0 %}
 		<ul>
-			<li>Oferta actual: {{ subasta.oferta }}</li>
+			{% if subasta.comprador %}
+				<li>Puja actual: {{ subasta.oferta }} por {{ subasta.comprador }}</li>
+			{% else %}
+				<li>Oferta inicial: {{ subasta.oferta }}</li>
+			{% endif %}
 			{% if subasta.precio_compra %}
 				<li>Precio de compra directa: {{ subasta.precio_compra }}</li>
 			{% endif %}
@@ -35,36 +39,30 @@
 			<li>Equipo vendedor: {{ subasta.vendedor }}</li>
 		</ul>
 
-		{% if subasta.comprador %}
-		<p>
-			<ul>
-				<li>Comprador actual: {{ subasta.comprador }}</li>
-			</ul>
-		</p>
-		{% else %}
-			<p>No hay comprador aún</p>
-		{% endif %}
+		{% if equipo_usuario %}
+			{% if form %}
+				<form action="/mercado/subastas/ver/{{ subasta.id }}/" method="post">
+					{% csrf_token %}
+					<!-- Oferta -->
+					<div id="contenido_oferta">
+						{% if form.cantidad.errors %}
+							<p class="texto_error">{{ form.cantidad.errors }}</p>
+						{% endif %}
 
-		{% if form %}
-			<form action="/mercado/subastas/ver/{{ subasta.id }}/" method="post">
-				{% csrf_token %}
-				<!-- Oferta -->
-				<div id="contenido_oferta">
-					{% if form.oferta.errors %}
-						<p class="texto_error">{{ form.cantidad.errors }}</p>
-					{% endif %}
-
-					<div id="caja_oferta">
-					<label for="id_oferta">Oferta:</label>
-					{{ form.cantidad }}
-					<input type="submit" value="Realizar oferta" />
+						<div id="caja_oferta">
+						<label for="id_oferta">Oferta:</label>
+						{{ form.cantidad }}
+						<input type="submit" value="Realizar oferta" />
+						</div>
 					</div>
-				</div>
-			</form>
+				</form>
 
-			{% if not subasta.compra_directa %}
-				<input type = "submit" name = "boton_compra_directa" value = "Compra directa" onclick="compraDirecta()" />
+				{% if subasta.precio_compra %}
+					<input type = "submit" name = "boton_compra_directa" value = "Compra directa" onclick="compraDirecta()" />
+				{% endif %}
 			{% endif %}
+		{% else %}
+			No puedes pujar por esta subasta
 		{% endif %}
 	{% else %}
 		{% if subasta.estado == 1 %}

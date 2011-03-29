@@ -59,7 +59,7 @@ class Subasta(models.Model):
 		''' Indica si alguien ha subastado '''
 		return self.comprador is not None
 
-	def ofertar(self, equipo, cantidad):
+	def pujar(self, equipo, cantidad):
 		''' Realiza una oferta de un equipo '''
 		self.oferta = cantidad
 		self.comprador = equipo

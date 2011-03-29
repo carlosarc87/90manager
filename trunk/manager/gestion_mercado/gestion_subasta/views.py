@@ -112,13 +112,17 @@ def ver_subasta(request, subasta_id):
 	subasta = Subasta.objects.get(id = subasta_id)
 
 	# Equipo del usuario
+	equipo_usuario = None
+	if usuario.equipo_set.filter(liga = subasta.liga).count():
+		equipo_usuario = usuario.equipo_set.get(liga = subasta.liga)
 
 	if request.method == 'POST':
+		if not equipo_usuario:
+			devolverMensaje('No puedes pujar en una liga en la que no juegas')
 		form = ApostarForm(subasta, request.POST)
 		if form.is_valid():
 			cantidad = form.cleaned_data['cantidad']
-			subasta.oferta = cantidad
-			#subasta.comprador = equipo
+			subasta.pujar(equipo_usuario, cantidad)
 			subasta.save()
 			return devolverMensaje(request, "Cantidad apostada correctamente", "/mercado/subastas/ver/%d/" % subasta.id)
 	else:
@@ -127,6 +131,7 @@ def ver_subasta(request, subasta_id):
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("juego/subastas/ver_subasta.html")
 	c = RequestContext(request, {"usuario" : usuario,
+				 "equipo_usuario" : equipo_usuario,
 				 "subasta" : subasta,
 				 "form" : form,
 				})

@@ -89,7 +89,17 @@ class ApostarForm(forms.Form):
 		''' Constructor que establece la cantidad minima de la subasta '''
 		super(ApostarForm, self).__init__(*args, **kwargs)
 
-		self.oferta_minima = ceil(subasta.oferta * 1.10)
-		self.fields['cantidad'].initial = self.oferta_minima
+		self.puja_minima = int(ceil(subasta.oferta * 1.10))
+		self.fields['cantidad'].initial = self.puja_minima
+		self.subasta = subasta
+
+	def clean_cantidad(self):
+		valor = self.cleaned_data['cantidad']
+		if valor < self.puja_minima:
+			raise forms.ValidationError("Debe de apostar %d como mínimo" % self.puja_minima)
+		if self.subasta.precio_compra:
+			if valor >= self.subasta.precio_compra:
+				raise forms.ValidationError("Tu estas tonto, no?")
+		return valor
 
 ########################################################################
