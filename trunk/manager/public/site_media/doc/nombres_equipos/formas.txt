@@ -1,3 +1,4 @@
+# Masculinos
 Cónicos
 Cuadrados
 Cúbicos
@@ -5,5 +6,16 @@ Deformes
 Elipses
 Escalenos
 Esféricos
+Irregulares
+Rectangulares
+#
+# Femeninos
+Cónicas
+Cuadradas
+Cúbicas
+Deformes
+Elipses
+Escalenas
+Esféricas
 Irregulares
 Rectangulares

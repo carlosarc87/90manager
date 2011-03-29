@@ -28,21 +28,32 @@ from settings import RUTA
 
 def listaNombres(nombre_fichero):
 	""" Devuelve una lista con todos los nombres que hay en el fichero dado """
-	# Crear lista
-	lista_nombres = []
-
-	# Obtener nombres
+	# Listas de nombres
+	lista_nombres_masc = []
+	lista_nombres_fem = []
+	
+	femeninos = False
 	fich = open(RUTA + "public/site_media/doc/" + nombre_fichero, "r")
 	while(True):
-		nombre = fich.readline()
-		nombre = nombre[:-1] # Quitar '\n'
-		if not nombre:
+		linea = fich.readline()
+		
+		if linea:
+			linea = linea[:-1] # Quitar '\n' del final
+			
+			if linea == "# Femeninos":
+				femeninos = True
+			print 'linea:' + linea
+			if not linea[0] == '#':
+				if femeninos:
+					lista_nombres_fem.append(linea)
+				else:
+					lista_nombres_masc.append(linea)
+		else:
 			break
-		lista_nombres.append(nombre)
 
 	fich.close()
-
-	return lista_nombres
+	
+	return lista_nombres_masc, lista_nombres_fem
 
 ########################################################################
 
@@ -63,16 +74,25 @@ def nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2):
 	# 1.- [parte 1] + [parte 2]
 	# 2.- [tipo_club] + [parte 1] + [parte 2]
 	a = randint(1, 2)
-	parte1 = lista_parte1[randint(0, len(lista_parte1) - 1)]
-	parte2 = lista_parte2[randint(0, len(lista_parte2) - 1)]
+	
+	# Elegir genero al azar
+	g = randint(1, 2)
+	
+	# Obtener nombres dependiendo del genero
+	if g == 1: # Masculino
+		parte1 = lista_parte1[0][randint(0, len(lista_parte1[0]) - 1)]
+		parte2 = lista_parte2[0][randint(0, len(lista_parte2[0]) - 1)]
+	else: # Femenino
+		parte1 = lista_parte1[1][randint(0, len(lista_parte1[1]) - 1)]
+		parte2 = lista_parte2[1][randint(0, len(lista_parte2[1]) - 1)]
 	
 	if a == 1:
 		nombre_equipo = parte1 + ' ' + parte2
 		parte1 = quitar_acentos(parte1)
 		parte2 = quitar_acentos(parte2)
-		siglas = parte1[0] + parte2[0]
+		siglas = parte1[0] + parte2[0] + parte2[1]
 	else:
-		tipo_club = lista_nombres_tipo_club[randint(0, len(lista_nombres_tipo_club) - 1)]
+		tipo_club = lista_nombres_tipo_club[0][randint(0, len(lista_nombres_tipo_club) - 1)]
 		nombre_equipo = tipo_club + ' ' + parte1 + ' ' + parte2
 		tipo_club = quitar_acentos(tipo_club)
 		parte1 = quitar_acentos(parte1)

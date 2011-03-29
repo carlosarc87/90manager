@@ -1,3 +1,4 @@
+# Masculinos
 Aguamarinas
 Amarillos
 Azules
@@ -6,8 +7,22 @@ Fucsias
 Marrones
 Naranjas
 Negros
-Pistachos
 Rojos
+Rosas
+Turquesas
+Verdes
+Violetas
+#
+# Femeninos
+Aguamarinas
+Amarillas
+Azules
+Blancas
+Fucsias
+Marrones
+Naranjas
+Negras
+Rojas
 Rosas
 Turquesas
 Verdes
