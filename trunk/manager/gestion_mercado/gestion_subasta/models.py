@@ -29,6 +29,9 @@ from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
 
 ########################################################################
 
+# Opciones disponibles
+(ACTIVA, FINALIZADA, COMPRADA) = range(3)
+
 # Subasta
 class Subasta(models.Model):
 	''' Representa una subasta de un jugador en el sistema '''
@@ -46,10 +49,26 @@ class Subasta(models.Model):
 
 	liga = models.ForeignKey(Liga)
 
+	def comprar(self, equipo):
+		''' Compra la subasta directamente con un equipo '''
+		self.estado = COMPRADA # Indicar que se ha comprado
+		self.comprador = equipo
+		self.expira = 1 # Indicamos que expira en esa jornada
+
+	def tieneComprador(self):
+		''' Indica si alguien ha subastado '''
+		return self.comprador is not None
+
+	def ofertar(self, equipo, cantidad):
+		''' Realiza una oferta de un equipo '''
+		self.oferta = cantidad
+		self.comprador = equipo
+
 	def finalizar(self):
-		subasta.atributos_jugador.ofertado = False
-		if comprador:
-			subasta.atributos_jugador.equipo = comprador
-		subasta.atributos_jugador.save()
+		''' Finaliza y realiza los trámites oportunos de la subasta '''
+		self.atributos_jugador.ofertado = False
+		if self.comprador:
+			self.atributos_jugador.jugador.setEquipo(self.comprador)
+		self.atributos_jugador.save()
 
 ########################################################################

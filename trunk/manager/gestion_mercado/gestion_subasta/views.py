@@ -111,11 +111,22 @@ def ver_subasta(request, subasta_id):
 	# Obtenemos la subasta
 	subasta = Subasta.objects.get(id = subasta_id)
 
-	form = ApostarForm(subasta)
+	# Equipo del usuario
+
+	if request.method == 'POST':
+		form = ApostarForm(subasta, request.POST)
+		if form.is_valid():
+			cantidad = form.cleaned_data['cantidad']
+			subasta.oferta = cantidad
+			#subasta.comprador = equipo
+			subasta.save()
+			return devolverMensaje(request, "Cantidad apostada correctamente", "/mercado/subastas/ver/%d/" % subasta.id)
+	else:
+		form = ApostarForm(subasta)
 
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("juego/subastas/ver_subasta.html")
-	c = Context({"usuario" : usuario,
+	c = RequestContext(request, {"usuario" : usuario,
 				 "subasta" : subasta,
 				 "form" : form,
 				})
@@ -143,3 +154,33 @@ def ver_subastas_equipo(request, equipo_id):
 
 ########################################################################
 
+@login_required
+def comprar_subasta(request, subasta_id):
+	''' Muestra los datos de una subasta '''
+	# Obtenemos el usuario
+	usuario = request.user
+
+	if Subasta.objects.filter(id = subasta_id).count() == 0:
+		return devolverMensaje(request, "Error, no existe una subasta con identificador %s" % subasta_id)
+
+	# Obtenemos la subasta
+	subasta = Subasta.objects.get(id = subasta_id)
+
+	if not usuario.equipo_set.filter(liga = subasta.liga).count():
+		return devolverMensaje(request, "Error, no tienes equipo en esta liga")
+
+	if subasta.estado is not 0:
+		return devolverMensaje(request, "Error, la subasta %s ya acabó" % subasta_id)
+
+	if not subasta.precio_compra:
+		return devolverMensaje(request, "Error, la subasta %s no puede comprarse directamente" % subasta_id)
+
+	equipo = usuario.equipo_set.get(liga = subasta.liga)
+
+	# Burocracia de comprar al jugador
+	subasta.comprar(equipo)
+	subasta.save()
+
+	return devolverMensaje(request, "Ha comprado al jugador correctamente", "/mercado/subastas/ver/%s/" % subasta_id)
+
+########################################################################

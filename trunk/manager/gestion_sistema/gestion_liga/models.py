@@ -175,7 +175,7 @@ class Liga(models.Model):
 		jornada.jugarPartidosRestantes()
 
 		# Actualizar subastas
-		for subasta in self.subasta_set.filter(estado = 0):
+		for subasta in self.subasta_set.all():
 			subasta.expira -= 1
 			if subasta.expira == 0:
 				# Completar el traslado

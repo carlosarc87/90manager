@@ -89,7 +89,7 @@ class ApostarForm(forms.Form):
 		''' Constructor que establece la cantidad minima de la subasta '''
 		super(ApostarForm, self).__init__(*args, **kwargs)
 
-		incremento = subasta.oferta * 1.10
-		self.fields['cantidad'].initial = ceil(incremento)
+		self.oferta_minima = ceil(subasta.oferta * 1.10)
+		self.fields['cantidad'].initial = self.oferta_minima
 
 ########################################################################

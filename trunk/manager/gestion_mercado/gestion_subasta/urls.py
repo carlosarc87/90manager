@@ -29,6 +29,7 @@ urlpatterns = patterns('',
    	(r'^ver/liga/(?P<liga_id>\d+)/$', 'gestion_mercado.gestion_subasta.views.ver_subastas_liga'),
    	(r'^ver/equipo/(?P<equipo_id>\d+)/$', 'gestion_mercado.gestion_subasta.views.ver_subastas_equipo'),
    	(r'^ver/(?P<subasta_id>\d+)/$', 'gestion_mercado.gestion_subasta.views.ver_subasta'),
+   	(r'^comprar/(?P<subasta_id>\d+)/$', 'gestion_mercado.gestion_subasta.views.comprar_subasta'),
 #   	(r'^apostar/$', 'gestion_mercado.gestion_subasta.views.apostar_subasta'),
    	(r'^crear/(?P<jugador_id>\d+)/$', 'gestion_mercado.gestion_subasta.views.crear_subasta'),
 )
