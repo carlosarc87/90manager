@@ -42,7 +42,7 @@ def listaNombres(nombre_fichero):
 			
 			if linea == "# Femeninos":
 				femeninos = True
-			print 'linea:' + linea
+			
 			if not linea[0] == '#':
 				if femeninos:
 					lista_nombres_fem.append(linea)
@@ -57,12 +57,19 @@ def listaNombres(nombre_fichero):
 
 ########################################################################
 
-def quitar_acentos(cadena):
+def quitar_caracteres_raros(cadena):
+	cadena = cadena.replace('á', 'a')
+	cadena = cadena.replace('é', 'e')
+	cadena = cadena.replace('í', 'i')
+	cadena = cadena.replace('ó', 'o')
+	cadena = cadena.replace('ú', 'u')
+	cadena = cadena.replace('ñ', 'n')
 	cadena = cadena.replace('Á', 'A')
 	cadena = cadena.replace('É', 'E')
 	cadena = cadena.replace('Í', 'I')
 	cadena = cadena.replace('Ó', 'O')
 	cadena = cadena.replace('Ú', 'U')
+	cadena = cadena.replace('Ñ', 'N')
 	return cadena
 
 ########################################################################
@@ -88,15 +95,15 @@ def nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2):
 	
 	if a == 1:
 		nombre_equipo = parte1 + ' ' + parte2
-		parte1 = quitar_acentos(parte1)
-		parte2 = quitar_acentos(parte2)
-		siglas = parte1[0] + parte2[0] + parte2[1]
+		parte1 = quitar_caracteres_raros(parte1)
+		parte2 = quitar_caracteres_raros(parte2)
+		siglas = parte1[0] + parte2[0] + parte2[1].upper()
 	else:
 		tipo_club = lista_nombres_tipo_club[0][randint(0, len(lista_nombres_tipo_club) - 1)]
 		nombre_equipo = tipo_club + ' ' + parte1 + ' ' + parte2
-		tipo_club = quitar_acentos(tipo_club)
-		parte1 = quitar_acentos(parte1)
-		parte2 = quitar_acentos(parte2)
+		tipo_club = quitar_caracteres_raros(tipo_club)
+		parte1 = quitar_caracteres_raros(parte1)
+		parte2 = quitar_caracteres_raros(parte2)
 		siglas = tipo_club[0] + parte1[0] + parte2[0]
 
 	# Devolver nombre_completo y apodo

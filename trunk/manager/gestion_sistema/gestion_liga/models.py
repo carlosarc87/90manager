@@ -108,14 +108,9 @@ class Liga(models.Model):
 			nombre_eq, siglas_eq = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
 			
 			# Comprobar que las siglas no se repitan
-			equipos_liga = self.equipo_set.all()
-			lista_equipos = []
-			for e in equipos_liga:
-				lista_equipos.append(e.siglas)
-			
 			c = 1
-			while lista_equipos.count(siglas_eq) > 0:
-				siglas_eq = siglas_eq[:1] + str(c)
+			while self.equipo_set.filter(siglas = siglas_eq).count() > 0:
+				siglas_eq = siglas_eq[:-1] + str(c)
 				c += 1
 			
 			equipo = Equipo(nombre = nombre_eq, siglas = siglas_eq, usuario = None, liga = self, dinero = self.dinero_inicial)
