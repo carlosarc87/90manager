@@ -636,8 +636,11 @@ class Partido(models.Model):
 			clasificacion_local.puntos += 1
 			clasificacion_visitante.puntos += 1
 
-		notificar(self.equipo_local.usuario, "Se ha jugado el partido", tipo = 0, redireccion = "/partidos/ver/%d/" % self.id, liga = self.equipo_local.liga)
-		notificar(self.equipo_visitante.usuario, "Se ha jugado el partido", tipo = 0, redireccion = "/partidos/ver/%d/" % self.id, liga = self.equipo_local.liga)
+		if self.equipo_local.usuario:
+			notificar(self.equipo_local.usuario, "Se ha jugado el partido", tipo = 0, redireccion = "/partidos/ver/%d/" % self.id, liga = self.equipo_local.liga)
+
+		if self.equipo_visitante.usuario:
+			notificar(self.equipo_visitante.usuario, "Se ha jugado el partido", tipo = 0, redireccion = "/partidos/ver/%d/" % self.id, liga = self.equipo_visitante.liga)
 
 		# Guardar los cambios
 		clasificacion_local.save()
