@@ -54,7 +54,8 @@ class Subasta(models.Model):
 	def comprar(self, equipo):
 		''' Compra la subasta directamente con un equipo '''
 		if self.tieneComprador():
-			notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA_COMPRADA, identificador = self.id, liga = self.liga)
+			if self.comprador is not equipo:
+				notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA_COMPRADA, identificador = self.id, liga = self.liga)
 		self.estado = COMPRADA # Indicar que se ha comprado
 		self.comprador = equipo
 		self.expira = 1 # Indicamos que expira en esa jornada
@@ -67,7 +68,8 @@ class Subasta(models.Model):
 		''' Realiza una oferta de un equipo '''
 		# Notificar al anterior
 		if self.tieneComprador():
-			notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA, identificador = self.id, liga = self.liga)
+			if self.comprador is not equipo:
+				notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA, identificador = self.id, liga = self.liga)
 
 		self.oferta = cantidad
 		self.comprador = equipo

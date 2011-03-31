@@ -109,7 +109,7 @@ def ver_subasta(request, subasta_id):
 	if usuario.equipo_set.filter(liga = subasta.liga).count():
 		equipo_usuario = usuario.equipo_set.get(liga = subasta.liga)
 
-	if subasta.vendedor is not equipo_usuario:
+	if subasta.vendedor != equipo_usuario:
 		if request.method == 'POST':
 			if not equipo_usuario:
 				devolverMensaje('No puedes pujar en una liga en la que no juegas')
@@ -174,10 +174,10 @@ def comprar_subasta(request, subasta_id):
 	if not subasta.precio_compra:
 		return devolverMensaje(request, "Error, la subasta %s no puede comprarse directamente" % subasta_id)
 
-	if subasta.vendedor.usuario == usuario:
-		return devolverMensaje(request, "Error, no puedes comprarte tu propia subasta")
-
 	equipo = usuario.equipo_set.get(liga = subasta.liga)
+
+	if subasta.vendedor == equipo:
+		return devolverMensaje(request, "Error, no puedes comprarte tu propia subasta")
 
 	# Burocracia de comprar al jugador
 	subasta.comprar(equipo)

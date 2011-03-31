@@ -26,16 +26,15 @@ from models import Notificacion
 import datetime
 
 class TipoNotificacion:
-	def __init__(self):
-		# Tipos disponibles
-		self.LIGA_ACTIVADA             = 100
+	# Tipos disponibles
+	LIGA_ACTIVADA             = 100
 
-		self.SUBASTA_FINALIZADA        = 300
-		self.SUBASTA_GANADA            = 301
-		self.SUBASTA_SUPERADA          = 302
-		self.SUBASTA_SUPERADA_COMPRADA = 303
+	SUBASTA_FINALIZADA        = 300
+	SUBASTA_GANADA            = 301
+	SUBASTA_SUPERADA          = 302
+	SUBASTA_SUPERADA_COMPRADA = 303
 
-		self.PARTIDO_FINALIZADO        = 400
+	PARTIDO_FINALIZADO        = 400
 
 def notificar(usuario, tipo, identificador, liga = None):
 	fecha = datetime.datetime.today()
