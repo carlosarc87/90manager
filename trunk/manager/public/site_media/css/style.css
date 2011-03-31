@@ -1,5 +1,15 @@
-a{ color: #00aa00; }
-a:visited{ color: #aa0000; }
+a{
+	color: #00aa00;
+	text-decoration: underline;
+}
+
+a:hover{
+	text-decoration: overline underline;
+}
+
+a:visited{
+	color: #aa0000;
+}
 
 body{
 	background: #88dd88;
@@ -91,12 +101,7 @@ h1, h2, h3, h4{
 #menu_superior a{
 	color: #fff;
 	height: 100%;
-	text-decoration: none;
 	width: 100%;
-}
-
-#menu_superior a:hover{
-	text-decoration: underline;
 }
 
 #menu_superior_situacion{
@@ -162,11 +167,6 @@ h1, h2, h3, h4{
 
 .tabla1 a{
 	color: #5555aa;
-	text-decoration: none;
-}
-
-.tabla1 a:hover{
-	text-decoration: underline;
 }
 
 .tabla1 caption{

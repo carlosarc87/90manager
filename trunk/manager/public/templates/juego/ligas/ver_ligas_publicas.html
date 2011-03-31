@@ -2,6 +2,35 @@
 
 {% block css_extra %}
 	<style type="text/css">
+		h2{
+			margin: 10px;
+			text-align: center;
+		}
+		
+		/* Ligas publicas */
+		
+		#tabla_ligas_publicas{
+			margin: 20px auto;
+			width: 500px;
+		}
+		
+		.col_creador{
+		}
+		
+		.col_estado{
+			text-align: center;
+		}
+		
+		.col_inscritos{
+			color: #5555aa;
+			text-align: right;
+		}
+		
+		.col_nombre{
+		}
+		
+		/* Fin ligas publicas */
+		
 		.liga_abierta{
 			color: #55aa55;
 			font-weight: bold;
@@ -18,26 +47,29 @@
 
 	<h2>Ligas públicas del sistema</h2>
 
-	<table class="tabla1">
+	<table class="tabla1" id="tabla_ligas_publicas">
 		<caption>Ligas</caption>
 		<thead>
 			<tr>
 				<th>Creador</th>
-				<th>Nombre de la liga</th>
-				<th>Num. equipos</th>
+				<th>Liga</th>
+				<th>Inscritos</th>
 				<th>Estado</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for liga in ligas %}
 				<tr>
-					<td>{{ liga.creador }}</td>
-					<td><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
-					<td>{{ liga.num_equipos }}</td>
+					<td class="col_creador">{{ liga.creador }}</td>
+					
+					<td class="col_nombre"><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
+					
+					<td class="col_inscritos">{{ liga.inscritos }}</td>
+					
 					{% if liga.activada %}
 						<td><span class="liga_comenzada">JORNADA {{ liga.obtenerJornadaActual.numero }}</span></td>
 					{% else %}
-						<td><span class="liga_abierta">ABIERTA</span></td>
+						<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>
 					{% endif %}
 				</tr>
 			{% empty %}

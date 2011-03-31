@@ -3,6 +3,44 @@
 
 {% block css_extra %}
 	<style type="text/css">
+		h2{
+			margin: 10px;
+			text-align: center;
+		}
+		
+		/* Ligas creadas */
+		
+		#tabla_ligas_creadas{
+			margin: 20px auto;
+			width: 500px;
+		}
+		
+		/* Fin ligas creadas */
+		
+		/* Ligas en que participa */
+		
+		#tabla_ligas_participando{
+			margin: 20px auto;
+			width: 700px;
+		}
+		
+		/* Fin ligas en que participa */
+		
+		.col_creador{}
+		
+		.col_estado{
+			text-align: right;
+		}
+		
+		.col_nombre_equipo{}
+		
+		.col_nombre_liga{}
+		
+		.col_num_equipos{
+			color: #5555aa;
+			text-align: right;
+		}
+		
 		.liga_abierta{
 			color: #55aa55;
 			font-weight: bold;
@@ -30,12 +68,14 @@
 		<tbody>
 			{% for liga in ligas_creadas %}
 				<tr>
-					<td><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
-					<td>{{ liga.num_equipos }}</td>
+					<td class="col_nombre_liga"><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
+					
+					<td class="col_num_equipos">{{ liga.num_equipos }}</td>
+					
 					{% if liga.activada %}
-						<td><span class="liga_comenzada">JORNADA {{ liga.obtenerJornadaActual.numero }}</span></td>
+						<td class="col_estado"><span class="liga_comenzada">JORNADA {{ liga.obtenerJornadaActual.numero }}</span></td>
 					{% else %}
-						<td><span class="liga_abierta">ABIERTA</span></td>
+						<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>
 					{% endif %}
 				</tr>
 			{% empty %}
@@ -60,14 +100,18 @@
 		<tbody>
 			{% for equipo in equipos %}
 				<tr>
-					<td>{{ equipo.liga.creador }}</td>
-					<td><a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a></td>
-					<td><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></td>
-					<td>{{ equipo.liga.num_equipos }}</td>
+					<td class="col_creador">{{ equipo.liga.creador }}</td>
+					
+					<td class="col_nombre_liga"><a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a></td>
+					
+					<td class="col_nombre_equipo"><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></td>
+					
+					<td class="col_num_equipos">{{ equipo.liga.num_equipos }}</td>
+					
 					{% if equipo.liga.activada %}
-						<td><span class="liga_comenzada">JORNADA {{ equipo.liga.obtenerJornadaActual.numero }}</span></td>
+						<td class="col_estado"><span class="liga_comenzada">JORNADA {{ equipo.liga.obtenerJornadaActual.numero }}</span></td>
 					{% else %}
-						<td><span class="liga_abierta">ABIERTA</span></td>
+						<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>
 					{% endif %}
 				</tr>
 			{% empty %}

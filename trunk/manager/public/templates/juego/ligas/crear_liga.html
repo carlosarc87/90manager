@@ -105,7 +105,7 @@
 		<!-- Nombre de la liga -->
 		<div id="contenido_nombre">
 			{% if form.nombre.errors %}
-				<p class="texto_error">{{ form.nombre.errors }}</p>
+				{{ form.nombre.errors }}
 			{% endif %}
 			
 			<label for="id_nombre">Nombre de la liga:</label>
@@ -116,7 +116,7 @@
 		<!-- Visibilidad -->
 		<div id="contenido_visibilidad">
 			{% if form.publica.errors %}
-				<p class="texto_error">{{ form.publica.errors }}</p>
+				{{ form.publica.errors }}
 			{% endif %}
 			
 			<label for="id_publica">Pública</label>
@@ -130,7 +130,7 @@
 
 			<div id="contenido_sexo_permitido">
 				{% if form.sexo_permitido.errors %}
-					<p class="texto_error">{{ form.sexo_permitido.errors }}</p>
+					{{ form.sexo_permitido.errors }}
 				{% endif %}
 				
 				<span class="label">Géneros permitidos:</span>
@@ -142,7 +142,7 @@
 
 			<div id="contenido_inteligencia_bots">
 				{% if form.inteligencia_bots.errors %}
-					<p class="texto_error">{{ form.inteligencia_bots.errors }}</p>
+					{{ form.inteligencia_bots.errors }}
 				{% endif %}
 				
 				<label for="id_inteligencia_bots">Inteligencia de los bots:</label>
@@ -155,7 +155,7 @@
 			<!-- Tipo avance jornadas -->
 			<div id="contenido_tipo_avance_jornadas">
 				{% if form.tipo_avance_jornadas.errors %}
-					<p class="texto_error">{{ form.tipo_avance_jornadas.errors }}</p>
+					{{ form.tipo_avance_jornadas.errors }}
 				{% endif %}
 				
 				<span class="label">Avance de las jornadas:</span>
@@ -172,7 +172,7 @@
 			<!-- Dinero inicial -->
 			<div id="contenido_dinero_inicial">
 				{% if form.dinero_inicial.errors %}
-					<p class="texto_error">{{ form.dinero_inicial.errors }}</p>
+					{{ form.dinero_inicial.errors }}
 				{% endif %}
 				<label for="id_dinero_inicial">Dinero inicial:</label>
 
@@ -184,7 +184,7 @@
 			<!-- Numero de jugadores inicial -->
 			<div id="contenido_num_jugadores_inicial">
 				{% if form.num_jugadores_inicial.errors %}
-					<p class="texto_error">{{ form.num_jugadores_inicial.errors }}</p>
+					{{ form.num_jugadores_inicial.errors }}
 				{% endif %}
 				
 				<label for="id_num_jugadores_inicial">Número de jugadores inicial:</label>
@@ -197,7 +197,7 @@
 			<!-- Nivel maximo de los jugadores al inicio de la liga -->
 			<div id="contenido_nivel_max_jugadores_inicio">
 				{% if form.nivel_max_jugadores_inicio.errors %}
-					<p class="texto_error">{{ form.nivel_max_jugadores_inicio.errors }}</p>
+					{{ form.nivel_max_jugadores_inicio.errors }}
 				{% endif %}
 				
 				<label for="id_nivel_max_jugadores_inicio">Nivel máximo de los jugadores al inicio de la liga:</label>

@@ -2,19 +2,34 @@
 
 {% block css_extra %}
 	<style type="text/css">
+		h2, h4{
+			margin: 10px;
+			text-align: center;
+		}
+		
+		#activar_liga{
+			margin: 10px auto;
+			width: 400px;
+		}
+		
+		#equipo_propio{
+			margin: 10px auto;
+			width: 400px;
+		}
+		
 		#tabla_clasificacion{
+			margin: 20px auto;
 			width: 600px;
 		}
 		
 		#tabla_equipos{
+			margin: 20px auto;
 			width: 400px;
 		}
 		
 		#tabla_jornadas{
+			margin: 20px auto;
 			width: 400px;
-		}
-		
-		#tabla_mercado{
 		}
 		
 		.jornada_jugada{
@@ -172,17 +187,20 @@
 			</tbody>
 		</table>
 	{% else %}
-		<p>La liga no está activada aun
-		{% if es_creador %}
-			: <a href="/ligas/activar/{{ liga.id }}/">Activar</a></p>
-		{% else %}
-			<br>
-		{% endif %}
-		{% if equipo_propio %}
-			Equipo de la liga: <a href="/equipos/ver/{{ equipo_propio.id }}/">{{ equipo_propio.nombre }}</a>
-		{% else %}
-			<b>{{ usuario }} aún puede </b><a href="/equipos/crear/{{ liga.id }}/">crear un equipo</a><b> en esta liga.</b>
-		{% endif %}
+		<div id="activar_liga">
+			<span>La liga no está activada aún</span>
+			{% if es_creador %}
+				: <a href="/ligas/activar/{{ liga.id }}/">ACTIVAR</a></p>
+			{% endif %}
+		</div>
+		
+		<div id="equipo_propio">
+			{% if equipo_propio %}
+				Equipo propio: <a href="/equipos/ver/{{ equipo_propio.id }}/">{{ equipo_propio.nombre }}</a>
+			{% else %}
+				<b>{{ usuario }} aún puede </b><a href="/equipos/crear/{{ liga.id }}/">crear un equipo</a><b> en esta liga.</b>
+			{% endif %}
+		</div>
 	{% endif %}
 
 	{% if equipos %}
