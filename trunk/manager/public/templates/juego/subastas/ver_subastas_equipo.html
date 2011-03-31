@@ -1,5 +1,24 @@
 {% extends "base_juego.html" %}
 
+{% block css_extra %}
+	<style type="text/css">
+		h2, h4{
+			margin: 10px;
+			text-align: center;
+		}
+		
+		#tabla_comprador{
+			margin: 10px auto;
+			width: 800px;
+		}
+		
+		#tabla_vendedor{
+			margin: 10px auto;
+			width: 800px;
+		}
+	</style>
+{% endblock %}
+
 {% block situacion %}
 	<ul id="menu_superior_situacion">
 		<li><a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a></li>
@@ -14,8 +33,8 @@
 
 	<h4>Ventas</h4>
 	
-	<!-- Mercado de jugadores -->
-	<table class="tabla1" id="tabla_mercado">
+	<!-- Tabla vendedor -->
+	<table class="tabla1" id="tabla_vendedor">
 		<caption>Subastas de jugadores</caption>
 		{% if subastas_vendedor %}
 			<thead>
@@ -92,8 +111,8 @@
 	
 	<h4>Compras</h4>
 	
-	<!-- Mercado de jugadores -->
-	<table class="tabla1" id="tabla_mercado">
+	<!-- Tabla comprador -->
+	<table class="tabla1" id="tabla_comprador">
 		<caption>Subastas de jugadores</caption>
 		{% if subastas_comprador %}
 			<thead>

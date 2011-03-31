@@ -1,10 +1,40 @@
 {% extends "base_juego.html" %}
 
+{% block css_extra %}
+	<style type="text/css">
+		h2{
+			margin: 10px;
+			text-align: center;
+		}
+		
+		#notificaciones{
+			background: #fff;
+			border: solid 1px #555;
+			margin: 10px auto;
+			padding: 0px;
+			width: 500px;
+		}
+		
+		#notificaciones li{
+			list-style: none;
+			padding: 10px;
+		}
+		
+		#notificaciones li + li{
+			border-top: solid 1px #555;
+		}
+		
+		#notificaciones li a{
+			color: #000;
+		}
+	</style>
+{% endblock %}
+
 {% block contenido %}
 
 	<h2>Notificaciones de la liga: {{ liga.nombre }}</h2>
 
-	<ul>
+	<ul id="notificaciones">
 		{% for notificacion in notificaciones %}
 			<li>
 				<a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.mensaje }}</a>

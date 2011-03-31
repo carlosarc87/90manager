@@ -1,5 +1,19 @@
 {% extends "base_juego.html" %}
 
+{% block css_extra %}
+	<style type="text/css">
+		h2{
+			margin: 10px;
+			text-align: center;
+		}
+		
+		#tabla_mercado{
+			margin: 10px auto;
+			width: 800px;
+		}
+	</style>
+{% endblock %}
+
 {% block situacion %}
 	<ul id="menu_superior_situacion">
 		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>

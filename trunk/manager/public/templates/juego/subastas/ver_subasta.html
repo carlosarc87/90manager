@@ -1,5 +1,73 @@
 {% extends "base_juego.html" %}
 
+{% block css_extra %}
+	<style type="text/css">
+		h2, h4{
+			margin: 10px;
+			text-align: center;
+		}
+		
+		#boton_compra_directa{
+			height: 30px;
+			margin: 10px auto;
+			width: 400px;
+		}
+		
+		#boton_compra_directa input{
+			float: right;
+		}
+		
+		#contenido_form_oferta{
+			background: #fff;
+			border: solid 1px #555;
+			margin: 10px auto;
+			padding: 20px;
+			width: 400px;
+		}
+		
+		/* Formulario oferta */
+		
+		#form_oferta{
+			height: 30px;
+		}
+		
+		#contenido_oferta label{
+			float: left;
+			width: 50px;
+		}
+		
+		#contenido_oferta #caja_cantidad{
+			float: left;
+			width: 120px;
+		}
+		
+		#contenido_oferta #caja_cantidad input{
+			text-align: right;
+			width: 100px;
+		}
+		
+		#contenido_oferta #caja_oferta{
+			float: right;
+			width: 150px;
+		}
+		
+		#contenido_oferta #caja_oferta input{
+			float: right;
+		}
+		
+		/* Fin formulario oferta */
+		
+		/* Tabla subasta */
+		
+		#tabla_subasta{
+			margin: 10px auto;
+			width: 400px;
+		}
+		
+		/* Fin tabla subasta */
+	</style>
+{% endblock %}
+
 {% block situacion %}
 	<ul id="menu_superior_situacion">
 		<li><a href="/ligas/ver/{{ subasta.atributos_jugador.equipo.liga.id }}/">{{ subasta.atributos_jugador.equipo.liga.nombre }}</a></li>
@@ -25,53 +93,83 @@
 	<h2>{{ subasta.atributos_jugador.jugador.nombre }}</h2>
 
 	{% if subasta.estado == 0 %}
-		<ul>
-			{% if subasta.comprador %}
-				<li>Puja actual: {{ subasta.oferta }} por {{ subasta.comprador }}</li>
-			{% else %}
-				<li>Oferta inicial: {{ subasta.oferta }}</li>
-			{% endif %}
-			{% if subasta.precio_compra %}
-				<li>Precio de compra directa: {{ subasta.precio_compra }}</li>
-			{% endif %}
-			<li>Días que quedan: {{ subasta.expira }}</li>
-			<li>Estado de la subasta: {{ subasta.estado }}</li>
-			<li>Equipo vendedor: {{ subasta.vendedor }}</li>
-		</ul>
+		<table class="tabla1" id="tabla_subasta">
+			<tbody>
+				{% if subasta.comprador %}
+					<tr>
+						<td>Puja actual:</td>
+						<td>{{ subasta.oferta }} por {{ subasta.comprador }}</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td>Oferta inicial:</td>
+						<td>{{ subasta.oferta }}</td>
+					</tr>
+				{% endif %}
+				
+				{% if subasta.precio_compra %}
+					<tr>
+						<td>Precio de compra directa:</td>
+						<td>{{ subasta.precio_compra }}</td>
+					</tr>
+				{% endif %}
+				
+				<tr>
+					<td>Días que quedan:</td>
+					<td>{{ subasta.expira }}</td>
+				</tr>
+				
+				<tr>
+					<td>Estado de la subasta:</td>
+					<td>{{ subasta.estado }}</td>
+				</tr>
+				
+				<tr>
+					<td>Equipo vendedor:</td>
+					<td>{{ subasta.vendedor }}</td>
+				</tr>
+			</tbody>
+		</table>
 
 		{% if equipo_usuario %}
-			{% if form %}
-				<form action="/mercado/subastas/ver/{{ subasta.id }}/" method="post">
-					{% csrf_token %}
-					<!-- Oferta -->
-					<div id="contenido_oferta">
-						{% if form.cantidad.errors %}
-							<p class="texto_error">{{ form.cantidad.errors }}</p>
-						{% endif %}
-
-						<div id="caja_oferta">
-						<label for="id_oferta">Oferta:</label>
-						{{ form.cantidad }}
-						<input type="submit" value="Realizar oferta" />
+			<div id="contenido_form_oferta">
+				{% if form %}
+					<form id="form_oferta" action="/mercado/subastas/ver/{{ subasta.id }}/" method="post">
+						{% csrf_token %}
+						<!-- Oferta -->
+						<div id="contenido_oferta">
+							{% if form.cantidad.errors %}
+								{{ form.cantidad.errors }}
+							{% endif %}
+							
+							<label for="id_cantidad">Oferta:</label>
+							
+							<div id="caja_cantidad">{{ form.cantidad }}</div>
+							
+							<div id="caja_oferta">
+								<input type="submit" value="Realizar oferta" />
+							</div>
 						</div>
-					</div>
-				</form>
-
-				{% if subasta.precio_compra %}
-					<input type = "submit" name = "boton_compra_directa" value = "Compra directa" onclick="compraDirecta()" />
+					</form>
+					
+					{% if subasta.precio_compra %}
+						<div id="boton_compra_directa">
+							<input type="submit" name="boton_compra_directa" value="Compra directa" onclick="compraDirecta()" />
+						</div>
+					{% endif %}
 				{% endif %}
-			{% endif %}
+			</div>
 		{% else %}
-			No puedes pujar por esta subasta
+			<h4>No puedes pujar por esta subasta</h4>
 		{% endif %}
 	{% else %}
 		{% if subasta.estado == 1 %}
-			La subasta ya acabó
+			<h4>La subasta ya acabó</h4>
 		{% else %}
 			{% if subasta.estado == 2 %}
-				Subasta comprada por {{ subasta.comprador }}
+				<h4>Subasta comprada por {{ subasta.comprador }}</h4>
 			{% else %}
-				Error de estado de la subasta
+				<h4>Error de estado de la subasta</h4>
 			{% endif %}
 		{% endif %}
 	{% endif %}

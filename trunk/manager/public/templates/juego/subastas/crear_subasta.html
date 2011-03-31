@@ -1,5 +1,70 @@
 {% extends "base_juego.html" %}
 
+{% block css_extra %}
+	<style type="text/css">
+		h2{
+			margin: 10px;
+			text-align: center;
+		}
+		
+		#form_subastar{
+			background: #fff;
+			border: solid 1px #555;
+			margin: 10px auto;
+			padding: 20px;
+			width: 350px;
+		}
+		
+		#contenido_oferta{
+			height: 30px;
+		}
+		
+		#contenido_oferta label{
+			float: left;
+			font-weight: bold;
+			width: 100px;
+		}
+		
+		#caja_oferta input{
+			float: right;
+			text-align: right;
+			width: 80px;
+		}
+		
+		#contenido_precio_compra{
+			height: 30px;
+		}
+		
+		#contenido_precio_compra label{
+			float: left;
+			font-weight: bold;
+			width: 200px;
+		}
+		
+		#contenido_precio_compra input{
+			float: right;
+			text-align: right;
+			width: 80px;
+		}
+		
+		#contenido_expira{
+			height: 30px;
+		}
+		
+		#contenido_expira label{
+			float: left;
+			font-weight: bold;
+			width: 250px;
+		}
+		
+		#contenido_expira input{
+			float: right;
+			text-align: right;
+			width: 80px;
+		}
+	</style>
+{% endblock %}
+
 {% block situacion %}
 	<ul id="menu_superior_situacion">
 		<li><a href="/ligas/ver/{{ jugador.atributos.equipo.liga.id }}/">{{ jugador.atributos.equipo.liga.nombre }}</a></li>
@@ -13,12 +78,12 @@
 
 	<h2>Subastando a {{ jugador.nombre }}</h2>
 
-	<form action="/mercado/subastas/crear/{{ jugador.id }}/" method="post">
+	<form id="form_subastar" action="/mercado/subastas/crear/{{ jugador.id }}/" method="post">
 		{% csrf_token %}
 		<!-- Oferta inicial -->
 		<div id="contenido_oferta">
 			{% if form.oferta.errors %}
-				<p class="texto_error">{{ form.oferta.errors }}</p>
+				{{ form.oferta.errors }}
 			{% endif %}
 			<label for="id_oferta">Oferta inicial:</label>
 			<div id="caja_oferta">{{ form.oferta }}</div>
@@ -27,7 +92,7 @@
 		<!-- Compra directa -->
 		<div id="contenido_precio_compra">
 			{% if form.precio_compra.errors %}
-				<p class="texto_error">{{ form.precio_compra.errors }}</p>
+				{{ form.precio_compra.errors }}
 			{% endif %}
 			<label for="id_precio_compra">Precio de compra directa:</label>
 			<div id="caja_precio_compra">{{ form.precio_compra }}</div>
@@ -36,7 +101,7 @@
 		<!-- Compra directa -->
 		<div id="contenido_expira">
 			{% if form.expira.errors %}
-				<p class="texto_error">{{ form.expira.errors }}</p>
+				{{ form.expira.errors }}
 			{% endif %}
 			<label for="id_expira">Jornadas de duracion de la subasta:</label>
 			<div id="caja_expira">{{ form.expira }}</div>
