@@ -54,33 +54,39 @@ class Subasta(models.Model):
 	def comprar(self, equipo):
 		''' Compra la subasta directamente con un equipo '''
 		if self.tieneComprador():
-			if self.comprador is not equipo:
-				notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA_COMPRADA, identificador = self.id, liga = self.liga)
+			if self.comprador != equipo:
+				notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA_COMPRADA, identificador = self.jugador.id, liga = self.liga)
+				self.comprador.pagar(self.subasta.oferta)
+
 		self.estado = COMPRADA # Indicar que se ha comprado
 		self.comprador = equipo
+		equipo.cobrar(self.precio_compra)
 		self.expira = 1 # Indicamos que expira en esa jornada
 
 	def tieneComprador(self):
 		''' Indica si alguien ha subastado '''
-		return self.comprador is not None
+		return self.comprador != None
 
 	def pujar(self, equipo, cantidad):
 		''' Realiza una oferta de un equipo '''
 		# Notificar al anterior
 		if self.tieneComprador():
-			if self.comprador is not equipo:
+			if self.comprador != equipo:
 				notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA, identificador = self.id, liga = self.liga)
+				self.comprador.pagar(self.subasta.oferta)
 
 		self.oferta = cantidad
 		self.comprador = equipo
+		equipo.cobrar(cantidad)
 
 	def finalizar(self):
 		''' Finaliza y realiza los trámites oportunos de la subasta '''
 		self.atributos_jugador.ofertado = False
 		if self.comprador:
-			notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_GANADA, identificador = self.id, liga = self.liga)
+			notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_GANADA, identificador = self.jugador.id, liga = self.liga)
 			self.atributos_jugador.jugador.setEquipo(self.comprador)
-		notificar(self.vendedor.usuario, TipoNotificacion.SUBASTA_FINALIZADA, identificador = self.id, liga = self.liga)
+		notificar(self.vendedor.usuario, TipoNotificacion.SUBASTA_FINALIZADA, identificador = self.jugador.id, liga = self.liga)
+		self.vendedor.pagar(self.oferta)
 		self.atributos_jugador.save()
 
 ########################################################################

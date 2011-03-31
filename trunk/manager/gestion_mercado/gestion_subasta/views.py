@@ -113,14 +113,14 @@ def ver_subasta(request, subasta_id):
 		if request.method == 'POST':
 			if not equipo_usuario:
 				devolverMensaje('No puedes pujar en una liga en la que no juegas')
-			form = ApostarForm(subasta, request.POST)
+			form = ApostarForm(subasta, equipo_usuario, request.POST)
 			if form.is_valid():
 				cantidad = form.cleaned_data['cantidad']
 				subasta.pujar(equipo_usuario, cantidad)
 				subasta.save()
 				return devolverMensaje(request, "Cantidad apostada correctamente", "/mercado/subastas/ver/%d/" % subasta.id)
 		else:
-			form = ApostarForm(subasta)
+			form = ApostarForm(subasta, equipo_usuario)
 
 	d = {"equipo_usuario" : equipo_usuario,
 		"subasta" : subasta,
@@ -178,6 +178,9 @@ def comprar_subasta(request, subasta_id):
 
 	if subasta.vendedor == equipo:
 		return devolverMensaje(request, "Error, no puedes comprarte tu propia subasta")
+
+	if subasta.precio_compra > equipo.dinero:
+		return devolverMensaje(request, "Error, no tienes dinero para comprar esta subasta", "/mercado/subastas/ver/%s/" % subasta_id)
 
 	# Burocracia de comprar al jugador
 	subasta.comprar(equipo)

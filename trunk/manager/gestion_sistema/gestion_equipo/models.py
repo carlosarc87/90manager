@@ -36,10 +36,20 @@ class Equipo(models.Model):
 	siglas = models.CharField(max_length = 3)
 	usuario = models.ForeignKey(Usuario, null = True)
 	liga = models.ForeignKey(Liga)
-	
+
 	dinero = models.IntegerField(default = 0, max_length = 15)
 
 	# Funciones
+	def pagar(self, cantidad):
+		''' Paga una cantidad al equipo '''
+		self.dinero += cantidad
+		self.save()
+
+	def cobrar(self, cantidad):
+		''' Cobra una cantidad al equipo '''
+		self.dinero -= cantidad
+		self.save()
+
 	def agregarJugador(self, jugador):
 		''' Añade un jugador al equipo '''
 		self.atributosvariablesjugador_set.add(jugador.atributos)
@@ -135,7 +145,7 @@ class Equipo(models.Model):
 
 		# Array con todos los dorsales disponibles
 		#dorsales_disponibles = range(1, 100)
-		
+
 		# Generar jugadores
 		for j in range(1, num_jugadores_inicial + 1):
 			# Establecer posición

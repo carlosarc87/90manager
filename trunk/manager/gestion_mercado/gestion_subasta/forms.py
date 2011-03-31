@@ -32,6 +32,9 @@ from math import ceil
 
 class SubastaForm(forms.ModelForm):
 	''' Formulario para crear subastas '''
+	def getComision(self):
+		''' Devuelve la comision de apertura '''
+		pass
 
 	def clean_expira(self):
 		''' Comprueba que el numero de jornadas sea factible '''
@@ -85,18 +88,21 @@ class ApostarForm(forms.Form):
 	''' Acepta una cantidad para apostar por una subasta '''
 	cantidad = forms.fields.IntegerField()
 
-	def __init__(self, subasta, *args, **kwargs):
+	def __init__(self, subasta, pujador, *args, **kwargs):
 		''' Constructor que establece la cantidad minima de la subasta '''
 		super(ApostarForm, self).__init__(*args, **kwargs)
 
 		self.puja_minima = int(ceil(subasta.oferta * 1.10))
 		self.fields['cantidad'].initial = self.puja_minima
 		self.subasta = subasta
+		self.pujador = pujador
 
 	def clean_cantidad(self):
 		valor = self.cleaned_data['cantidad']
 		if valor < self.puja_minima:
 			raise forms.ValidationError("Debe de apostar %d como mínimo" % self.puja_minima)
+		if valor > self.pujador.dinero:
+			raise forms.ValidationError("No tienes %d para pujar" % valor)
 		if self.subasta.precio_compra:
 			if valor >= self.subasta.precio_compra:
 				raise forms.ValidationError("Tu estas tonto, no?")

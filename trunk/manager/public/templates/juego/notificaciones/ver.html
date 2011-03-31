@@ -31,12 +31,13 @@
 {% block contenido %}
 	<h2>Datos de la notificación</h2>
 
-	<h4 id="fecha">Fecha: {{ notificacion.fecha_emision }}</h4>
-	<h4 id="tipo">Tipo: {{ notificacion.tipo }}</h4>
-	<div id="mensaje">Mensaje: {{ notificacion.mensaje }}</div>
-	
-	<div id="contenido_boton_borrar">
-		<input type="button" value="Borrar" onclick="location.href='/cuentas/notificaciones/borrar/{{ notificacion.id }}/'" />
-	</div>
+	<ul>
+		<li>Fecha: {{ notificacion.fecha_emision }}</li>
+		<li>Tipo: {{ notificacion.tipo }}</li>
+		{% autoescape off %}
+			<li>Mensaje: {{ notificacion.mensaje }}</li>
+		{% endautoescape %}
+	</ul>
+	<a href="/cuentas/notificaciones/borrar/{{ notificacion.id }}/">Borrar</a>
 
 {% endblock %}
