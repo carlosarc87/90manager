@@ -19,6 +19,9 @@
 		<div>{{ form.nombre }}</div>
 		
 		<!-- Siglas -->
+		{% if form.siglas.errors %}
+			<p class="texto_error">{{ form.siglas.errors }}</p>
+		{% endif %}
 		<label for="id_siglas">Siglas:</label>
 		<div>{{ form.siglas }}</div>
 			

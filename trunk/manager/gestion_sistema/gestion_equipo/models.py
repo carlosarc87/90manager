@@ -119,20 +119,16 @@ class Equipo(models.Model):
 		if sexo_permitido == 0: # Solo hombres
 			hombres_participan = True
 			lista_nombres_hombres = listaNombres("nombres_hombres.txt")
-			max_nivel_hombres = max_nivel
 
 		elif sexo_permitido == 1: # Solo mujeres
 			mujeres_participan = True
 			lista_nombres_mujeres = listaNombres("nombres_mujeres.txt")
-			max_nivel_mujeres = max_nivel
 
 		else: # Hombres y mujeres
 			hombres_participan = True
 			mujeres_participan = True
 			lista_nombres_hombres = listaNombres("nombres_hombres.txt")
 			lista_nombres_mujeres = listaNombres("nombres_mujeres.txt")
-			max_nivel_hombres = max_nivel
-			max_nivel_mujeres = (int) (max_nivel * 0.8) # Las mujeres tendrán de media un nivel más bajo que los hombres
 
 		# Array con todos los apellidos obtenidos del fichero dado
 		lista_apellidos = listaNombres("apellidos.txt")
@@ -159,11 +155,9 @@ class Equipo(models.Model):
 			# Obtener datos de hombre o mujer según si participan o no
 			if ((j % 2 == 0) and hombres_participan) or (mujeres_participan == False):
 				lista_nombres = lista_nombres_hombres
-				max_nivel = max_nivel_hombres
 				sexo = 'M'
 			else:
 				lista_nombres = lista_nombres_mujeres
-				max_nivel = max_nivel_mujeres
 				sexo = 'F'
 
 			# Establecer variables del jugador

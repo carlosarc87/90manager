@@ -108,7 +108,7 @@ def crear_equipo(request, liga_id):
 		return devolverMensaje(request, "Ya tienes un equipo en esta liga", "/ligas/ver/%d/" % liga.id)
 
 	if request.method == 'POST':
-		form = EquipoForm(request.POST)
+		form = EquipoForm(liga, request.POST)
 		if form.is_valid():
 			equipo = form.save(commit = False)
 			equipo.usuario = usuario
@@ -118,7 +118,7 @@ def crear_equipo(request, liga_id):
 			equipo.generarJugadoresAleatorios(liga.sexo_permitido, liga.num_jugadores_inicial, liga.nivel_max_jugadores_inicio)
 			return devolverMensaje(request, "Se ha creado correctamente", "/equipos/ver/%d/" % equipo.id)
 	else:
-		form = EquipoForm()
+		form = EquipoForm(liga)
 
 	c = RequestContext(request, {"form": form, "usuario" : usuario, "liga" : liga })
 
