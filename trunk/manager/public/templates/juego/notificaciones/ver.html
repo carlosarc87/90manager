@@ -4,10 +4,9 @@
 	<h2>Datos de la notificacion</h2>
 
 	<ul>
-		<li>Fecha: {{ notificacion.fecha }}</li>
+		<li>Fecha: {{ notificacion.fecha_emision }}</li>
 		<li>Tipo: {{ notificacion.tipo }}</li>
 		<li>Mensaje: {{ notificacion.mensaje }}</li>
-		<li>Redireccion: {{ notificacion.redirigir }}</li>
 	</ul>
 	<a href="/cuentas/notificaciones/borrar/{{ notificacion.id }}/">Borrar</a>
 

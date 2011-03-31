@@ -27,7 +27,7 @@ from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
 from gestion_sistema.gestion_jornada.models import Jornada
 from gestion_sistema.gestion_clasificacion.models import ClasificacionEquipoJornada
-from gestion_usuario.gestion_notificacion.func import notificar
+from gestion_usuario.gestion_notificacion.func import notificar, TipoNotificacion
 
 from random import randint
 from func import probabilidadExito
@@ -637,10 +637,10 @@ class Partido(models.Model):
 			clasificacion_visitante.puntos += 1
 
 		if self.equipo_local.usuario:
-			notificar(self.equipo_local.usuario, "Se ha jugado el partido", tipo = 0, redireccion = "/partidos/ver/%d/" % self.id, liga = self.equipo_local.liga)
+			notificar(self.equipo_local.usuario, tipo = TipoNotificacion.PARTIDO_FINALIZADO, identificador = self.id, liga = self.equipo_local.liga)
 
 		if self.equipo_visitante.usuario:
-			notificar(self.equipo_visitante.usuario, "Se ha jugado el partido", tipo = 0, redireccion = "/partidos/ver/%d/" % self.id, liga = self.equipo_visitante.liga)
+			notificar(self.equipo_visitante.usuario, tipo = TipoNotificacion.PARTIDO_FINALIZADO, identificador = self.id, liga = self.equipo_local.liga)
 
 		# Guardar los cambios
 		clasificacion_local.save()

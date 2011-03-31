@@ -35,6 +35,7 @@ from django.db.models import Q
 import datetime
 
 from gestion_base.func import devolverMensaje
+from gestion_sistema.gestion_liga.models import Liga
 
 ########################################################################
 
@@ -44,6 +45,8 @@ def listar_notificaciones(request):
 	usuario = request.user
 
 	notificaciones = usuario.notificacion_set.all()
+	for n in notificaciones:
+		n.mensaje = n.getMensaje()
 
 	return render_to_response("juego/notificaciones/listar.html", {"usuario" : usuario, "notificaciones" : notificaciones })
 
@@ -60,6 +63,8 @@ def listar_notificaciones_liga(request, liga_id):
 	liga = Liga.objects.get(id = liga_id)
 
 	notificaciones = usuario.notificacion_set.filter(liga = liga)
+	for n in notificaciones:
+		n.mensaje = n.getMensaje()
 
 	return render_to_response("juego/notificaciones/listar_liga.html", {"usuario" : usuario, "notificaciones" : notificaciones })
 
@@ -95,6 +100,7 @@ def ver_notificacion(request, notificacion_id):
 
 	# Obtenemos la notificacion
 	notificacion = usuario.notificacion_set.get(id = notificacion_id)
+	notificacion.mensaje = notificacion.getMensaje()
 
 	# Marcamos como leida
 	notificacion.leida = True

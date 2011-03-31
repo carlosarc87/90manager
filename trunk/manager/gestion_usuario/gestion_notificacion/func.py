@@ -25,7 +25,19 @@ Copyright 2011 by
 from models import Notificacion
 import datetime
 
-def notificar(usuario, mensaje, tipo = 0, redireccion = None, liga = None):
+class TipoNotificacion:
+	def __init__(self):
+		# Tipos disponibles
+		self.LIGA_ACTIVADA             = 100
+
+		self.SUBASTA_FINALIZADA        = 300
+		self.SUBASTA_GANADA            = 301
+		self.SUBASTA_SUPERADA          = 302
+		self.SUBASTA_SUPERADA_COMPRADA = 303
+
+		self.PARTIDO_FINALIZADO        = 400
+
+def notificar(usuario, tipo, identificador, liga = None):
 	fecha = datetime.datetime.today()
-	n = Notificacion.objects.create(usuario = usuario, mensaje = mensaje, tipo = tipo, redirigir = redireccion, liga = liga, fecha_emision = fecha)
+	n = Notificacion.objects.create(usuario = usuario, tipo = tipo, identificador = identificador, liga = liga, fecha_emision = fecha)
 	n.save()

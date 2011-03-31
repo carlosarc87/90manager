@@ -27,6 +27,8 @@ from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_liga.models import Liga
 from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
 
+from gestion_usuario.gestion_notificacion.func import notificar, TipoNotificacion
+
 ########################################################################
 
 # Opciones disponibles
@@ -51,6 +53,8 @@ class Subasta(models.Model):
 
 	def comprar(self, equipo):
 		''' Compra la subasta directamente con un equipo '''
+		if self.tieneComprador():
+			notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA_COMPRADA, identificador = self.id, liga = self.liga)
 		self.estado = COMPRADA # Indicar que se ha comprado
 		self.comprador = equipo
 		self.expira = 1 # Indicamos que expira en esa jornada
@@ -61,6 +65,10 @@ class Subasta(models.Model):
 
 	def pujar(self, equipo, cantidad):
 		''' Realiza una oferta de un equipo '''
+		# Notificar al anterior
+		if self.tieneComprador():
+			notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA, identificador = self.id, liga = self.liga)
+
 		self.oferta = cantidad
 		self.comprador = equipo
 
@@ -68,7 +76,9 @@ class Subasta(models.Model):
 		''' Finaliza y realiza los trámites oportunos de la subasta '''
 		self.atributos_jugador.ofertado = False
 		if self.comprador:
+			notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_GANADA, identificador = self.id, liga = self.liga)
 			self.atributos_jugador.jugador.setEquipo(self.comprador)
+		notificar(self.vendedor.usuario, TipoNotificacion.SUBASTA_FINALIZADA, identificador = self.id, liga = self.liga)
 		self.atributos_jugador.save()
 
 ########################################################################

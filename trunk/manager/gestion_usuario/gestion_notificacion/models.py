@@ -28,22 +28,25 @@ from gestion_sistema.gestion_liga.models import Liga
 
 ########################################################################
 
-# Tipos disponibles
-(
-NADA,
-PARTIDO,
-SUBASTA_REALIZADA,
-) = range(3)
-
 # Notificacion
 class Notificacion(models.Model):
 	''' Representa una notificacion de algun elemento de una liga para un usuario '''
+	# Usuario notificado
 	usuario = models.ForeignKey(Usuario)
+	# Liga (en su caso) desde la que se envia la notificacion
 	liga = models.ForeignKey(Liga, null = True, blank = True)
+	# Tipo de notificacion
 	tipo = models.PositiveIntegerField(default = 0)
-	mensaje = models.CharField(max_length = 400)
-	redirigir = models.CharField(max_length = 400)
+	# Id a la que redirecciona (segun el tipo de notificacion sera de tipo partido o subasta, etc
+	identificador = models.PositiveIntegerField()
+	# Indica que se ha leido la notificacion
 	leida = models.BooleanField(default = False)
+	# Fecha real de emision de la notificacion
 	fecha_emision = models.DateTimeField()
+
+	def getMensaje(self):
+		''' Genera un mensaje dependiendo del tipo de la notificacion '''
+		from func import TipoNotificacion
+		return "Tipo: " + str(self.tipo)
 
 ########################################################################

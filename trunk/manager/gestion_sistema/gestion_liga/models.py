@@ -106,13 +106,13 @@ class Liga(models.Model):
 
 		for i in range(self.equipo_set.count(), self.num_equipos):
 			nombre_eq, siglas_eq = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
-			
+
 			# Comprobar que las siglas no se repitan
 			c = 1
 			while self.equipo_set.filter(siglas = siglas_eq).count() > 0:
 				siglas_eq = siglas_eq[:-1] + str(c)
 				c += 1
-			
+
 			equipo = Equipo(nombre = nombre_eq, siglas = siglas_eq, usuario = None, liga = self, dinero = self.dinero_inicial)
 			equipo.save()
 			equipo.generarJugadoresAleatorios(self.sexo_permitido, self.num_jugadores_inicial, self.nivel_max_jugadores_inicio)
