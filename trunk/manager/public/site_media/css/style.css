@@ -1,5 +1,5 @@
 a{
-	color: #00aa00;
+	color: #008800;
 	text-decoration: underline;
 }
 
@@ -8,7 +8,7 @@ a:hover{
 }
 
 a:visited{
-	color: #aa0000;
+	color: #880000;
 }
 
 body{
@@ -33,23 +33,6 @@ h1, h2, h3, h4{
 
 /* footer */
 
-#footer{
-	background-color: #fff;
-	border-top: solid 1px #555555;
-	border-bottom: solid 1px #555555;
-	clear: both;
-	text-align: center;
-	width: 100%;
-}
-
-#footer a + a{
-	margin-left: 20px;
-}
-
-#footer img{
-	border: 0px;
-}
-
 #contador_desactualizacion{
 	color: #888;
 	margin: 10px auto;
@@ -70,42 +53,86 @@ h1, h2, h3, h4{
 	color: #5555cc;
 }
 
+#footer{
+	background-color: #fff;
+	border-top: solid 1px #555555;
+	border-bottom: solid 1px #555555;
+	clear: both;
+	text-align: center;
+	width: 100%;
+}
+
+#footer a + a{
+	margin-left: 20px;
+}
+
+#footer img{
+	border: 0px;
+}
+
 #logos{
 	margin: 10px auto;
 	width: 950px;
 }
 
+/* Fin footer */
+
 /* header */
+
+#caja_logo{
+	float: left;
+	height: 100%;
+	width: 210px;
+}
 
 #header{
 	background-color: #fff;
 	border-bottom: solid 1px #555555;
-	text-align: center;
+	clear: both;
+	height: 120px;
 	width: 100%;
 }
 
 #logo{
 	border: 0px;
 	height: 100px;
-	margin: 10px 0px;
+	padding: 10px 0px 0px;
 	width: 200px;
 }
 
 #menu_superior{
-	background: #55aa55;
-	font-size: 1.1em;
-	height: 30px;
-	width: 100%;
+	float: right;
+	margin-top: 10px;
+	width: 700px;
 }
 
-#menu_superior a{
-	color: #fff;
-	height: 100%;
-	width: 100%;
+#menu_superior_botones{
+	border-left: solid 1px #555;
+	font-size: 1.1em;
+	height: 40px;
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+#menu_superior_botones li{
+	background: #88dd88;
+	border-top: solid 1px #555;
+	border-right: solid 1px #555;
+	border-bottom: solid 1px #555;
+	float: left;
+	height: 20px;
+	margin: 0px;
+	padding: 9px 15px;
+}
+
+#menu_superior_botones li:hover{
+	background: #55aa55;
+	cursor: pointer;
 }
 
 #menu_superior_situacion{
-	float: left;
+	border-bottom: solid 1px #555;
 	font-size: 0.9em;
 	height: 30px;
 	list-style-image: url('../img/icons/favicon.ico');
@@ -120,21 +147,7 @@ h1, h2, h3, h4{
 	padding: 5px;
 }
 
-#menu_superior_botones {
-	float: right;
-	height: 30px;
-	list-style: none;
-	margin: 0px;
-	padding: 0px;
-}
-
-#menu_superior_botones li{
-	border-left: solid 1px #88ff88;
-	float: left;
-	height: 20px;
-	margin: 0px;
-	padding: 5px;
-}
+/* Fin header */
 
 .contenido{
 	margin: 0 auto;

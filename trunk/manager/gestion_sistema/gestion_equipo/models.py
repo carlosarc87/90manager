@@ -170,12 +170,12 @@ class Equipo(models.Model):
 			anios = (int)(edad.days / 365)
 
 			# Cada 2 años de diferencia con 28 se resta un punto al nivel máximo
-			max_nivel = max_nivel - (int)(abs(28 - anios) / 2)
+			max_nivel_jug = max_nivel - (int)(abs(28 - anios) / 2)
 
 			# Asignar variables al jugador
 			jugador = Jugador(nombre = nombre_aleatorio, apodo = apodo_aux, fecha_nacimiento = fecha_nacimiento, sexo = sexo)
 			jugador.save()
-			atributos = jugador.generarAtributos(self, dorsal, posicion, max_nivel)
+			atributos = jugador.generarAtributos(self, dorsal, posicion, max_nivel_jug)
 			atributos.save()
 
 			jugador.setAparienciaAleatoria()

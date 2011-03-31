@@ -17,18 +17,22 @@
 			width: 400px;
 		}
 		
+		#mercado_subastas{
+			text-align: center;
+		}
+		
 		#tabla_clasificacion{
-			margin: 20px auto;
+			margin: 10px auto;
 			width: 600px;
 		}
 		
 		#tabla_equipos{
-			margin: 20px auto;
+			margin: 10px auto;
 			width: 400px;
 		}
 		
 		#tabla_jornadas{
-			margin: 20px auto;
+			margin: 10px auto;
 			width: 400px;
 		}
 		
@@ -75,7 +79,7 @@
 			<h4>FINALIZADA</h4>
 		{% endif %}
 
-		<div><a href="/mercado/subastas/ver/liga/{{ liga.id }}/">Ver Mercado de subastas</a></div>
+		<div id="mercado_subastas"><a href="/mercado/subastas/ver/liga/{{ liga.id }}/">Ver Mercado de subastas</a></div>
 
 		{% if clasificacion %}
 			<!-- Tabla clasificacion -->
@@ -190,7 +194,7 @@
 		<div id="activar_liga">
 			<span>La liga no está activada aún</span>
 			{% if es_creador %}
-				: <a href="/ligas/activar/{{ liga.id }}/">ACTIVAR</a></p>
+				: <a href="/ligas/activar/{{ liga.id }}/">ACTIVAR</a>
 			{% endif %}
 		</div>
 		
@@ -203,9 +207,10 @@
 		</div>
 	{% endif %}
 
-	{% if equipos %}
-		<table class="tabla1" id="tabla_equipos">
-			<caption>Listado de equipos</caption>
+	<!-- Tabla de equipos -->
+	<table class="tabla1" id="tabla_equipos">
+		<caption>Listado de equipos</caption>
+		{% if equipos %}
 			<thead>
 				<tr>
 					<th>Nombre</th>
@@ -231,9 +236,11 @@
 					</tr>
 				{% endfor %}
 			</tbody>
-		</table>
-	{% else %}
-		<h4>Aún no se ha añadido ningún equipo a la liga</h4>
-	{% endif %}
+		{% else %}
+			<tr>
+				<th>Aún no se ha añadido ningún equipo a la liga</th>
+			</tr>
+		{% endif %}
+	</table>
 
 {% endblock %}

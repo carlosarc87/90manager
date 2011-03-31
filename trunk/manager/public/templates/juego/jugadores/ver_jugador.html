@@ -2,6 +2,11 @@
 
 {% block css_extra %}
 	<style type="text/css">
+		h2{
+			margin: 10px;
+			text-align: center;
+		}
+		
 		#en_forma{
 			color: #55aa55;
 			font-weight: bold;
@@ -11,20 +16,33 @@
 			color: #aa5555;
 			font-weight: bold;
 		}
+		
+		#subasta{
+			text-align: center;
+		}
 
 		#tabla_datos_personales{
+			margin: 10px auto;
+			width: 300px;
+		}
+		
+		#tabla_fisico{
+			margin: 10px auto;
 			width: 300px;
 		}
 
 		#tabla_otros_datos{
+			margin: 10px auto;
 			width: 300px;
 		}
 
 		#tabla_habilidades_juego{
+			margin: 10px auto;
 			width: 300px;
 		}
 
 		#tabla_habilidades_mentales{
+			margin: 10px auto;
 			width: 300px;
 		}
 	</style>
@@ -42,11 +60,13 @@
 
 	<h2>{{ jugador.nombre }}</h2>
 
-	{% if subasta %}
-		<a href="/mercado/subastas/ver/{{ subasta.id }}/">Ver Subasta</a>
-	{% else %}
-		<a href="/mercado/subastas/crear/{{ jugador.id }}/">Subastar</a>
-	{% endif %}
+	<div id="subasta">
+		{% if subasta %}
+			<a href="/mercado/subastas/ver/{{ subasta.id }}/">Ver Subasta</a>
+		{% else %}
+			<a href="/mercado/subastas/crear/{{ jugador.id }}/">Subastar</a>
+		{% endif %}
+	</div>
 
 	<!-- Datos personales -->
 	<table class="tabla1" id="tabla_datos_personales">
@@ -70,6 +90,24 @@
 				<td>{{ anios }} años y {{ dias }} días</td>
 			</tr>
 
+			<!-- Estado -->
+			<tr>
+				<td>Estado</td>
+				<td>
+					{% if jugador.dias_lesionado > 0 %}
+						<span id="lesionado">Lesionado durante {{ jugador.dias_lesionado }} días</span>
+					{% else %}
+						<span id="en_forma">En plena forma</span>
+					{% endif %}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- Fisico -->
+	<table class="tabla1" id="tabla_fisico">
+		<caption>Físico</caption>
+		<tbody>
 			<!-- Altura -->
 			<tr>
 				<td>Altura</td>
@@ -81,17 +119,23 @@
 				<td>Peso</td>
 				<td>{{ jugador.atributos.peso }} kg.</td>
 			</tr>
-
-			<!-- Estado -->
+			
+			<!-- Color de la piel -->
 			<tr>
-				<td>Estado</td>
-				<td>
-					{% if jugador.dias_lesionado > 0 %}
-						<span id="lesionado">Lesionado durante {{ jugador.dias_lesionado }} días</span>
-					{% else %}
-						<span id="en_forma">En plena forma</span>
-					{% endif %}
-				</td>
+				<td>Color de la piel</td>
+				<td>{{ jugador.color_piel }}</td>
+			</tr>
+
+			<!-- Color del pelo -->
+			<tr>
+				<td>Color del pelo</td>
+				<td>{{ jugador.color_pelo }}</td>
+			</tr>
+			
+			<!-- Color de los ojos -->
+			<tr>
+				<td>Color de los ojos</td>
+				<td>{{ jugador.color_ojos }}</td>
 			</tr>
 		</tbody>
 	</table>

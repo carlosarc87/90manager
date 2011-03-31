@@ -21,14 +21,16 @@
 		<!-- Cabecera -->
 		<div id="header">
 			<div class="contenido">
-				<a href="/">
-					<img id="logo" src="/media/img/logo.png" alt="logo" title="" />
-				</a>
+				<div id="caja_logo">
+					<a href="/">
+						<img id="logo" src="/media/img/logo.png" alt="logo" title="" />
+					</a>
+				</div>
+
+				{% block menu_superior %}
+				{% endblock %}
 			</div>
 		</div>
-	{% endblock %}
-
-	{% block menu_superior %}
 	{% endblock %}
 
 	<!-- Contenedor central -->
