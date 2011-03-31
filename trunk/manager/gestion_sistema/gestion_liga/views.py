@@ -52,7 +52,7 @@ def ver_ligas_publicas(request):
 	''' Muestra las ligas publicas que haya en el sistema '''
 	usuario = request.user
 	# Obtenemos las ligas
-	ligas = Liga.objects.filter(publica = True)
+	ligas = Liga.objects.filter(publica = True, jornada = None)
 
 	# Cargamos la plantilla con los parametros y la devolvemos
 	t = loader.get_template("juego/ligas/ver_ligas_publicas.html")

@@ -33,17 +33,19 @@ class EquipoForm(forms.ModelForm):
 	''' Formulario para crear un equipo '''
 	def __init__(self, liga, *args, **kwargs):
 		''' Constructor que establece la lista de valores de los titulares '''
-		super(EquipoForm, self).__init__(*args, **kwargs)	
+		super(EquipoForm, self).__init__(*args, **kwargs)
 		self.liga = liga
-	
+
+	def clean_siglas(self):
+		''' Comprueba si las siglas del equipo existen en la misma liga '''
+		siglas = self.cleaned_data['siglas']
+		if self.liga.equipo_set.filter(siglas = siglas).count() > 0:
+			raise forms.ValidationError("Las siglas ya existen en la liga")
+		return siglas
+
 	class Meta:
 		model = Equipo
 		exclude = ('usuario', 'liga', 'dinero')
-		
-	def clean_siglas(self):
-		''' Comprueba si las siglas del equipo existen en la misma liga '''
-		if self.liga.equipo_set.filter(siglas = self.cleaned_data['siglas']).count() > 0:
-			raise forms.ValidationError("Las siglas ya existen en la liga")
 
 ########################################################################
 
