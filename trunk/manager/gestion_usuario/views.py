@@ -21,10 +21,8 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.template import Context, loader, RequestContext
+
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
 from django.core.mail import send_mail
 
 import datetime, random, hashlib
@@ -37,6 +35,7 @@ from forms import UsuarioForm
 from gestion_base.func import devolverMensaje
 
 from gestion_sistema.gestion_liga.models import Liga
+from gestion_usuario.func import redireccionar, generarPagina
 
 ########################################################################
 
@@ -83,21 +82,11 @@ def registrar_usuario(request):
 
 				send_mail(asunto, mensaje, 'noreply@90manager.com', [usuario.email])
 
-			# Loguear al usuario
-			#usuario.is_active = True
-			#usuario_reg = authenticate(username = usuario.username, password = password)
-			#if usuario_reg is not None:
-			#	login(request, usuario_reg)
-			#	return devolverMensaje(request, "Se ha registrado correctamente.", "/cuentas/perfil/")
-			#else:
-			#	return devolverMensaje(request, "ERROR.", "/cuentas/perfil/")
 			return devolverMensaje(request, "Se ha enviado un mensaje de confirmacion a tu correo", "/")
 	else:
 		form = UsuarioForm()
 
-	c = RequestContext(request, { "form_reg": form })
-
-	return render_to_response("web/usuarios/registrar_usuario.html", c)
+	return generarPagina("web/usuarios/registrar_usuario.html", { "form_reg": form }, request, True)
 
 ########################################################################
 
@@ -112,12 +101,12 @@ def perfil_usuario(request):
 	equipos = usuario.equipo_set.all()
 
 	# Cargamos la plantilla con los parametros y la devolvemos
-	t = loader.get_template("juego/cuentas/perfil.html")
-	c = Context({"usuario" : usuario,
-				 "ligas_creadas" : ligas_creadas,
-				 "equipos" : equipos,
-				})
-	return HttpResponse(t.render(c))
+	d = {"usuario" : usuario,
+		 "ligas_creadas" : ligas_creadas,
+		 "equipos" : equipos,
+		}
+
+	return generarPagina("juego/cuentas/perfil.html", d, request)
 
 ########################################################################
 

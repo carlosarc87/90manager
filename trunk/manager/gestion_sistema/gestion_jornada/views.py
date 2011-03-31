@@ -23,21 +23,12 @@ Copyright 2011 by
 """
 
 # Vistas del sistema
-from django.template import Context, loader
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.db import transaction
-from django.contrib.auth import authenticate, login
-
-from django.db.models import Q
-
-import datetime
-import random
 
 from models import Jornada
 
 from gestion_base.func import devolverMensaje
+from gestion_usuario.func import redireccionar, generarPagina
 
 ########################################################################
 
@@ -92,9 +83,7 @@ def ver_jornada(request, jornada_id):
 	else:
 		es_jornada_actual = False
 
-	# Cargamos la plantilla con los parametros y la devolvemos
-	t = loader.get_template("juego/jornadas/ver_jornada.html")
-	c = Context({"jornada" : jornada,
+	d = {"jornada" : jornada,
 				 "emparejamientos" : emparejamientos,
 				 "liga" : liga,
 				 "usuario" : usuario,
@@ -104,7 +93,7 @@ def ver_jornada(request, jornada_id):
 				 "clasificacion_anterior" : clasificacion_anterior,
 				 "es_creador" : es_creador,
 				 "es_jornada_actual" : es_jornada_actual,
-				})
-	return HttpResponse(t.render(c))
+				}
+	return generarPagina("juego/jornadas/ver_jornada.html", d, request)
 
 ########################################################################

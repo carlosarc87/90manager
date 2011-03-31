@@ -23,21 +23,12 @@ Copyright 2011 by
 """
 
 # Vistas del sistema
-from django.template import Context, loader
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.db import transaction
-from django.contrib.auth import authenticate, login
-
-from django.db.models import Q
-
-import datetime
-import random
 
 from models import Jugador
 
 from gestion_base.func import devolverMensaje
+from gestion_usuario.func import redireccionar, generarPagina
 
 ########################################################################
 
@@ -67,16 +58,14 @@ def ver_jugador(request, jugador_id):
 	if jugador.atributos.ofertado:
 		subasta = jugador.atributos.subasta
 
-	# Cargamos la plantilla con los parametros y la devolvemos
-	t = loader.get_template("juego/jugadores/ver_jugador.html")
-	c = Context({"equipo" : equipo,
+	d = {"equipo" : equipo,
 				 "usuario" : usuario,
 				 "jugador" : jugador,
 				 "subasta" : subasta,
 				 "mejor_posicion" : mejor_posicion,
 				 "anios" : anios,
 				 "dias" : dias
-				})
-	return HttpResponse(t.render(c))
+				}
+	return generarPagina("juego/jugadores/ver_jugador.html", d, request)
 
 ########################################################################

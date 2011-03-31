@@ -23,22 +23,13 @@ Copyright 2011 by
 """
 
 # Vistas del sistema
-from django.template import Context, loader, RequestContext
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.db import transaction
-from django.contrib.auth import authenticate, login
-
-from django.db.models import Q
-
-import datetime
-import random
 
 from models import Partido
 from forms import PrepararEquipoForm
 
 from gestion_base.func import devolverMensaje
+from gestion_usuario.func import redireccionar, generarPagina
 
 ########################################################################
 
@@ -79,7 +70,7 @@ def jugar_partido(request, partido_id):
 	if not jornada_actual.quedanPartidosPorJugar():
 		jornada_actual.liga.avanzarJornada()
 
-	return HttpResponseRedirect("/partidos/ver/%s/" % (partido_id))
+	return redireccionar("/partidos/ver/%s/" % (partido_id))
 
 ########################################################################
 
@@ -267,9 +258,7 @@ def ver_partido(request, partido_id):
 			elif t.posicion == 'DL':
 				equipo_visitante.num_dl += 1
 
-	# Cargamos la plantilla con los parametros y la devolvemos
-	t = loader.get_template("juego/partidos/ver_partido.html")
-	c = Context({"jornada" : jornada,
+	d = {"jornada" : jornada,
 				 "equipo_local" : equipo_local,
 				 "equipo_visitante" : equipo_visitante,
 				 "liga" : liga,
@@ -280,8 +269,8 @@ def ver_partido(request, partido_id):
 				 "tiene_equipo" : tiene_equipo,
 				 "es_jugable" : es_jugable,
 				 "editar" : editar,
-				})
-	return HttpResponse(t.render(c))
+				}
+	return generarPagina("juego/partidos/ver_partido.html", d, request)
 
 ########################################################################
 
@@ -336,8 +325,18 @@ def preparar_partido(request, partido_id):
 
 	jugadores = equipo.getJugadores()
 
-	c = RequestContext(request, {"form": form, "editar" : editar, "usuario" : usuario, "partido" : partido, "equipo" : equipo, "jugadores" : jugadores, "delanteros" : delanteros, "defensas" : defensas, "portero" : portero, "centrocampistas" : centrocampistas, "suplentes" : suplentes })
+	d = {"form": form,
+		"editar" : editar,
+		"partido" : partido,
+		"equipo" : equipo,
+		"jugadores" : jugadores,
+		"delanteros" : delanteros,
+		"defensas" : defensas,
+		"portero" : portero,
+		"centrocampistas" : centrocampistas,
+		"suplentes" : suplentes
+		}
 
-	return render_to_response("juego/partidos/preparar_partido.html", c)
+	return generarPagina("juego/partidos/preparar_partido.html", d, request, True)
 
 ########################################################################

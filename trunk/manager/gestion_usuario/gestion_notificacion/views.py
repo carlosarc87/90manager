@@ -23,18 +23,11 @@ Copyright 2011 by
 """
 
 # Vistas del sistema
-from django.template import Context, loader, RequestContext
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.db import transaction
-from django.contrib.auth import authenticate, login
-
-from django.db.models import Q
-
-import datetime
 
 from gestion_base.func import devolverMensaje
+from gestion_usuario.func import redireccionar, generarPagina
+
 from gestion_sistema.gestion_liga.models import Liga
 
 ########################################################################
@@ -48,7 +41,7 @@ def listar_notificaciones(request):
 	for n in notificaciones:
 		n.mensaje = n.getMensaje()
 
-	return render_to_response("juego/notificaciones/listar.html", {"usuario" : usuario, "notificaciones" : notificaciones })
+	return generarPagina("juego/notificaciones/listar.html", { "notificaciones" : notificaciones }, request)
 
 ########################################################################
 
@@ -66,7 +59,7 @@ def listar_notificaciones_liga(request, liga_id):
 	for n in notificaciones:
 		n.mensaje = n.getMensaje()
 
-	return render_to_response("juego/notificaciones/listar_liga.html", {"usuario" : usuario, "notificaciones" : notificaciones })
+	return generarPagina("juego/notificaciones/listar_liga.html", { "notificaciones" : notificaciones }, request)
 
 ########################################################################
 
@@ -106,6 +99,6 @@ def ver_notificacion(request, notificacion_id):
 	notificacion.leida = True
 	notificacion.save()
 
-	return render_to_response("juego/notificaciones/ver.html", { "usuario" : usuario, "notificacion" : notificacion })
+	return generarPagina("juego/notificaciones/ver.html", { "notificacion" : notificacion }, request)
 
 ########################################################################

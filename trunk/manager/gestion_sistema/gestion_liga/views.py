@@ -23,17 +23,8 @@ Copyright 2011 by
 """
 
 # Vistas del sistema
-from django.template import Context, loader, RequestContext
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
 from django.db import transaction
-from django.contrib.auth import authenticate, login
-
-from django.db.models import Q
-
-import datetime
-import random
 
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_equipo.forms import EquipoForm
@@ -42,6 +33,8 @@ from models import Liga
 from forms import LigaForm, ActivarLigaForm
 
 from gestion_base.func import devolverMensaje
+from gestion_usuario.func import redireccionar, generarPagina
+
 from gestion_usuario.models import Usuario
 from gestion_usuario.gestion_notificacion.func import notificar, TipoNotificacion
 
@@ -58,12 +51,8 @@ def ver_ligas_publicas(request):
 	for liga in ligas:
 		liga.inscritos = liga.equipo_set.all().count()
 
-	# Cargamos la plantilla con los parametros y la devolvemos
-	t = loader.get_template("juego/ligas/ver_ligas_publicas.html")
-	c = Context({"usuario" : usuario,
-				 "ligas" : ligas
-				})
-	return HttpResponse(t.render(c))
+	d = { "ligas" : ligas }
+	return generarPagina("juego/ligas/ver_ligas_publicas.html", d, request)
 
 ########################################################################
 
@@ -170,11 +159,9 @@ def ver_liga(request, liga_id):
 				posicion += 1
 
 	# Cargamos la plantilla con los parametros y la devolvemos
-	t = loader.get_template("juego/ligas/ver_liga.html")
-	c = Context({"liga" : liga,
+	d = {"liga" : liga,
 				 "equipos" : equipos,
 				 "jornadas" : jornadas,
-				 "usuario" : usuario,
 				 "jornada_actual" : jornada_actual,
 				 "jornadas_restantes" : jornadas_restantes,
 				 "activada" : activada,
@@ -182,8 +169,8 @@ def ver_liga(request, liga_id):
 				 "clasificacion" : clasificacion,
 				 "liga_acabada" : liga_acabada,
 				 "es_creador" : es_creador
-				})
-	return HttpResponse(t.render(c))
+				}
+	return generarPagina("juego/ligas/ver_liga.html", d, request)
 
 ########################################################################
 
@@ -210,7 +197,7 @@ def avanzar_jornada_liga(request, liga_id):
 
 	liga.avanzarJornada()
 
-	return HttpResponseRedirect("/ligas/ver/%s/" % (liga_id))
+	return redireccionar("/ligas/ver/%s/" % (liga_id))
 
 ########################################################################
 
@@ -230,9 +217,8 @@ def crear_liga(request):
 	else:
 		form = LigaForm()
 
-	c = RequestContext(request, {"form" : form, "usuario" : usuario })
-
-	return render_to_response("juego/ligas/crear_liga.html", c)
+	d = {"form" : form }
+	return generarPagina("juego/ligas/crear_liga.html", d, request, True)
 
 ########################################################################
 
@@ -278,9 +264,7 @@ def activar_liga(request, liga_id):
 	else:
 		form = ActivarLigaForm(instance = liga)
 
-	c = RequestContext(request, {"form" : form, "usuario" : usuario, "liga" : liga })
-
-	return render_to_response("juego/ligas/activar_liga.html", c)
-
+	d = {"form" : form, "liga" : liga }
+	return generarPagina("juego/ligas/activar_liga.html", d, request, True)
 
 ########################################################################

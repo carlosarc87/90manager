@@ -23,16 +23,7 @@ Copyright 2011 by
 """
 
 # Vistas del sistema
-from django.template import Context, loader, RequestContext
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.db import transaction
-from django.contrib.auth import authenticate, login
-
-from django.db.models import Q
-
-import datetime
 
 from models import Subasta
 from forms import SubastaForm, ApostarForm
@@ -41,6 +32,7 @@ from gestion_sistema.gestion_liga.models import Liga
 from gestion_sistema.gestion_equipo.models import Equipo
 
 from gestion_base.func import devolverMensaje
+from gestion_usuario.func import redireccionar, generarPagina
 
 ########################################################################
 
@@ -77,9 +69,9 @@ def crear_subasta(request, jugador_id):
 	else:
 		form = SubastaForm()
 
-	c = RequestContext(request, {"form": form, "usuario" : usuario, "jugador" : jugador })
+	d = { "form": form, "jugador" : jugador }
 
-	return render_to_response("juego/subastas/crear_subasta.html", c)
+	return generarPagina("juego/subastas/crear_subasta.html", d, request, True)
 
 ########################################################################
 
@@ -95,7 +87,7 @@ def ver_subastas_liga(request, liga_id):
 
 	subastas = liga.subasta_set.all()
 
-	return render_to_response("juego/subastas/ver_subastas_liga.html", {"usuario" : usuario, "subastas" : subastas, "liga" : liga })
+	return generarPagina("juego/subastas/ver_subastas_liga.html", { "subastas" : subastas, "liga" : liga }, request)
 
 ########################################################################
 
@@ -128,14 +120,12 @@ def ver_subasta(request, subasta_id):
 	else:
 		form = ApostarForm(subasta)
 
-	# Cargamos la plantilla con los parametros y la devolvemos
-	t = loader.get_template("juego/subastas/ver_subasta.html")
-	c = RequestContext(request, {"usuario" : usuario,
-				 "equipo_usuario" : equipo_usuario,
-				 "subasta" : subasta,
-				 "form" : form,
-				})
-	return HttpResponse(t.render(c))
+	d = {"usuario" : usuario,
+		"equipo_usuario" : equipo_usuario,
+		"subasta" : subasta,
+		"form" : form,
+		}
+	return generarPagina("juego/subastas/ver_subasta.html", d, request, True)
 
 ########################################################################
 
@@ -154,8 +144,11 @@ def ver_subastas_equipo(request, equipo_id):
 #	subastas = equipo.subasta_set.all()
 	subastas_comprador = equipo.subastas_como_comprador.all()
 	subastas_vendedor = equipo.subastas_como_vendedor.all()
-
-	return render_to_response("juego/subastas/ver_subastas_equipo.html", {"usuario" : usuario, "subastas_comprador" : subastas_comprador, "subastas_vendedor" : subastas_vendedor, "equipo" : equipo })
+	d = {"subastas_comprador" : subastas_comprador,
+		"subastas_vendedor" : subastas_vendedor,
+		"equipo" : equipo,
+		}
+	return generarPagina("juego/subastas/ver_subastas_equipo.html", d, request)
 
 ########################################################################
 

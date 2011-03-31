@@ -23,20 +23,13 @@ Copyright 2011 by
 """
 
 # Vistas del sistema
-from django.template import Context, loader, RequestContext
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.db import transaction
-from django.contrib.auth import authenticate, login
-
-import datetime
-import random
 
 from models import Equipo
 from forms import EquipoForm
 
 from gestion_base.func import devolverMensaje
+from gestion_usuario.func import redireccionar, generarPagina
 
 from gestion_sistema.gestion_liga.models import Liga
 from gestion_sistema.gestion_jugador.models import Jugador
@@ -78,16 +71,14 @@ def ver_equipo(request, equipo_id):
 	# Obtenemos la liga
 	liga = equipo.liga
 
-	# Cargamos la plantilla con los parametros y la devolvemos
-	t = loader.get_template("juego/equipos/ver_equipo.html")
-	c = Context({"usuario" : usuario,
+	d = {"usuario" : usuario,
 				 "liga" : liga,
 				 "equipo" : equipo,
 				 "jugadores" : jugadores,
 				 "valor_equipo" : valor_equipo,
 				 "edad_media_equipo" : edad_media_equipo
-				})
-	return HttpResponse(t.render(c))
+				}
+	return generarPagina("juego/equipos/ver_equipo.html", d, request)
 
 ########################################################################
 
@@ -120,9 +111,8 @@ def crear_equipo(request, liga_id):
 	else:
 		form = EquipoForm(liga)
 
-	c = RequestContext(request, {"form": form, "usuario" : usuario, "liga" : liga })
-
-	return render_to_response("juego/equipos/crear_equipo.html", c)
+	d = {"form": form, "usuario" : usuario, "liga" : liga }
+	return generarPagina("juego/equipos/crear_equipo.html", d, request, True)
 
 ########################################################################
 
