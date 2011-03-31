@@ -21,7 +21,8 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 
@@ -86,7 +87,7 @@ def registrar_usuario(request):
 	else:
 		form = UsuarioForm()
 
-	return generarPagina("web/usuarios/registrar_usuario.html", { "form_reg": form }, request, True)
+	return render_to_response("web/usuarios/registrar_usuario.html", { "form_reg": form }, context_instance = RequestContext(request))
 
 ########################################################################
 

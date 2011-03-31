@@ -25,6 +25,11 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 
+from django.contrib.sessions.models import Session
+from datetime import datetime
+
+from models import Usuario
+
 def generarPagina(template, parametros, request, form = False):
 	""" Genera una pagina web con los templates añadiendo unos parámetros por defecto """
 	usuario = request.user
@@ -35,3 +40,16 @@ def generarPagina(template, parametros, request, form = False):
 def redireccionar(direccion):
 	""" Redirecciona a otra pagina web """
 	return HttpResponseRedirect(direccion)
+
+def getUsuariosConectados():
+    # Query all non-expired sessions
+    sesiones = Session.objects.filter(expire_date__gte = datetime.now())
+    uid_list = []
+
+    # Build a list of user ids from that query
+    for sesion in sesiones:
+        data = sesion.get_decoded()
+        uid_list.append(data.get('_auth_user_id', None))
+
+    # Query all logged in users based on id list
+    return Usuario.objects.filter(id__in = uid_list)
