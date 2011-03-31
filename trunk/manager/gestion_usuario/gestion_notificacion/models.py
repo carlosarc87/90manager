@@ -87,7 +87,7 @@ class Notificacion(models.Model):
 			obj = getObjeto(Subasta, self.identificador)
 			if obj:
 				enlace = '<a href="/mercado/subastas/ver/%d/">' % self.identificador
-				msj = "Han superado tu puja en la subasta de %s%s</a>" % (enlace, obj.jugador.apodo)
+				msj = "Han superado tu puja en la subasta de %s%s</a>" % (enlace, obj.atributos_jugador.jugador.apodo)
 			else:
 				msj = "Han superado tu puja en una subasta que ya ha acabado"
 
