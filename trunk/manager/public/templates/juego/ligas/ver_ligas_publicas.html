@@ -17,10 +17,6 @@
 		.col_creador{
 		}
 		
-		.col_estado{
-			text-align: center;
-		}
-		
 		.col_inscritos{
 			color: #5555aa;
 			text-align: right;
@@ -54,7 +50,6 @@
 				<th>Creador</th>
 				<th>Liga</th>
 				<th>Inscritos</th>
-				<th>Estado</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -65,12 +60,6 @@
 					<td class="col_nombre"><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
 					
 					<td class="col_inscritos">{{ liga.inscritos }}</td>
-					
-					{% if liga.activada %}
-						<td><span class="liga_comenzada">JORNADA {{ liga.obtenerJornadaActual.numero }}</span></td>
-					{% else %}
-						<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>
-					{% endif %}
 				</tr>
 			{% empty %}
 				<tr>

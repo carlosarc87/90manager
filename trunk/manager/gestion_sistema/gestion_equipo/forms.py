@@ -39,6 +39,7 @@ class EquipoForm(forms.ModelForm):
 	def clean_siglas(self):
 		''' Comprueba si las siglas del equipo existen en la misma liga '''
 		siglas = self.cleaned_data['siglas']
+		siglas = siglas.upper()
 		if self.liga.equipo_set.filter(siglas = siglas).count() > 0:
 			raise forms.ValidationError("Las siglas ya existen en la liga")
 		return siglas

@@ -94,13 +94,19 @@ def nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2):
 		parte2 = lista_parte2[1][randint(0, len(lista_parte2[1]) - 1)]
 	
 	if a == 1:
+		# Nombre
 		nombre_equipo = parte1 + ' ' + parte2
+		
+		# Siglas
 		parte1 = quitar_caracteres_raros(parte1)
 		parte2 = quitar_caracteres_raros(parte2)
 		siglas = parte1[0] + parte2[0] + parte2[1].upper()
 	else:
+		# Nombre
 		tipo_club = lista_nombres_tipo_club[0][randint(0, len(lista_nombres_tipo_club) - 1)]
 		nombre_equipo = tipo_club + ' ' + parte1 + ' ' + parte2
+		
+		# Siglas
 		tipo_club = quitar_caracteres_raros(tipo_club)
 		parte1 = quitar_caracteres_raros(parte1)
 		parte2 = quitar_caracteres_raros(parte2)
