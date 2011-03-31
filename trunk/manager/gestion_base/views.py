@@ -21,12 +21,10 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.template import Context, loader, RequestContext
-from django.contrib.auth.decorators import login_required
+from django.template import RequestContext
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.db import transaction
-from django.contrib.auth import authenticate, login
 
 import datetime
 

@@ -105,23 +105,24 @@ def ver_subasta(request, subasta_id):
 
 	# Equipo del usuario
 	equipo_usuario = None
+	form = None
 	if usuario.equipo_set.filter(liga = subasta.liga).count():
 		equipo_usuario = usuario.equipo_set.get(liga = subasta.liga)
 
-	if request.method == 'POST':
-		if not equipo_usuario:
-			devolverMensaje('No puedes pujar en una liga en la que no juegas')
-		form = ApostarForm(subasta, request.POST)
-		if form.is_valid():
-			cantidad = form.cleaned_data['cantidad']
-			subasta.pujar(equipo_usuario, cantidad)
-			subasta.save()
-			return devolverMensaje(request, "Cantidad apostada correctamente", "/mercado/subastas/ver/%d/" % subasta.id)
-	else:
-		form = ApostarForm(subasta)
+	if subasta.vendedor is not equipo_usuario:
+		if request.method == 'POST':
+			if not equipo_usuario:
+				devolverMensaje('No puedes pujar en una liga en la que no juegas')
+			form = ApostarForm(subasta, request.POST)
+			if form.is_valid():
+				cantidad = form.cleaned_data['cantidad']
+				subasta.pujar(equipo_usuario, cantidad)
+				subasta.save()
+				return devolverMensaje(request, "Cantidad apostada correctamente", "/mercado/subastas/ver/%d/" % subasta.id)
+		else:
+			form = ApostarForm(subasta)
 
-	d = {"usuario" : usuario,
-		"equipo_usuario" : equipo_usuario,
+	d = {"equipo_usuario" : equipo_usuario,
 		"subasta" : subasta,
 		"form" : form,
 		}
@@ -172,6 +173,9 @@ def comprar_subasta(request, subasta_id):
 
 	if not subasta.precio_compra:
 		return devolverMensaje(request, "Error, la subasta %s no puede comprarse directamente" % subasta_id)
+
+	if subasta.vendedor.usuario == usuario:
+		return devolverMensaje(request, "Error, no puedes comprarte tu propia subasta")
 
 	equipo = usuario.equipo_set.get(liga = subasta.liga)
 

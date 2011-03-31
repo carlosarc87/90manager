@@ -44,10 +44,10 @@ from gestion_usuario.gestion_notificacion.func import notificar, TipoNotificacio
 def ver_ligas_publicas(request):
 	''' Muestra las ligas publicas que haya en el sistema '''
 	usuario = request.user
-	
+
 	# Obtenemos las ligas
 	ligas = Liga.objects.filter(publica = True, jornada = None)
-	
+
 	for liga in ligas:
 		liga.inscritos = liga.equipo_set.all().count()
 
@@ -147,6 +147,7 @@ def ver_liga(request, liga_id):
 					c.partidos_ganados = len(c.equipo.getPartidosGanados(jornada_a_comprobar))
 					c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_a_comprobar))
 					c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_a_comprobar))
+
 				else:
 					# Comor getPartidos es sin la jornada destino, pues decimos que compruebe hasta la 2
 					jornada_a_comprobar = liga.jornada_set.get(numero = 2)

@@ -132,16 +132,3 @@ def activar_usuario(request, clave):
 	return devolverMensaje(request, "Se activó al usuario correctamente", "/")
 
 ########################################################################
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -146,6 +146,8 @@ INSTALLED_APPS = (
     'gestion_mercado.gestion_subasta',
 )
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 #DECIMAL_PLACES = 2
 NUMBER_GROUPING = 3
 THOUSAND_SEPARATOR = '.'
