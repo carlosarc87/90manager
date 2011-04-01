@@ -1,0 +1,143 @@
+{% extends "base_juego.html" %}
+
+{% block js_extra %}
+    <script src="/media/js/jquery-1.5.1.min.js" type="text/javascript"></script>
+
+	<script type="text/javascript">
+		// Calcula el tiempo dependiendo de num1 y num2
+		function calcularTiempo(segundos, num1, num2) {
+			s = ((Math.floor(segundos / num1)) % num2).toString();
+			if (s.length < 2)
+				s = "0" + s;
+			return s;
+		}
+
+		var array_sucesos = [];
+
+		var segundos = 0;
+		var pausa = false;
+		var fin_partido = false;
+
+		function inicializarArraySucesos() {
+			array_sucesos = [];
+			{% for suceso in sucesos %}
+				datos_suceso = [];
+				datos_suceso.push({{ suceso.segundo_partido }});
+				datos_suceso.push(calcularTiempo({{ suceso.segundo_partido }}, 60, 999) + ":" + calcularTiempo({{ suceso.segundo_partido }}, 1, 60));
+				datos_suceso.push("{{ suceso.equipo.siglas }}");
+				datos_suceso.push("{{ suceso.tipo }}");
+				array_sucesos.push(datos_suceso);
+			{% endfor %}
+		}
+
+		// Actualiza el mensaje de tiempo
+		function actualizarTiempo() {
+			str_tiempo = formato_tiempo.replace(/%%M%%/g, calcularTiempo(segundos, 60, 400));
+			str_tiempo = str_tiempo.replace(/%%S%%/g, calcularTiempo(segundos, 1, 60));
+			document.getElementById("contador_real").innerHTML = "Tiempo real: " + str_tiempo;
+			annadirFila();
+		}
+
+		function contadorTiempo() {
+			if (pausa == false && fin_partido == false)
+			{
+				setTimeout("contadorTiempo()", timeout);
+				segundos += paso;
+				actualizarTiempo();
+			}
+		}
+
+		formato_tiempo = "%%M%%:%%S%%";
+		paso = 1; // Tiempo en segundos para refrescar
+		paso = Math.ceil(paso); // Filtrico
+
+		var timeout = (Math.abs(paso) - 1) * 1000 + 990;
+		var ultimaFilaAgregada = -1;
+
+		function cambiarVelocidad() {
+			vel = document.form_velocidad.velocidad.value
+			timeout = (Math.abs(paso) - 1) * 1000 + vel * 990;
+		}
+
+		function reiniciarContador() {
+			segundos = 0;
+			if (fin_partido) {
+				fin_partido = false;
+				contadorTiempo();
+			}
+			actualizarTiempo();
+		}
+
+		function annadirFila() {
+			if (ultimaFilaAgregada + 1 < array_sucesos.length) {
+				suceso = array_sucesos[ultimaFilaAgregada + 1];
+				tiempo = suceso[0];
+				while (segundos >= tiempo && !fin_partido) {
+					document.getElementById("tabla_sucesos").insertRow(0);
+					fila_dest = document.getElementById("tabla_sucesos").rows.item(0);
+					for (i = 0; i < suceso.length; i++) {
+						fila_dest.insertCell(i);
+						fila_dest.cells.item(i).innerHTML = suceso[i];
+					}
+					ultimaFilaAgregada++;
+					if (ultimaFilaAgregada + 1 < array_sucesos.length) {
+						suceso = array_sucesos[ultimaFilaAgregada + 1];
+						tiempo = suceso[0];
+					} else {
+						fin_partido = true;
+					}
+				}
+			} else {
+				fin_partido = true;
+			}
+		}
+
+		function pausarContador() {
+			pausa = !pausa;
+			if (pausa == false) {
+				contadorTiempo();
+			}
+		}
+
+		// Al terminar de cargar la pagina (sino no encuentra el elemento 'contador_desactualizado')
+		$(document).ready(function(){
+			inicializarArraySucesos();
+			contadorTiempo();
+		});
+	</script>
+{% endblock %}
+
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+		<li><a href="/jornadas/ver/{{ jornada.id }}/">Jornada {{ jornada.numero }}</a></li>
+		<li><a href="/partidos/ver/{{ partido.id }}/">Partido {{ partido.id }}</a></li>
+		<li>Repeticion</li>
+	</ul>
+{% endblock %}
+
+{% block contenido %}
+	<div id="div_contador_real">
+		<span id="contador_real">=P</span>
+	</div>
+	<div id="div_contador_partido">
+		<span id="contador_partido">=P</span>
+	</div>
+	<div id="div_velocidad">
+		<span id="velocidad">=P</span>
+	</div>
+	<div id="div_mensaje">
+		<form name="form_velocidad">
+		<p>Velocidad: <input type="text" name="velocidad">
+		<input type="Button" value="Cambiar velocidad" onClick="cambiarVelocidad()">
+		</p>
+	</div>
+	<input type="button" name="buttonReinicio" value="Iniciar/Reiniciar" onclick="reiniciarContador();" />
+	<input type="button" name="buttonPausa" value="Pausar/Continuar" onclick="pausarContador();" />
+	<!-- Sucesos -->
+	<table class="tabla1" id="tabla_sucesos">
+		<caption>Sucesos</caption>
+		<tbody>
+		</tbody>
+	</table>
+{% endblock %}

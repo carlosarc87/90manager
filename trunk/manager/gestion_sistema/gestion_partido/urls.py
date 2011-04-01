@@ -27,6 +27,7 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('',
    	# Modulo de partidos
    	(r'^ver/(?P<partido_id>\d+)/$', 'gestion_sistema.gestion_partido.views.ver_partido'),
+   	(r'^repeticion/(?P<partido_id>\d+)/$', 'gestion_sistema.gestion_partido.views.ver_repeticion_partido'),
    	(r'^preparar/(?P<partido_id>\d+)/$', 'gestion_sistema.gestion_partido.views.preparar_partido'),
    	(r'^jugar/(?P<partido_id>\d+)/$', 'gestion_sistema.gestion_partido.views.jugar_partido'),
 )

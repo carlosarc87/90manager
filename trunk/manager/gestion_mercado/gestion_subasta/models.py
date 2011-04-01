@@ -55,7 +55,7 @@ class Subasta(models.Model):
 		''' Compra la subasta directamente con un equipo '''
 		if self.tieneComprador():
 			if self.comprador != equipo:
-				notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA_COMPRADA, identificador = self.jugador.id, liga = self.liga)
+				notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA_COMPRADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
 				self.comprador.pagar(self.subasta.oferta)
 
 		self.estado = COMPRADA # Indicar que se ha comprado
@@ -83,9 +83,9 @@ class Subasta(models.Model):
 		''' Finaliza y realiza los trámites oportunos de la subasta '''
 		self.atributos_jugador.ofertado = False
 		if self.comprador:
-			notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_GANADA, identificador = self.jugador.id, liga = self.liga)
+			notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_GANADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
 			self.atributos_jugador.jugador.setEquipo(self.comprador)
-		notificar(self.vendedor.usuario, TipoNotificacion.SUBASTA_FINALIZADA, identificador = self.jugador.id, liga = self.liga)
+		notificar(self.vendedor.usuario, TipoNotificacion.SUBASTA_FINALIZADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
 		self.vendedor.pagar(self.oferta)
 		self.atributos_jugador.save()
 

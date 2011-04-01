@@ -339,4 +339,37 @@ def preparar_partido(request, partido_id):
 
 	return generarPagina("juego/partidos/preparar_partido.html", d, request, True)
 
+@login_required
+def ver_repeticion_partido(request, partido_id):
+	''' Muestra la repeticion de un partido '''
+	# Obtenemos el usuario
+	usuario = request.user
+
+	if Partido.objects.filter(id = partido_id).count() == 0:
+		return devolverMensaje(request, "Error, no existe un partido con identificador %s" % partido_id)
+
+	# Obtenemos el partido
+	partido = Partido.objects.get(id = partido_id)
+
+	# Obtener sucesos del partido
+	sucesos = partido.suceso_set.all()
+
+	# Obtenemos la liga y la jornada
+	jornada = partido.jornada
+	liga = jornada.liga
+
+	# Obtenemos los equipos que juegan en el partido
+	equipo_local = partido.equipo_local
+	equipo_visitante = partido.equipo_visitante
+
+	# Comprobamos si el partido ha acabado
+	finalizado = partido.finalizado()
+
+	# Si el partido ha finalizado
+	if not finalizado:
+		return devolverMensaje(request, "Error, el partido no acabó", "/patidos/ver/%d/" % partido_id)
+
+	d = { "sucesos" : sucesos }
+	return generarPagina("juego/partidos/ver_repeticion_partido.html", d, request)
+
 ########################################################################
