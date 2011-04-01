@@ -4,6 +4,10 @@
     <script src="/media/js/jquery-1.5.1.min.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
+		// ---------------------------------------------------------- //
+		//                Cuidado! Aquí hay dragones...               //
+		// ---------------------------------------------------------- //
+
 		// Calcula el tiempo dependiendo de num1 y num2
 		function calcularTiempo(segundos, num1, num2) {
 			s = ((Math.floor(segundos / num1)) % num2).toString();
@@ -16,7 +20,8 @@
 
 		var segundos = 0;
 		var pausa = false;
-		var fin_partido = false;
+		var fin_partido = true;
+		var goles = [];
 
 		function inicializarArraySucesos() {
 			array_sucesos = [];
@@ -34,7 +39,7 @@
 		function actualizarTiempo() {
 			str_tiempo = formato_tiempo.replace(/%%M%%/g, calcularTiempo(segundos, 60, 400));
 			str_tiempo = str_tiempo.replace(/%%S%%/g, calcularTiempo(segundos, 1, 60));
-			document.getElementById("contador_real").innerHTML = "Tiempo real: " + str_tiempo;
+			document.getElementById("contador_tiempo").innerHTML = "Tiempo: " + str_tiempo;
 			annadirFila();
 		}
 
@@ -49,18 +54,34 @@
 
 		formato_tiempo = "%%M%%:%%S%%";
 		paso = 1; // Tiempo en segundos para refrescar
-		paso = Math.ceil(paso); // Filtrico
 
-		var timeout = (Math.abs(paso) - 1) * 1000 + 990;
+		var timeout = 990;
 		var ultimaFilaAgregada = -1;
 
 		function cambiarVelocidad() {
-			vel = document.form_velocidad.velocidad.value
-			timeout = (Math.abs(paso) - 1) * 1000 + vel * 990;
+			vel = document.form_opciones.velocidad.value
+			timeout = vel * 990;
+		}
+
+		function cambiarMultiplicador() {
+			paso = document.form_opciones.multiplicador.value
+			paso = Math.ceil(paso); // Filtrico
 		}
 
 		function reiniciarContador() {
+			document.getElementById("boton_reinicio").value = "Reiniciar";
 			segundos = 0;
+			goles = [];
+			goles.push(0);
+			goles.push(0);
+			document.getElementById("goles_local").innerHTML = goles[0];
+			document.getElementById("goles_visitante").innerHTML = goles[1];
+			inicializarArraySucesos();
+			ultimaFilaAgregada = -1;
+			tabla = document.getElementById("tabla_sucesos");
+			while (tabla.rows.length > 0) {
+				tabla.deleteRow(0)
+			}
 			if (fin_partido) {
 				fin_partido = false;
 				contadorTiempo();
@@ -68,11 +89,26 @@
 			actualizarTiempo();
 		}
 
+		function analizar(suceso) {
+			if (suceso[3] == "Gol") {
+				if (suceso[2] == "{{ siglas_local }}") {
+					goles[0] += 1;
+					document.getElementById("goles_local").innerHTML = goles[0];
+				} else {
+					goles[1] += 1;
+					document.getElementById("goles_visitante").innerHTML = goles[1];
+				}
+			}
+		}
+
 		function annadirFila() {
 			if (ultimaFilaAgregada + 1 < array_sucesos.length) {
 				suceso = array_sucesos[ultimaFilaAgregada + 1];
 				tiempo = suceso[0];
 				while (segundos >= tiempo && !fin_partido) {
+					// Analizar el suceso
+					analizar(suceso);
+					// Incrustarlo en la tabla
 					document.getElementById("tabla_sucesos").insertRow(0);
 					fila_dest = document.getElementById("tabla_sucesos").rows.item(0);
 					for (i = 0; i < suceso.length; i++) {
@@ -96,14 +132,12 @@
 			pausa = !pausa;
 			if (pausa == false) {
 				contadorTiempo();
+				document.getElementById("boton_pausa").value = "Pausar";
+			} else {
+				document.getElementById("boton_pausa").value = "Continuar";
 			}
 		}
 
-		// Al terminar de cargar la pagina (sino no encuentra el elemento 'contador_desactualizado')
-		$(document).ready(function(){
-			inicializarArraySucesos();
-			contadorTiempo();
-		});
 	</script>
 {% endblock %}
 
@@ -117,23 +151,25 @@
 {% endblock %}
 
 {% block contenido %}
-	<div id="div_contador_real">
-		<span id="contador_real">=P</span>
-	</div>
-	<div id="div_contador_partido">
-		<span id="contador_partido">=P</span>
-	</div>
-	<div id="div_velocidad">
-		<span id="velocidad">=P</span>
-	</div>
-	<div id="div_mensaje">
-		<form name="form_velocidad">
-		<p>Velocidad: <input type="text" name="velocidad">
-		<input type="Button" value="Cambiar velocidad" onClick="cambiarVelocidad()">
+	<div id="div_opciones">
+		<form name="form_opciones">
+		<p>Multiplicador de segundos: <input type="text" name="multiplicador">
+		<input type="Button" value="Cambiar" onClick="cambiarMultiplicador()">
 		</p>
+		<p>Velocidad: <input type="text" name="velocidad">
+		<input type="Button" value="Cambiar" onClick="cambiarVelocidad()">
+		</p>
+		<input type="button" id="boton_reinicio" name="buttonReinicio" value="Iniciar/Reiniciar" onclick="reiniciarContador();" />
+		<input type="button" id="boton_pausa" name="buttonPausa" value="Pausar/Continuar" onclick="pausarContador();" />
 	</div>
-	<input type="button" name="buttonReinicio" value="Iniciar/Reiniciar" onclick="reiniciarContador();" />
-	<input type="button" name="buttonPausa" value="Pausar/Continuar" onclick="pausarContador();" />
+
+
+	<div id="div_contador_tiempo">
+		<span id="contador_tiempo">Pulse el boton para iniciar el partido</span>
+	</div>
+	<div id="div_goles">
+		{{ siglas_local }} <span id="goles_local">0</span> - <span id="goles_visitante">0</span> {{ siglas_visitante }}
+	</div>
 	<!-- Sucesos -->
 	<table class="tabla1" id="tabla_sucesos">
 		<caption>Sucesos</caption>
