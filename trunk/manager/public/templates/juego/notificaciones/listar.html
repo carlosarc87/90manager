@@ -16,8 +16,13 @@
 		}
 		
 		#notificaciones li{
+			cursor: pointer;
 			list-style: none;
 			padding: 10px;
+		}
+		
+		#notificaciones li:hover{
+			background: #ccc;
 		}
 		
 		#notificaciones li + li{
@@ -26,6 +31,10 @@
 		
 		#notificaciones li a{
 			color: #000;
+		}
+		
+		.no_leida{
+			background: #dddd55;
 		}
 	</style>
 {% endblock %}
@@ -36,7 +45,10 @@
 
 	<ul id="notificaciones">
 		{% for notificacion in notificaciones %}
-			<li><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.tipo }}</a></li>
+			<li {% if not notificacion.leida %}
+					class="no_leida"
+				{% endif %}
+				onclick="location.href='/cuentas/notificaciones/ver/{{ notificacion.id }}/'">{% autoescape off %}{{ notificacion.getMensaje }}{% endautoescape %}</li>
 		{% empty %}
 			<li>No tienes notificaciones</li>
 		{% endfor %}

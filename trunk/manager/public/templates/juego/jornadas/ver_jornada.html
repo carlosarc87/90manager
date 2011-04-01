@@ -2,8 +2,24 @@
 
 {% block css_extra %}
 	<style type="text/css">
+		h2, h4{
+			margin: 10px;
+			text-align: center;
+		}
+		
 		#tabla_encuentros{
-			
+			margin: 10px auto;
+			width: 600px;
+		}
+		
+		#tabla_clasificacion_anterior{
+			margin: 10px auto;
+			width: 500px;
+		}
+		
+		#tabla_clasificacion{
+			margin: 10px auto;
+			width: 500px;
 		}
 	</style>
 {% endblock %}
@@ -18,13 +34,13 @@
 {% block contenido %}
 
 	{% if jornada_anterior %}
-		<a href="/jornadas/ver/{{ jornada_anterior.id }}/">Ver Jornada {{ jornada_anterior.numero }}</a>
+		<h4><a href="/jornadas/ver/{{ jornada_anterior.id }}/">Ver Jornada {{ jornada_anterior.numero }}</a></h4>
 	{% endif %}
 	{% if jornada_siguiente %}
-		<a href="/jornadas/ver/{{ jornada_siguiente.id }}/">Ver Jornada {{ jornada_siguiente.numero }}</a>
+		<h4><a href="/jornadas/ver/{{ jornada_siguiente.id }}/">Ver Jornada {{ jornada_siguiente.numero }}</a></h4>
 	{% endif %}
 
-	<h2>Datos de la jornada</h2>
+	<h2>Datos de la jornada {{ jornada.numero }}</h2>
 
 	{% if jornada.jugada %}
 		<h4>FINALIZADA</h4>

@@ -2,7 +2,11 @@
 
 {% block css_extra %}
 	<style type="text/css">
-
+		h2{
+			margin: 10px;
+			text-align: center;
+		}
+		
 		.cuadro_jugador{
 			background: url('/media/img/circulo.png') no-repeat;
 			background-position: center top;
@@ -42,6 +46,14 @@
 		#caja_alineacion{
 			float: right;
 			width: 444px;
+		}
+		
+		#caja_boton_aceptar{
+			padding: 5px 0px;
+		}
+		
+		#caja_boton_limpiar{
+			padding: 5px 0px;
 		}
 
 		#campo_titulares{
@@ -98,7 +110,17 @@
 		#jugadores{
 			border: dotted 2px #000;
 			float: left;
-			width: 260px;
+			min-height: 330px;
+			width: 330px;
+		}
+		
+		#caja_num_jugadores_alineacion, #caja_num_jugadores_suplentes{
+			padding: 5px 0px;
+		}
+		
+		#num_jugadores_alineacion, #num_jugadores_suplentes{
+			color: #5555aa;
+			font-weight: bold;
 		}
 	</style>
 {% endblock %}
@@ -441,8 +463,8 @@
 		<fieldset>
 			<legend>Alineación</legend>
 
-			<div>Número de jugadores en la alineación: <label id="num_jugadores">0</label></div>
-			<div>Número de jugadores suplentes: <label id="num_suplentes">0</label></div>
+			<div id="caja_num_jugadores_alineacion">Número de jugadores en la alineación: <span id="num_jugadores_alineacion">0</span></div>
+			<div id="caja_num_jugadores_suplentes">Número de jugadores suplentes: <span id="num_jugadores_suplentes">0</span></div>
 
 			<div id="caja_alineacion">
 				<div id="campo_titulares">
@@ -503,7 +525,7 @@
 		</div>
 
 		<!-- Boton Aceptar -->
-		<div class="fila"><input type="submit" value="Aceptar" /></div>
-		<div class="fila"><input type="button" name="buttonLimpiar" value="Limpiar" onclick="limpiarDatos();" /></div>
+		<div id="caja_boton_aceptar"><input type="submit" value="Aceptar" /></div>
+		<div id="caja_boton_limpiar"><input type="button" name="buttonLimpiar" value="Limpiar" onclick="limpiarDatos();" /></div>
 	</form>
 {% endblock %}

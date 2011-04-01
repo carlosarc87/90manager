@@ -30,6 +30,13 @@
 	</style>
 {% endblock %}
 
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+		<li>Notificaciones</li>
+	</ul>
+{% endblock %}
+
 {% block contenido %}
 
 	<h2>Notificaciones de la liga: {{ liga.nombre }}</h2>
