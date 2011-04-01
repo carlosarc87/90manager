@@ -61,7 +61,7 @@ Gallos
 Galápagos
 Gansos
 Gatos
-Gatos montéses
+Gatos monteses
 Gavilanes
 Glotones
 Gorgojos
@@ -71,7 +71,7 @@ Grillos
 Guacamayos
 Guanacos
 Guepardos
-Halcónes
+Halcones
 Hamsters
 Hipopótamos
 Hurones
@@ -251,11 +251,10 @@ Grullas
 Guacamayas
 Guanacas
 Guepardas
-Halconas
+Halcones
 Hamsters
 Hienas
 Hipopótamas
-Holotiuras
 Holoturias
 Hormigas
 Huronas

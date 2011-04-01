@@ -3,10 +3,11 @@ Cónicos
 Cuadrados
 Cúbicos
 Deformes
-Elipses
+Elípticos
 Escalenos
 Esféricos
 Irregulares
+Piramidales
 Rectangulares
 #
 # Femeninos
@@ -14,8 +15,9 @@ Cónicas
 Cuadradas
 Cúbicas
 Deformes
-Elipses
+Elípticas
 Escalenas
 Esféricas
 Irregulares
+Piramidales
 Rectangulares

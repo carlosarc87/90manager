@@ -83,6 +83,16 @@ class Liga(models.Model):
 		lista_parte1[0] += lista_nombres_animales[0]
 		lista_parte1[1] += lista_nombres_animales[1]
 
+		# Comidas
+		lista_nombres_comidas = listaNombres('nombres_equipos/comidas.txt')
+		lista_parte1[0] += lista_nombres_comidas[0]
+		lista_parte1[1] += lista_nombres_comidas[1]
+
+		# Profesiones
+		lista_nombres_profesiones = listaNombres('nombres_equipos/profesiones.txt')
+		lista_parte1[0] += lista_nombres_profesiones[0]
+		lista_parte1[1] += lista_nombres_profesiones[1]
+
 		# Razas
 		lista_nombres_razas = listaNombres('nombres_equipos/razas.txt')
 		lista_parte1[0] += lista_nombres_razas[0]
