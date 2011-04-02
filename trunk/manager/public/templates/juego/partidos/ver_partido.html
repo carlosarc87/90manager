@@ -37,6 +37,11 @@
 			background-color: #ff5555;
 			float: right;
 		}
+		
+		#ver_repeticion{
+			padding: 5px 0px;
+			text-align: center;
+		}
 
 		.col_local{
 			text-align: right;
@@ -73,7 +78,8 @@
 {% endblock %}
 
 {% block contenido %}
-	<a href="/partidos/repeticion/{{ partido.id }}/">Ver repeticion</a>
+	<div id="ver_repeticion"><a href="/partidos/repeticion/{{ partido.id }}/">Ver repetición</a></div>
+	
 	<!-- Resultado del partido -->
 	<table class="tabla1" id="tabla_resultado">
 		<caption>Partido {{ partido.id }}</caption>

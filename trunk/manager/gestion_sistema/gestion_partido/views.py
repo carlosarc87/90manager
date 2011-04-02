@@ -372,7 +372,15 @@ def ver_repeticion_partido(request, partido_id):
 	siglas_local = partido.equipo_local.siglas
 	siglas_visitante = partido.equipo_visitante.siglas
 
-	d = { "sucesos" : sucesos, "siglas_local" : siglas_local, "siglas_visitante" : siglas_visitante }
+	d = {
+		"jornada" : jornada,
+		"liga" : liga,
+		"partido" : partido,
+		"sucesos" : sucesos,
+		"siglas_local" : siglas_local,
+		"siglas_visitante" : siglas_visitante
+	}
+	
 	return generarPagina("juego/partidos/ver_repeticion_partido.html", d, request)
 
 ########################################################################
