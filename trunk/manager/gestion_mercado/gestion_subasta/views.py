@@ -52,24 +52,33 @@ def crear_subasta(request, jugador_id):
 	if jugador.atributos.equipo.usuario != usuario:
 		return devolverMensaje(request, "No eres propietario del equipo del jugador")
 
+	duracion_liga = jugador.atributos.equipo.liga.getNumJornadas();
+
 	if request.method == 'POST':
-		form = SubastaForm(request.POST)
+		form = SubastaForm(jugador, request.POST)
 		if form.is_valid():
 			subasta = form.save(commit = False)
+			comision = subasta.oferta * (subasta.expira / (duracion_liga * 1.0))
+
+			if comision > jugador.atributos.equipo.dinero:
+				return devolverMensaje(request, "No tienes suficiente dinero para pagar la comision", "/mercado/subastas/crear/%d/" % jugador.id)
+
 			subasta.liga = jugador.atributos.equipo.liga
 			subasta.estado = 0
 			subasta.vendedor = jugador.atributos.equipo
 			subasta.comprador = None
 			subasta.atributos_jugador = jugador.atributos
 
+			jugador.atributos.equipo.cobrar(comision)
+
 			jugador.atributos.ofertado = True
 			jugador.atributos.save()
 			subasta.save()
 			return devolverMensaje(request, "Se ha creado correctamente", "/mercado/subastas/ver/%d/" % subasta.id)
 	else:
-		form = SubastaForm()
+		form = SubastaForm(jugador)
 
-	d = { "form": form, "jugador" : jugador }
+	d = { "form": form, "jugador" : jugador, "duracion_liga" : duracion_liga }
 
 	return generarPagina("juego/subastas/crear_subasta.html", d, request, True)
 

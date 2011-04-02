@@ -32,9 +32,10 @@ from math import ceil
 
 class SubastaForm(forms.ModelForm):
 	''' Formulario para crear subastas '''
-	def getComision(self):
-		''' Devuelve la comision de apertura '''
-		pass
+	def __init__(self, jugador, *args, **kwargs):
+		''' Constructor que establece la cantidad minima de la subasta '''
+		super(SubastaForm, self).__init__(*args, **kwargs)
+		self.jugador = jugador
 
 	def clean_expira(self):
 		''' Comprueba que el numero de jornadas sea factible '''
@@ -67,15 +68,6 @@ class SubastaForm(forms.ModelForm):
 			if valor < subasta:
 				raise forms.ValidationError("Debes de introducir un precio de compra superior al de subasta")
 
-		return valor
-
-	def clean_num_equipos(self):
-		''' Comprueba que haya un numero de equipos positivo y par y en caso afirmativo los devuelve '''
-		valor = self.cleaned_data['num_equipos'] + len(self.instance.equipo_set.all())
-		if valor % 2 != 0:
-			raise forms.ValidationError("Debe de introducir un valor para que el número de equipos sea par")
-		if valor <= 0:
-			raise forms.ValidationError("Debe haber al menos 2 equipos")
 		return valor
 
 	class Meta:

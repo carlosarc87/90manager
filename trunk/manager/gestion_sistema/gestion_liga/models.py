@@ -212,6 +212,10 @@ class Liga(models.Model):
 
 		return True
 
+	def getNumJornadas(self):
+		""" Devuelve el número de jornadas que tiene la liga """
+		return self.jornada_set.all().count()
+
 	def __unicode__(self):
 		''' Devuelve una cadena de texto que representa la clase '''
 		return self.nombre

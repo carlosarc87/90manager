@@ -6,7 +6,7 @@
 			margin: 10px;
 			text-align: center;
 		}
-		
+
 		#form_subastar{
 			background: #fff;
 			border: solid 1px #555;
@@ -14,55 +14,69 @@
 			padding: 20px;
 			width: 350px;
 		}
-		
+
 		#contenido_oferta{
 			height: 30px;
 		}
-		
+
 		#contenido_oferta label{
 			float: left;
 			font-weight: bold;
 			width: 100px;
 		}
-		
+
 		#caja_oferta input{
 			float: right;
 			text-align: right;
 			width: 80px;
 		}
-		
+
 		#contenido_precio_compra{
 			height: 30px;
 		}
-		
+
 		#contenido_precio_compra label{
 			float: left;
 			font-weight: bold;
 			width: 200px;
 		}
-		
+
 		#contenido_precio_compra input{
 			float: right;
 			text-align: right;
 			width: 80px;
 		}
-		
+
 		#contenido_expira{
 			height: 30px;
 		}
-		
+
 		#contenido_expira label{
 			float: left;
 			font-weight: bold;
 			width: 250px;
 		}
-		
+
 		#contenido_expira input{
 			float: right;
 			text-align: right;
 			width: 80px;
 		}
 	</style>
+{% endblock %}
+
+{% block js_extra %}
+	<script type="text/javascript">
+		function calcularComision(cantidad_inicial, duracion_subasta) {
+			return cantidad_inicial * (duracion_subasta / {{ duracion_liga }})
+		}
+		function confirmar() {
+			cantidad = document.getElementById("id_oferta").value
+			dias = document.getElementById("id_expira").value
+			comision = calcularComision(cantidad, dias);
+			return confirm("Te vamos a sablar " + comision + " de comision");
+		}
+	</script>
 {% endblock %}
 
 {% block situacion %}
@@ -109,7 +123,7 @@
 
 		<!-- Boton crear -->
 		<div id="contenido_boton_crear">
-			<input type="submit" value="Crear" />
+			<input type="submit" value="Crear" name="Crear" onClick="return confirmar()" />
 		</div>
 	</form>
 {% endblock %}
