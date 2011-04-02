@@ -6,7 +6,7 @@
 			margin: 10px;
 			text-align: center;
 		}
-		
+
 		.cuadro_jugador{
 			background: url('/media/img/circulo.png') no-repeat;
 			background-position: center top;
@@ -47,11 +47,11 @@
 			float: right;
 			width: 444px;
 		}
-		
+
 		#caja_boton_aceptar{
 			padding: 5px 0px;
 		}
-		
+
 		#caja_boton_limpiar{
 			padding: 5px 0px;
 		}
@@ -113,11 +113,11 @@
 			min-height: 330px;
 			width: 330px;
 		}
-		
+
 		#caja_num_jugadores_alineacion, #caja_num_jugadores_suplentes{
 			padding: 5px 0px;
 		}
-		
+
 		#num_jugadores_alineacion, #num_jugadores_suplentes{
 			color: #5555aa;
 			font-weight: bold;
@@ -135,8 +135,8 @@
 
 		// Actualiza los valores de los campos de numero de suplentes y jugadores
 		function actualizarNumeros() {
-			document.getElementById("num_jugadores").innerHTML = jugadores_situados;
-			document.getElementById("num_suplentes").innerHTML = jugadores_suplentes;
+			document.getElementById("num_jugadores_alineacion").innerHTML = jugadores_situados;
+			document.getElementById("num_jugadores_suplentes").innerHTML = jugadores_suplentes;
 		}
 
 		function getDatoLista(jugador, lista) {
@@ -238,7 +238,7 @@
 				else if (jugador_pillado.parentNode.id != "jugadores") {
 					jugadores_situados--;
 				}
-				
+
 				// Jugador colocado en suplentes
 				if (objeto.id == "fila_suplentes") {
 					jugadores_suplentes++;
@@ -332,28 +332,28 @@
 				lista_origen.removeChild(nodo);
 				lista_destino.appendChild(nodo);
 			}
-			
+
 			var lista_origen = document.getElementById("fila_centrocampistas");
 			while(lista_origen.hasChildNodes()){
 				var nodo = lista_origen.lastChild
 				lista_origen.removeChild(nodo);
 				lista_destino.appendChild(nodo);
 			}
-			
+
 			var lista_origen = document.getElementById("fila_defensas");
 			while(lista_origen.hasChildNodes()){
 				var nodo = lista_origen.lastChild
 				lista_origen.removeChild(nodo);
 				lista_destino.appendChild(nodo);
 			}
-			
+
 			var lista_origen = document.getElementById("fila_suplentes");
 			while(lista_origen.hasChildNodes()){
 				var nodo = lista_origen.lastChild
 				lista_origen.removeChild(nodo);
 				lista_destino.appendChild(nodo);
 			}
-			
+
 			var lista_origen = document.getElementById("fila_portero");
 			while(lista_origen.hasChildNodes()){
 				var nodo = lista_origen.lastChild

@@ -367,7 +367,7 @@ def ver_repeticion_partido(request, partido_id):
 
 	# Si el partido ha finalizado
 	if not finalizado:
-		return devolverMensaje(request, "Error, el partido no acabó", "/patidos/ver/%d/" % partido_id)
+		return devolverMensaje(request, "Error, el partido no acabó", "/partidos/ver/%d/" % partido.id)
 
 	siglas_local = partido.equipo_local.siglas
 	siglas_visitante = partido.equipo_visitante.siglas
