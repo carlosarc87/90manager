@@ -35,14 +35,6 @@ class Usuario(User):
 		''' Devuelve una cadena de texto que representa la clase '''
 		return self.username
 
-#	def save(self):
-#		''' Sobreescritura de la funcion save para arreglar un fallo con las contraseñas '''
-#		password = ""
-#		password = self.password
-#		self.set_password(self.password)
-
-#		User.save(self)
-
 ########################################################################
 
 class ClaveRegistroUsuario(models.Model):

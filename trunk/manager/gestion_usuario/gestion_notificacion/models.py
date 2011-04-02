@@ -50,14 +50,7 @@ class Notificacion(models.Model):
 	leida = models.BooleanField(default = False)
 	# Fecha real de emision de la notificacion
 	fecha_emision = models.DateTimeField()
-	LIGA_ACTIVADA             = 100
 
-	SUBASTA_FINALIZADA        = 300
-	SUBASTA_GANADA            = 301
-	SUBASTA_SUPERADA          = 302
-	SUBASTA_SUPERADA_COMPRADA = 303
-
-	PARTIDO_FINALIZADO        = 400
 	def getMensaje(self):
 		''' Genera un mensaje dependiendo del tipo de la notificacion '''
 		from func import TipoNotificacion
