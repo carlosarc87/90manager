@@ -109,26 +109,34 @@ h1, h2, h3, h4{
 #menu_superior_botones{
 	border-left: solid 1px #555;
 	font-size: 1.1em;
-	height: 40px;
+	height: 26px;
 	list-style: none;
 	margin: 0px;
 	padding: 0px;
 }
 
 #menu_superior_botones li{
-	background: #88dd88;
 	border-top: solid 1px #555;
 	border-right: solid 1px #555;
 	border-bottom: solid 1px #555;
 	float: left;
-	height: 20px;
 	margin: 0px;
-	padding: 9px 15px;
 }
 
-#menu_superior_botones li:hover{
-	background: #55aa55;
+#menu_superior_botones a{
+	background: #88dd88;
+	color: #555;
 	cursor: pointer;
+	display: block;
+	padding: 4px 15px;
+	text-decoration: none;
+}
+
+#menu_superior_botones a:hover{
+	background: #55aa55;
+	color: #fff;
+	cursor: pointer;
+	text-decoration: none;
 }
 
 #menu_superior_situacion{
@@ -151,6 +159,12 @@ h1, h2, h3, h4{
 
 .contenido{
 	margin: 0 auto;
+	width: 950px;
+}
+
+.contenido2{
+	margin: 0 auto;
+	min-height: 200px;
 	width: 950px;
 }
 

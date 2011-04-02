@@ -424,7 +424,7 @@ class Partido(models.Model):
 
 		# --------------------------------------
 
-		los_gatos_nos_dominaran = False
+		los_gatos_nos_dominaran = True
 		if not los_gatos_nos_dominaran:
 			print "-------------------------------------------"
 			print alineacion[0].equipo.nombre
@@ -553,7 +553,7 @@ class Partido(models.Model):
 						if prob_exito > 100:
 							prob_exito = 100
 						prob_exito *= 0.95
-						print "Prob. disparo a porteria (" + str(prob_exito) + "%) "
+						#print "Prob. disparo a porteria (" + str(prob_exito) + "%) "
 
 						# Si el balón va a portería
 						if(randint(1, 100) <= prob_exito):

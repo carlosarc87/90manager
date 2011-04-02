@@ -51,6 +51,7 @@ class Notificacion(models.Model):
 	# Fecha real de emision de la notificacion
 	fecha_emision = models.DateTimeField()
 
+	
 	def getMensaje(self):
 		''' Genera un mensaje dependiendo del tipo de la notificacion '''
 		from func import TipoNotificacion
@@ -93,6 +94,46 @@ class Notificacion(models.Model):
 			obj = getObjeto(Partido, self.identificador)
 			enlace = '<a href="/partidos/ver/%d/">' % self.identificador
 			msj = "Ha acabado el partido de la jornada %s%s</a>" % (enlace, obj.jornada.numero)
+
+		return msj
+		
+	def getMensajeSinEnlace(self):
+		''' Genera un mensaje dependiendo del tipo de la notificacion '''
+		from func import TipoNotificacion
+		from gestion_sistema.gestion_liga.models import Liga
+		from gestion_sistema.gestion_partido.models import Partido
+		from gestion_sistema.gestion_jugador.models import Jugador
+		from gestion_mercado.gestion_subasta.models import Subasta
+
+		msj = str(self.tipo) + " - No hay mensaje"
+
+		if self.tipo == TipoNotificacion.LIGA_ACTIVADA:
+			liga = Liga.objects.get(id = self.identificador)
+			enlace = '<a href="/ligas/ver/%d/">' % self.identificador
+			msj = "La liga %s ha sido activada" % (liga.nombre)
+
+		elif self.tipo == TipoNotificacion.SUBASTA_FINALIZADA:
+			obj = getObjeto(Jugador, self.identificador)
+			msj = "Ha acabado la subasta por %s" % (obj.apodo)
+
+		elif self.tipo == TipoNotificacion.SUBASTA_GANADA:
+			obj = getObjeto(Jugador, self.identificador)
+			msj = "Has ganado la subasta por %s" % (obj.apodo)
+
+		elif self.tipo == TipoNotificacion.SUBASTA_SUPERADA:
+			obj = getObjeto(Subasta, self.identificador)
+			if obj:
+				msj = "Han superado tu puja en la subasta de %s" % (obj.atributos_jugador.jugador.apodo)
+			else:
+				msj = "Han superado tu puja en una subasta que ya ha acabado"
+
+		elif self.tipo == TipoNotificacion.SUBASTA_SUPERADA_COMPRADA:
+			obj = getObjeto(Jugador, self.identificador)
+			msj = "Has comprado la subasta por %s" % (obj.apodo)
+
+		elif self.tipo == TipoNotificacion.PARTIDO_FINALIZADO:
+			obj = getObjeto(Partido, self.identificador)
+			msj = "Ha acabado el partido de la jornada %s" % (obj.jornada.numero)
 
 		return msj
 

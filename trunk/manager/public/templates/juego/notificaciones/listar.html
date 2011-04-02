@@ -16,21 +16,23 @@
 		}
 		
 		#notificaciones li{
-			cursor: pointer;
 			list-style: none;
-			padding: 10px;
-		}
-		
-		#notificaciones li:hover{
-			background: #ccc;
 		}
 		
 		#notificaciones li + li{
 			border-top: solid 1px #555;
 		}
 		
-		#notificaciones li a{
+		#notificaciones a{
 			color: #000;
+			cursor: pointer;
+			display: block;
+			padding: 10px;
+			text-decoration: none;
+		}
+		
+		#notificaciones a:hover{
+			background: #ccc;
 		}
 		
 		.no_leida{
@@ -47,8 +49,9 @@
 		{% for notificacion in notificaciones %}
 			<li {% if not notificacion.leida %}
 					class="no_leida"
-				{% endif %}
-				onclick="location.href='/cuentas/notificaciones/ver/{{ notificacion.id }}/'">{% autoescape off %}{{ notificacion.getMensaje }}{% endautoescape %}</li>
+				{% endif %}>
+				<a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensajeSinEnlace }}</a>
+			</li>
 		{% empty %}
 			<li>No tienes notificaciones</li>
 		{% endfor %}
