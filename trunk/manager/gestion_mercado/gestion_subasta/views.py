@@ -52,6 +52,9 @@ def crear_subasta(request, jugador_id):
 	if jugador.atributos.equipo.usuario != usuario:
 		return devolverMensaje(request, "No eres propietario del equipo del jugador")
 
+	if not jugador.atributos.equipo.liga.activada():
+		return devolverMensaje(request, "Hasta que la liga no esté activada no pueden haber subastas")
+
 	duracion_liga = jugador.atributos.equipo.liga.getNumJornadas();
 
 	if request.method == 'POST':
