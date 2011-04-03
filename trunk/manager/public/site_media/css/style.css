@@ -24,33 +24,23 @@ h1, h2, h3, h4{
 	margin-top: 0px;
 }
 
-#contenido_centro{
-	clear: right;
-	float: left;
-	padding: 10px;
-	width: 780px;
-}
-
 /* footer */
 
 #contador_desactualizacion{
 	color: #888;
-	margin: 10px auto;
-	width: 950px;
-}
-
-#enlaces_internos{
-	margin: 10px auto;
-	width: 950px;
+	padding: 5px 0px;
 }
 
 #enlaces_externos{
-	margin: 10px auto;
-	width: 950px;
+	padding: 5px 0px;
 }
 
 #enlaces_externos a{
 	color: #5555cc;
+}
+
+#enlaces_internos{
+	padding: 5px 0px;
 }
 
 #footer{
@@ -62,17 +52,16 @@ h1, h2, h3, h4{
 	width: 100%;
 }
 
-#footer a + a{
-	margin-left: 20px;
+#logos{
+	padding: 5px 0px;
 }
 
-#footer img{
+#logos img{
 	border: 0px;
 }
 
-#logos{
-	margin: 10px auto;
-	width: 950px;
+.separador_enlaces{
+	margin: 0px 5px;
 }
 
 /* Fin footer */

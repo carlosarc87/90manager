@@ -7,7 +7,6 @@
 			height: 40px;
 			padding: 5px 0px;
 			text-align: center;
-			width: 100%;
 		}
 
 		#descripcion{
@@ -29,32 +28,28 @@
 		#login #caja_clave{
 			clear: both;
 			padding: 5px 0px;
-			width: 100%;
 		}
 
 		#login #caja_entrar{
 			clear: both;
 			height: 15px;
 			padding: 5px 0px;
-			width: 100%;
 		}
 
 		#login #caja_recordar{
 			clear: both;
+			display: none;
 			padding: 5px 0px;
-			width: 100%;
 		}
 
 		#login #caja_registro{
 			clear: both;
 			padding: 5px 0px;
-			width: 100%;
 		}
 
 		#login #caja_usuario{
 			clear: both;
 			padding: 5px 0px;
-			width: 100%;
 		}
 
 		#login #entrar, #login #password, #login #username{
@@ -105,7 +100,7 @@
 			setTimeout("contadorDesactualizado(" + (segundos + paso) + ")", timeout);
 		}
 
-		fechaUltimaActualizacion = "03/28/2011 16:40";
+		fechaUltimaActualizacion = "04/03/2011 17:00";
 		formato_tiempo = "%%D%% días, %%H%% horas, %%M%% minutos y %%S%% segundos.";
 		paso = +1;
 		paso = Math.ceil(paso); // Filtrico
@@ -160,7 +155,6 @@
 		r_text.push("No tenemos los derechos de Crisóstomo Amaranto, pero tampoco hay derecho de que alguien se llame así.");
 		r_text.push("Patrocinado por Hostelería Silma, que nos hace tartas porque es el único rato que estamos callados.");
 		r_text.push("Pino! resucita!");
-		r_text.push("Próximamente también futbolistas femeninas.");
 		/*r_text.push("Próximamente con música de Justin Castor y los YO? NAH! brothers.");*/
 		r_text.push("Pulse [aquí] para recibir su fortuna.");
 		r_text.push("¡Qué ganas de que llegue el verano!");
@@ -202,7 +196,7 @@
 {% endblock %}
 
 {% block contenido %}
-	<img id="logo_login" src="/media/img/logoAlter.gif" alt="logo_jugador" title="" />
+	<img id="logo_login" src="/media/img/logoAlter.png" alt="logo_login" title="" />
 
 	<div id="login">
 		{% if form.errors %}

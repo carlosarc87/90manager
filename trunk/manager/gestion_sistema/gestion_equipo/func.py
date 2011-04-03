@@ -94,25 +94,26 @@ def nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2):
 		parte2 = lista_parte2[1][randint(0, len(lista_parte2[1]) - 1)]
 	
 	if a == 1:
-		# Nombre
 		nombre_equipo = parte1 + ' ' + parte2
-		
-		# Siglas
-		parte1 = quitar_caracteres_raros(parte1)
-		parte2 = quitar_caracteres_raros(parte2)
-		siglas = parte1[0] + parte2[0] + parte2[1].upper()
 	else:
-		# Nombre
 		tipo_club = lista_nombres_tipo_club[0][randint(0, len(lista_nombres_tipo_club) - 1)]
 		nombre_equipo = tipo_club + ' ' + parte1 + ' ' + parte2
-		
-		# Siglas
-		tipo_club = quitar_caracteres_raros(tipo_club)
-		parte1 = quitar_caracteres_raros(parte1)
-		parte2 = quitar_caracteres_raros(parte2)
-		siglas = tipo_club[0] + parte1[0] + parte2[0]
 
-	# Devolver nombre_completo y apodo
-	return nombre_equipo, siglas
+	# Devolver nombre_completo
+	return nombre_equipo
+
+########################################################################
+
+def generarSiglasNombre(nombre_equipo):
+	""" Devuelve unas siglas para el nombre dado """
+	# Separar el nombre del equipo en partes a partir de los espacios
+	nombre_equipo = quitar_caracteres_raros(nombre_equipo.upper())
+	partes = nombre_equipo.split(" ")
+	num_partes = len(partes)
+	
+	if num_partes >= 3:
+		return partes[0][0] + partes[num_partes - 2][0] + partes[num_partes - 1][0]
+	
+	return partes[0][0] + partes[1][0] + partes[1][1]
 
 ########################################################################

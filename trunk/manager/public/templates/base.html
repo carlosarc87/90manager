@@ -12,9 +12,6 @@
 
 	{% block css %}{% endblock %}
 	{% block css_extra %}{% endblock %}
-
-	{% block js %}{% endblock %}
-	{% block js_extra %}{% endblock %}
 </head>
 <body>
 	{% block cabecera %}
@@ -41,43 +38,49 @@
 
 	<!-- Pie de pagina -->
 	<div id="footer">
-		{% block pie_pagina %}
-			{% block enlaces_pie_pagina_internos %}
-				<div id="enlaces_internos">
-					<a href="/contacto/">Contacta con nosotros</a>
-					<a href="/creditos/">Créditos</a>
-					<a href="/changelog/">Cambios</a>
-					<a href="/condiciones/">Condiciones de uso</a>
-					<a href="/siguenos/">Síguenos</a>
-				</div>
-			{% endblock %}
-			
-			{% block enlaces_pie_pagina_externos %}
-				<div id="enlaces_externos">
-					<a href="https://forja.rediris.es/projects/cusl5-90manager/" onclick="target='_blank'">Forja</a>
-					<a href="http://90manager.wordpress.com/" onclick="target='_blank'">Blog</a>
-					<a href="https://forja.rediris.es/plugins/wiki/index.php?id=862&amp;type=g" onclick="target='_blank'">Wiki</a>
-				</div>
-			{% endblock %}
+		<div class="contenido">
+			{% block pie_pagina %}
+				{% block enlaces_pie_pagina_internos %}
+					<div id="enlaces_internos">
+						<a href="/contacto/">Contacta con nosotros</a><span class="separador_enlaces">|</span>
+						<a href="/creditos/">Créditos</a><span class="separador_enlaces">|</span>
+						<a href="/changelog/">Cambios</a><span class="separador_enlaces">|</span>
+						<a href="/condiciones/">Condiciones de uso</a><span class="separador_enlaces">|</span>
+						<a href="/siguenos/">Síguenos</a>
+					</div>
+				{% endblock %}
+				
+				{% block enlaces_pie_pagina_externos %}
+					<div id="enlaces_externos">
+						<a href="https://forja.rediris.es/projects/cusl5-90manager/" onclick="target='_blank'">Forja</a><span class="separador_enlaces">|</span>
+						<a href="http://90manager.wordpress.com/" onclick="target='_blank'">Blog</a><span class="separador_enlaces">|</span>
+						<a href="https://forja.rediris.es/plugins/wiki/index.php?id=862&amp;type=g" onclick="target='_blank'">Wiki</a>
+					</div>
+				{% endblock %}
 
-			{% block logos_pie_pagina %}
-				<div id="logos">
-					<a href="http://validator.w3.org/check?uri=referer">
-						<img src="/media/img/valid-xhtml10.png"
-							 alt="Valid XHTML 1.0 Transitional" height="31" width="88" />
-					</a>
+				{% block logos_pie_pagina %}
+					<div id="logos">
+						<a href="http://validator.w3.org/check?uri=referer">
+							<img src="/media/img/valid-xhtml10.png"
+								 alt="Valid XHTML 1.0 Transitional" height="31" width="88" />
+						</a>
+						
+						<span class="separador_enlaces">&nbsp;</span>
+						
+						<a href="http://jigsaw.w3.org/css-validator/check/referer">
+							<img src="/media/img/vcss.gif"
+								alt="¡CSS Válido!" height="31" width="88" />
+						</a>
+					</div>
+				{% endblock %}
 
-					<a href="http://jigsaw.w3.org/css-validator/check/referer">
-						<img src="/media/img/vcss.gif"
-							alt="¡CSS Válido!" height="31" width="88" />
-					</a>
-				</div>
+				{% block contador_desactualizacion %}
+				{% endblock %}
 			{% endblock %}
-
-			{% block contador_desactualizacion %}
-			{% endblock %}
-		{% endblock %}
+		</div>
 	</div>
+	
+	{% block js %}{% endblock %}
+	{% block js_extra %}{% endblock %}
 </body>
 </html>
-

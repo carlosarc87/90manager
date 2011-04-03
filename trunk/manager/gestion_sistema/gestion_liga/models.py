@@ -65,7 +65,7 @@ class Liga(models.Model):
 	def rellenarLiga(self):
 		''' Rellena los huecos vacios de una liga con equipos controlados por bots '''
 		# Generar los equipos
-		from gestion_sistema.gestion_equipo.func import listaNombres, nombreEquipoAleatorio
+		from gestion_sistema.gestion_equipo.func import listaNombres, nombreEquipoAleatorio, generarSiglasNombre
 		from gestion_sistema.gestion_equipo.models import Equipo
 
 		# -------------------------------------------------
@@ -118,8 +118,9 @@ class Liga(models.Model):
 		# -------------------------------------------------
 
 		for i in range(self.equipo_set.count(), self.num_equipos):
-			nombre_eq, siglas_eq = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
-
+			nombre_eq = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
+			siglas_eq = generarSiglasNombre(nombre_eq)
+			
 			# Comprobar que las siglas no se repitan
 			c = 1
 			while self.equipo_set.filter(siglas = siglas_eq).count() > 0:
