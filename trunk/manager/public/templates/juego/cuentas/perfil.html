@@ -47,6 +47,11 @@
 		}
 		
 		.liga_comenzada{
+			color: #5555aa;
+			font-weight: bold;
+		}
+		
+		.liga_finalizada{
 			color: #aa5555;
 			font-weight: bold;
 		}
@@ -74,7 +79,11 @@
 						<td class="col_num_equipos">{{ liga.num_equipos }}</td>
 						
 						{% if liga.activada %}
-							<td class="col_estado"><span class="liga_comenzada">JORNADA {{ liga.obtenerJornadaActual.numero }}</span></td>
+							{% if not liga.obtenerJornadaActual %}
+								<td class="col_estado"><span class="liga_finalizada">FINALIZADA</span></td>
+							{% else %}
+								<td class="col_estado"><span class="liga_comenzada">JORNADA {{ liga.obtenerJornadaActual.numero }}</span></td>
+							{% endif %}
 						{% else %}
 							<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>
 						{% endif %}

@@ -133,7 +133,7 @@ h1, h2, h3, h4{
 	font-size: 0.9em;
 	height: 30px;
 	list-style-image: url('../img/icons/favicon.ico');
-	margin: 0px;
+	margin: 10px 0px;
 	padding: 0px;
 }
 
@@ -193,7 +193,7 @@ h1, h2, h3, h4{
 	color: #666;
 	font-size: 1.2em;
 	font-weight: bold;
-	padding: 5px 0px 5px 0px;
+	padding: 5px 0px;
 	text-align: center;
 }
 
@@ -217,7 +217,6 @@ h1, h2, h3, h4{
 
 .tabla1 tr{
 	border: solid 1px #444;
-	border-spacing: 1px;
 }
 
 .texto_error{
