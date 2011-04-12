@@ -25,6 +25,7 @@ from django.template import RequestContext
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.contrib.auth.decorators import login_required
 
 import datetime
 
@@ -34,12 +35,10 @@ from gestion_base.func import devolverMensaje
 
 ########################################################################
 
+@login_required
 def index(request):
 	''' Devuelve la pagina principal '''
-	if request.user is not None:
-		return HttpResponseRedirect("/cuentas/perfil")
-	else:
-		return render_to_response("web/usuarios/login.html", {})
+	return HttpResponseRedirect("/tablon")
 
 ########################################################################
 

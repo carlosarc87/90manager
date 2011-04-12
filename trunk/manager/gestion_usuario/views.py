@@ -25,6 +25,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
+from django.contrib.auth import authenticate, login
 
 import datetime, random, hashlib
 
@@ -39,6 +40,26 @@ from gestion_sistema.gestion_liga.models import Liga
 from gestion_usuario.func import redireccionar, generarPagina
 
 ########################################################################
+
+def principal(request):
+	''' Página principal del sistema '''
+	if request.user.is_authenticated():
+		return HttpResponseRedirect("/tablon");
+	if request.method == 'POST':
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(username=username, password=password)
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				# Redirect to a success page.
+			else:
+				pass
+				# Return a 'disabled account' error message
+		else:
+			pass
+			# Return an 'invalid login' error message.
+
 
 # Vista para registrar a un usuario
 def registrar_usuario(request):
