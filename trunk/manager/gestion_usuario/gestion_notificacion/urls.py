@@ -29,5 +29,5 @@ urlpatterns = patterns('',
    	(r'^listar/$', 'gestion_usuario.gestion_notificacion.views.listar_notificaciones'),
    	(r'^ver/(?P<notificacion_id>\d+)/$', 'gestion_usuario.gestion_notificacion.views.ver_notificacion'),
    	(r'^borrar/(?P<notificacion_id>\d+)/$', 'gestion_usuario.gestion_notificacion.views.borrar_notificacion'),
-   	(r'^listar_liga/(?P<liga_id>\d+)/$', 'gestion_usuario.gestion_notificacion.views.listar_notificaciones_liga'),
+   	(r'^listar_liga/$', 'gestion_usuario.gestion_notificacion.views.listar_notificaciones_liga'),
 )

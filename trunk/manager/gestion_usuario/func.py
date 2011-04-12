@@ -29,12 +29,24 @@ from django.contrib.sessions.models import Session
 from datetime import datetime
 
 from models import Usuario
+from gestion_sistema.gestion_liga.models import Liga
 
-def generarPagina(template, parametros, request, form = False):
+def generarPagina(template, parametros, request, form = False, agregar_parametros=True):
 	""" Genera una pagina web con los templates añadiendo unos parámetros por defecto """
 	usuario = request.user
-	parametros['usuario'] = usuario
-	parametros['num_notificaciones'] = usuario.notificacion_set.filter(leida = False).count()
+	if agregar_parametros:
+		liga = request.session['liga_actual']
+		parametros['usuario'] = usuario
+		parametros['num_notificaciones'] = usuario.notificacion_set.filter(leida = False).count()
+		parametros['liga_actual'] = liga
+		equipo = liga.equipo_set.filter(usuario=usuario)
+		if equipo:
+			equipo = equipo[0]
+		else:
+			equipo = None
+		parametros['equipo_actual'] = equipo
+		parametros['ultimas_notificaciones'] = usuario.notificacion_set.filter(leida=False)[:5]
+		parametros['fecha_actual_liga'] = "00:00:00 02/02/2002"
 	return render_to_response(template, parametros, context_instance = RequestContext(request))
 
 def redireccionar(direccion):

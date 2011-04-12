@@ -57,16 +57,12 @@ def ver_ligas_publicas(request):
 ########################################################################
 
 @login_required
-def ver_liga(request, liga_id):
+def ver_liga(request):
 	''' Muestra los datos de una liga determinada '''
 	# Obtenemos el usuario
 	usuario = request.user
 
-	if Liga.objects.filter(id = liga_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
-
-	# Obtenemos la liga
-	liga = Liga.objects.get(id = liga_id)
+	liga = request.session['liga_actual']
 
 	# Obtenemos los equipos que juegan en la liga
 	equipos = liga.equipo_set.all()
@@ -176,7 +172,19 @@ def ver_liga(request, liga_id):
 ########################################################################
 
 @login_required
-def avanzar_jornada_liga(request, liga_id):
+def ver_liga_id(request, liga_id):
+	if Liga.objects.filter(id = liga_id).count() == 0:
+		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
+
+	# Obtenemos la liga
+	liga = Liga.objects.get(id = liga_id)
+	request.session['liga_actual'] = liga
+	return redireccionar("/ligas/ver/")
+
+########################################################################
+
+@login_required
+def avanzar_jornada_liga(request):
 	''' Avanza una liga de jornada actual '''
 	# Obtenemos el usuario
 	usuario = request.user
@@ -185,7 +193,7 @@ def avanzar_jornada_liga(request, liga_id):
 		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
 
 	# Obtenemos la liga
-	liga = Liga.objects.get(id = liga_id)
+	liga = request.session['liga_actual']
 
 	if liga.creador != usuario:
 		return devolverMensaje(request, "No eres el creador de esta liga")
@@ -219,13 +227,13 @@ def crear_liga(request):
 		form = LigaForm()
 
 	d = {"form" : form }
-	return generarPagina("juego/ligas/crear_liga.html", d, request, True)
+	return generarPagina("juego/ligas/crear_liga.html", d, request, True, False)
 
 ########################################################################
 
 @login_required
 @transaction.commit_on_success
-def activar_liga(request, liga_id):
+def activar_liga(request):
 	''' Formulario para activar una liga '''
 	usuario = request.user
 
@@ -233,7 +241,7 @@ def activar_liga(request, liga_id):
 		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
 
 	# Obtenemos la liga
-	liga = Liga.objects.get(id = liga_id)
+	liga = request.session['liga_actual']
 
 	if liga.creador != usuario:
 		return devolverMensaje(request, "Error, solo el creador de la liga puede activarla")

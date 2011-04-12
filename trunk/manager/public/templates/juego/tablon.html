@@ -83,6 +83,8 @@
 {% block contenido %}
 	<h2>Tablón de {{ usuario.username }}</h2>
 
+	<a href="/ligas/crear/">Crear Liga</a>
+
 	<table class="tabla1" id="tabla_ligas_creadas">
 		<caption>Ligas creadas</caption>
 		{% if ligas_creadas %}

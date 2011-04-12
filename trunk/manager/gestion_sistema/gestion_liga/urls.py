@@ -27,7 +27,8 @@ urlpatterns = patterns('',
    	# Modulo de ligas
    	(r'^crear/$', 'gestion_sistema.gestion_liga.views.crear_liga'),
    	(r'^publicas/$', 'gestion_sistema.gestion_liga.views.ver_ligas_publicas'),
-   	(r'^ver/(?P<liga_id>\d+)/$', 'gestion_sistema.gestion_liga.views.ver_liga'),
-   	(r'^avanzar/(?P<liga_id>\d+)/$', 'gestion_sistema.gestion_liga.views.avanzar_jornada_liga'),
-   	(r'^activar/(?P<liga_id>\d+)/$', 'gestion_sistema.gestion_liga.views.activar_liga'),
+   	(r'^ver/$', 'gestion_sistema.gestion_liga.views.ver_liga'),
+   	(r'^ver/(?P<liga_id>\d+)/$', 'gestion_sistema.gestion_liga.views.ver_liga_id'),
+   	(r'^avanzar/$', 'gestion_sistema.gestion_liga.views.avanzar_jornada_liga'),
+   	(r'^activar/$', 'gestion_sistema.gestion_liga.views.activar_liga'),
 )

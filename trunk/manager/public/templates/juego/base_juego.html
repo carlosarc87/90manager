@@ -10,39 +10,44 @@
 		{% block menu_superior %}
 			<!-- Botones -->
 			<ul id="menu_superior">
-				<li>Liga {{ liga.nombre }}
+				<li>Liga {{ liga_actual.nombre }}
 					<ul>
-						<li>Informacion</li>
+						<li><a href="/ligas/ver/">Informacion</a></li>
+						<li>Clasificación actual</li>
 						<li>Jornadas</li>
-						<li>Jornada actual</li>
-						<li>Lista de Equipos</li>
+						<li><a href="/jornadas/ver_actual/">Jornada actual</a></li>
+						<li>Equipos</li>
 					</ul>
 				</li>
-				<li>Equipo {{ equipo.nombre }}
-					<ul>
-						<li>Informacion</li>
-						<li>Jugadores</li>
-						<li>Entrenamientos</li>
-						<li>Próximo partido</li>
-					</ul>
-				</li>
+				{% if equipo %}
+					<li>Equipo {{ equipo_actual.nombre }}
+						<ul>
+							<li><a href="/equipos/ver/">Informacion</a></li>
+							<li><a href="#">Entrenamientos</a></li>
+							<li>Partidos</li>
+							<li><a href="/partidos/proximo/">Próximo partido</a></li>
+						</ul>
+					</li>
+				{% else %}
+					<li>Sin Equipo</li>
+				{% endif %}
 				<li>Notificaciones
 					<ul>
 						{% for notificacion in ultimas_notificaciones %}
-							<li>{{ notificacion }}</li>
+							<li><a href="/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></li>
 						{% empty %}
 							<li>No hay pendientes</li>
 						{% endfor %}
 						<li>---------</li>
-						<li>Ver todas</li>
+						<li><a href="/notificaciones/listar_liga/">Ver todas</a></li>
 					</ul>
 				</li>
 				<li>Mercado
 					<ul>
-						<li>Subastas</li>
-						<li>Mis subastas</li>
-						<li>Mis compras</li>
-						<li>Historial</li>
+						<li><a href="/mercado/subastas/listar/">Subastas</a></li>
+						<li><a href="#">Mis subastas</a></li>
+						<li><a href="#">Mis compras</a></li>
+						<li><a href="#">Historial</a></li>
 					</ul>
 				</li>
 				<li>Calendario
@@ -50,6 +55,7 @@
 						<li>Ver</li>
 					</ul>
 				</li>
+				<li>Fecha de la liga: {{ fecha_actual_liga }}</li>
 			</ul>
 		{% endblock %}
 	</div>

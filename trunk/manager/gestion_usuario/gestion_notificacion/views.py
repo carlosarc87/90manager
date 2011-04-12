@@ -46,14 +46,11 @@ def listar_notificaciones(request):
 ########################################################################
 
 @login_required
-def listar_notificaciones_liga(request, liga_id):
+def listar_notificaciones_liga(request:
 	''' Muestra las notificaciones de una liga '''
 	usuario = request.user
 
-	if Liga.objects.filter(id = liga_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
-
-	liga = Liga.objects.get(id = liga_id)
+	liga = request.session['liga actual']
 
 	notificaciones = usuario.notificacion_set.filter(liga = liga)
 	for n in notificaciones:
@@ -93,12 +90,12 @@ def ver_notificacion(request, notificacion_id):
 
 	# Obtenemos la notificacion
 	notificacion = usuario.notificacion_set.get(id = notificacion_id)
-	notificacion.mensaje = notificacion.getMensaje()
+	direccion = notificacion.getURL()
 
 	# Marcamos como leida
 	notificacion.leida = True
 	notificacion.save()
 
-	return generarPagina("juego/notificaciones/ver.html", { "notificacion" : notificacion }, request)
+	return redireccionar(direccion)
 
 ########################################################################
