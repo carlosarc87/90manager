@@ -49,7 +49,6 @@ h1, h2, h3, h4{
 	border-bottom: solid 1px #555555;
 	clear: both;
 	text-align: center;
-	width: 100%;
 }
 
 #logos{
@@ -69,15 +68,21 @@ h1, h2, h3, h4{
 /* header */
 
 #caja_logo{
+	display: table-cell;
 	float: left;
-	height: 100%;
-	width: 210px;
+	height: 100px;
+	width: 200px;
+}
+
+#caja_logo a{
+	display: block;
 }
 
 #header{
 	background-color: #fff;
 	border-bottom: solid 1px #555555;
 	clear: both;
+	display: table;
 	height: 120px;
 	width: 100%;
 }
@@ -89,46 +94,65 @@ h1, h2, h3, h4{
 	width: 200px;
 }
 
-#menu_superior{
-	float: right;
-	margin-top: 10px;
-	width: 700px;
+#menu{
+	display: table-cell;
 }
 
-#menu_superior_botones{
-	border-left: solid 1px #555;
+#menu_superior{
+	margin-top: 10px;
+}
+
+#lista_botones{
+	border: solid 1px #555;
 	font-size: 1.1em;
-	height: 26px;
+	height: 30px;
 	list-style: none;
 	margin: 0px;
 	padding: 0px;
 }
 
-#menu_superior_botones li{
-	border-top: solid 1px #555;
-	border-right: solid 1px #555;
-	border-bottom: solid 1px #555;
+#lista_botones li{
+	border: solid 1px #aaa;
 	float: left;
+	height: 25px;
 	margin: 0px;
+	width: 120px;
 }
 
-#menu_superior_botones a{
+#lista_botones li + li{
+	border-top: solid 1px #555;
+}
+
+#lista_botones li ul{
+	display: none;
+	font-size: 1em;
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+#lista_botones li ul li{
+	clear: both;
+	float: none;
+}
+
+#lista_botones a{
 	background: #88dd88;
 	color: #555;
 	cursor: pointer;
 	display: block;
-	padding: 4px 15px;
+	padding: 5px;
 	text-decoration: none;
 }
 
-#menu_superior_botones a:hover{
+#lista_botones a:hover{
 	background: #55aa55;
 	color: #fff;
 	cursor: pointer;
 	text-decoration: none;
 }
 
-#menu_superior_situacion{
+#navigation{
 	border-bottom: solid 1px #555;
 	font-size: 0.9em;
 	height: 30px;
@@ -137,7 +161,7 @@ h1, h2, h3, h4{
 	padding: 0px;
 }
 
-#menu_superior_situacion li{
+#navigation li{
 	float: left;
 	height: 20px;
 	margin-left: 30px;
@@ -146,15 +170,15 @@ h1, h2, h3, h4{
 
 /* Fin header */
 
-.contenido{
+#wrap{
+	border-left: solid 1px #555;
+	border-right: solid 1px #555;
 	margin: 0 auto;
 	width: 950px;
 }
 
 .contenido2{
-	margin: 0 auto;
 	min-height: 250px;
-	width: 950px;
 }
 
 .cuadro_num_azul_der{
@@ -217,6 +241,10 @@ h1, h2, h3, h4{
 
 .tabla1 tr{
 	border: solid 1px #444;
+}
+
+.tabla1 tr:nth-child(2n){ /* Filas pares */
+	background-color: #ddd;
 }
 
 .texto_error{
