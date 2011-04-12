@@ -31,39 +31,46 @@
 			{% block menu_superior %}
 				<!-- Botones -->
 				<ul id="lista_botones">
-					<li><a href="/ligas/ver/{{ liga.id }}">Liga {{ liga.nombre }}</a>
+					<li>
+						<a href="/ligas/ver/{{ liga.id }}">Liga {{ liga.nombre }}</a>
 						<ul>
 							<li><a href="/ligas/ver/">Información</a></li>
-							<li>Clasificación actual</li>
-							<li>Jornadas</li>
+							<li><a href="#">Clasificación actual</a></li>
+							<li><a href="#">Jornadas</a></li>
 							<li><a href="/jornadas/ver_actual/">Jornada actual</a></li>
-							<li>Equipos</li>
+							<li><a href="#">Equipos</a></li>
 						</ul>
 					</li>
+					
 					{% if equipo %}
-						<li>Equipo {{ equipo_actual.nombre }}
+						<li>
+							<a href="#">Equipo {{ equipo_actual.nombre }}</a>
 							<ul>
 								<li><a href="/equipos/ver/">Información</a></li>
 								<li><a href="#">Entrenamientos</a></li>
-								<li>Partidos</li>
+								<li><a href="#">Partidos</a></li>
 								<li><a href="/partidos/proximo/">Próximo partido</a></li>
 							</ul>
 						</li>
 					{% else %}
-						<li>Sin Equipo</li>
+						<li><a href="#">Sin Equipo</a></li>
 					{% endif %}
-					<li>Notificaciones
+					
+					<li>
+						<a href="#">Notificaciones</a>
 						<ul>
 							{% for notificacion in ultimas_notificaciones %}
 								<li><a href="/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></li>
 							{% empty %}
-								<li>No hay pendientes</li>
+								<li><a href="#">No hay pendientes</a></li>
 							{% endfor %}
-							<li>---------</li>
+							<li><a href="#">---------</a></li>
 							<li><a href="/notificaciones/listar_liga/">Ver todas</a></li>
 						</ul>
 					</li>
-					<li>Mercado
+					
+					<li>
+						<a href="#">Mercado</a>
 						<ul>
 							<li><a href="/mercado/subastas/listar/">Subastas</a></li>
 							<li><a href="#">Mis subastas</a></li>
@@ -71,9 +78,11 @@
 							<li><a href="#">Historial</a></li>
 						</ul>
 					</li>
-					<li>Calendario
+					
+					<li>
+						<a href="#">Calendario</a>
 						<ul>
-							<li>Ver</li>
+							<li><a href="#">Ver</a></li>
 						</ul>
 					</li>
 				</ul>

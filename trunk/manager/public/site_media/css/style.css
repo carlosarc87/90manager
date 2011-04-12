@@ -1,10 +1,16 @@
+@font-face { 
+	font-family: Lato;
+	src: url("../font/Lato/Lato-Regular.ttf") format("truetype");
+}
+
 a{
-	color: #008800;
-	text-decoration: underline;
+	color: #005500;
+	text-decoration: none;
 }
 
 a:hover{
-	text-decoration: overline underline;
+	color: #00aa00;
+	text-decoration: underline;
 }
 
 a:visited{
@@ -12,16 +18,20 @@ a:visited{
 }
 
 body{
-	background: #88dd88;
+	background: #aaffaa;
 	color: #000000;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Lato, Arial, Helvetica, sans-serif;
 	font-size: 0.8em;
-	margin: 0px;
+	margin: 10px;
 	padding: 0px;
 }
 
 h1, h2, h3, h4{
 	margin-top: 0px;
+}
+
+table a{
+	display: block;
 }
 
 /* footer */
@@ -46,7 +56,6 @@ h1, h2, h3, h4{
 #footer{
 	background-color: #fff;
 	border-top: solid 1px #555555;
-	border-bottom: solid 1px #555555;
 	clear: both;
 	text-align: center;
 }
@@ -59,52 +68,39 @@ h1, h2, h3, h4{
 	border: 0px;
 }
 
-.separador_enlaces{
-	margin: 0px 5px;
-}
-
 /* Fin footer */
 
 /* header */
 
-#caja_logo{
-	display: table-cell;
-	float: left;
-	height: 100px;
-	width: 200px;
-}
-
-#caja_logo a{
-	display: block;
-}
-
 #header{
 	background-color: #fff;
 	border-bottom: solid 1px #555555;
-	clear: both;
 	display: table;
 	height: 120px;
-	width: 100%;
 }
 
-#logo{
-	border: 0px;
-	height: 100px;
-	padding: 10px 0px 0px;
-	width: 200px;
+#header #logo{
+	background: url("../img/logo_mini.png") no-repeat;
+	cursor: pointer;
+	display: table-cell;
+	height: 50px;
+	padding-right: 25px;
+	width: 125px;
 }
 
 #menu{
 	display: table-cell;
+	width: 800px;
 }
 
 #menu_superior{
-	margin-top: 10px;
+	/*display: table-cell;*/
 }
 
 #lista_botones{
 	border: solid 1px #555;
-	font-size: 1.1em;
+	display: table;
+	font-size: 1em;
 	height: 30px;
 	list-style: none;
 	margin: 0px;
@@ -113,7 +109,7 @@ h1, h2, h3, h4{
 
 #lista_botones li{
 	border: solid 1px #aaa;
-	float: left;
+	display: table-cell;
 	height: 25px;
 	margin: 0px;
 	width: 120px;
@@ -125,15 +121,14 @@ h1, h2, h3, h4{
 
 #lista_botones li ul{
 	display: none;
-	font-size: 1em;
+	font-size: 0.9em;
 	list-style: none;
 	margin: 0px;
 	padding: 0px;
 }
 
 #lista_botones li ul li{
-	clear: both;
-	float: none;
+	display: block;
 }
 
 #lista_botones a{
@@ -171,13 +166,14 @@ h1, h2, h3, h4{
 /* Fin header */
 
 #wrap{
-	border-left: solid 1px #555;
-	border-right: solid 1px #555;
+	border: solid 1px #555;
+	box-shadow: 3px 3px 7px #777;
 	margin: 0 auto;
 	width: 950px;
 }
 
 .contenido2{
+	background: #88dd88;
 	min-height: 250px;
 }
 
