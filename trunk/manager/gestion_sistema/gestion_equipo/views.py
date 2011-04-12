@@ -41,13 +41,25 @@ from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio
 def ver_equipo(request, equipo_id):
 	''' Muestra los datos de un equipo '''
 	# Obtenemos el usuario
-	usuario = request.user
+	equipos = Equipo.objects.filter(id = equipo_id)
 
-	if Equipo.objects.filter(id = equipo_id).count() == 0:
+	if equipos.count() == 0:
 		return devolverMensaje(request, "Error, no existe un equipo con identificador %s" % equipo_id)
 
 	# Obtenemos el equipo
-	equipo = Equipo.objects.get(id = equipo_id)
+	request.session['equipo_actual'] = equipos[0]
+
+	return redireccionar("/equipos/ver")
+
+########################################################################
+
+@login_required
+def ver_equipo(request):
+	''' Muestra los datos de un equipo '''
+	# Obtenemos el usuario
+	usuario = request.user
+
+	equipos = request.session['equipo_actual']
 
 	# Obtenemos los jugadores
 	jugadores = equipo.getJugadores()
@@ -83,14 +95,11 @@ def ver_equipo(request, equipo_id):
 ########################################################################
 
 @login_required
-def crear_equipo(request, liga_id):
+def crear_equipo(request):
 	''' Muestra la pagina para crear un equipo '''
 	usuario = request.user
 
-	if Liga.objects.filter(id = liga_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
-
-	liga = Liga.objects.get(id = liga_id)
+	liga = request.session['liga_actual']
 
 	if liga.activada():
 		return devolverMensaje(request, "Esta liga ya no acepta mas equipos", "/ligas/ver/%d/" % liga.id)

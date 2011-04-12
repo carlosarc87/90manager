@@ -33,16 +33,30 @@ from gestion_usuario.func import redireccionar, generarPagina
 ########################################################################
 
 @login_required
-def ver_jugador(request, jugador_id):
+def ver_jugador_id(request, jugador_id):
 	''' Muestra los datos de un jugador '''
 	# Obtenemos el usuario
 	usuario = request.user
 
-	if Jugador.objects.filter(id = jugador_id).count() == 0:
+	jugadores = Jugador.objects.filter(id = jugador_id)
+
+	if jugadores.count() == 0:
 		return devolverMensaje(request, "Error, no existe un jugador con identificador %s" % jugador_id)
 
 	# Obtenemos el jugador
-	jugador = Jugador.objects.get(id = jugador_id)
+	request.session['jugador_actual']
+
+	return redireccionar('/jugadores/ver/')
+
+########################################################################
+
+@login_required
+def ver_jugador(request):
+	''' Muestra los datos de un jugador '''
+	# Obtenemos el usuario
+	usuario = request.user
+
+	jugador = request.session['jugador_actual']
 
 	# Obtener mejor posición
 	mejor_posicion = jugador.mejorPosicion()

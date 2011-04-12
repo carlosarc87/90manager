@@ -33,16 +33,28 @@ from gestion_usuario.func import redireccionar, generarPagina
 ########################################################################
 
 @login_required
+def ver_jornada_id(request, jornada_id):
+	''' Muestra los datos de una jornada '''
+	jornadas = Jornada.objects.filter(id = jornada_id)
+
+	if jornadas.count() == 0:
+		return devolverMensaje(request, "Error, no existe una jornada con identificador %s" % jornada_id)
+
+	request.session['jornada_actual'] = jornadas[0]
+
+	return redireccionar('/jornadas/ver/')
+
+########################################################################
+
+@login_required
 def ver_jornada(request, jornada_id):
 	''' Muestra los datos de una jornada '''
 	# Obtenemos el usuario
 	usuario = request.user
 
-	if Jornada.objects.filter(id = jornada_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe una jornada con identificador %s" % jornada_id)
-
 	# Obtenemos la jornada
-	jornada = Jornada.objects.get(id = jornada_id)
+	jornada = request.session['jornada_actual']
+
 	# Obtenemos la liga
 	liga = jornada.liga
 	es_creador = liga.creador == usuario

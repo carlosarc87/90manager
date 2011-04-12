@@ -43,8 +43,6 @@ from gestion_usuario.gestion_notificacion.func import notificar, TipoNotificacio
 @login_required
 def ver_ligas_publicas(request):
 	''' Muestra las ligas publicas que haya en el sistema '''
-	usuario = request.user
-
 	# Obtenemos las ligas
 	ligas = Liga.objects.filter(publica = True, jornada = None)
 

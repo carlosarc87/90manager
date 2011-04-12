@@ -38,23 +38,19 @@ def listar_notificaciones(request):
 	usuario = request.user
 
 	notificaciones = usuario.notificacion_set.all()
-	for n in notificaciones:
-		n.mensaje = n.getMensaje()
 
 	return generarPagina("juego/notificaciones/listar.html", { "notificaciones" : notificaciones }, request)
 
 ########################################################################
 
 @login_required
-def listar_notificaciones_liga(request:
+def listar_notificaciones_liga(request):
 	''' Muestra las notificaciones de una liga '''
 	usuario = request.user
 
-	liga = request.session['liga actual']
+	liga = request.session['liga_actual']
 
 	notificaciones = usuario.notificacion_set.filter(liga = liga)
-	for n in notificaciones:
-		n.mensaje = n.getMensaje()
 
 	return generarPagina("juego/notificaciones/listar_liga.html", { "notificaciones" : notificaciones }, request)
 
@@ -67,7 +63,7 @@ def borrar_notificacion(request, notificacion_id):
 	usuario = request.user
 
 	if usuario.notificacion_set.filter(id = notificacion_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe una subasta con identificador %s" % subasta_id)
+		return devolverMensaje(request, "Error, no existe una notificación con identificador %s" % subasta_id)
 
 	# Obtenemos la notificacion
 	notificacion = usuario.notificacion_set.get(id = notificacion_id)
@@ -81,7 +77,7 @@ def borrar_notificacion(request, notificacion_id):
 
 @login_required
 def ver_notificacion(request, notificacion_id):
-	''' Muestra los datos de una notificacion y la marca como leida '''
+	''' Marca una notificación como leída y redirecciona a su contenido '''
 	# Obtenemos el usuario
 	usuario = request.user
 
@@ -92,9 +88,10 @@ def ver_notificacion(request, notificacion_id):
 	notificacion = usuario.notificacion_set.get(id = notificacion_id)
 	direccion = notificacion.getURL()
 
-	# Marcamos como leida
-	notificacion.leida = True
-	notificacion.save()
+	if not notificacion.leida:
+		# Marcamos como leida
+		notificacion.leida = True
+		notificacion.save()
 
 	return redireccionar(direccion)
 

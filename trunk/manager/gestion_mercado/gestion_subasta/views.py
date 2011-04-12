@@ -37,14 +37,11 @@ from gestion_usuario.func import redireccionar, generarPagina
 ########################################################################
 
 @login_required
-def crear_subasta(request, jugador_id):
+def crear_subasta(request):
 	''' Crea una subasta de un jugador '''
 	usuario = request.user
 
-	if Jugador.objects.filter(id = jugador_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe un jugador con identificador %s" % jugador_id)
-
-	jugador = Jugador.objects.get(id = jugador_id)
+	jugador = request.session['jugador_actual']
 
 	if jugador.atributos.ofertado:
 		return devolverMensaje(request, "Este jugador ya está en subasta", "/jugadores/ver/%d/" % jugador.id)
@@ -88,14 +85,11 @@ def crear_subasta(request, jugador_id):
 ########################################################################
 
 @login_required
-def ver_subastas_liga(request, liga_id):
+def ver_subastas_liga(request:
 	''' Muestra las subastas de una liga '''
 	usuario = request.user
 
-	if Liga.objects.filter(id = liga_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
-
-	liga = Liga.objects.get(id = liga_id)
+	liga = request.session['liga_actual']
 
 	subastas = liga.subasta_set.all()
 
@@ -104,16 +98,26 @@ def ver_subastas_liga(request, liga_id):
 ########################################################################
 
 @login_required
-def ver_subasta(request, subasta_id):
+def ver_subasta_id(request, subasta_id):
+	''' Muestra los datos de una subasta '''
+	subastas = Subasta.objects.filter(id = subasta_id)
+	if subastas.count() == 0:
+		return devolverMensaje(request, "Error, no existe una subasta con identificador %s" % subasta_id)
+
+	request.session['subasta_actual'] = subasta[0]
+
+	return redireccion('/mercado/subastas/ver/')
+
+########################################################################
+
+@login_required
+def ver_subasta(request):
 	''' Muestra los datos de una subasta '''
 	# Obtenemos el usuario
 	usuario = request.user
 
-	if Subasta.objects.filter(id = subasta_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe una subasta con identificador %s" % subasta_id)
-
 	# Obtenemos la subasta
-	subasta = Subasta.objects.get(id = subasta_id)
+	subasta = request.session['subasta_actual']
 
 	# Equipo del usuario
 	equipo_usuario = None
@@ -145,12 +149,7 @@ def ver_subasta(request, subasta_id):
 @login_required
 def ver_subastas_equipo(request, equipo_id):
 	''' Muestra las subastas de un equipo '''
-	usuario = request.user
-
-	if Equipo.objects.filter(id = equipo_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe un equipo con identificador %s" % equipo_id)
-
-	equipo = Equipo.objects.get(id = equipo_id)
+	equipo = request.session['equipo_actual']
 
 #	jugadores_en_subasta
 
@@ -166,16 +165,13 @@ def ver_subastas_equipo(request, equipo_id):
 ########################################################################
 
 @login_required
-def comprar_subasta(request, subasta_id):
+def comprar_subasta(request):
 	''' Muestra los datos de una subasta '''
 	# Obtenemos el usuario
 	usuario = request.user
 
-	if Subasta.objects.filter(id = subasta_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe una subasta con identificador %s" % subasta_id)
-
 	# Obtenemos la subasta
-	subasta = Subasta.objects.get(id = subasta_id)
+	subasta = request.session['subasta_actual']
 
 	if not usuario.equipo_set.filter(liga = subasta.liga).count():
 		return devolverMensaje(request, "Error, no tienes equipo en esta liga")

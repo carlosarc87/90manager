@@ -34,15 +34,13 @@ from gestion_usuario.func import redireccionar, generarPagina
 ########################################################################
 
 @login_required
-def jugar_partido(request, partido_id):
+def jugar_partido(request):
 	''' Juega un partido '''
 	# Obtenemos el usuario
 	usuario = request.user
 
-	if Partido.objects.filter(id = partido_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe un partido con identificador %s" % partido_id)
+	partido = request.session['partido_actual']
 
-	partido = Partido.objects.get(id = partido_id)
 	if partido.finalizado():
 		return devolverMensaje(request, "Este partido ya se jugo", "/partidos/ver/%d/" % partido.id)
 
@@ -75,16 +73,29 @@ def jugar_partido(request, partido_id):
 ########################################################################
 
 @login_required
-def ver_partido(request, partido_id):
+def ver_partido_id(request, partido_id):
 	''' Muestra los datos de un partido '''
 	# Obtenemos el usuario
 	usuario = request.user
 
-	if Partido.objects.filter(id = partido_id).count() == 0:
+	partidos = Partido.objects.filter(id = partido_id)
+
+	if partidos.count() == 0:
 		return devolverMensaje(request, "Error, no existe un partido con identificador %s" % partido_id)
 
-	# Obtenemos el partido
-	partido = Partido.objects.get(id = partido_id)
+	request.session['partido_actual'] = partidos[0]
+
+	return redireccionar('/partidos/ver/')
+
+########################################################################
+
+@login_required
+def ver_partido(request):
+	''' Muestra los datos de un partido '''
+	# Obtenemos el usuario
+	usuario = request.user
+
+	partido = request.session['partido_actual']
 
 	# Obtener sucesos del partido
 	partido.sucesos = partido.suceso_set.all()
@@ -275,13 +286,11 @@ def ver_partido(request, partido_id):
 ########################################################################
 
 @login_required
-def preparar_partido(request, partido_id):
+def preparar_partido(request):
 	''' Muestra los datos para preparar un partido '''
-	partido = Partido.objects.get(id = partido_id)
 	usuario = request.user
 
-	if Partido.objects.filter(id = partido_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe un partido con identificador %s" % partido_id)
+	partido = request.session['partido_actual']
 
 	# Comprobar que el partido no se haya jugado ya
 	if partido.finalizado():
@@ -339,17 +348,16 @@ def preparar_partido(request, partido_id):
 
 	return generarPagina("juego/partidos/preparar_partido.html", d, request, True)
 
+########################################################################
+
 @login_required
-def ver_repeticion_partido(request, partido_id):
+def ver_repeticion_partido(request):
 	''' Muestra la repeticion de un partido '''
 	# Obtenemos el usuario
 	usuario = request.user
 
-	if Partido.objects.filter(id = partido_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe un partido con identificador %s" % partido_id)
-
 	# Obtenemos el partido
-	partido = Partido.objects.get(id = partido_id)
+	partido = request.session['partido_actual']
 
 	# Obtener sucesos del partido
 	sucesos = partido.suceso_set.all()
@@ -380,7 +388,7 @@ def ver_repeticion_partido(request, partido_id):
 		"siglas_local" : siglas_local,
 		"siglas_visitante" : siglas_visitante
 	}
-	
+
 	return generarPagina("juego/partidos/ver_repeticion_partido.html", d, request)
 
 ########################################################################

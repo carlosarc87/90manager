@@ -25,6 +25,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
 	# Modulo de equipos
-   	(r'^ver/(?P<equipo_id>\d+)/$', 'gestion_sistema.gestion_equipo.views.ver_equipo'),
-   	(r'^crear/(?P<liga_id>\d+)/$', 'gestion_sistema.gestion_equipo.views.crear_equipo'),
+   	(r'^ver/$', 'gestion_sistema.gestion_equipo.views.ver_equipo'),
+   	(r'^ver/(?P<equipo_id>\d+)/$', 'gestion_sistema.gestion_equipo.views.ver_equipo_id'),
+   	(r'^crear/$', 'gestion_sistema.gestion_equipo.views.crear_equipo'),
 )

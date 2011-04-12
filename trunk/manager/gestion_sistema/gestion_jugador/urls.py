@@ -26,5 +26,6 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
    	# Modulo de jugadores
-   	(r'^ver/(?P<jugador_id>\d+)/$', 'gestion_sistema.gestion_jugador.views.ver_jugador'),
+   	(r'^ver/$', 'gestion_sistema.gestion_jugador.views.ver_jugador'),
+   	(r'^ver/(?P<jugador_id>\d+)/$', 'gestion_sistema.gestion_jugador.views.ver_jugador_id'),
 )

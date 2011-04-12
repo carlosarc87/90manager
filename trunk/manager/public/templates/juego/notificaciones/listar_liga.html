@@ -6,7 +6,7 @@
 			margin: 10px;
 			text-align: center;
 		}
-		
+
 		#notificaciones{
 			background: #fff;
 			border: solid 1px #555;
@@ -14,15 +14,15 @@
 			padding: 0px;
 			width: 500px;
 		}
-		
+
 		#notificaciones li{
 			list-style: none;
 		}
-		
+
 		#notificaciones li + li{
 			border-top: solid 1px #555;
 		}
-		
+
 		#notificaciones a{
 			color: #000;
 			cursor: pointer;
@@ -30,11 +30,11 @@
 			padding: 10px;
 			text-decoration: none;
 		}
-		
+
 		#notificaciones a:hover{
 			background: #ccc;
 		}
-		
+
 		.no_leida{
 			background: #dddd55;
 		}
@@ -57,7 +57,7 @@
 			<li {% if not notificacion.leida %}
 					class="no_leida"
 				{% endif %}>
-				<a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensajeSinEnlace }}</a>
+				<a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensajeSinEnlace }}</a>		<input type="button" value="Borrar" onclick="location.href='/cuentas/notificaciones/borrar/{{ notificacion.id }}/'" />
 			</li>
 		{% empty %}
 			<li>No tienes notificaciones</li>

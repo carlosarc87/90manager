@@ -128,7 +128,7 @@ def tablon(request):
 
 def activar_usuario(request, clave):
 	if request.user.is_authenticated():
-		return devolverMensaje(request, "Ya estas activado en el sistema ya que estás registrado", "/")
+		return devolverMensaje(request, "Ya estas activado en el sistema", "/")
 	if ClaveRegistroUsuario.objects.filter(clave = clave).count() == 0:
 		return devolverMensaje(request, "Error, no existe tal clave de activación", "/")
 	cru = ClaveRegistroUsuario.objects.get(clave = clave)
