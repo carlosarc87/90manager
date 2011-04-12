@@ -13,11 +13,11 @@
 		   $('ul li:has(ul)').hover(
 			  function(e)
 			  {
-				 $(this).find('ul').css({display: "block"});
+				 $(this).find('ul').slideDown();
 			  },
 			  function(e)
 			  {
-				 $(this).find('ul').css({display: "none"});
+				 $(this).find('ul').slideUp();
 			  }
 		   );
 		});
@@ -35,7 +35,7 @@
 						<a href="/ligas/ver/{{ liga.id }}">Liga {{ liga.nombre }}</a>
 						<ul>
 							<li><a href="/ligas/ver/">Información</a></li>
-							<li><a href="#">Clasificación actual</a></li>
+							<li><a href="#">Clasificación</a></li>
 							<li><a href="#">Jornadas</a></li>
 							<li><a href="/jornadas/ver_actual/">Jornada actual</a></li>
 							<li><a href="#">Equipos</a></li>

@@ -30,10 +30,6 @@ h1, h2, h3, h4{
 	margin-top: 0px;
 }
 
-table a{
-	display: block;
-}
-
 /* footer */
 
 #contador_desactualizacion{
@@ -94,72 +90,68 @@ table a{
 }
 
 #menu_superior{
-	/*display: table-cell;*/
-}
-
-#lista_botones{
-	border: solid 1px #555;
-	display: table;
-	font-size: 1em;
 	height: 30px;
+	width: 800px;
+}
+
+/* Style */
+#lista_botones, #lista_botones ul {
 	list-style: none;
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
+	text-indent: 0;
 }
 
-#lista_botones li{
-	border: solid 1px #aaa;
-	display: table-cell;
-	height: 25px;
-	margin: 0px;
-	width: 120px;
+#lista_botones li {
+	background-color: #39f;
+	display: inline;
+	float: left;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	text-indent: 0;
+	width: 150px;
 }
 
-#lista_botones li + li{
-	border-top: solid 1px #555;
+#lista_botones li a {
+	background-color: #55aa55;
+	color: #000;
+	display: block;
+	font-size: 1.2em;
+	padding: 2px 5px;
+	text-decoration: none;
+	width: 140px;
 }
 
-#lista_botones li ul{
+#lista_botones li a:hover, #lista_botones li a:active {
+	background-color: #88dd88;
+}
+
+#lista_botones li ul {
 	display: none;
-	font-size: 0.9em;
-	list-style: none;
-	margin: 0px;
-	padding: 0px;
+	position: absolute;
 }
 
-#lista_botones li ul li{
-	display: block;
+#lista_botones li ul li {
+	display: list-item;
+	float: none;
+	margin: 0;
 }
 
-#lista_botones a{
-	background: #88dd88;
-	color: #555;
-	cursor: pointer;
-	display: block;
-	padding: 5px;
-	text-decoration: none;
-}
-
-#lista_botones a:hover{
-	background: #55aa55;
-	color: #fff;
-	cursor: pointer;
-	text-decoration: none;
+#lista_botones li ul li a {
+	font-size: 1em;
 }
 
 #navigation{
-	border-bottom: solid 1px #555;
-	font-size: 0.9em;
+	font-size: 1em;
 	height: 30px;
 	list-style-image: url('../img/icons/favicon.ico');
-	margin: 10px 0px;
-	padding: 0px;
+	margin-top: 50px;
 }
 
 #navigation li{
 	float: left;
 	height: 20px;
-	margin-left: 30px;
 	padding: 5px;
 }
 
@@ -203,6 +195,7 @@ table a{
 
 .tabla1 a{
 	color: #5555aa;
+	padding: 4px;
 }
 
 .tabla1 caption{
@@ -229,10 +222,6 @@ table a{
 	background-color: #eee;
 	border: solid 1px #444;
 	color: #444;
-}
-
-.tabla1 td{
-	padding: 4px;
 }
 
 .tabla1 tr{
