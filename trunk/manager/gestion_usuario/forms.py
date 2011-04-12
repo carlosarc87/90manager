@@ -38,7 +38,7 @@ class UsuarioForm(forms.ModelForm):
 
 	class Meta:
 		model = Usuario
-		exclude = ('is_staff', 'is_active', 'is_superuser', 'last_login', 'date_joined', 'user_ptr_id', 'groups', 'user_permissions')
+		exclude = ('first_name', 'last_name', 'is_staff', 'is_active', 'is_superuser', 'last_login', 'date_joined', 'user_ptr_id', 'groups', 'user_permissions')
 
 ########################################################################
 

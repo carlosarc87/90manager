@@ -116,7 +116,7 @@ ROOT_URLCONF = 'manager.urls'
 # Cambio de variables para la redireccion del login
 LOGIN_URL = "/cuentas/login/"
 LOGOUT_URL = "/cuentas/logout/"
-LOGIN_REDIRECT_URL = "/cuentas/perfil/"
+LOGIN_REDIRECT_URL = "/tablon/"
 
 TEMPLATE_DIRS = (
 	RUTA + "public/templates/",

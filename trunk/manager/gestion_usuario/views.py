@@ -44,77 +44,71 @@ from gestion_usuario.func import redireccionar, generarPagina
 def principal(request):
 	''' Página principal del sistema '''
 	if request.user.is_authenticated():
-		return HttpResponseRedirect("/tablon");
+		return redireccionar("/tablon/");
+	form_reg = ""
 	if request.method == 'POST':
-		username = request.POST['username']
-		password = request.POST['password']
-		user = authenticate(username=username, password=password)
-		if user is not None:
-			if user.is_active:
-				login(request, user)
-				# Redirect to a success page.
+		if "login_username" in request.POST:
+			username = request.POST['login_username']
+			password = request.POST['login_password']
+			user = authenticate(username=username, password=password)
+			if user is not None:
+				if user.is_active:
+					login(request, user)
+					redireccionar("/tablon/")
+				else:
+					return devolverMensaje(request, "Este usuario está inactivo", "/")
 			else:
-				pass
-				# Return a 'disabled account' error message
+				return devolverMensaje(request, "Datos de loggeo inválidos")
+
 		else:
-			pass
-			# Return an 'invalid login' error message.
+			form_reg = UsuarioForm(request.POST)
+			if form_reg.is_valid():
+				# Solucion para los problemas de la password
+				usuario = form_reg.save(commit = False)
+				password = form_reg.cleaned_data['password']
+				if vper:
+					usuario.is_active = False
+				else:
+					usuario.is_active = True
 
+				usuario.is_staff = False
+				usuario.is_superuser = False
+				usuario.date_joined = datetime.datetime.now()
+				usuario.set_password(password)
+				usuario.save()
 
-# Vista para registrar a un usuario
-def registrar_usuario(request):
-	''' Vista para registrar a un usuario '''
-	if request.user.is_authenticated():
-		return devolverMensaje(request, "Ya estas registrado en el sistema", "/")
-	if request.method == 'POST':
-		form = UsuarioForm(request.POST)
-		if form.is_valid():
-			# Solucion para los problemas de la password
-			usuario = form.save(commit = False)
-			password = form.cleaned_data['password']
-			if vper:
-				usuario.is_active = False
+				if vper:
+					# Generamos la clave de activacion
+					salt = hashlib.sha1.new(str(random.random())).hexdigest()[:5]
+					clave = hashlib.sha1.new(salt + usuario.username).hexdigest()
+
+					# Dos días para activar la cuenta
+					fin_clave = datetime.datetime.today() + datetime.timedelta(2)
+
+					# Crear y guardar el perfil de la clave
+					perfil_clave = ClaveRegistroUsuario(usuario = usuario, clave = clave, expira = fin_clave)
+					perfil_clave.save()
+
+					asunto = 'Activación de la cuenta'
+					mensaje =  'Hola %s, gracias por registrarte en 90manager.\n' % (usuario.username)
+					mensaje += 'Para activar la cuenta, pulse el siguiente link:\n'
+					mensaje += URL_PROPIA + 'cuentas/confirmar/' + clave + '/' +'\n'
+					mensaje += 'La clave expirara en 48 horas\n'
+					mensaje += 'Muchas gracias de huevo, digo nuevo.\n'
+
+					send_mail(asunto, mensaje, 'noreply@90manager.com', [usuario.email])
+
+				return devolverMensaje(request, "Se ha enviado un mensaje de confirmacion a tu correo", "/")
 			else:
-				usuario.is_active = True
+				form_reg = UsuarioForm()
 
-			usuario.is_staff = False
-			usuario.is_superuser = False
-			usuario.date_joined = datetime.datetime.now()
-			usuario.set_password(password)
-			usuario.save()
-
-			if vper:
-				# Generamos la clave de activacion
-				salt = hashlib.sha1.new(str(random.random())).hexdigest()[:5]
-				clave = hashlib.sha1.new(salt + usuario.username).hexdigest()
-
-				# Dos días para activar la cuenta
-				fin_clave = datetime.datetime.today() + datetime.timedelta(2)
-
-				# Crear y guardar el perfil de la clave
-				perfil_clave = ClaveRegistroUsuario(usuario = usuario, clave = clave, expira = fin_clave)
-				perfil_clave.save()
-
-				asunto = 'Activación de la cuenta'
-				mensaje =  'Hola %s, gracias por registrarte en 90manager.\n' % (usuario.username)
-				mensaje += 'Para activar la cuenta, pulse el siguiente link:\n'
-				mensaje += URL_PROPIA + 'cuentas/confirmar/' + clave + '/' +'\n'
-				mensaje += 'La clave expirara en 48 horas\n'
-				mensaje += 'Muchas gracias de huevo, digo nuevo.\n'
-
-				send_mail(asunto, mensaje, 'noreply@90manager.com', [usuario.email])
-
-			return devolverMensaje(request, "Se ha enviado un mensaje de confirmacion a tu correo", "/")
-	else:
-		form = UsuarioForm()
-
-	return render_to_response("web/usuarios/registrar_usuario.html", { "form_reg": form }, context_instance = RequestContext(request))
+	return render_to_response("web/principal.html", { "form_reg": form_reg }, context_instance = RequestContext(request))
 
 ########################################################################
 
 @login_required
-def perfil_usuario(request):
-	''' Muestra el perfil del usuario logueado '''
+def tablon(request):
+	''' Muestra el tablon del usuario logueado '''
 	usuario = request.user
 	# Obtenemos las ligas creadas por el usuario
 	ligas_creadas = Liga.objects.filter(creador = usuario)
@@ -128,7 +122,7 @@ def perfil_usuario(request):
 		 "equipos" : equipos,
 		}
 
-	return generarPagina("juego/cuentas/perfil.html", d, request)
+	return render_to_response("juego/tablon.html", d)
 
 ########################################################################
 
