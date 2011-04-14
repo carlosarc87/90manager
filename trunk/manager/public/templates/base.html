@@ -14,8 +14,8 @@
 	{% block css_extra %}{% endblock %}
 </head>
 <body>
-	<div id="wrap">
-		<header>
+	<header>
+		<div id="barra_header">
 			{% block cabecera %}
 				<!-- Cabecera -->
 				<div id="header">
@@ -25,8 +25,10 @@
 					{% endblock %}
 				</div>
 			{% endblock %}
-		</header>
-
+		</div>
+	</header>
+	
+	<div id="wrap">
 		<!-- Contenedor central -->
 		<section>
 			<div class="contenido2">
@@ -59,10 +61,15 @@
 
 					{% block logos_pie_pagina %}
 						<div id="logos">
+							<a href="http://www.w3.org/html/logo/">
+								<img src="/media/img/HTML5_Logo_64.png"
+									 alt="HTML5" height="64" width="64" />
+							</a>
+							
 							<a href="http://validator.w3.org/check?uri=referer">
 								<img src="/media/img/valid-xhtml10.png"
 									 alt="Valid XHTML 1.0 Transitional" height="31" width="88" />
-							</a> 
+							</a>
 							
 							<a href="http://jigsaw.w3.org/css-validator/check/referer">
 								<img src="/media/img/vcss.gif"

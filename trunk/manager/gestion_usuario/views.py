@@ -91,14 +91,14 @@ def principal(request):
 
 					asunto = 'Activación de la cuenta'
 					mensaje =  'Hola %s, gracias por registrarte en 90manager.\n' % (usuario.username)
-					mensaje += 'Para activar la cuenta, pulse el siguiente link:\n'
+					mensaje += 'Para activar la cuenta, haz click en el siguiente link: '
 					mensaje += URL_PROPIA + 'cuentas/confirmar/' + clave + '/' +'\n'
-					mensaje += 'La clave expirara en 48 horas\n'
+					mensaje += 'La clave expirará en 48 horas.\n'
 					mensaje += 'Muchas gracias de huevo, digo nuevo.\n'
 
 					send_mail(asunto, mensaje, 'noreply@90manager.com', [usuario.email])
 
-				return devolverMensaje(request, "Se ha enviado un mensaje de confirmacion a tu correo", "/")
+				return devolverMensaje(request, "Se ha enviado un mensaje de confirmación a tu correo", "/")
 			else:
 				form_reg = UsuarioForm()
 
@@ -128,7 +128,7 @@ def tablon(request):
 
 def activar_usuario(request, clave):
 	if request.user.is_authenticated():
-		return devolverMensaje(request, "Ya estas activado en el sistema", "/")
+		return devolverMensaje(request, "Ya estás activado en el sistema", "/")
 	if ClaveRegistroUsuario.objects.filter(clave = clave).count() == 0:
 		return devolverMensaje(request, "Error, no existe tal clave de activación", "/")
 	cru = ClaveRegistroUsuario.objects.get(clave = clave)
