@@ -38,7 +38,7 @@ from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio
 ########################################################################
 
 @login_required
-def ver_equipo(request, equipo_id):
+def ver_equipo_id(request, equipo_id):
 	''' Muestra los datos de un equipo '''
 	# Obtenemos el usuario
 	equipos = Equipo.objects.filter(id = equipo_id)

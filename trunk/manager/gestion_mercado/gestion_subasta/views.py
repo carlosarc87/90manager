@@ -85,7 +85,7 @@ def crear_subasta(request):
 ########################################################################
 
 @login_required
-def ver_subastas_liga(request:
+def ver_subastas_liga(request):
 	''' Muestra las subastas de una liga '''
 	usuario = request.user
 

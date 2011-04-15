@@ -28,7 +28,7 @@ urlpatterns = patterns('',
 	# Modulo de login
     (r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'web/usuarios/logout.html'}),
    	(r'^login/$', 'gestion_usuario.views.principal'),
-    (r'^perfil/$', 'gestion_usuario.views.perfil_usuario'),
+#    (r'^perfil/$', 'gestion_usuario.views.perfil_usuario'),
 	(r'^confirmar/(?P<clave>\w+)/$', 'gestion_usuario.views.activar_usuario'),
 	(r'^notificaciones/', include('gestion_usuario.gestion_notificacion.urls')),
 )
