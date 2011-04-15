@@ -2,48 +2,48 @@
 
 {% block css_extra %}
 	<link rel="stylesheet" href="/media/css/tablesorter_green/style.css" type="text/css" />
-	
+
 	<style type="text/css">
 		h2, h4{
 			margin: 10px;
 			text-align: center;
 		}
-		
+
 		#activar_liga{
 			margin: 10px auto;
 			width: 400px;
 		}
-		
+
 		#equipo_propio{
 			margin: 10px auto;
 			width: 400px;
 		}
-		
+
 		#mercado_subastas{
 			text-align: center;
 		}
-		
+
 		#pager{
 			clear: both;
 			margin: 10px auto;
 			width: 600px;
 		}
-		
+
 		#tabla_clasificacion{
 			margin: 10px auto;
 			width: 600px;
 		}
-		
+
 		#tabla_equipos{
 			margin: 10px auto;
 			width: 400px;
 		}
-		
+
 		#tabla_jornadas{
 			margin: 10px auto;
 			width: 400px;
 		}
-		
+
 		.jornada_jugada{
 			color: #00aa00;
 			font-weight: bold;
@@ -52,15 +52,15 @@
 			color: #aa0000;
 			font-weight: bold;
 		}
-		
+
 		.linea_clasificacion_ascenso{
 			background-color: #88ff88;
 		}
-		
+
 		.linea_clasificacion_descenso{
 			background-color: #ff8888;
 		}
-		
+
 		.linea_equipo_propio{
 			font-size: 1.1em;
 			font-weight: bold;
@@ -75,11 +75,11 @@
 
 	<script type="text/javascript">
 		$(document).ready(
-			function() { 
+			function() {
 				$("#tabla_clasificacion")
 				.tablesorter({widthFixed: true, widgets: ['zebra']})
 				.tablesorterPager({container: $("#pager")});
-			} 
+			}
 		);
 	</script>
 {% endblock %}
@@ -97,13 +97,13 @@
 		{% if jornada_actual %}
 			<h4>Jornada actual: <a href="/jornadas/ver/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></h4>
 			{% if es_creador %}
-				<h4><a href="/ligas/avanzar/{{ liga.id }}/">Avanzar jornada</a></h4>
+				<h4><a href="/ligas/avanzar/">Avanzar jornada</a></h4>
 			{% endif %}
 		{% else %}
 			<h4>FINALIZADA</h4>
 		{% endif %}
 
-		<div id="mercado_subastas"><a href="/mercado/subastas/ver/liga/{{ liga.id }}/">Ver Mercado de subastas</a></div>
+		<div id="mercado_subastas"><a href="/mercado/subastas/ver/liga/">Ver Mercado de subastas</a></div>
 
 		{% if clasificacion %}
 			<!-- Tabla clasificacion -->
@@ -151,7 +151,7 @@
 								{% endif %}
 							{% endif %}
 						{% endif %}
-							
+
 							<td class="cuadro_num_azul_der">
 								{{ dato_clasificacion.posicion }}
 							</td>
@@ -186,8 +186,8 @@
 					{% endfor %}
 				</tbody>
 			</table>
-			
-			<!-- Paginacion 
+
+			<!-- Paginacion
 			<div id="pager" class="pager">
 				<form>
 					<img src="../addons/pager/icons/first.png" class="first"/>
@@ -236,15 +236,15 @@
 		<div id="activar_liga">
 			<span>La liga no está activada aún</span>
 			{% if es_creador %}
-				: <a href="/ligas/activar/{{ liga.id }}/">ACTIVAR</a>
+				: <a href="/ligas/activar/">ACTIVAR</a>
 			{% endif %}
 		</div>
-		
+
 		<div id="equipo_propio">
 			{% if equipo_propio %}
 				Equipo propio: <a href="/equipos/ver/{{ equipo_propio.id }}/">{{ equipo_propio.nombre }}</a>
 			{% else %}
-				<b>{{ usuario }} aún puede </b><a href="/equipos/crear/{{ liga.id }}/">crear un equipo</a><b> en esta liga.</b>
+				<b>{{ usuario }} aún puede </b><a href="/equipos/crear/">crear un equipo</a><b> en esta liga.</b>
 			{% endif %}
 		</div>
 	{% endif %}
@@ -264,7 +264,7 @@
 					<tr {% if equipo_propio.nombre == equipo.nombre %}
 							class="linea_equipo_propio"
 						{% endif %}>
-						
+
 						<td>
 							<a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a>
 						</td>

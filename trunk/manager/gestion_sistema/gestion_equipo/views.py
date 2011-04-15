@@ -59,7 +59,7 @@ def ver_equipo(request):
 	# Obtenemos el usuario
 	usuario = request.user
 
-	equipos = request.session['equipo_actual']
+	equipo = request.session['equipo_actual']
 
 	# Obtenemos los jugadores
 	jugadores = equipo.getJugadores()

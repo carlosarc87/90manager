@@ -6,20 +6,20 @@
 			margin: 10px;
 			text-align: center;
 		}
-		
+
 		#contenido_boton_borrar{
 			margin: 10px;
 			text-align: center;
 		}
-		
+
 		#fecha{
 			color: #888;
 		}
-		
+
 		#tipo{
 			color: #444;
 		}
-		
+
 		#mensaje{
 			background: #fff;
 			border: solid 1px #555;
@@ -36,9 +36,9 @@
 	<h4 id="fecha">Fecha: {{ notificacion.fecha_emision }}</h4>
 	<h4 id="tipo">Tipo: {{ notificacion.tipo }}</h4>
 	<div id="mensaje">{% autoescape off %}{{ notificacion.mensaje }}{% endautoescape %}</div>
-	
+
 	<div id="contenido_boton_borrar">
-		<input type="button" value="Borrar" onclick="location.href='/cuentas/notificaciones/borrar/{{ notificacion.id }}/'" />
+		<input type="button" value="Borrar" onclick="location.href='/cuentas/notificaciones/borrar/'" />
 	</div>
 
 {% endblock %}

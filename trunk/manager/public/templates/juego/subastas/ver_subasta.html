@@ -6,17 +6,17 @@
 			margin: 10px;
 			text-align: center;
 		}
-		
+
 		#boton_compra_directa{
 			height: 30px;
 			margin: 10px auto;
 			width: 400px;
 		}
-		
+
 		#boton_compra_directa input{
 			float: right;
 		}
-		
+
 		#contenido_form_oferta{
 			background: #fff;
 			border: solid 1px #555;
@@ -24,46 +24,46 @@
 			padding: 20px;
 			width: 400px;
 		}
-		
+
 		/* Formulario oferta */
-		
+
 		#form_oferta{
 			height: 30px;
 		}
-		
+
 		#contenido_oferta label{
 			float: left;
 			width: 50px;
 		}
-		
+
 		#contenido_oferta #caja_cantidad{
 			float: left;
 			width: 120px;
 		}
-		
+
 		#contenido_oferta #caja_cantidad input{
 			text-align: right;
 			width: 100px;
 		}
-		
+
 		#contenido_oferta #caja_oferta{
 			float: right;
 			width: 150px;
 		}
-		
+
 		#contenido_oferta #caja_oferta input{
 			float: right;
 		}
-		
+
 		/* Fin formulario oferta */
-		
+
 		/* Tabla subasta */
-		
+
 		#tabla_subasta{
 			margin: 10px auto;
 			width: 400px;
 		}
-		
+
 		/* Fin tabla subasta */
 	</style>
 {% endblock %}
@@ -83,7 +83,7 @@
 		function compraDirecta() {
 			var respuesta = confirm("¿Está seguro de querer comprar directamente por {{ subasta.precio_compra }}?")
 			if (respuesta) {
-				location.href = '/mercado/subastas/comprar/{{ subasta.id }}/';
+				location.href = '/mercado/subastas/comprar/';
 			}
 		}
 	</script>
@@ -106,24 +106,24 @@
 						<td>{{ subasta.oferta }}</td>
 					</tr>
 				{% endif %}
-				
+
 				{% if subasta.precio_compra %}
 					<tr>
 						<td>Precio de compra directa:</td>
 						<td>{{ subasta.precio_compra }}</td>
 					</tr>
 				{% endif %}
-				
+
 				<tr>
 					<td>Días que quedan:</td>
 					<td>{{ subasta.expira }}</td>
 				</tr>
-				
+
 				<tr>
 					<td>Estado de la subasta:</td>
 					<td>{{ subasta.estado }}</td>
 				</tr>
-				
+
 				<tr>
 					<td>Equipo vendedor:</td>
 					<td>{{ subasta.vendedor }}</td>
@@ -141,17 +141,17 @@
 							{% if form.cantidad.errors %}
 								{{ form.cantidad.errors }}
 							{% endif %}
-							
+
 							<label for="id_cantidad">Oferta:</label>
-							
+
 							<div id="caja_cantidad">{{ form.cantidad }}</div>
-							
+
 							<div id="caja_oferta">
 								<input type="submit" value="Realizar oferta" />
 							</div>
 						</div>
 					</form>
-					
+
 					{% if subasta.precio_compra %}
 						<div id="boton_compra_directa">
 							<input type="submit" name="boton_compra_directa" value="Compra directa" onclick="compraDirecta()" />

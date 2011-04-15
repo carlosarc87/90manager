@@ -6,7 +6,7 @@
 			margin: 10px;
 			text-align: center;
 		}
-		
+
 		#en_forma{
 			color: #55aa55;
 			font-weight: bold;
@@ -16,7 +16,7 @@
 			color: #aa5555;
 			font-weight: bold;
 		}
-		
+
 		#subasta{
 			text-align: center;
 		}
@@ -25,7 +25,7 @@
 			margin: 10px auto;
 			width: 300px;
 		}
-		
+
 		#tabla_fisico{
 			margin: 10px auto;
 			width: 300px;
@@ -64,7 +64,7 @@
 		{% if subasta %}
 			<a href="/mercado/subastas/ver/{{ subasta.id }}/">Ver Subasta</a>
 		{% else %}
-			<a href="/mercado/subastas/crear/{{ jugador.id }}/">Subastar</a>
+			<a href="/mercado/subastas/crear/">Subastar</a>
 		{% endif %}
 	</div>
 
@@ -125,7 +125,7 @@
 				<td>Peso</td>
 				<td>{{ jugador.atributos.peso }} kg.</td>
 			</tr>
-			
+
 			<!-- Color de la piel -->
 			<tr>
 				<td>Color de la piel</td>
@@ -137,7 +137,7 @@
 				<td>Color del pelo</td>
 				<td>{{ jugador.color_pelo }}</td>
 			</tr>
-			
+
 			<!-- Color de los ojos -->
 			<tr>
 				<td>Color de los ojos</td>

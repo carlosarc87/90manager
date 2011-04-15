@@ -44,7 +44,7 @@ def ver_jugador_id(request, jugador_id):
 		return devolverMensaje(request, "Error, no existe un jugador con identificador %s" % jugador_id)
 
 	# Obtenemos el jugador
-	request.session['jugador_actual']
+	request.session['jugador_actual'] = jugadores[0]
 
 	return redireccionar('/jugadores/ver/')
 

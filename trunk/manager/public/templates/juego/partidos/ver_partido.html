@@ -37,7 +37,7 @@
 			background-color: #ff5555;
 			float: right;
 		}
-		
+
 		#ver_repeticion{
 			padding: 5px 0px;
 			text-align: center;
@@ -78,8 +78,8 @@
 {% endblock %}
 
 {% block contenido %}
-	<div id="ver_repeticion"><a href="/partidos/repeticion/{{ partido.id }}/">Ver repetición</a></div>
-	
+	<div id="ver_repeticion"><a href="/partidos/repeticion/">Ver repetición</a></div>
+
 	<!-- Resultado del partido -->
 	<table class="tabla1" id="tabla_resultado">
 		<caption>Partido {{ partido.id }}</caption>
@@ -140,7 +140,7 @@
 							<td class="col_visitante">
 						{% endif %}
 
-								<a href="/partidos/preparar/{{ partido.id }}/">
+								<a href="/partidos/preparar/">
 									{% if editar %}
 										EDITAR ALINEACIÓN
 									{% else %}
@@ -163,7 +163,7 @@
 					<!-- Jugar partido -->
 					<tr id="fila_jugar_partido">
 						<th colspan="3">
-							<a href="/partidos/jugar/{{ partido.id }}/">JUGAR</a>
+							<a href="/partidos/jugar/">JUGAR</a>
 						</th>
 					</tr>
 				{% endif %}

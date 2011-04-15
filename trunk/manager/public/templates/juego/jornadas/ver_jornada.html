@@ -6,17 +6,17 @@
 			margin: 10px;
 			text-align: center;
 		}
-		
+
 		#tabla_encuentros{
 			margin: 10px auto;
 			width: 600px;
 		}
-		
+
 		#tabla_clasificacion_anterior{
 			margin: 10px auto;
 			width: 500px;
 		}
-		
+
 		#tabla_clasificacion{
 			margin: 10px auto;
 			width: 500px;
@@ -47,7 +47,7 @@
 	{% else %}
 		{% if es_creador %}
 			{% if es_jornada_actual %}
-				<h4><a href="/ligas/avanzar/{{ liga.id }}">FINALIZAR JORNADA</a></h4>
+				<h4><a href="/ligas/avanzar/">FINALIZAR JORNADA</a></h4>
 			{% endif %}
 		{% endif %}
 	{% endif %}

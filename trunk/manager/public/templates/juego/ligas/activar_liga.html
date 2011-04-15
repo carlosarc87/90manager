@@ -5,42 +5,42 @@
 		#contenido_equipos_apuntados{
 			margin: 10px 0px;
 		}
-		
+
 		#contenido_num_equipos{
 			margin: 10px 0px;
 		}
-		
+
 		/* Formulario activar liga */
-		
+
 		#form_activar_liga{
 			margin: 10px auto;
 			width: 400px;
 		}
-		
+
 		#contenido_equipos_apuntados select{
 			width: 100%;
 		}
-		
+
 		#contenido_num_equipos{
 			clear: both;
 		}
-		
+
 		#id_num_equipos{
 			float: right;
 			text-align: right;
 			width: 50px;
 		}
-		
+
 		/* Fin formulario activar liga */
 	</style>
 {% endblock %}
 
 {% block contenido %}
-	<form id="form_activar_liga" action="/ligas/activar/{{ liga.id }}/" method="post">
+	<form id="form_activar_liga" action="/ligas/activar/" method="post">
 		{% csrf_token %}
-		
+
 		<h4>Equipos apuntados:</h4>
-		
+
 		<div id="contenido_equipos_apuntados">
 			{{ form.equipos.errors }}
 			{{ form.equipos }}
@@ -51,9 +51,9 @@
 			{% if form.num_equipos.errors %}
 				{{ form.num_equipos.errors }}
 			{% endif %}
-			
+
 			<b>Número de equipos controlados por la IA:</b>
-			
+
 			<div id="caja_num_equipos">
 				<input type="text" id="id_num_equipos" name="num_equipos" value="0" maxlength="3" />
 			</div>

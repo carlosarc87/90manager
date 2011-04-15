@@ -92,7 +92,7 @@
 
 	<h2>Subastando a {{ jugador.nombre }}</h2>
 
-	<form id="form_subastar" action="/mercado/subastas/crear/{{ jugador.id }}/" method="post">
+	<form id="form_subastar" action="/mercado/subastas/crear/" method="post">
 		{% csrf_token %}
 		<!-- Oferta inicial -->
 		<div id="contenido_oferta">

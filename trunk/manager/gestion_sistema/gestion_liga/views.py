@@ -87,6 +87,8 @@ def ver_liga(request):
 	else:
 		equipo_propio = None
 
+	request.session['equipo_propio'] = equipo_propio
+
 	if activada:
 		# Comprobamos si la liga ha acabado
 		jornada_actual = liga.obtenerJornadaActual()

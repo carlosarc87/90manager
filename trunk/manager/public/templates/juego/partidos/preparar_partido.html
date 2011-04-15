@@ -455,7 +455,7 @@
 		<h2>Preparar alineación para el partido</h2>
 	{% endif %}
 
-	<form id="form_alineacion" action="/partidos/preparar/{{ partido.id }}/" method="post">
+	<form id="form_alineacion" action="/partidos/preparar/" method="post">
 
 		{% if form.errors %}
 			<div>{{ form.errors }}</div>
