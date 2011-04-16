@@ -54,7 +54,7 @@ def principal(request):
 			if user is not None:
 				if user.is_active:
 					login(request, user)
-					redireccionar("/tablon/")
+					return redireccionar("/tablon/")
 				else:
 					return devolverMensaje(request, "Este usuario está inactivo", "/")
 			else:
