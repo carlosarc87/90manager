@@ -135,20 +135,20 @@ def ver_liga(request):
 				c.goles_diferencia = c.goles_favor - c.goles_contra
 
 				if jornada_anterior is not None:
+					incluida = True
 					if not liga_acabada:
 						jornada_a_comprobar = jornada_actual
 					else:
 						jornada_a_comprobar = jornada_anterior
-					c.partidos_ganados = len(c.equipo.getPartidosGanados(jornada_a_comprobar))
-					c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_a_comprobar))
-					c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_a_comprobar))
+						incluida = True
+					c.partidos_ganados = len(c.equipo.getPartidosGanados(jornada_a_comprobar, incluida))
+					c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_a_comprobar, incluida))
+					c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_a_comprobar, incluida))
 
 				else:
-					# Comor getPartidos es sin la jornada destino, pues decimos que compruebe hasta la 2
-					jornada_a_comprobar = liga.jornada_set.get(numero = 2)
-					c.partidos_ganados = len(c.equipo.getPartidosGanados(jornada_a_comprobar))
-					c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_a_comprobar))
-					c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_a_comprobar))
+					c.partidos_ganados = len(c.equipo.getPartidosGanados(jornada_actual, True))
+					c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_actual, True))
+					c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_actual, True))
 
 				c.partidos_jugados = c.partidos_ganados + c.partidos_empatados + c.partidos_perdidos
 

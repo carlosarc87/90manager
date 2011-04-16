@@ -70,18 +70,21 @@ class Equipo(models.Model):
 		lista = q.filter(jornada__in = jornadas)
 		return lista
 
-	def getPartidosHastaJornada(self, jornada):
+	def getPartidosHastaJornada(self, jornada, incluida = False):
 		''' Devuelve los partidos jugados hasta la jornada '''
 		# Obtenemos la liga
 		liga = jornada.liga
 		# Obtenemos los partidos en los que juega
 		partidos = self.getPartidos(liga)
-		return partidos.filter(jornada__lt = jornada)
+		if not incluida:
+			return partidos.filter(jornada__lt = jornada)
+		else:
+			return partidos.filter(jornada__lte = jornada)
 
-	def getPartidosGanados(self, jornada):
+	def getPartidosGanados(self, jornada, incluida = False):
 		''' Devuelve los partidos ganados hasta la jornada '''
 		# Partidos hasta la jornada
-		partidos = self.getPartidosHastaJornada(jornada)
+		partidos = self.getPartidosHastaJornada(jornada, incluida)
 		# Partidos jugados
 		partidos_jugados = partidos.filter(jugado = True)
 		# Partidos ganados como visitante
@@ -90,10 +93,10 @@ class Equipo(models.Model):
 			Q(Q(equipo_visitante = self) & Q(goles_local__lt = F('goles_visitante'))))
 		return partidos_ganados
 
-	def getPartidosPerdidos(self, jornada):
+	def getPartidosPerdidos(self, jornada, incluida = False):
 		''' Devuelve los partidos perdidos hasta la jornada '''
 		# Partidos hasta la jornada
-		partidos = self.getPartidosHastaJornada(jornada)
+		partidos = self.getPartidosHastaJornada(jornada, incluida)
 		# Partidos jugados
 		partidos_jugados = partidos.filter(jugado = True)
 		# Partidos perdidos como visitante
@@ -102,10 +105,10 @@ class Equipo(models.Model):
 			Q(Q(equipo_visitante = self) & Q(goles_local__gt = F('goles_visitante'))))
 		return partidos_perdidos
 
-	def getPartidosEmpatados(self, jornada):
+	def getPartidosEmpatados(self, jornada, incluida = False):
 		''' Devuelve los partidos empatados hasta la jornada '''
 		# Partidos hasta la jornada
-		partidos = self.getPartidosHastaJornada(jornada)
+		partidos = self.getPartidosHastaJornada(jornada, incluida)
 		# Partidos jugados
 		partidos_jugados = partidos.filter(jugado = True)
 		# Partidos perdidos como visitante

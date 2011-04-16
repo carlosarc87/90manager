@@ -145,7 +145,11 @@
 						<td class="col_num_equipos">{{ equipo.liga.num_equipos }}</td>
 
 						{% if equipo.liga.activada %}
-							<td class="col_estado"><span class="liga_comenzada">JORNADA {{ equipo.liga.obtenerJornadaActual.numero }}</span></td>
+							{% if not equipo.liga.obtenerJornadaActual %}
+								<td class="col_estado"><span class="liga_finalizada">FINALIZADA</span></td>
+							{% else %}
+								<td class="col_estado"><span class="liga_comenzada">JORNADA {{ liga.obtenerJornadaActual.numero }}</span></td>
+							{% endif %}
 						{% else %}
 							<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>
 						{% endif %}
