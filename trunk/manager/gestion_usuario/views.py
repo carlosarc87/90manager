@@ -46,6 +46,7 @@ def principal(request):
 	if request.user.is_authenticated():
 		return redireccionar("/tablon/");
 	form_reg = ""
+	login_error = None
 	if request.method == 'POST':
 		if "login_username" in request.POST:
 			username = request.POST['login_username']
@@ -56,9 +57,9 @@ def principal(request):
 					login(request, user)
 					return redireccionar("/tablon/")
 				else:
-					return devolverMensaje(request, "Este usuario está inactivo", "/")
+					login_error = "El usuario no ha sido activado aun"
 			else:
-				return devolverMensaje(request, "Datos de loggeo inválidos")
+				login_error = "Datos de loggeo inválidos"
 
 		else:
 			form_reg = UsuarioForm(request.POST)
@@ -99,10 +100,10 @@ def principal(request):
 					send_mail(asunto, mensaje, 'noreply@90manager.com', [usuario.email])
 
 				return devolverMensaje(request, "Se ha enviado un mensaje de confirmación a tu correo", "/")
-			else:
-				form_reg = UsuarioForm()
+	else:
+		form_reg = UsuarioForm()
 
-	return render_to_response("web/principal.html", { "form_reg": form_reg }, context_instance = RequestContext(request))
+	return render_to_response("web/principal.html", { "form_reg" : form_reg, "login_error" : login_error }, context_instance = RequestContext(request))
 
 ########################################################################
 

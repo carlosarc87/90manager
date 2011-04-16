@@ -203,19 +203,25 @@
 		<img id="logo_login" src="/media/img/logoAlter.png" alt="logo_login" title="" />
 
 		<div id="login">
-			{% if form.errors %}
-				<p class="texto_error">Usuario y/o contraseña no válidos</p>
+			{% if login_error %}
+				<p class="texto_error">{{ login_error }}</p>
 			{% endif %}
 
 			<form action="/" method="post">
 				{% csrf_token %}
 				<!-- Usuario -->
+				{% if form.username.errors %}
+					<p class="texto_error">form.username.errors</p>
+				{% endif %}
 				<div id="caja_usuario">
 					<label for="login_username">Usuario:</label>
 					<input id="login_username" type="text" name="login_username" value="" maxlength="50" />
 				</div>
 
 				<!-- Clave -->
+				{% if form.password.errors %}
+					<p class="texto_error">form.password.errors</p>
+				{% endif %}
 				<div id="caja_clave">
 					<label for="login_password">Contraseña:</label>
 					<input id="login_password" type="password" name="login_password" value="" maxlength="50" />
