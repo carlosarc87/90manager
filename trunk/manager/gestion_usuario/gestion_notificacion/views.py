@@ -25,8 +25,7 @@ Copyright 2011 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 
-from gestion_base.func import devolverMensaje
-from gestion_usuario.func import redireccionar, generarPagina
+from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 from gestion_sistema.gestion_liga.models import Liga
 

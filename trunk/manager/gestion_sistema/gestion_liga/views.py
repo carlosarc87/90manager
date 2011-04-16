@@ -32,8 +32,7 @@ from gestion_sistema.gestion_equipo.forms import EquipoForm
 from models import Liga
 from forms import LigaForm, ActivarLigaForm
 
-from gestion_base.func import devolverMensaje
-from gestion_usuario.func import redireccionar, generarPagina
+from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 from gestion_usuario.models import Usuario
 from gestion_usuario.gestion_notificacion.func import notificar, TipoNotificacion
@@ -189,9 +188,6 @@ def avanzar_jornada_liga(request):
 	# Obtenemos el usuario
 	usuario = request.user
 
-	if Liga.objects.filter(id = liga_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
-
 	# Obtenemos la liga
 	liga = request.session['liga_actual']
 
@@ -206,7 +202,7 @@ def avanzar_jornada_liga(request):
 
 	liga.avanzarJornada()
 
-	return redireccionar("/ligas/ver/%s/" % (liga_id))
+	return redireccionar("/ligas/ver/%s/" % (liga.id))
 
 ########################################################################
 
@@ -236,9 +232,6 @@ def crear_liga(request):
 def activar_liga(request):
 	''' Formulario para activar una liga '''
 	usuario = request.user
-
-	if Liga.objects.filter(id = liga_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
 
 	# Obtenemos la liga
 	liga = request.session['liga_actual']

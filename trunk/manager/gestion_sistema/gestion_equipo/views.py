@@ -28,8 +28,7 @@ from django.contrib.auth.decorators import login_required
 from models import Equipo
 from forms import EquipoForm
 
-from gestion_base.func import devolverMensaje
-from gestion_usuario.func import redireccionar, generarPagina
+from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 from gestion_sistema.gestion_liga.models import Liga
 from gestion_sistema.gestion_jugador.models import Jugador

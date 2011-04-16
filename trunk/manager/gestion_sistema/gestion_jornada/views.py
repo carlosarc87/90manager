@@ -27,8 +27,7 @@ from django.contrib.auth.decorators import login_required
 
 from models import Jornada
 
-from gestion_base.func import devolverMensaje
-from gestion_usuario.func import redireccionar, generarPagina
+from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 ########################################################################
 
@@ -47,7 +46,7 @@ def ver_jornada_id(request, jornada_id):
 ########################################################################
 
 @login_required
-def ver_jornada(request, jornada_id):
+def ver_jornada(request):
 	''' Muestra los datos de una jornada '''
 	# Obtenemos el usuario
 	usuario = request.user

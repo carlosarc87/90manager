@@ -28,8 +28,7 @@ from django.contrib.auth.decorators import login_required
 from models import Partido
 from forms import PrepararEquipoForm
 
-from gestion_base.func import devolverMensaje
-from gestion_usuario.func import redireccionar, generarPagina
+from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 ########################################################################
 

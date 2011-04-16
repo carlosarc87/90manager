@@ -21,10 +21,15 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-
+from django.template import RequestContext
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.contrib.sessions.models import Session
+
 from django import forms
 from django.utils.safestring import mark_safe
+
+from gestion_sistema.gestion_liga.models import Liga
 
 ########################################################################
 
@@ -46,3 +51,22 @@ class HorizRadioRenderer(forms.RadioSelect.renderer):
 		return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
 
 ########################################################################
+
+def generarPagina(template, parametros, request, form = False, agregar_parametros=True):
+	""" Genera una pagina web con los templates añadiendo unos parámetros por defecto """
+	usuario = request.user
+	if agregar_parametros:
+		liga = request.session['liga_actual']
+		parametros['num_notificaciones'] = usuario.notificacion_set.filter(leida = False).count()
+		parametros['liga_actual'] = liga
+		equipo = request.session['equipo_propio']
+		parametros['equipo_propio'] = equipo
+		parametros['ultimas_notificaciones'] = usuario.notificacion_set.filter(leida=False)[:5]
+		parametros['fecha_actual_liga'] = "00:00:00 02/02/2002"
+	return render_to_response(template, parametros, context_instance = RequestContext(request))
+
+########################################################################
+
+def redireccionar(direccion):
+	""" Redirecciona a otra pagina web """
+	return HttpResponseRedirect(direccion)

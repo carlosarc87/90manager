@@ -88,7 +88,7 @@
 			<tr>
 				<!-- Equipo local -->
 				<td class="col_local">
-					{% if usuario == equipo_local.usuario %}
+					{% if user == equipo_local.usuario %}
 						<b><a href="/equipos/ver/{{ equipo_local.id }}/">{{ equipo_local }}</a></b>
 					{% else %}
 						<a href="/equipos/ver/{{ equipo_local.id }}/">{{ equipo_local }}</a>
@@ -116,7 +116,7 @@
 
 				<!-- Equipo visitante -->
 				<td class="col_visitante">
-					{% if usuario == equipo_visitante.usuario %}
+					{% if user == equipo_visitante.usuario %}
 						<b><a href="/equipos/ver/{{ equipo_visitante.id }}/">{{ equipo_visitante }}</a></b>
 					{% else %}
 						<a href="/equipos/ver/{{ equipo_visitante.id }}/">{{ equipo_visitante }}</a>
@@ -133,7 +133,7 @@
 				{% if tiene_equipo %}
 					<!-- Enlace a alineacion -->
 					<tr id="fila_editar_alineacion">
-						{% if usuario == equipo_local.usuario %}
+						{% if user == equipo_local.usuario %}
 							<td class="col_local">
 						{% else %}
 							<td colspan="2"></td>
@@ -149,7 +149,7 @@
 								</a>
 							</td>
 
-						{% if usuario == equipo_local.usuario %}
+						{% if user == equipo_local.usuario %}
 							<td colspan="2"></td>
 						{% endif %}
 					</tr>

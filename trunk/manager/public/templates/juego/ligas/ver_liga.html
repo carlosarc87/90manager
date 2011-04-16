@@ -244,7 +244,7 @@
 			{% if equipo_propio %}
 				Equipo propio: <a href="/equipos/ver/{{ equipo_propio.id }}/">{{ equipo_propio.nombre }}</a>
 			{% else %}
-				<b>{{ usuario }} aún puede </b><a href="/equipos/crear/">crear un equipo</a><b> en esta liga.</b>
+				<b>{{ user.username }} aún puede </b><a href="/equipos/crear/">crear un equipo</a><b> en esta liga.</b>
 			{% endif %}
 		</div>
 	{% endif %}
@@ -272,7 +272,7 @@
 							{% if equipo.usuario %}
 								{{ equipo.usuario }}
 							{% else %}
-								Bot: Anico
+								Usuario Artificial
 							{% endif %}
 						</td>
 					</tr>

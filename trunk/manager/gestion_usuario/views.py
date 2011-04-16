@@ -34,10 +34,9 @@ from settings import URL_PROPIA, vper
 from models import Usuario, ClaveRegistroUsuario
 from forms import UsuarioForm
 
-from gestion_base.func import devolverMensaje
+from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 from gestion_sistema.gestion_liga.models import Liga
-from gestion_usuario.func import redireccionar, generarPagina
 
 ########################################################################
 
