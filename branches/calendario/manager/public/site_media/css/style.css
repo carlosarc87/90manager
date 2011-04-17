@@ -1,0 +1,246 @@
+a{
+	color: #005500;
+	text-decoration: none;
+}
+
+a:hover{
+	color: #00aa00;
+	text-decoration: underline;
+}
+
+a:visited{
+	color: #880000;
+}
+
+body{
+	background: #aaffaa;
+	color: #000000;
+	font-family: Calibri, Arial, Helvetica, sans-serif;
+	font-size: 0.8em;
+	margin: 10px;
+	padding: 0px;
+}
+
+h1, h2, h3, h4{
+	margin-top: 0px;
+}
+
+/* footer */
+
+#contador_desactualizacion{
+	color: #888;
+	padding: 5px 0px;
+}
+
+#enlaces_externos{
+	padding: 5px 0px;
+}
+
+#enlaces_externos a{
+	color: #5555cc;
+}
+
+#enlaces_internos{
+	padding: 5px 0px;
+}
+
+#footer{
+	background-color: #fff;
+	border-top: solid 1px #555555;
+	clear: both;
+	text-align: center;
+}
+
+#logos{
+	padding: 5px 0px;
+}
+
+#logos img{
+	border: 0px;
+}
+
+/* Fin footer */
+
+/* header */
+
+#barra_header{
+	background-color: #fff;
+	border-bottom: solid 1px #555555;
+	left: 0px;
+	position: fixed;
+	top: 0px;
+	width: 100%;
+}
+
+
+#header{
+	display: table;
+	margin: 0 auto;
+	width: 950px;
+}
+
+#header #logo{
+	background: url("../img/logo_mini.png") no-repeat;
+	cursor: pointer;
+	display: table-cell;
+	height: 50px;
+	padding-right: 25px;
+	width: 125px;
+}
+
+#menu{
+	display: table-cell;
+	width: 800px;
+}
+
+#menu_superior{
+	height: 30px;
+	width: 800px;
+}
+
+/* Style */
+#lista_botones, #lista_botones ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	text-indent: 0;
+}
+
+#lista_botones li {
+	background-color: #39f;
+	display: inline;
+	float: left;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	text-indent: 0;
+	width: 130px;
+}
+
+#lista_botones li a {
+	background-color: #55aa55;
+	color: #000;
+	display: block;
+	font-size: 1.1em;
+	padding: 4px;
+	text-decoration: none;
+	width: 120px;
+}
+
+#lista_botones li a:hover, #lista_botones li a:active {
+	background-color: #88dd88;
+}
+
+#lista_botones li ul {
+	display: none;
+	position: absolute;
+}
+
+#lista_botones li ul li {
+	display: list-item;
+	float: none;
+	margin: 0;
+}
+
+#lista_botones li ul li a {
+	font-size: 1em;
+}
+
+#navigation{
+	font-size: 1em;
+	height: 30px;
+	list-style-image: url('../img/icons/favicon.ico');
+}
+
+#navigation li{
+	float: left;
+	height: 20px;
+	padding: 5px;
+}
+
+/* Fin header */
+
+#wrap{
+	border: solid 1px #555;
+	box-shadow: 3px 3px 7px #777;
+	margin: 0 auto;
+	width: 950px;
+}
+
+.contenido2{
+	background: #88dd88;
+	min-height: 250px;
+}
+
+.cuadro_num_azul_der{
+	color: #0000aa;
+	text-align: right;
+}
+
+.errorlist{
+	color: #cc0000;
+	font-size: 1em;
+	font-weight: bold;
+	margin: 0px 0px 15px 0px;
+	padding: 0px 0px 0px 15px;
+}
+
+.errorlist li{
+	padding: 5px;
+}
+
+.tabla1{
+	background: #fff;
+	border: solid 1px #444;
+	border-spacing: 1px;
+	margin-bottom: 10px;
+}
+
+.tabla1 a{
+	color: #5555aa;
+	padding: 4px;
+}
+
+.tabla1 caption{
+	background-color: #ddd;
+	border-top: solid 1px #444;
+	border-right: solid 1px #444;
+	border-left: solid 1px #444;
+	color: #666;
+	font-size: 1.2em;
+	font-weight: bold;
+	padding: 5px 0px;
+	text-align: center;
+}
+
+.tabla1 thead, .tabla1 tfoot{
+	background-color: #ccc;
+	border: solid 1px #444;
+	color: #666;
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+.tabla1 tbody{
+	background-color: #eee;
+	border: solid 1px #444;
+	color: #444;
+}
+
+.tabla1 tr{
+	border: solid 1px #444;
+}
+
+.tabla1 tr:nth-child(2n){ /* Filas pares */
+	background-color: #ddd;
+}
+
+.texto_error{
+	color: #aa0000;
+	font-weight: bold;
+}
+
+.texto_info{
+	color: #0000aa;
+	font-weight: bold;
+}

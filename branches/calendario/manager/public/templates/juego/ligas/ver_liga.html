@@ -1,0 +1,288 @@
+{% extends "base_juego.html" %}
+
+{% block css_extra %}
+	<link rel="stylesheet" href="/media/css/tablesorter_green/style.css" type="text/css" />
+
+	<style type="text/css">
+		h2, h4{
+			margin: 10px;
+			text-align: center;
+		}
+
+		#activar_liga{
+			margin: 10px auto;
+			width: 400px;
+		}
+
+		#equipo_propio{
+			margin: 10px auto;
+			width: 400px;
+		}
+
+		#mercado_subastas{
+			text-align: center;
+		}
+
+		#pager{
+			clear: both;
+			margin: 10px auto;
+			width: 600px;
+		}
+
+		#tabla_clasificacion{
+			margin: 10px auto;
+			width: 600px;
+		}
+
+		#tabla_equipos{
+			margin: 10px auto;
+			width: 400px;
+		}
+
+		#tabla_jornadas{
+			margin: 10px auto;
+			width: 400px;
+		}
+
+		.jornada_jugada{
+			color: #00aa00;
+			font-weight: bold;
+		}
+		.jornada_no_jugada{
+			color: #aa0000;
+			font-weight: bold;
+		}
+
+		.linea_clasificacion_ascenso{
+			background-color: #88ff88;
+		}
+
+		.linea_clasificacion_descenso{
+			background-color: #ff8888;
+		}
+
+		.linea_equipo_propio{
+			font-size: 1.1em;
+			font-weight: bold;
+		}
+	</style>
+{% endblock %}
+
+{% block js_extra %}
+    <script src="/media/js/jquery-1.5.1.min.js" type="text/javascript"></script>
+	<script src="/media/js/jquery.tablesorter.min.js" type="text/javascript"></script>
+	<script src="/media/js/jquery.tablesorter.pager.js" type="text/javascript"></script>
+
+	<script type="text/javascript">
+		$(document).ready(
+			function() {
+				$("#tabla_clasificacion")
+				.tablesorter({widthFixed: true, widgets: ['zebra']})
+				.tablesorterPager({container: $("#pager")});
+			}
+		);
+	</script>
+{% endblock %}
+
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li>{{ liga.nombre }}</li>
+	</ul>
+{% endblock %}
+
+{% block contenido %}
+	<h2>Liga: {{ liga.nombre }}</h2>
+
+	{% if activada %}
+		{% if jornada_actual %}
+			<h4>Jornada actual: <a href="/jornadas/ver/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></h4>
+			{% if es_creador %}
+				<h4><a href="/ligas/avanzar/">Avanzar jornada</a></h4>
+			{% endif %}
+		{% else %}
+			<h4>FINALIZADA</h4>
+		{% endif %}
+
+		<div id="mercado_subastas"><a href="/mercado/subastas/ver/liga/">Ver Mercado de subastas</a></div>
+
+		{% if clasificacion %}
+			<!-- Tabla clasificacion -->
+			<table class="tabla1 + tablesorter" id="tabla_clasificacion">
+				{% if liga_acabada %}
+					<caption>Clasificación final</caption>
+				{% else %}
+					<caption>Clasificación (jornada {{ jornada_actual.numero }})</caption>
+				{% endif %}
+
+				<thead>
+					<tr>
+						<th title="Posici&oacute;n">Pos.</th>
+						<th>Equipo</th>
+						<th title="Partidos jugados">P.J.</th>
+						<th title="Partidos ganados">P.G.</th>
+						<th title="Partidos empatados">P.E.</th>
+						<th title="Partidos perdidos">P.P.</th>
+						<th title="Goles a favor">G.F.</th>
+						<th title="Goles en contra">G.C.</th>
+						<th title="Goles de diferencia">G.D.</th>
+						<th>Puntos</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for dato_clasificacion in clasificacion %}
+						{% if dato_clasificacion.posicion_ascenso %}
+							{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+								<tr class="linea_equipo_propio + linea_clasificacion_ascenso">
+							{% else %}
+								<tr class="linea_clasificacion_ascenso">
+							{% endif %}
+						{% else %}
+							{% if dato_clasificacion.posicion_descenso %}
+								{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+									<tr class="linea_equipo_propio + linea_clasificacion_descenso">
+								{% else %}
+									<tr class="linea_clasificacion_descenso">
+								{% endif %}
+							{% else %}
+								{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+									<tr class="linea_equipo_propio">
+								{% else %}
+									<tr>
+								{% endif %}
+							{% endif %}
+						{% endif %}
+
+							<td class="cuadro_num_azul_der">
+								{{ dato_clasificacion.posicion }}
+							</td>
+							<td>
+								<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/">{{ dato_clasificacion.equipo.nombre }}</a>
+							</td>
+							<td class="cuadro_num_azul_der">
+								{{ dato_clasificacion.partidos_jugados }}
+							</td>
+							<td class="cuadro_num_azul_der">
+								{{ dato_clasificacion.partidos_ganados }}
+							</td>
+							<td class="cuadro_num_azul_der">
+								{{ dato_clasificacion.partidos_empatados }}
+							</td>
+							<td class="cuadro_num_azul_der">
+								{{ dato_clasificacion.partidos_perdidos }}
+							</td>
+							<td class="cuadro_num_azul_der">
+								{{ dato_clasificacion.goles_favor }}
+							</td>
+							<td class="cuadro_num_azul_der">
+								{{ dato_clasificacion.goles_contra }}
+							</td>
+							<td class="cuadro_num_azul_der">
+								{{ dato_clasificacion.goles_diferencia }}
+							</td>
+							<td class="cuadro_num_azul_der">
+								{{ dato_clasificacion.puntos }}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<!-- Paginacion
+			<div id="pager" class="pager">
+				<form>
+					<img src="../addons/pager/icons/first.png" class="first"/>
+					<img src="../addons/pager/icons/prev.png" class="prev"/>
+					<input type="text" class="pagedisplay"/>
+					<img src="../addons/pager/icons/next.png" class="next"/>
+					<img src="../addons/pager/icons/last.png" class="last"/>
+					<select class="pagesize">
+						<option selected="selected"  value="10">10</option>
+
+						<option value="20">20</option>
+						<option value="30">30</option>
+						<option  value="40">40</option>
+					</select>
+				</form>
+			</div>-->
+		{% endif %}
+
+		<!-- Tabla jornadas -->
+		<table class="tabla1" id="tabla_jornadas">
+			<caption>Listado de jornadas</caption>
+			<thead>
+				<tr>
+					<th>Jornada</th>
+					<th>Jugada</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for jornada in jornadas %}
+					<tr>
+						<td class="cuadro_num_azul_der">
+							<a href="/jornadas/ver/{{ jornada.id }}/">{{ jornada.numero }}</a>
+						</td>
+						<th>
+							{% if jornada.jugada %}
+								<span class="jornada_jugada">SÍ</span>
+							{% else %}
+								<span class="jornada_no_jugada">NO</span>
+							{% endif %}
+						</th>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<div id="activar_liga">
+			<span>La liga no está activada aún</span>
+			{% if es_creador %}
+				: <a href="/ligas/activar/">ACTIVAR</a>
+			{% endif %}
+		</div>
+
+		<div id="equipo_propio">
+			{% if equipo_propio %}
+				Equipo propio: <a href="/equipos/ver/{{ equipo_propio.id }}/">{{ equipo_propio.nombre }}</a>
+			{% else %}
+				<b>{{ user.username }} aún puede </b><a href="/equipos/crear/">crear un equipo</a><b> en esta liga.</b>
+			{% endif %}
+		</div>
+	{% endif %}
+
+	<!-- Tabla de equipos -->
+	<table class="tabla1" id="tabla_equipos">
+		<caption>Listado de equipos</caption>
+		{% if equipos %}
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Entrenador</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for equipo in equipos %}
+					<tr {% if equipo_propio.nombre == equipo.nombre %}
+							class="linea_equipo_propio"
+						{% endif %}>
+
+						<td>
+							<a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a>
+						</td>
+						<td>
+							{% if equipo.usuario %}
+								{{ equipo.usuario }}
+							{% else %}
+								Usuario Artificial
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		{% else %}
+			<tr>
+				<th>Aún no se ha añadido ningún equipo a la liga</th>
+			</tr>
+		{% endif %}
+	</table>
+
+{% endblock %}

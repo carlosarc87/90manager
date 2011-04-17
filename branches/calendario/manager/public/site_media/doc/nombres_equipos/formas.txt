@@ -1,0 +1,23 @@
+# Masculinos
+Cónicos
+Cuadrados
+Cúbicos
+Deformes
+Elípticos
+Escalenos
+Esféricos
+Irregulares
+Piramidales
+Rectangulares
+#
+# Femeninos
+Cónicas
+Cuadradas
+Cúbicas
+Deformes
+Elípticas
+Escalenas
+Esféricas
+Irregulares
+Piramidales
+Rectangulares

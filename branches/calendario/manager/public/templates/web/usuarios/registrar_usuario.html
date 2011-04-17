@@ -1,0 +1,152 @@
+{% extends "base_web.html" %}
+
+{% block css_extra %}
+	<style type="text/css">
+		label{
+			float: left;
+			width: 150px;
+		}
+		
+		#caja_usuario{ float: left; width: 200px; }
+		#caja_password{ float: left; width: 200px; }
+		#caja_nombre{ float: left; width: 200px; }
+		#caja_apellidos{ float: left; width: 200px; }
+		#caja_email{ float: left; width: 200px; }
+		#caja_aceptar_condiciones{ float: left; width: 50px; }
+		
+		#contenido_usuario{ clear: both; height: 20px; padding: 5px 0px; }
+		#contenido_password{ clear: both; height: 20px; padding: 5px 0px; }
+		#contenido_nombre{ clear: both; height: 20px; padding: 5px 0px; }
+		#contenido_apellidos{ clear: both; height: 20px; padding: 5px 0px; }
+		#contenido_email{ clear: both; height: 20px; padding: 5px 0px; }
+		#contenido_aceptar_condiciones{ clear: both; height: 20px; padding: 5px 0px; }
+		#contenido_aceptar_condiciones label{ width: 300px; }
+		#contenido_boton_registrar{ clear: both; height: 20px; padding: 5px 0px; }
+		#contenido_boton_registrar input{ margin-right: 30px; }
+		#contenido_campos_obligatorios{ clear: both; height: 20px; padding: 5px 0px; }
+	
+		#registro{
+			background-color: #fff;
+			border: solid 1px #555555;
+			float: right;
+			margin: 20px;
+			padding: 20px;
+			width: 380px;
+		}
+
+		#registro input{
+			float: right;
+		}
+
+		#registro table{
+			width: 100%;
+		}
+
+		#logo2{
+			border: 0px;
+			float: left;
+			margin: 20px 0px;
+			height: 175px;
+			width: 387px;
+		}
+		
+		.obligatorio{
+			float: right;
+			width: 20px;
+		}
+	</style>
+{% endblock %}
+
+{% block cabecera %}
+{% endblock %}
+
+{% block contenido %}
+	<a href="/">
+		<img id="logo2" src="/media/img/logoAlter.gif" alt="logo_jugador" title="" />
+	</a>
+	
+	<div id="registro">
+		<form action="/cuentas/registrar/" method="post">
+			{% csrf_token %}
+			<!-- Usuario -->
+			{% if form_reg.username.errors %}
+				<div class="texto_error">{{ form_reg.username.errors }}</div>
+			{% endif %}
+
+			<div id="contenido_usuario">
+				<label for="id_username">Nombre de usuario:</label>
+				<div id="caja_usuario">
+					<input id="id_username" type="text" name="username" value="" maxlength="50" />
+				</div>
+				<div class="obligatorio">*</div>
+			</div>
+
+			<!-- Contrasena -->
+			{% if form_reg.password.errors %}
+				<div class="texto_error">{{ form_reg.password.errors }}</div>
+			{% endif %}
+
+			<div id="contenido_password">
+				<label for="id_password">Contraseña:</label>
+				<div id="caja_password">
+					<input id="id_password" type="password" name="password" value="" maxlength="50" />
+				</div>
+				<div class="obligatorio">*</div>
+			</div>
+
+			<!-- Nombre -->
+			{% if form_reg.first_name.errors %}
+				<div class="texto_error">{{ form_reg.first_name.errors }}</div>
+			{% endif %}
+
+			<div id="contenido_nombre">
+				<label for="id_first_name">Nombre:</label>
+				<div id="caja_nombre">
+					<input id="id_first_name" type="text" name="first_name" value="" maxlength="50" />
+				</div>
+			</div>
+
+			<!-- Apellidos -->
+			{% if form_reg.last_name.errors %}
+				<div class="texto_error">{{ form_reg.last_name.errors }}</div>
+			{% endif %}
+
+			<div id="contenido_apellidos">
+				<label for="id_last_name">Apellidos:</label>
+				<div id="caja_apellidos">
+					<input id="id_last_name" type="text" name="last_name" value="" maxlength="50" />
+				</div>
+			</div>
+
+			<!-- E-mail -->
+			{% if form_reg.email.errors %}
+				<div class="texto_error">{{ form_reg.email.errors }}</div>
+			{% endif %}
+
+			<div id="contenido_email">
+				<label for="id_email">E-Mail:</label>
+				<div id="caja_email">
+					<input id="id_email" type="text" name="email" value="" maxlength="100" />
+				</div>
+				<div class="obligatorio">*</div>
+			</div>
+
+			<!-- Condiciones de uso -->
+			{% if form_reg.aceptar_condiciones.errors %}
+				<div class="texto_error">{{ form_reg.aceptar_condiciones.errors }}</div>
+			{% endif %}
+			
+			<div id="contenido_aceptar_condiciones">
+				<label for="id_aceptar_condiciones">Acepto las <a href="/condiciones/" onclick="this.target='_blank'">condiciones de uso</a></label>
+				<div id="caja_aceptar_condiciones">{{ form_reg.aceptar_condiciones }}</div>
+			</div>
+			
+			<!-- Boton registrar -->
+			<div id="contenido_boton_registrar">
+				<input type="submit" name="registrar_usuario" value="Registrar" />
+			</div>
+			
+			<div id="contenido_campos_obligatorios">*: Campos obligatorios</div>
+		</form>
+	</div>
+{% endblock %}

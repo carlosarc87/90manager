@@ -1,0 +1,153 @@
+{% extends "base_juego.html" %}
+
+{% block css_extra %}
+	<style type="text/css">
+		h2, h4{
+			margin: 10px;
+			text-align: center;
+		}
+
+		#tabla_encuentros{
+			margin: 10px auto;
+			width: 600px;
+		}
+
+		#tabla_clasificacion_anterior{
+			margin: 10px auto;
+			width: 500px;
+		}
+
+		#tabla_clasificacion{
+			margin: 10px auto;
+			width: 500px;
+		}
+	</style>
+{% endblock %}
+
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+		<li>Jornada {{ jornada.numero }}</li>
+	</ul>
+{% endblock %}
+
+{% block contenido %}
+
+	{% if jornada_anterior %}
+		<h4><a href="/jornadas/ver/{{ jornada_anterior.id }}/">Ver Jornada {{ jornada_anterior.numero }}</a></h4>
+	{% endif %}
+	{% if jornada_siguiente %}
+		<h4><a href="/jornadas/ver/{{ jornada_siguiente.id }}/">Ver Jornada {{ jornada_siguiente.numero }}</a></h4>
+	{% endif %}
+
+	<h2>Datos de la jornada {{ jornada.numero }}</h2>
+
+	{% if jornada.jugada %}
+		<h4>FINALIZADA</h4>
+	{% else %}
+		{% if es_creador %}
+			{% if es_jornada_actual %}
+				<h4><a href="/ligas/avanzar/">FINALIZAR JORNADA</a></h4>
+			{% endif %}
+		{% endif %}
+	{% endif %}
+
+	<table class="tabla1" id="tabla_encuentros">
+		<caption>Listado de encuentros</caption>
+		<thead>
+			<tr>
+				<th>Local</th>
+				<th>Visitante</th>
+				<th>Resultado</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for emparejamiento in emparejamientos %}
+				<tr>
+					<td>
+						<a href="/equipos/ver/{{ emparejamiento.equipo_local.id }}/">{{ emparejamiento.equipo_local }}</a>
+					</td>
+					<td>
+						<a href="/equipos/ver/{{ emparejamiento.equipo_visitante.id }}/">{{ emparejamiento.equipo_visitante }}</a>
+					</td>
+					<th>
+						<a href="/partidos/ver/{{ emparejamiento.id }}/">
+							{% if emparejamiento.jugado %}
+								{{ emparejamiento.goles_local }} - {{ emparejamiento.goles_visitante }}
+							{% else %}
+								Aún no jugado.
+							{% endif %}
+						</a>
+					</th>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	{% if clasificacion_anterior %}
+		<table class="tabla1" id="tabla_clasificacion_anterior">
+			<caption>Clasificación antes de la jornada</caption>
+			<thead>
+				<tr>
+					<th>Equipo</th>
+					<th>GF</th>
+					<th>GC</th>
+					<th>Puntos</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for dato_clasificacion in clasificacion_anterior %}
+					<tr>
+						<td>
+							<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/">{{ dato_clasificacion.equipo.nombre }}</a>
+						</td>
+						<td>
+							{{ dato_clasificacion.goles_favor }}
+						</td>
+						<td>
+							{{ dato_clasificacion.goles_contra }}
+						</td>
+						<td>
+							{{ dato_clasificacion.puntos }}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+
+
+	{% if clasificacion %}
+		<table class="tabla1" id="tabla_clasificacion">
+			<caption>Clasificación de la jornada</caption>
+			<thead>
+				<tr>
+					<th>Equipo</th>
+					<th>GF</th>
+					<th>GC</th>
+					<th>Puntos</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for dato_clasificacion in clasificacion %}
+					<tr>
+						<td>
+							<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/">{{ dato_clasificacion.equipo.nombre }}</a>
+						</td>
+						<td>
+							{{ dato_clasificacion.goles_favor }}
+						</td>
+						<td>
+							{{ dato_clasificacion.goles_contra }}
+						</td>
+						<td>
+							{{ dato_clasificacion.puntos }}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		No hay clasificacion disponible aun
+	{% endif %}
+{% endblock %}

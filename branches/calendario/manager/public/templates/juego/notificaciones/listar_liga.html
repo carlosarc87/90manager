@@ -1,0 +1,67 @@
+{% extends "base_juego.html" %}
+
+{% block css_extra %}
+	<style type="text/css">
+		h2{
+			margin: 10px;
+			text-align: center;
+		}
+
+		#notificaciones{
+			background: #fff;
+			border: solid 1px #555;
+			margin: 10px auto;
+			padding: 0px;
+			width: 500px;
+		}
+
+		#notificaciones li{
+			list-style: none;
+		}
+
+		#notificaciones li + li{
+			border-top: solid 1px #555;
+		}
+
+		#notificaciones a{
+			color: #000;
+			cursor: pointer;
+			display: block;
+			padding: 10px;
+			text-decoration: none;
+		}
+
+		#notificaciones a:hover{
+			background: #ccc;
+		}
+
+		.no_leida{
+			background: #dddd55;
+		}
+	</style>
+{% endblock %}
+
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+		<li>Notificaciones</li>
+	</ul>
+{% endblock %}
+
+{% block contenido %}
+
+	<h2>Notificaciones de la liga: {{ liga.nombre }}</h2>
+
+	<ul id="notificaciones">
+		{% for notificacion in notificaciones %}
+			<li {% if not notificacion.leida %}
+					class="no_leida"
+				{% endif %}>
+				<a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensajeSinEnlace }}</a>		<input type="button" value="Borrar" onclick="location.href='/cuentas/notificaciones/borrar/{{ notificacion.id }}/'" />
+			</li>
+		{% empty %}
+			<li>No tienes notificaciones</li>
+		{% endfor %}
+	</ul>
+
+{% endblock %}

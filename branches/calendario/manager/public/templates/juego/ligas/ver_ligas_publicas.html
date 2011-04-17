@@ -1,0 +1,62 @@
+{% extends "base_juego.html" %}
+
+{% block css_extra %}
+	<style type="text/css">
+		h2{
+			margin: 10px;
+			text-align: center;
+		}
+		
+		/* Ligas publicas */
+		
+		#tabla_ligas_publicas{
+			margin: 20px auto;
+			width: 500px;
+		}
+		
+		.col_creador{
+		}
+		
+		.col_inscritos{
+			color: #5555aa;
+			text-align: right;
+		}
+		
+		.col_nombre{
+		}
+		
+		/* Fin ligas publicas */
+	</style>
+{% endblock %}
+
+{% block contenido %}
+
+	<h2>Ligas públicas del sistema</h2>
+
+	<table class="tabla1" id="tabla_ligas_publicas">
+		<caption>Ligas</caption>
+		<thead>
+			<tr>
+				<th>Creador</th>
+				<th>Liga</th>
+				<th>Inscritos</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for liga in ligas %}
+				<tr>
+					<td class="col_creador">{{ liga.creador }}</td>
+					
+					<td class="col_nombre"><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
+					
+					<td class="col_inscritos">{{ liga.inscritos }}</td>
+				</tr>
+			{% empty %}
+				<tr>
+					<td>No hay ligas publicas</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

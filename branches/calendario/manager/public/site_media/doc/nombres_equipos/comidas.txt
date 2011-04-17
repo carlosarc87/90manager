@@ -1,0 +1,39 @@
+# Masculinos
+Albaricoques
+Cereales
+Champiñones
+Chorizos
+Espaguetis
+Espárragos
+Higos
+Jamones
+Limones
+Macarrones
+Melocotones
+Melones
+Plátanos
+Pomelos
+Quesos
+Salchichones
+Yogures
+#
+# Femeninos
+Aceitunas
+Cebollas
+Cerezas
+Coles
+Frambuesas
+Fresas
+Galletas
+Guindillas
+Kiwis
+Lechugas
+Manzanas
+Naranjas
+Nísporas
+Palomitas de maíz
+Peras
+Pizzas
+Sandías
+Setas
+Zanahorias

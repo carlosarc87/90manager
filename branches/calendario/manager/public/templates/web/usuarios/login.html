@@ -1,0 +1,256 @@
+{% extends "base_web.html" %}
+
+{% block css_extra %}
+	<style type="text/css">
+		#caja_mensajico{
+			height: 40px;
+			padding: 5px 0px;
+			text-align: center;
+		}
+		
+		#contenido_sup{
+			height: 300px;
+		}
+
+		#descripcion{
+			clear: both;
+			height: 50px;
+			padding: 5px;
+		}
+
+		#login{
+			border: solid 1px #555;
+			float: right;
+			margin: 20px 0px;
+			padding: 20px;
+			width: 350px;
+		}
+
+		#login #caja_clave{
+			clear: both;
+			padding: 5px 0px;
+		}
+
+		#login #caja_entrar{
+			clear: both;
+			height: 15px;
+			padding: 5px 0px;
+		}
+
+		#login #caja_recordar{
+			clear: both;
+			display: none;
+			padding: 5px 0px;
+		}
+
+		#login #caja_registro{
+			clear: both;
+			padding: 5px 0px;
+		}
+
+		#login #caja_usuario{
+			clear: both;
+			padding: 5px 0px;
+		}
+
+		#login #entrar, #login #password, #login #username{
+			float: right;
+		}
+
+		#logo_login{
+			border: 0px;
+			float: left;
+			margin: 20px 0px;
+			height: 175px;
+			width: 387px;
+		}
+
+		#mensajico{
+			cursor: pointer;
+			font-style: italic;
+		}
+	</style>
+{% endblock %}
+
+{% block js_extra %}
+	<!-- No tocar que hay que arreglarlo un poco aun -->
+	<script type="text/javascript">
+		// Calcula el tiempo dependiendo de num1 y num2
+		function calcularTiempo(segundos, num1, num2) {
+			s = ((Math.floor(segundos / num1)) % num2).toString();
+			if (s.length < 2)
+				s = "0" + s;
+			return "<b>" + s + "</b>";
+		}
+
+		// Actualiza el span con el texto
+		function contadorDesactualizado(segundos) {
+			if (segundos < 0) {
+				document.getElementById("contador_desactualizado").innerHTML = "¡Actualizado!";
+				return;
+			}
+			str_tiempo = formato_tiempo.replace(/%%D%%/g, calcularTiempo(segundos, 86400, 100000));
+			str_tiempo = str_tiempo.replace(/%%H%%/g, calcularTiempo(segundos, 3600, 24));
+			str_tiempo = str_tiempo.replace(/%%M%%/g, calcularTiempo(segundos, 60, 60));
+			str_tiempo = str_tiempo.replace(/%%S%%/g, calcularTiempo(segundos, 1, 60));
+
+			document.getElementById("contador_desactualizado").innerHTML = "Esto lleva desactualizado " + str_tiempo;
+
+			setTimeout("contadorDesactualizado(" + (segundos + paso) + ")", timeout);
+		}
+
+		fechaUltimaActualizacion = "04/03/2011 17:16";
+		formato_tiempo = "%%D%% días, %%H%% horas, %%M%% minutos y %%S%% segundos.";
+		paso = +1;
+		paso = Math.ceil(paso); // Filtrico
+
+		var timeout = (Math.abs(paso) - 1) * 1000 + 990;
+		var antes = new Date(fechaUltimaActualizacion);
+		var ahora = new Date();
+		dif = new Date(ahora - antes);
+		gsegs = Math.floor(dif.valueOf() / 1000);;
+
+		function aleatorio(inferior, superior){
+			numPosibilidades = superior - inferior
+			aleat = Math.random() * numPosibilidades
+			aleat = Math.round(aleat)
+			return parseInt(inferior) + aleat
+		}
+
+		var r_text = new Array ();
+
+		r_text.push("404 - Gracia not found.");
+		r_text.push("Ahora con más lechuga.");
+		r_text.push("Alt + F4 no activa los trucos.");
+		r_text.push("Aunque un roedor pudiera roer robles, no tendría por qué roer robles si pudiera roer robles, asi que un roedor no roería robles porque pudiera roer una cantidad de robles.");
+		r_text.push("Chuck no está entre los nombres de jugadores.");
+		r_text.push("¡Con efectos especiales!");
+		r_text.push("¡Con jugadores tan famosos como Eufemio Teunuco Malvérez de la Fuente!");
+		r_text.push("Con más fallos que Aula-BD.");
+		r_text.push("¿Documentación? ¿Qué es eso?");
+		r_text.push("El 90 de 90manager es un secreto.");
+		//r_text.push("El 99% de la diversión de la página consiste en clickar aquí");
+		r_text.push("El único proyecto de un juego de fútbol que puede aburrir a las masas en sus presentaciones.");
+		r_text.push("En 90manager todo es posible.");
+		r_text.push("En Abril, errores mil.");
+		r_text.push("En donde nunca sale el sol.");
+		r_text.push("En el mercado de transferibles no hay sangre para Pino.");
+		r_text.push("En la forja rediris no hay metal.");
+		r_text.push("Esto es un erasmus, un programador de videojuegos y un tío que sabe php y van y hacen una web en django...");
+		r_text.push("Esto no tendría gracia sin la aleatoriedad.");
+		r_text.push("¿Galletillas saladas?");
+		r_text.push("¡GOOOOOL!");
+		r_text.push("Hay webs que presumen que no van en Internet Explorer 6. En la nuestra ni hemos probado.");
+		r_text.push("Hola, soy Edu. Feliz navidad.");
+		r_text.push("¡HTML 5 POWER!");
+		r_text.push("IDDQD Forever.");
+		r_text.push("In Soviet Russia 90manager plays you!");
+		r_text.push("¡Instalable con diskettes de 3'5!");
+		r_text.push("JJ se nos frustró por las cervezas del hackathón.");
+		r_text.push("Juanmi se aburre mucho y crea estos mensajicos.");
+		r_text.push("La OSL-UGR nos prometió mujeres por meternos en el concurso. ¿Para cuándo?");
+		r_text.push("Las tostadas de tomate de la cafetería de la ETSIIT son lo mejor.");
+		r_text.push("Limones, limones everywhere.");
+		r_text.push("Logro desbloqueado: Ver este mensaje.");
+		r_text.push("No tendremos al gato cebolla, al pollo, o a las barbacoas, pero tenemos al Juanmi que como mascota vale.");
+		r_text.push("No tenemos los derechos de Crisóstomo Amaranto, pero tampoco hay derecho de que alguien se llame así.");
+		r_text.push("Patrocinado por Hostelería Silma, que nos hace tartas porque es el único rato que estamos callados.");
+		r_text.push("Pino! resucita!");
+		/*r_text.push("Próximamente con música de Justin Castor y los YO? NAH! brothers.");*/
+		r_text.push("Programado a mano.");
+		r_text.push("Pulse [aquí] para recibir su fortuna.");
+		r_text.push("¡Qué ganas de que llegue el verano!");
+		r_text.push("Sacaremos gorricos para el Team Fortress 2.");
+		r_text.push("Si ves algo sin validar correctamente, Carlos lo sabrá.");
+		r_text.push("Sí, nosotros también nos entretenemos clickando en esto.");
+		r_text.push("Tan sencillo como comerse un bocadillo.");
+		r_text.push("Tiene nombres mil... tiene nombres mil...");
+		r_text.push("Un día de estos nos dá por implementar el recordar contraseña...");
+
+		var num_mensajicos = r_text.length;
+
+		function cargarMensajico(ele){
+			$(ele).fadeToggle(300, function(){
+				// Color del texto
+				r = aleatorio(0, 255);
+				g = 0;
+				b = aleatorio(0, 255);
+
+				// Modificar color del texto
+				ele.style.color = "rgb(" + r + ", " + g + ", " + b + ")";
+
+				// Imprimir un texto aleatorio de entre los disponibles
+				i = aleatorio(0, num_mensajicos - 1);
+				ele.innerHTML = r_text[i];
+
+				$(ele).fadeToggle(300, "linear");
+			})
+		}
+
+		// Al terminar de cargar la pagina cargar un mensajico
+		$(document).ready(function(){
+		   cargarMensajico(document.getElementById("mensajico"));
+		   contadorDesactualizado(gsegs);
+		});
+	</script>
+{% endblock %}
+
+{% block cabecera %}
+{% endblock %}
+
+{% block contenido %}
+	<div id="contenido_sup">
+		<img id="logo_login" src="/media/img/logoAlter.png" alt="logo_login" title="" />
+
+		<div id="login">
+			{% if form.errors %}
+				<p class="texto_error">Usuario y/o contraseña no válidos</p>
+			{% endif %}
+
+			<form action="{% url django.contrib.auth.views.login %}" method="post">
+				{% csrf_token %}
+				<!-- Usuario -->
+				<div id="caja_usuario">
+					<label for="username">Usuario:</label>
+					<input id="username" type="text" name="username" value="" maxlength="50" />
+				</div>
+
+				<!-- Clave -->
+				<div id="caja_clave">
+					<label for="password">Contraseña:</label>
+					<input id="password" type="password" name="password" value="" maxlength="50" />
+				</div>
+
+				<!-- Boton entrar -->
+				<div id="caja_entrar">
+					<input id="entrar" type="submit" name="login" value="Entrar" />
+				</div>
+
+				<!-- Registro -->
+				<div id="caja_registro">
+					<a href="/cuentas/registrar/">Registro</a>
+				</div>
+
+				<!-- Recordar clave -->
+				<div id="caja_recordar">
+					<a href="#">Recordar contraseña</a>
+				</div>
+			</form>
+		</div>
+	
+		<p id="descripcion">
+			<a href="http://90manager.wordpress.com/">90manager</a> es un juego multijugador donde puedes ser
+			entrenador y presidente de un equipo de fútbol.
+		</p>
+	</div>
+
+	<div id="caja_mensajico">
+		<span id="mensajico" onclick="cargarMensajico(this)"></span>
+	</div>
+{% endblock %}
+
+{% block contador_desactualizacion %}
+	<div id="contador_desactualizacion">
+		<span id="contador_desactualizado"></span>
+	</div>
+{% endblock %}

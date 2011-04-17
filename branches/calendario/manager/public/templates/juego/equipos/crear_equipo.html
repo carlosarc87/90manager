@@ -1,0 +1,76 @@
+{% extends "base_juego.html" %}
+
+{% block css_extra %}
+	<style type="text/css">
+		h2{
+			text-align: center;
+		}
+
+		/* FORMULARIO CREAR EQUIPO */
+
+		#form_crear_equipo{
+			background-color: #fff;
+			border: solid 1px #555;
+			margin: 0 auto;
+			padding: 20px;
+			margin-bottom: 20px;
+			width: 400px;
+		}
+
+		#contenido_nombre{ padding: 5px 0px; }
+		#contenido_nombre label{
+			float: left;
+			font-weight: bold;
+			width: 150px;
+		}
+
+		#contenido_siglas{ padding: 5px 0px; }
+		#contenido_siglas label{
+			float: left;
+			font-weight: bold;
+			width: 150px;
+		}
+	</style>
+{% endblock %}
+
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li>{{ liga.nombre }}</li>
+	</ul>
+{% endblock %}
+
+{% block contenido %}
+	<h2>Creación de un nuevo equipo en la liga {{ liga.nombre }}</h2>
+
+	<form id="form_crear_equipo" action="/equipos/crear/" method="post">
+		{% csrf_token %}
+
+		<!-- Nombre del equipo -->
+		<div id="contenido_nombre">
+			{% if form.nombre.errors %}
+				{{ form.nombre.errors }}
+			{% endif %}
+
+			<label for="id_nombre">Nombre del equipo:</label>
+
+			<div id="caja_nombre">{{ form.nombre }}</div>
+		</div>
+
+		<!-- Siglas del equipo -->
+		<div id="contenido_siglas">
+			{% if form.siglas.errors %}
+				{{ form.siglas.errors }}
+			{% endif %}
+
+			<label for="id_siglas">Siglas:</label>
+
+			<div id="caja_siglas">{{ form.siglas }}</div>
+		</div>
+
+		<!-- Boton crear -->
+		<div id="contenido_boton_crear">
+			<input type="submit" value="Crear" />
+		</div>
+	</form>
+{% endblock %}
+

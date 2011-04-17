@@ -1,0 +1,33 @@
+# Masculinos
+Arquitectos
+Banqueros
+Bomberos
+Camareros
+Cocineros
+Enfermeros
+Funcionarios
+Guardabosques
+Informáticos
+Marineros
+Médicos
+Panaderos
+Pilotos
+Policías
+Políticos
+#
+# Femeninos
+Arquitectas
+Banqueras
+Bomberas
+Camareras
+Cocineras
+Enfermeras
+Funcionarias
+Guardabosques
+Informáticas
+Marineras
+Médicas
+Panaderas
+Pilotos
+Policías
+Políticas

@@ -1,0 +1,35 @@
+# Masculinos
+Aguamarinas
+Amarillos
+Azules
+Blancos
+Dorados
+Fucsias
+Marrones
+Naranjas
+Negros
+Plateados
+Rojos
+Rosas
+Transparentes
+Turquesas
+Verdes
+Violetas
+#
+# Femeninos
+Aguamarinas
+Amarillas
+Azules
+Blancas
+Doradas
+Fucsias
+Marrones
+Naranjas
+Negras
+Plateadas
+Rojas
+Rosas
+Transparentes
+Turquesas
+Verdes
+Violetas
