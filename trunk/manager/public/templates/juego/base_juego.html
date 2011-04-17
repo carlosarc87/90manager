@@ -9,17 +9,17 @@
 
 	<script type="text/javascript">
 		$(document).ready(function() {
-		   // Muestra y oculta los menus
-		   $('ul li:has(ul)').hover(
-			  function(e)
-			  {
-				 $(this).find('ul').slideDown();
-			  },
-			  function(e)
-			  {
-				 $(this).find('ul').slideUp();
-			  }
-		   );
+			// Muestra y oculta los menus
+			$('ul li:has(ul)').hover(
+				function(e)
+				{
+					$(this).find('ul').slideDown();
+				},
+				function(e)
+				{
+					$(this).find('ul').slideUp();
+				}
+			);
 		});
 	</script>
 {% endblock %}
@@ -89,7 +89,7 @@
 					<li>
 						<a href="#">{{ user.username }}</a>
 						<ul>
-							<li><a href="/cuentas/tablon/">Tablón</a></li>
+							<li><a href="/tablon/">Tablón</a></li>
 							<li><a href="#">Preferencias</a></li>
 							<li><a href="#">Ayuda</a></li>
 							<li><a href="/cuentas/logout/">Salir</a></li>
