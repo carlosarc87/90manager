@@ -32,9 +32,9 @@ class ClasificacionEquipoJornada(models.Model):
 	''' Representa una posicion de un equipo en una jornada '''
 	jornada = models.ForeignKey(Jornada)
 	equipo = models.ForeignKey(Equipo)
-	goles_favor = models.IntegerField()
-	goles_contra = models.IntegerField()
-	puntos = models.IntegerField()
+	goles_favor = models.PositiveIntegerField(default = 0)
+	goles_contra = models.PositiveIntegerField(default = 0)
+	puntos = models.PositiveIntegerField(default = 0)
 
 	def __unicode__(self):
 		''' Devuelve una cadena de texto que representa la clase '''

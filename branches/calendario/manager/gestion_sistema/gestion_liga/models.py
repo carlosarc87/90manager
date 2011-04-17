@@ -34,19 +34,19 @@ class Liga(models.Model):
 	''' Representa una liga '''
 	creador = models.ForeignKey(Usuario)
 	nombre = models.CharField(max_length = 50)
-	num_equipos = models.IntegerField(null = True, default = 0)
+	num_equipos = models.PositiveIntegerField(null = True, default = 0)
 	publica = models.BooleanField(default = True) # Visibilidad de la liga
 
 	# Reglas liga
-	sexo_permitido = models.IntegerField(default = 0)
+	sexo_permitido = models.PositiveIntegerField(default = 0)
 	permitir_bots = models.BooleanField(default = True) # Indica si se permiten (1) o no (0) bots en las ligas
-	inteligencia_bots = models.IntegerField(default = 3, null = True) # Nivel de inteligencia de los bots (1 - 5(muy alto))
-	tipo_avance_jornadas = models.IntegerField(default = 0) # Tipo de avance de las jornadas (0 - Manual, 1 - Auto, 2 - Esperar hora)
+	inteligencia_bots = models.PositiveIntegerField(default = 3, null = True) # Nivel de inteligencia de los bots (1 - 5(muy alto))
+	tipo_avance_jornadas = models.PositiveIntegerField(default = 0) # Tipo de avance de las jornadas (0 - Manual, 1 - Auto, 2 - Esperar hora)
 
 	# Reglas equipos
 	dinero_inicial = models.IntegerField(default = 20000, max_length = 15)
-	num_jugadores_inicial = models.IntegerField(default = 20, max_length = 3)
-	nivel_max_jugadores_inicio = models.IntegerField(default = 50, max_length = 3) # Nivel máximo inicial de los jugadores al comienzo de la liga (10 - 100)
+	num_jugadores_inicial = models.PositiveIntegerField(default = 20, max_length = 3)
+	nivel_max_jugadores_inicio = models.PositiveIntegerField(default = 50, max_length = 3) # Nivel máximo inicial de los jugadores al comienzo de la liga (10 - 100)
 
 	def activada(self):
 		''' Devuelve si una liga ya ha empezado a jugarse '''
@@ -120,7 +120,7 @@ class Liga(models.Model):
 		for i in range(self.equipo_set.count(), self.num_equipos):
 			nombre_eq = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
 			siglas_eq = generarSiglasNombre(nombre_eq)
-			
+
 			# Comprobar que las siglas no se repitan
 			c = 1
 			while self.equipo_set.filter(siglas = siglas_eq).count() > 0:

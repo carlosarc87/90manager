@@ -38,9 +38,9 @@ class Jugador(models.Model):
 	sexo = models.CharField(max_length = 1) # Sexo ('M' - Masculino, 'F' - Femenino)
 
 	# Apariencia física
-	color_piel = models.CharField(max_length = 30, blank = False) # Color de la piel
-	color_pelo = models.CharField(max_length = 30, blank = False) # Color del pelo
-	color_ojos = models.CharField(max_length = 30, blank = False) # Color de los ojos
+	color_piel = models.CharField(max_length = 30) # Color de la piel
+	color_pelo = models.CharField(max_length = 30) # Color del pelo
+	color_ojos = models.CharField(max_length = 30) # Color de los ojos
 
 	def generarAtributos(self, equipo, numero, posicion, max_nivel):
 		''' Genera una instancia relacionada de atributos '''
@@ -149,28 +149,28 @@ class AtributosVariablesJugador(models.Model):
 	equipo = models.ForeignKey(Equipo) # Equipo al que pertenece
 	jugador = models.OneToOneField(Jugador, related_name = 'atributos') # Jugador al que pertenecen
 
-	numero = models.IntegerField(max_length = 2, null = True) # Dorsal en el equipo (0 - 99)
+	numero = models.PositiveIntegerField(max_length = 2, null = True) # Dorsal en el equipo (0 - 99)
 	ofertado = models.BooleanField(default = False) # Indica si está o no en la lista de jugadores transferibles
 
 	# Habilidades de campo
-	ataque = models.IntegerField(max_length = 3, default = 0, blank = False) # Ataque (0 - 100)
-	defensa = models.IntegerField(max_length = 3, default = 0, blank = False) # Defensa (0 - 100)
-	velocidad = models.IntegerField(max_length = 3, default = 0, blank = False) # Velocidad (0 - 100)
-	pases = models.IntegerField(max_length = 3, default = 0, blank = False) # Pases (0 - 100)
-	anotacion = models.IntegerField(max_length = 3, default = 0, blank = False) # Anotación (0 - 100)
-	portero = models.IntegerField(max_length = 3, default = 0, blank = False) # Portero (0 - 100)
+	ataque = models.PositiveIntegerField(max_length = 3, default = 0) # Ataque (0 - 100)
+	defensa = models.PositiveIntegerField(max_length = 3, default = 0) # Defensa (0 - 100)
+	velocidad = models.PositiveIntegerField(max_length = 3, default = 0) # Velocidad (0 - 100)
+	pases = models.PositiveIntegerField(max_length = 3, default = 0) # Pases (0 - 100)
+	anotacion = models.PositiveIntegerField(max_length = 3, default = 0) # Anotación (0 - 100)
+	portero = models.PositiveIntegerField(max_length = 3, default = 0) # Portero (0 - 100)
 
 	# Habilidades físicas
-	resistencia = models.IntegerField(max_length = 3, default = 0, blank = False) # Moral (0 - 100)
+	resistencia = models.PositiveIntegerField(max_length = 3, default = 0) # Moral (0 - 100)
 
 	# Habilidades mentales
-	agresividad = models.IntegerField(max_length = 3, default = 0, blank = False) # Agresividad (0 - 100)
-	concentracion = models.IntegerField(max_length = 3, default = 0, blank = False) # Concentración (0 - 100)
-	estabilidad = models.IntegerField(max_length = 3, default = 0, blank = False) # Estabilidad (0 - 100)
-	moral = models.IntegerField(max_length = 3, default = 0, blank = False) # Moral (0 - 100)
+	agresividad = models.PositiveIntegerField(max_length = 3, default = 0) # Agresividad (0 - 100)
+	concentracion = models.PositiveIntegerField(max_length = 3, default = 0) # Concentración (0 - 100)
+	estabilidad = models.PositiveIntegerField(max_length = 3, default = 0) # Estabilidad (0 - 100)
+	moral = models.PositiveIntegerField(max_length = 3, default = 0) # Moral (0 - 100)
 
-	altura = models.IntegerField(max_length = 3, default = 0, blank = False) # Altura en cm.
-	peso = models.IntegerField(max_length = 3, default = 0, blank = False) # Peso en kg.
+	altura = models.PositiveIntegerField(max_length = 3, default = 0) # Altura en cm.
+	peso = models.PositiveIntegerField(max_length = 3, default = 0) # Peso en kg.
 
 	# Para que no salgan habilidades con valor 0 el nivel debería ser al menos 10.
 	def setHabilidadesAleatorias(self, posicion, nivel):

@@ -48,9 +48,6 @@ class JugadorPartido(models.Model):
 	atributos = models.ForeignKey(AtributosVariablesJugador)
 	posicion = models.CharField(max_length = 2, choices = POSICIONES)
 
-	def __init__(self, *args, **kwargs):
-		super(JugadorPartido, self).__init__(*args, **kwargs)
-
 	def __unicode__(self):
 		''' Devuelve una cadena representativa del objeto '''
 		return self.posicion + " - " + self.jugador.nombre
@@ -155,12 +152,12 @@ class AlineacionEquipo(models.Model):
 			return lista[0]
 		return None
 
-	def getSuplentes(self):
-		''' Devuelve los suplentes del equipo '''
-		lista = self.jugadores.filter(posicion = 'BA')
-		if len(lista) > 0:
-			return lista
-		return None
+	#def getSuplentes(self):
+		#''' Devuelve los suplentes del equipo '''
+		#lista = self.jugadores.filter(posicion = 'BA')
+		#if len(lista) > 0:
+			#return lista
+		#return None
 
 	def getDatosTitulares(self):
 		''' Devuelve los datos de los titulares '''
@@ -367,10 +364,10 @@ class Partido(models.Model):
 	alineacion_local = models.ForeignKey(AlineacionEquipo, related_name = "AlineacionLocal")
 	alineacion_visitante = models.ForeignKey(AlineacionEquipo, related_name = "AlineacionVisitante")
 
-	goles_local = models.IntegerField(null = True, blank = True)
-	goles_visitante = models.IntegerField(null = True, blank = True)
+	goles_local = models.PositiveIntegerField(null = True, blank = True)
+	goles_visitante = models.PositiveIntegerField(null = True, blank = True)
 
-	jugado = models.BooleanField()
+	jugado = models.BooleanField(default = False)
 
 	def __init__(self, *args, **kwargs):
 		super(Partido, self).__init__(*args, **kwargs)
@@ -655,7 +652,7 @@ class Partido(models.Model):
 
 class Suceso(models.Model):
 	''' Representa un suceso de un partido (gol, falta, etc) '''
-	segundo_partido = models.IntegerField(null = True, blank = True)
+	segundo_partido = models.PositiveIntegerField(null = True, blank = True)
 	tipo = models.CharField(max_length = 50)
 
 	equipo = models.ForeignKey(Equipo)
