@@ -25,7 +25,7 @@ from django.db import models
 
 from gestion_usuario.models import Usuario
 
-import random
+import random, datetime
 
 ########################################################################
 
@@ -177,9 +177,13 @@ class Liga(models.Model):
 		# Guardar jornadas y partidos
 		for i in range(len(jornadas)):
 			jornada = Jornada(liga = self, numero = i + 1, jugada = False)
+			jornada.fecha_inicio = datetime.datetime.now() + datetime.timedelta(days = i)
+			jornada.fecha_fin = datetime.datetime.now() + datetime.timedelta(days = i + 1)
 			jornada.save()
 			for emparejamiento in jornadas[i]:
 				partido = Partido(jornada = jornada, equipo_local = emparejamiento[0], equipo_visitante = emparejamiento[1], jugado = False)
+				partido.fecha_inicio = datetime.datetime.now() + datetime.timedelta(days = i)
+				partido.fecha_fin = datetime.datetime.now() + datetime.timedelta(days = i + 1, hours = 2)
 				partido.save()
 
 	def agregarEquipo(self, equipo):

@@ -27,6 +27,8 @@ from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
 from gestion_sistema.gestion_jornada.models import Jornada
 from gestion_sistema.gestion_clasificacion.models import ClasificacionEquipoJornada
+from gestion_sistema.gestion_calendario.models import Evento
+
 from gestion_usuario.gestion_notificacion.func import notificar, TipoNotificacion
 
 from random import randint
@@ -354,7 +356,7 @@ class AlineacionEquipo(models.Model):
 ########################################################################
 
 # Partido
-class Partido(models.Model):
+class Partido(Evento):
 	''' Representa un partido en el sistema '''
 	#hora_inicio = models.TimeField("Hora de inicio")
 	jornada = models.ForeignKey(Jornada)

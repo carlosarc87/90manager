@@ -26,6 +26,7 @@ from django.db import models
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_liga.models import Liga
 from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
+from gestion_sistema.gestion_calendario.models import Evento
 
 from gestion_usuario.gestion_notificacion.func import notificar, TipoNotificacion
 
@@ -35,12 +36,11 @@ from gestion_usuario.gestion_notificacion.func import notificar, TipoNotificacio
 (ACTIVA, FINALIZADA, COMPRADA) = range(3)
 
 # Subasta
-class Subasta(models.Model):
+class Subasta(Evento):
 	''' Representa una subasta de un jugador en el sistema '''
 	# Datos principales
-	oferta = models.PositiveIntegerField(default = 0)
+	oferta_inicial = models.PositiveIntegerField(default = 0)
 	precio_compra = models.PositiveIntegerField(null = True, blank = True)
-	expira = models.PositiveIntegerField(default = 1)
 	estado = models.PositiveIntegerField(max_length = 1, default = 0)
 
 	vendedor = models.ForeignKey(Equipo, related_name = 'subastas_como_vendedor')
