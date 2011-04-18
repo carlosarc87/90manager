@@ -49,8 +49,6 @@ class Subasta(Evento):
 	# Atributos del jugador que se subasta
 	atributos_jugador = models.OneToOneField(AtributosVariablesJugador)
 
-	liga = models.ForeignKey(Liga)
-
 	def comprar(self, equipo):
 		''' Compra la subasta directamente con un equipo '''
 		if self.tieneComprador():

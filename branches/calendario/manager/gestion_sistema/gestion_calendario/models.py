@@ -22,6 +22,7 @@ Copyright 2011 by
 
 """
 from django.db import models
+from gestion_sistema.gestion_liga.models import Liga
 
 ########################################################################
 
@@ -29,6 +30,7 @@ class Evento(models.Model):
 	""" Representa un evento evaluable con el tiempo """
 	fecha_inicio = models.DateTimeField()
 	fecha_fin = models.DateTimeField()
+	liga = models.ForeignKey(Liga)
 
 	def iniciar():
 		print "No implementada"

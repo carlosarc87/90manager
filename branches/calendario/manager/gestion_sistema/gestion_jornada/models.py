@@ -33,7 +33,6 @@ from gestion_sistema.gestion_liga.models import Liga
 class Jornada(Evento):
 	''' Representa una jornada en el sistema '''
 	numero = models.PositiveIntegerField()
-	liga = models.ForeignKey(Liga)
 	jugada = models.BooleanField(default = False)
 
 	def obtenerClasificacionEquipo(self, equipo):
