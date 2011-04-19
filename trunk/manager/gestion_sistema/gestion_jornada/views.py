@@ -108,3 +108,29 @@ def ver_jornada(request):
 	return generarPagina("juego/jornadas/ver_jornada.html", d, request)
 
 ########################################################################
+
+@login_required
+def listar_jornadas(request):
+	""" Muestra las jornadas de la liga """
+	# Obtenemos la liga
+	liga = request.session['liga_actual']
+	jornadas = liga.getJornadas()
+
+	d = { "jornadas" : jornadas }
+	return generarPagina("juego/jornadas/listar_liga.html", d, request)
+
+########################################################################
+
+@login_required
+def jornada_actual(request):
+	""" Redirige a la jornada actual de la liga """
+	# Obtenemos la liga
+	liga = request.session['liga_actual']
+
+	jornada = liga.getJornadaActual()
+	if jornada is None:
+		return devolverMensaje(request, "Error, la liga ya acabó")
+
+	return redireccionar('/jornadas/ver/%s/' % (jornada.id))
+
+########################################################################

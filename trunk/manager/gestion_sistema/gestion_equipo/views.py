@@ -124,3 +124,28 @@ def crear_equipo(request):
 
 ########################################################################
 
+@login_required
+def listar_equipos_liga(request):
+	""" Muestra los equipos de una liga """
+	# Obtenemos el usuario
+	usuario = request.user
+
+	liga = request.session['liga_actual']
+	equipo_propio = request.session['equipo_propio']
+
+	# Obtenemos los equipos que juegan en la liga
+	equipos = liga.equipo_set.all()
+
+	activada = liga.activada()
+
+	# Cargamos la plantilla con los parametros y la devolvemos
+	d = {
+		"liga" : liga,
+		"equipos" : equipos,
+		"activada" : activada,
+		"equipo_propio" : equipo_propio,
+		}
+	return generarPagina("juego/equipos/listar_liga.html", d, request)
+
+########################################################################
+

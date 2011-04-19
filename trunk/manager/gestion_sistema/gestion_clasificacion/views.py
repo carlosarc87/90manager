@@ -23,4 +23,96 @@ Copyright 2011 by
 """
 
 # Vistas del sistema
+from django.contrib.auth.decorators import login_required
 
+from gestion_base.func import devolverMensaje, generarPagina
+
+########################################################################
+
+@login_required
+def ver_clasificacion(request):
+	""" Muestra la clasificacion actual del sistema """
+
+	liga = request.session['liga_actual']
+
+	# Obtenemos las jornadas
+	jornadas = liga.getJornadas()
+
+	clasificacion = None
+
+	liga_acabada = False
+
+	# Comprobamos si la liga ha acabado
+	jornada_actual = liga.getJornadaActual()
+	jornada_anterior = None
+
+	# Si la liga ha acabado
+	if not jornada_actual:
+		liga_acabada = True
+	else:
+		if jornada_actual.numero >= 2:
+			jornada_anterior = liga.getJornadas().get(numero = jornada_actual.numero)
+			clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
+			clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
+		elif jornada_actual.numero == 1: # Generar clasificacion vacía
+			clasificacion_sin_ordenar = jornada_actual.clasificacionequipojornada_set.all()
+			clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
+
+	if liga_acabada:
+		jornada_anterior = liga.getJornadas()[liga.getNumJornadas() - 1]
+		clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
+		clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
+
+	if clasificacion is not None:
+		# Calcular variables extra para la clasificación
+		posicion = 1
+
+		ultima_posicion_ascenso = 1
+		primera_posicion_descenso = len(clasificacion)
+
+		for c in clasificacion:
+			c.posicion = posicion
+
+			# Comprobar si es posición de ascenso
+			if c.posicion <= ultima_posicion_ascenso:
+				c.posicion_ascenso = True
+			else:
+				c.posicion_ascenso = False
+
+			# Comprobar si es posición de descenso
+			if c.posicion >= primera_posicion_descenso:
+				c.posicion_descenso = True
+			else:
+				c.posicion_descenso = False
+
+			c.goles_diferencia = c.goles_favor - c.goles_contra
+
+			if jornada_anterior is not None:
+				incluida = True
+				if not liga_acabada:
+					jornada_a_comprobar = jornada_actual
+				else:
+					jornada_a_comprobar = jornada_anterior
+					incluida = True
+				c.partidos_ganados = len(c.equipo.getPartidosGanados(jornada_a_comprobar, incluida))
+				c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_a_comprobar, incluida))
+				c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_a_comprobar, incluida))
+
+			else:
+				c.partidos_ganados = len(c.equipo.getPartidosGanados(jornada_actual, True))
+				c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_actual, True))
+				c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_actual, True))
+
+			c.partidos_jugados = c.partidos_ganados + c.partidos_empatados + c.partidos_perdidos
+
+			posicion += 1
+
+	# Cargamos la plantilla con los parametros y la devolvemos
+	d = {"liga" : liga,
+		 "clasificacion" : clasificacion,
+		 "jornada_actual" : jornada_actual,
+		}
+	return generarPagina("juego/clasificaciones/ver_liga.html", d, request)
+
+
+########################################################################

@@ -21,4 +21,10 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+from django.conf.urls.defaults import *
+
+urlpatterns = patterns('',
+	# Modulo de equipos
+   	(r'^ver/$', 'gestion_sistema.gestion_clasificacion.views.ver_clasificacion'),
+)
 

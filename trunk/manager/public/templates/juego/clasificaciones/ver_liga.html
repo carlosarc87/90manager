@@ -1,0 +1,173 @@
+{% extends "base_juego.html" %}
+
+{% block css_extra %}
+	<link rel="stylesheet" href="/media/css/tablesorter_green/style.css" type="text/css" />
+
+	<style type="text/css">
+		h2, h4{
+			margin: 10px;
+			text-align: center;
+		}
+
+		#equipo_propio{
+			margin: 10px auto;
+			width: 400px;
+		}
+
+		#mercado_subastas{
+			text-align: center;
+		}
+
+		#pager{
+			clear: both;
+			margin: 10px auto;
+			width: 600px;
+		}
+
+		#tabla_clasificacion{
+			margin: 10px auto;
+			width: 600px;
+		}
+
+		#tabla_equipos{
+			margin: 10px auto;
+			width: 400px;
+		}
+
+		#tabla_jornadas{
+			margin: 10px auto;
+			width: 400px;
+		}
+
+		.jornada_jugada{
+			color: #00aa00;
+			font-weight: bold;
+		}
+		.jornada_no_jugada{
+			color: #aa0000;
+			font-weight: bold;
+		}
+
+		.linea_clasificacion_ascenso{
+			background-color: #88ff88;
+		}
+
+		.linea_clasificacion_descenso{
+			background-color: #ff8888;
+		}
+
+		.linea_equipo_propio{
+			font-size: 1.1em;
+			font-weight: bold;
+		}
+	</style>
+{% endblock %}
+
+{% block js_extra %}
+	<script src="/media/js/jquery.tablesorter.min.js" type="text/javascript"></script>
+	<script src="/media/js/jquery.tablesorter.pager.js" type="text/javascript"></script>
+
+	<script type="text/javascript">
+		$(document).ready(
+			function() {
+				$("#tabla_clasificacion")
+				.tablesorter({widthFixed: true, widgets: ['zebra']})
+				.tablesorterPager({container: $("#pager")});
+			}
+		);
+	</script>
+{% endblock %}
+
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li>{{ liga.nombre }}</li>
+	</ul>
+{% endblock %}
+
+{% block contenido %}
+	<h2>Clasificacion de liga: {{ liga.nombre }}</h2>
+	{% if clasificacion %}
+		<!-- Tabla clasificacion -->
+		<table class="tabla1 + tablesorter" id="tabla_clasificacion">
+			{% if liga_acabada %}
+				<caption>Clasificación final</caption>
+			{% else %}
+				<caption>Clasificación (jornada {{ jornada_actual.numero }})</caption>
+			{% endif %}
+
+			<thead>
+				<tr>
+					<th title="Posici&oacute;n">Pos.</th>
+					<th>Equipo</th>
+					<th title="Partidos jugados">P.J.</th>
+					<th title="Partidos ganados">P.G.</th>
+					<th title="Partidos empatados">P.E.</th>
+					<th title="Partidos perdidos">P.P.</th>
+					<th title="Goles a favor">G.F.</th>
+					<th title="Goles en contra">G.C.</th>
+					<th title="Goles de diferencia">G.D.</th>
+					<th>Puntos</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for dato_clasificacion in clasificacion %}
+					{% if dato_clasificacion.posicion_ascenso %}
+						{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+							<tr class="linea_equipo_propio + linea_clasificacion_ascenso">
+						{% else %}
+							<tr class="linea_clasificacion_ascenso">
+						{% endif %}
+					{% else %}
+						{% if dato_clasificacion.posicion_descenso %}
+							{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+								<tr class="linea_equipo_propio + linea_clasificacion_descenso">
+							{% else %}
+								<tr class="linea_clasificacion_descenso">
+							{% endif %}
+						{% else %}
+							{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+								<tr class="linea_equipo_propio">
+							{% else %}
+								<tr>
+							{% endif %}
+						{% endif %}
+					{% endif %}
+
+						<td class="cuadro_num_azul_der">
+							{{ dato_clasificacion.posicion }}
+						</td>
+						<td>
+							<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/">{{ dato_clasificacion.equipo.nombre }}</a>
+						</td>
+						<td class="cuadro_num_azul_der">
+							{{ dato_clasificacion.partidos_jugados }}
+						</td>
+						<td class="cuadro_num_azul_der">
+							{{ dato_clasificacion.partidos_ganados }}
+						</td>
+						<td class="cuadro_num_azul_der">
+							{{ dato_clasificacion.partidos_empatados }}
+						</td>
+						<td class="cuadro_num_azul_der">
+							{{ dato_clasificacion.partidos_perdidos }}
+						</td>
+						<td class="cuadro_num_azul_der">
+							{{ dato_clasificacion.goles_favor }}
+						</td>
+						<td class="cuadro_num_azul_der">
+							{{ dato_clasificacion.goles_contra }}
+						</td>
+						<td class="cuadro_num_azul_der">
+							{{ dato_clasificacion.goles_diferencia }}
+						</td>
+						<td class="cuadro_num_azul_der">
+							{{ dato_clasificacion.puntos }}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+
+
+{% endblock %}

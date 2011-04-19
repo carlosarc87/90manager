@@ -20,7 +20,7 @@
 				sabajao = null;
 			} else {
 				$(sabajao).find('ul').slideUp();
-				sabajao = m;				
+				sabajao = m;
 				$(m).find('ul').slideDown();
 			}
 		}
@@ -38,10 +38,10 @@
 						Liga {{ liga.nombre }}
 						<ul>
 							<li><a href="/ligas/ver/">Información</a></li>
-							<li><a href="#">Clasificación</a></li>
-							<li><a href="#">Jornadas</a></li>
-							<li><a href="/jornadas/ver_actual/">Jornada actual</a></li>
-							<li><a href="#">Equipos</a></li>
+							<li><a href="/clasificacion/ver/">Clasificación</a></li>
+							<li><a href="/jornadas/listar/">Jornadas</a></li>
+							<li><a href="/jornadas/actual/">Jornada actual</a></li>
+							<li><a href="/equipos/listar/">Equipos</a></li>
 						</ul>
 					</li>
 
@@ -51,7 +51,7 @@
 							<ul>
 								<li><a href="/equipos/ver/">Información</a></li>
 								<li><a href="#">Entrenamientos</a></li>
-								<li><a href="#">Partidos</a></li>
+								<li><a href="/equipos/listar/partidos/">Partidos</a></li>
 								<li><a href="/partidos/proximo/">Próximo partido</a></li>
 							</ul>
 						</li>
@@ -67,7 +67,7 @@
 							{% empty %}
 								<li><a href="#">No hay pendientes</a></li>
 							{% endfor %}
-							<li><a href="#">---------</a></li>
+							<li>---------</li>
 							<li><a href="/cuentas/notificaciones/listar_liga/">Ver todas</a></li>
 						</ul>
 					</li>
@@ -76,16 +76,16 @@
 						Mercado
 						<ul>
 							<li><a href="/mercado/subastas/ver/liga/">Subastas</a></li>
-							<li><a href="#">Mis subastas</a></li>
-							<li><a href="#">Mis compras</a></li>
-							<li><a href="#">Historial</a></li>
+							<li><a href="/mercado/subastas/propias/">Mis subastas</a></li>
+							<li><a href="/mercado/subastas/compras/">Mis compras</a></li>
+							<li><a href="/mercado/subastas/historial/">Historial</a></li>
 						</ul>
 					</li>
 
 					<li onclick="mostrarMenu(this)">
 						Calendario
 						<ul>
-							<li><a href="#">Ver</a></li>
+							<li><a href="/calendario/ver/">Ver</a></li>
 						</ul>
 					</li>
 
@@ -93,8 +93,8 @@
 						{{ user.username }}
 						<ul>
 							<li><a href="/tablon/">Tablón</a></li>
-							<li><a href="#">Preferencias</a></li>
-							<li><a href="#">Ayuda</a></li>
+							<li><a href="/cuentas/preferencias/">Preferencias</a></li>
+							<li><a href="/ayuda/">Ayuda</a></li>
 							<li><a href="/cuentas/logout/">Salir</a></li>
 						</ul>
 					</li>

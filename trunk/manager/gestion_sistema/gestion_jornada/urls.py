@@ -28,4 +28,6 @@ urlpatterns = patterns('',
    	# Modulo de jornadas
    	(r'^ver/(?P<jornada_id>\d+)/$', 'gestion_sistema.gestion_jornada.views.ver_jornada_id'),
    	(r'^ver/$', 'gestion_sistema.gestion_jornada.views.ver_jornada'),
+   	(r'^listar/$', 'gestion_sistema.gestion_jornada.views.listar_jornadas'),
+   	(r'^actual/$', 'gestion_sistema.gestion_jornada.views.jornada_actual'),
 )

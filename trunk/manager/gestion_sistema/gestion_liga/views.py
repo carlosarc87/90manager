@@ -68,7 +68,7 @@ def ver_liga(request):
 	jornadas = liga.getJornadas()
 
 	# Obtenemos las jornadas no jugadas
-	jornadas_restantes = liga.getJornadas().filter(jugada = False)
+	jornadas_restantes = jornadas.filter(jugada = False)
 
 	activada = liga.activada()
 	jornada_actual = None
@@ -222,7 +222,7 @@ def crear_liga(request):
 	else:
 		form = LigaForm()
 
-	d = {"form" : form }
+	d = { "form" : form }
 	return generarPagina("juego/ligas/crear_liga.html", d, request, True, False)
 
 ########################################################################

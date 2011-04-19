@@ -1,0 +1,72 @@
+{% extends "base_juego.html" %}
+
+{% block css_extra %}
+	<link rel="stylesheet" href="/media/css/tablesorter_green/style.css" type="text/css" />
+
+	<style type="text/css">
+		h2, h4{
+			margin: 10px;
+			text-align: center;
+		}
+
+		#pager{
+			clear: both;
+			margin: 10px auto;
+			width: 600px;
+		}
+
+		#tabla_jornadas{
+			margin: 10px auto;
+			width: 400px;
+		}
+
+		.jornada_jugada{
+			color: #00aa00;
+			font-weight: bold;
+		}
+		.jornada_no_jugada{
+			color: #aa0000;
+			font-weight: bold;
+		}
+	</style>
+{% endblock %}
+
+{% block js_extra %}
+{% endblock %}
+
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li>{{ liga.nombre }}</li>
+	</ul>
+{% endblock %}
+
+{% block contenido %}
+	<h2>Jornadas de la liga: {{ liga.nombre }}</h2>
+	<!-- Tabla jornadas -->
+	<table class="tabla1" id="tabla_jornadas">
+		<caption>Listado de jornadas</caption>
+		<thead>
+			<tr>
+				<th>Jornada</th>
+				<th>Jugada</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for jornada in jornadas %}
+				<tr>
+					<td class="cuadro_num_azul_der">
+						<a href="/jornadas/ver/{{ jornada.id }}/">{{ jornada.numero }}</a>
+					</td>
+					<th>
+						{% if jornada.jugada %}
+							<span class="jornada_jugada">SÍ</span>
+						{% else %}
+							<span class="jornada_no_jugada">NO</span>
+						{% endif %}
+					</th>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

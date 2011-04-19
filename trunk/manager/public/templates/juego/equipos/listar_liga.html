@@ -1,0 +1,86 @@
+{% extends "base_juego.html" %}
+
+{% block css_extra %}
+	<link rel="stylesheet" href="/media/css/tablesorter_green/style.css" type="text/css" />
+
+	<style type="text/css">
+		h2, h4{
+			margin: 10px;
+			text-align: center;
+		}
+
+		#activar_liga{
+			margin: 10px auto;
+			width: 400px;
+		}
+
+		#equipo_propio{
+			margin: 10px auto;
+			width: 400px;
+		}
+
+		#pager{
+			clear: both;
+			margin: 10px auto;
+			width: 600px;
+		}
+
+		#tabla_equipos{
+			margin: 10px auto;
+			width: 400px;
+		}
+
+		.linea_equipo_propio{
+			font-size: 1.1em;
+			font-weight: bold;
+		}
+	</style>
+{% endblock %}
+
+{% block js_extra %}
+{% endblock %}
+
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li>{{ liga.nombre }}</li>
+	</ul>
+{% endblock %}
+
+{% block contenido %}
+	<!-- Tabla de equipos -->
+	<table class="tabla1" id="tabla_equipos">
+		<caption>Listado de equipos</caption>
+		{% if equipos %}
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Entrenador</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for equipo in equipos %}
+					<tr {% if equipo_propio.nombre == equipo.nombre %}
+							class="linea_equipo_propio"
+						{% endif %}>
+
+						<td>
+							<a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a>
+						</td>
+						<td>
+							{% if equipo.usuario %}
+								{{ equipo.usuario }}
+							{% else %}
+								Usuario Artificial
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		{% else %}
+			<tr>
+				<th>Aún no se ha añadido ningún equipo a la liga</th>
+			</tr>
+		{% endif %}
+	</table>
+
+{% endblock %}
