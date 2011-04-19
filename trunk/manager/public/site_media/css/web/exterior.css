@@ -1,0 +1,51 @@
+
+/* footer */
+
+#contador_desactualizacion{
+	color: #888;
+	padding: 5px 0px;
+}
+
+#enlaces_externos{
+	padding: 5px 0px;
+}
+
+#enlaces_externos a{
+	color: #5555cc;
+}
+
+#enlaces_internos{
+	padding: 5px 0px;
+}
+
+#footer{
+	background-color: #fff;
+	border-top: solid 1px #555555;
+	clear: both;
+	text-align: center;
+}
+
+#logos{
+	padding: 5px 0px;
+}
+
+#logos img{
+	border: 0px;
+}
+
+/* Fin footer */
+
+
+/* Fin header */
+
+#wrap{
+	border: solid 1px #555;
+	box-shadow: 3px 3px 7px #777;
+	margin: 70px auto;
+	width: 950px;
+}
+
+.contenido2{
+	background: #fff;
+	min-height: 250px;
+}
