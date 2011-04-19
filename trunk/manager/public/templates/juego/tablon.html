@@ -80,6 +80,7 @@
 	<h2>Tablón de {{ user.username }}</h2>
 
 	<a href="/ligas/crear/">Crear Liga</a>
+	<a href="/ligas/publicas/">Ligas públicas</a>
 
 	<table class="tabla1" id="tabla_ligas_creadas">
 		<caption>Ligas creadas</caption>
@@ -99,10 +100,10 @@
 						<td class="col_num_equipos">{{ liga.num_equipos }}</td>
 
 						{% if liga.activada %}
-							{% if not liga.obtenerJornadaActual %}
+							{% if not liga.getJornadaActual %}
 								<td class="col_estado"><span class="liga_finalizada">FINALIZADA</span></td>
 							{% else %}
-								<td class="col_estado"><span class="liga_comenzada">JORNADA {{ liga.obtenerJornadaActual.numero }}</span></td>
+								<td class="col_estado"><span class="liga_comenzada">JORNADA {{ liga.getJornadaActual.numero }}</span></td>
 							{% endif %}
 						{% else %}
 							<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>
@@ -141,10 +142,10 @@
 						<td class="col_num_equipos">{{ equipo.liga.num_equipos }}</td>
 
 						{% if equipo.liga.activada %}
-							{% if not equipo.liga.obtenerJornadaActual %}
+							{% if not equipo.liga.getJornadaActual %}
 								<td class="col_estado"><span class="liga_finalizada">FINALIZADA</span></td>
 							{% else %}
-								<td class="col_estado"><span class="liga_comenzada">JORNADA {{ liga.obtenerJornadaActual.numero }}</span></td>
+								<td class="col_estado"><span class="liga_comenzada">JORNADA {{ liga.getJornadaActual.numero }}</span></td>
 							{% endif %}
 						{% else %}
 							<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>

@@ -391,3 +391,27 @@ def ver_repeticion_partido(request):
 	return generarPagina("juego/partidos/ver_repeticion_partido.html", d, request)
 
 ########################################################################
+
+@login_required
+def proximo_partido(request):
+	""" Accede directamente al siguiente partido """
+	return devolverMensaje(request, "Aun no esta hecho")
+
+	liga = request.session['liga_actual']
+	equipo = request.session['equipo_propio']
+
+	jornada_actual = liga.getJornadaActual()
+
+	if jornada_actual:
+		pass
+
+	partidos = liga.partido_set.filter(jugado = False).count() > 0
+
+	if partidos.count() == 0:
+		return devolverMensaje(request, "Error, no hay mas partidos por jugar en la liga")
+
+	request.session['partido_actual'] = partidos[0]
+
+	return redireccionar('/partidos/ver/%s/' % (partido.id))
+
+########################################################################
