@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     'gestion_usuario',
     'gestion_usuario.gestion_notificacion',
     'gestion_sistema.gestion_liga',
+    'gestion_sistema.gestion_calendario',
     'gestion_sistema.gestion_jornada',
     'gestion_sistema.gestion_equipo',
     'gestion_sistema.gestion_partido',

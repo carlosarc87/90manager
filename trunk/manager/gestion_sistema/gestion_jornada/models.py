@@ -23,16 +23,17 @@ Copyright 2011 by
 """
 from django.db import models
 
+from gestion_sistema.gestion_calendario.models import Evento
+
 from gestion_sistema.gestion_liga.models import Liga
 
 ########################################################################
 
 # Jornada
-class Jornada(models.Model):
+class Jornada(Evento):
 	''' Representa una jornada en el sistema '''
-	numero = models.IntegerField()
-	liga = models.ForeignKey(Liga)
-	jugada = models.BooleanField()
+	numero = models.PositiveIntegerField()
+	jugada = models.BooleanField(default = False)
 
 	def obtenerClasificacionEquipo(self, equipo):
 		''' Devuelve la posicion actual de un equipo en la jornada '''
