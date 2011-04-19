@@ -3,7 +3,7 @@
 {% block css_extra %}
     <style type="text/css">
 		h4{
-			margin: 10px 0px;
+			padding: 10px 0px;
 			text-align: center;
 		}
 
@@ -26,11 +26,42 @@
 		#contenido_enviar{ clear: both; padding: 5px 0px; }
 
 		#id_mensaje{ width: 90%; }
+		
+		#form {
+			border:1px solid #990000;
+			width:450px;
+			margin:auto;
+		}
+		#form legend{
+			font-weight:bold;
+			font-size:12px;
+		}
+		#form ol{
+			list-style:none;
+		}
+		#form ol li{
+			padding-bottom:5px;
+		}
+		#form ol li label{
+			width:120px;
+			float:left;
+			text-align:left;
+		}
+		#form input[type=text] {
+			border:1px solid #CCCCCC;
+		}
+		#form input.btn {
+			padding:3px;
+			color:#FFFFFF;
+			background-color:#990000;
+			border:1px solid #000000;
+		}
     </style>
 {% endblock %}
 
 {% block contenido %}
-	<h4>Envíenos insultos, amenazas de muerte, citaciones para juzgado, etc mediante el siguiente formulario de contacto con los administradores</h4>
+	<h4>Envíenos insultos, amenazas de muerte, citaciones para juzgado, etc 
+	mediante el siguiente formulario de contacto con los administradores</h4>
 
 	<div id="contacto">
 		<form action="/contacto/" method="post">
