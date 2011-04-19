@@ -1,0 +1,52 @@
+h2{
+	padding: 10px;
+	text-align: center;
+}
+
+/* Ligas creadas */
+
+#tabla_ligas_creadas{
+	margin: 20px auto;
+	width: 500px;
+}
+
+/* Fin ligas creadas */
+
+/* Ligas en que participa */
+
+#tabla_ligas_participando{
+	margin: 20px auto;
+	width: 700px;
+}
+
+/* Fin ligas en que participa */
+
+.col_creador{}
+
+.col_estado{
+	text-align: right;
+}
+
+.col_nombre_equipo{}
+
+.col_nombre_liga{}
+
+.col_num_equipos{
+	color: #5555aa;
+	text-align: right;
+}
+
+.liga_abierta{
+	color: #55aa55;
+	font-weight: bold;
+}
+
+.liga_comenzada{
+	color: #5555aa;
+	font-weight: bold;
+}
+
+.liga_finalizada{
+	color: #aa5555;
+	font-weight: bold;
+}

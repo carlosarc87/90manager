@@ -1,0 +1,28 @@
+h4{
+	padding: 10px 0px;
+	text-align: center;
+}
+
+label{
+	float: left;
+	width: 100px;
+}
+
+#contacto{
+	padding: 20px;
+}
+
+#contacto form{
+	border: solid 1px #555;
+	margin: 0px auto;
+	padding: 20px;
+	width: 400px;
+}
+
+#contenido_emisor{ clear: both; padding: 5px 0px; }
+#contenido_asunto{ clear: both; padding: 5px 0px; }
+#contenido_mensaje{ clear: both; padding: 5px 0px; }
+#contenido_mensaje label{ padding: 5px 0px; width: 100%; }
+#contenido_enviar{ clear: both; padding: 5px 0px; }
+
+#id_mensaje{ width: 90%; }

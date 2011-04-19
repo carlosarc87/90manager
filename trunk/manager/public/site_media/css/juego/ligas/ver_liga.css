@@ -1,0 +1,61 @@
+h2, h4{
+	margin: 10px;
+	text-align: center;
+}
+
+#activar_liga{
+	margin: 10px auto;
+	width: 400px;
+}
+
+#equipo_propio{
+	margin: 10px auto;
+	width: 400px;
+}
+
+#mercado_subastas{
+	text-align: center;
+}
+
+#pager{
+	clear: both;
+	margin: 10px auto;
+	width: 600px;
+}
+
+#tabla_clasificacion{
+	margin: 10px auto;
+	width: 600px;
+}
+
+#tabla_equipos{
+	margin: 10px auto;
+	width: 400px;
+}
+
+#tabla_jornadas{
+	margin: 10px auto;
+	width: 400px;
+}
+
+.jornada_jugada{
+	color: #00aa00;
+	font-weight: bold;
+}
+.jornada_no_jugada{
+	color: #aa0000;
+	font-weight: bold;
+}
+
+.linea_clasificacion_ascenso{
+	background-color: #88ff88;
+}
+
+.linea_clasificacion_descenso{
+	background-color: #ff8888;
+}
+
+.linea_equipo_propio{
+	font-size: 1.1em;
+	font-weight: bold;
+}

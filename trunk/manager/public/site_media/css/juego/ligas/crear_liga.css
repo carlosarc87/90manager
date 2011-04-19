@@ -1,0 +1,96 @@
+h2{
+	padding: 10px 0px;
+	text-align: center;
+}
+
+/* FORMULARIO CREAR LIGA */
+
+fieldset{
+	margin-bottom: 20px;
+}
+
+#form_crear_liga{
+	background-color: #fff;
+	border: solid 1px #555;
+	margin: 0 auto;
+	padding: 20px;
+	width: 500px;
+}
+
+/* DATOS PRINCIPALES */
+
+#crear_liga{
+	padding-bottom: 20px;
+}
+
+#contenido_nombre{ padding: 5px 0px; }
+#contenido_nombre label{
+	float: left;
+	font-weight: bold;
+	width: 150px;
+}
+
+#contenido_visibilidad{ padding: 5px 0px; }
+#contenido_visibilidad label{
+	float: left;
+	font-weight: bold;
+	width: 150px;
+}
+
+/* REGLAS LIGA */
+#contenido_reglas{ padding: 5px 0px; }
+
+#contenido_sexo_permitido{ padding: 5px 0px; }
+#contenido_sexo_permitido .label{
+	display: block;
+	font-weight: bold;
+}
+#caja_sexo_permitido label{
+	display: block;
+}
+
+#contenido_inteligencia_bots{ display: none; padding: 5px 0px; }
+#contenido_inteligencia_bots label{
+	float: left;
+	font-weight: bold;
+	width: 200px;
+}
+
+#contenido_tipo_avance_jornadas{ display: none; padding: 5px 0px; }
+#contenido_tipo_avance_jornadas .label{
+	display: block;
+	font-weight: bold;
+}
+#caja_tipo_avance_jornadas label{
+	display: block;
+}
+
+/* REGLAS EQUIPOS */
+
+#contenido_dinero_inicial{ padding: 5px 0px; }
+#contenido_dinero_inicial label{
+	float: left;
+	font-weight: bold;
+	width: 200px;
+}
+#id_dinero_inicial{ text-align: right; width: 80px; }
+
+#contenido_num_jugadores_inicial{ padding: 5px 0px; }
+#contenido_num_jugadores_inicial label{
+	float: left;
+	font-weight: bold;
+	width: 200px;
+}
+#id_num_jugadores_inicial{ text-align: right; width: 40px; }
+
+#contenido_nivel_max_jugadores_inicio{ padding: 5px 0px; }
+#contenido_nivel_max_jugadores_inicio label{
+	float: left;
+	font-weight: bold;
+	width: 200px;
+}
+#id_nivel_max_jugadores_inicio{ text-align: right; width: 40px; }
+
+/* BOTON */
+
+#contenido_boton_crear{ padding: 5px 0px; }

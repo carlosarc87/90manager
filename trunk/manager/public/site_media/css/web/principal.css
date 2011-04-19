@@ -1,0 +1,125 @@
+
+#caja_mensajico{
+	height: 40px;
+	padding: 5px 0px;
+	text-align: center;
+}
+
+#contenido_sup{
+	display: table;
+}
+
+#descripcion{
+	clear: both;
+	height: 50px;
+	padding: 5px;
+}
+
+#div_logo{
+	display: table-cell;
+	height: 330px;
+	width: 40%;
+}
+
+#div_acceso{
+	display: table-cell;
+	width: 60%;
+}
+
+/* login */
+
+#login{
+	background-color: #fff;
+	border: solid 1px #555;
+	float: right;
+	margin: 20px;
+	padding: 20px;
+	width: 380px;
+}
+
+#login #caja_clave{
+	clear: both;
+	padding: 5px 0px;
+	width: 100%;
+}
+
+#login #caja_entrar{
+	clear: both;
+	height: 15px;
+	padding: 5px 0px;
+}
+
+#login #caja_recordar{
+	clear: both;
+	padding: 5px 0px;
+}
+
+#login #caja_registro{
+	clear: both;
+	padding: 5px 0px;
+}
+
+#login #caja_usuario{
+	clear: both;
+	padding: 5px 0px;
+	width: 100%;
+}
+
+#login #entrar, #login #login_password, #login #login_username{
+	float: right;
+}
+
+#logo_login{
+	border: 0px;
+	float: left;
+	margin: 20px 0px;
+	height: 175px;
+	width: 387px;
+}
+
+/* fin login */
+
+#mensajico{
+	cursor: pointer;
+	font-style: italic;
+}
+
+label{
+	float: left;
+	width: 150px;
+}
+
+/* registro */
+
+#caja_usuario_reg{ float: left; width: 200px; }
+#caja_password{ float: left; width: 200px; }
+#caja_nombre{ float: left; width: 200px; }
+#caja_email{ float: left; width: 200px; }
+#caja_aceptar_condiciones{ float: left; width: 50px; }
+#caja_ir_login{ clear: both; height: 20px; padding: 5px 0px; }
+
+#contenido_usuario_reg{ clear: both; height: 20px; padding: 5px 0px; }
+#contenido_password{ clear: both; height: 20px; padding: 5px 0px; }
+#contenido_nombre{ clear: both; height: 20px; padding: 5px 0px; }
+#contenido_email{ clear: both; height: 20px; padding: 5px 0px; }
+#contenido_aceptar_condiciones{ clear: both; height: 20px; padding: 5px 0px; }
+#contenido_aceptar_condiciones label{ width: 300px; }
+#contenido_boton_registrar{ clear: both; height: 20px; padding: 5px 0px; }
+#contenido_boton_registrar input{ margin-right: 30px; }
+#contenido_campos_obligatorios{ clear: both; height: 20px; padding: 5px 0px; }
+
+#registro{
+	background-color: #fff;
+	border: solid 1px #555555;
+	display: none;
+	float: right;
+	margin: 20px;
+	padding: 20px;
+	width: 380px;
+}
+
+#registro input{
+	float: right;
+}
+
+/* fin registro */

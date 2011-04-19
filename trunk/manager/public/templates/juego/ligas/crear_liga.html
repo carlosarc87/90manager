@@ -1,100 +1,8 @@
 {% extends "base_juego.html" %}
 
 {% block css_extra %}
-	<style type="text/css">
-		h2{
-			text-align: center;
-		}
-
-		/* FORMULARIO CREAR LIGA */
-
-		fieldset{
-			margin-bottom: 20px;
-		}
-
-		#form_crear_liga{
-			background-color: #fff;
-			border: solid 1px #555;
-			margin: 0 auto;
-			padding: 20px;
-			margin-bottom: 20px;
-			width: 500px;
-		}
-
-		/* DATOS PRINCIPALES */
-
-		#contenido_nombre{ padding: 5px 0px; }
-		#contenido_nombre label{
-			float: left;
-			font-weight: bold;
-			width: 150px;
-		}
-
-		#contenido_visibilidad{ padding: 5px 0px; }
-		#contenido_visibilidad label{
-			float: left;
-			font-weight: bold;
-			width: 150px;
-		}
-
-		/* REGLAS LIGA */
-		#contenido_reglas{ padding: 5px 0px; }
-
-		#contenido_sexo_permitido{ padding: 5px 0px; }
-		#contenido_sexo_permitido .label{
-			display: block;
-			font-weight: bold;
-		}
-		#caja_sexo_permitido label{
-			display: block;
-		}
-
-		#contenido_inteligencia_bots{ display: none; padding: 5px 0px; }
-		#contenido_inteligencia_bots label{
-			float: left;
-			font-weight: bold;
-			width: 200px;
-		}
-
-		#contenido_tipo_avance_jornadas{ display: none; padding: 5px 0px; }
-		#contenido_tipo_avance_jornadas .label{
-			display: block;
-			font-weight: bold;
-		}
-		#caja_tipo_avance_jornadas label{
-			display: block;
-		}
-
-		/* REGLAS EQUIPOS */
-
-		#contenido_dinero_inicial{ padding: 5px 0px; }
-		#contenido_dinero_inicial label{
-			float: left;
-			font-weight: bold;
-			width: 200px;
-		}
-		#id_dinero_inicial{ text-align: right; width: 80px; }
-
-		#contenido_num_jugadores_inicial{ padding: 5px 0px; }
-		#contenido_num_jugadores_inicial label{
-			float: left;
-			font-weight: bold;
-			width: 200px;
-		}
-		#id_num_jugadores_inicial{ text-align: right; width: 40px; }
-
-		#contenido_nivel_max_jugadores_inicio{ padding: 5px 0px; }
-		#contenido_nivel_max_jugadores_inicio label{
-			float: left;
-			font-weight: bold;
-			width: 200px;
-		}
-		#id_nivel_max_jugadores_inicio{ text-align: right; width: 40px; }
-
-		/* BOTON */
-
-		#contenido_boton_crear{ padding: 5px 0px; }
-	</style>
+    <link rel="stylesheet" href="/media/css/tablas.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/juego/ligas/crear_liga.css" type="text/css" media="screen" />
 {% endblock %}
 
 {% block menu %}
@@ -103,117 +11,119 @@
 {% block contenido %}
 	<h2>Creación de nueva liga</h2>
 
-	<form id="form_crear_liga" action="/ligas/crear/" method="post">
-		{% csrf_token %}
-		<!-- Nombre de la liga -->
-		<div id="contenido_nombre">
-			{% if form.nombre.errors %}
-				{{ form.nombre.errors }}
-			{% endif %}
-
-			<label for="id_nombre">Nombre de la liga:</label>
-
-			<div id="caja_nombre">{{ form.nombre }}</div>
-		</div>
-
-		<!-- Visibilidad -->
-		<div id="contenido_visibilidad">
-			{% if form.publica.errors %}
-				{{ form.publica.errors }}
-			{% endif %}
-
-			<label for="id_publica">Pública</label>
-
-			<div id="caja_visibilidad">{{ form.publica }}</div>
-		</div>
-
-		<!-- Reglas -->
-		<fieldset>
-			<legend>Reglas de la liga</legend>
-
-			<div id="contenido_sexo_permitido">
-				{% if form.sexo_permitido.errors %}
-					{{ form.sexo_permitido.errors }}
+	<div id="crear_liga">
+		<form id="form_crear_liga" action="/ligas/crear/" method="post">
+			{% csrf_token %}
+			<!-- Nombre de la liga -->
+			<div id="contenido_nombre">
+				{% if form.nombre.errors %}
+					{{ form.nombre.errors }}
 				{% endif %}
 
-				<span class="label">Géneros permitidos:</span>
+				<label for="id_nombre">Nombre de la liga:</label>
 
-				<div id="caja_sexo_permitido">
-					{{ form.sexo_permitido }}
-				</div>
+				<div id="caja_nombre">{{ form.nombre }}</div>
 			</div>
 
-			<div id="contenido_inteligencia_bots">
-				{% if form.inteligencia_bots.errors %}
-					{{ form.inteligencia_bots.errors }}
+			<!-- Visibilidad -->
+			<div id="contenido_visibilidad">
+				{% if form.publica.errors %}
+					{{ form.publica.errors }}
 				{% endif %}
 
-				<label for="id_inteligencia_bots">Inteligencia de los bots:</label>
+				<label for="id_publica">Pública</label>
 
-				<div id="caja_inteligencia_bots">
-					{{ form.inteligencia_bots }}
-				</div>
+				<div id="caja_visibilidad">{{ form.publica }}</div>
 			</div>
 
-			<!-- Tipo avance jornadas -->
-			<div id="contenido_tipo_avance_jornadas">
-				{% if form.tipo_avance_jornadas.errors %}
-					{{ form.tipo_avance_jornadas.errors }}
-				{% endif %}
+			<!-- Reglas -->
+			<fieldset>
+				<legend>Reglas de la liga</legend>
 
-				<span class="label">Avance de las jornadas:</span>
+				<div id="contenido_sexo_permitido">
+					{% if form.sexo_permitido.errors %}
+						{{ form.sexo_permitido.errors }}
+					{% endif %}
 
-				<div id="caja_tipo_avance_jornadas">
-					{{ form.tipo_avance_jornadas }}
+					<span class="label">Géneros permitidos:</span>
+
+					<div id="caja_sexo_permitido">
+						{{ form.sexo_permitido }}
+					</div>
 				</div>
-			</div>
-		</fieldset>
 
-		<fieldset>
-			<legend>Reglas sobre los equipos participantes</legend>
+				<div id="contenido_inteligencia_bots">
+					{% if form.inteligencia_bots.errors %}
+						{{ form.inteligencia_bots.errors }}
+					{% endif %}
 
-			<!-- Dinero inicial -->
-			<div id="contenido_dinero_inicial">
-				{% if form.dinero_inicial.errors %}
-					{{ form.dinero_inicial.errors }}
-				{% endif %}
-				<label for="id_dinero_inicial">Dinero inicial:</label>
+					<label for="id_inteligencia_bots">Inteligencia de los bots:</label>
 
-				<div id="caja_dinero_inicial">
-					{{ form.dinero_inicial }}
+					<div id="caja_inteligencia_bots">
+						{{ form.inteligencia_bots }}
+					</div>
 				</div>
-			</div>
 
-			<!-- Numero de jugadores inicial -->
-			<div id="contenido_num_jugadores_inicial">
-				{% if form.num_jugadores_inicial.errors %}
-					{{ form.num_jugadores_inicial.errors }}
-				{% endif %}
+				<!-- Tipo avance jornadas -->
+				<div id="contenido_tipo_avance_jornadas">
+					{% if form.tipo_avance_jornadas.errors %}
+						{{ form.tipo_avance_jornadas.errors }}
+					{% endif %}
 
-				<label for="id_num_jugadores_inicial">Número de jugadores inicial:</label>
+					<span class="label">Avance de las jornadas:</span>
 
-				<div id="caja_num_jugadores_inicial">
-					{{ form.num_jugadores_inicial }}
+					<div id="caja_tipo_avance_jornadas">
+						{{ form.tipo_avance_jornadas }}
+					</div>
 				</div>
-			</div>
+			</fieldset>
 
-			<!-- Nivel maximo de los jugadores al inicio de la liga -->
-			<div id="contenido_nivel_max_jugadores_inicio">
-				{% if form.nivel_max_jugadores_inicio.errors %}
-					{{ form.nivel_max_jugadores_inicio.errors }}
-				{% endif %}
+			<fieldset>
+				<legend>Reglas sobre los equipos participantes</legend>
 
-				<label for="id_nivel_max_jugadores_inicio">Nivel máximo de los jugadores al inicio de la liga:</label>
+				<!-- Dinero inicial -->
+				<div id="contenido_dinero_inicial">
+					{% if form.dinero_inicial.errors %}
+						{{ form.dinero_inicial.errors }}
+					{% endif %}
+					<label for="id_dinero_inicial">Dinero inicial:</label>
 
-				<div id="caja_nivel_max_jugadores_inicio">
-					{{ form.nivel_max_jugadores_inicio }}
+					<div id="caja_dinero_inicial">
+						{{ form.dinero_inicial }}
+					</div>
 				</div>
-			</div>
-		</fieldset>
 
-		<!-- Boton crear -->
-		<div id="contenido_boton_crear">
-			<input type="submit" value="Crear" />
-		</div>
-	</form>
+				<!-- Numero de jugadores inicial -->
+				<div id="contenido_num_jugadores_inicial">
+					{% if form.num_jugadores_inicial.errors %}
+						{{ form.num_jugadores_inicial.errors }}
+					{% endif %}
+
+					<label for="id_num_jugadores_inicial">Número de jugadores inicial:</label>
+
+					<div id="caja_num_jugadores_inicial">
+						{{ form.num_jugadores_inicial }}
+					</div>
+				</div>
+
+				<!-- Nivel maximo de los jugadores al inicio de la liga -->
+				<div id="contenido_nivel_max_jugadores_inicio">
+					{% if form.nivel_max_jugadores_inicio.errors %}
+						{{ form.nivel_max_jugadores_inicio.errors }}
+					{% endif %}
+
+					<label for="id_nivel_max_jugadores_inicio">Nivel máximo de los jugadores al inicio de la liga:</label>
+
+					<div id="caja_nivel_max_jugadores_inicio">
+						{{ form.nivel_max_jugadores_inicio }}
+					</div>
+				</div>
+			</fieldset>
+
+			<!-- Boton crear -->
+			<div id="contenido_boton_crear">
+				<input type="submit" value="Crear" />
+			</div>
+		</form>
+	</div>
 {% endblock %}
