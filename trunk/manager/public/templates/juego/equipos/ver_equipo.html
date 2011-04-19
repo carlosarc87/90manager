@@ -6,64 +6,64 @@
 			margin: 10px;
 			text-align: center;
 		}
-		
+
 		#dinero_actual{
 			margin: 10px auto;
 			width: 400px;
 		}
-		
+
 		#edad_equipo{
 			margin: 10px auto;
 			width: 400px;
 		}
-		
+
 		#jugadores_subastados{
 			margin: 10px auto;
 			width: 400px;
 		}
-		
+
 		/* Tabla jugadores */
-		
+
 		#col_texto_valor_equipo{
 			text-align: right;
 		}
-		
+
 		#col_valor_equipo{
 			color: #5555aa;
 			font-weight: bold;
 			text-align: right;
 		}
-		
+
 		#tabla_jugadores{
 			margin: 20px auto;
 			width: 500px;
 		}
-		
+
 		.col_mejorPosicion_jug{}
-		
+
 		.col_nombre_jug{}
-		
+
 		.col_numero_jug{
 			color: #5555aa;
 			text-align: right;
 		}
-		
+
 		.col_valorMercado_jug{
 			color: #5555aa;
 			text-align: right;
 		}
-		
+
 		/* Fin tabla jugadores */
-		
-		
+
+
 		/* Tabla cuentas */
-		
+
 		#tabla_cuentas{
 			display: none;
 			margin: 20px auto;
 			width: 500px;
 		}
-		
+
 		/* Fin tabla cuentas */
 	</style>
 {% endblock %}
@@ -84,7 +84,7 @@
 
 	<div id="dinero_actual"><b>Dinero actual: </b><span>{{ equipo.dinero }} €</span></div>
 
-	<div id="jugadores_subastados"><a href="/mercado/subastas/ver/equipo/{{ equipo.id }}/">Ver jugadores en subasta</a></div>
+	<div id="jugadores_subastados"><a href="/mercado/subastas/ver/equipo/">Ver jugadores en subasta</a></div>
 
 	<!-- Tabla jugadores -->
 	<table class="tabla1" id="tabla_jugadores">

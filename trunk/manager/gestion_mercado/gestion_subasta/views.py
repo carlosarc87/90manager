@@ -146,7 +146,7 @@ def ver_subasta(request):
 ########################################################################
 
 @login_required
-def ver_subastas_equipo(request, equipo_id):
+def ver_subastas_equipo(request):
 	''' Muestra las subastas de un equipo '''
 	equipo = request.session['equipo_actual']
 

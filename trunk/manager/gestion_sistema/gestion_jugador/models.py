@@ -56,7 +56,7 @@ class Jugador(models.Model):
 	def setEquipo(self, equipo):
 		self.atributos.equipo = equipo
 
-	def obtenerEdad(self):
+	def getEdad(self):
 		from datetime import date
 		hoy = date.today()
 		edad = hoy - self.fecha_nacimiento

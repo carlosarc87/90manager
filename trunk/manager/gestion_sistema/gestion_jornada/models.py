@@ -35,7 +35,7 @@ class Jornada(Evento):
 	numero = models.PositiveIntegerField()
 	jugada = models.BooleanField(default = False)
 
-	def obtenerClasificacionEquipo(self, equipo):
+	def getClasificacionEquipo(self, equipo):
 		''' Devuelve la posicion actual de un equipo en la jornada '''
 		return self.clasificacionequipojornada_set.get(equipo = equipo)
 

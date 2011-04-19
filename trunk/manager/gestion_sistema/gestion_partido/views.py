@@ -43,7 +43,7 @@ def jugar_partido(request):
 	if partido.finalizado():
 		return devolverMensaje(request, "Este partido ya se jugo", "/partidos/ver/%d/" % partido.id)
 
-	jornada_actual = partido.jornada.liga.obtenerJornadaActual()
+	jornada_actual = partido.jornada.liga.getJornadaActual()
 	if partido.jornada != jornada_actual:
 		return devolverMensaje(request, "Este partido no se puede jugar ya que no es la jornada aun", "/partidos/ver/%d/" % partido.id)
 
@@ -67,7 +67,7 @@ def jugar_partido(request):
 	if not jornada_actual.quedanPartidosPorJugar():
 		jornada_actual.liga.avanzarJornada()
 
-	return redireccionar("/partidos/ver/%s/" % (partido_id))
+	return redireccionar("/partidos/ver/%s/" % (partido.id))
 
 ########################################################################
 
@@ -101,7 +101,7 @@ def ver_partido(request):
 
 	# Obtenemos la liga y la jornada
 	jornada = partido.jornada
-	liga = jornada.liga
+	liga = partido.liga
 
 	# Obtenemos los equipos que juegan en el partido
 	equipo_local = partido.equipo_local
@@ -125,7 +125,7 @@ def ver_partido(request):
 
 	# Comprobar si se puede jugar el partido
 	es_jugable = False
-	jornada_actual = liga.obtenerJornadaActual()
+	jornada_actual = liga.getJornadaActual()
 	if partido.jornada == jornada_actual and not finalizado:
 		es_jugable = True
 

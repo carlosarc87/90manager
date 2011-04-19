@@ -61,7 +61,7 @@ def ver_jugador(request):
 	mejor_posicion = jugador.mejorPosicion()
 
 	# Obtener edad
-	anios, dias = jugador.obtenerEdad()
+	anios, dias = jugador.getEdad()
 
 	# Obtenemos el equipo
 	equipo = jugador.atributos.equipo

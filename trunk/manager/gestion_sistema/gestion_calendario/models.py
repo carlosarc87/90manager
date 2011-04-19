@@ -41,6 +41,10 @@ class Evento(models.Model):
 	def __unicode__(self):
 		return self.tipo
 
+	class Meta:
+		abstract = True
+
+
 ########################################################################
 
 

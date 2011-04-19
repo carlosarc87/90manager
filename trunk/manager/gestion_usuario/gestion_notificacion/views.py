@@ -70,7 +70,7 @@ def borrar_notificacion(request, notificacion_id):
 	# Borramos
 	notificacion.delete()
 
-	return devolverMensaje(request, "Notificacion borrada", "/cuentas/notificaciones/listar/")
+	return devolverMensaje(request, "Notificacion borrada", "/cuentas/notificaciones/listar_liga/")
 
 ########################################################################
 

@@ -48,14 +48,18 @@ class Liga(models.Model):
 	num_jugadores_inicial = models.PositiveIntegerField(default = 20, max_length = 3)
 	nivel_max_jugadores_inicio = models.PositiveIntegerField(default = 50, max_length = 3) # Nivel máximo inicial de los jugadores al comienzo de la liga (10 - 100)
 
+	def getJornadas(self):
+		""" Devuelve todas las jornadas de la liga """
+		return self.jornada_set.all()
+
 	def activada(self):
 		''' Devuelve si una liga ya ha empezado a jugarse '''
-		return self.jornada_set.count() > 0
+		return self.getJornadas().count() > 0
 
-	def obtenerJornadaActual(self):
+	def getJornadaActual(self):
 		''' Devuelve la jornada actual de la liga o None en caso de haber acabado '''
 		# Obtenemos las jornadas no jugadas
-		jornadas_restantes = self.jornada_set.filter(jugada = False)
+		jornadas_restantes = self.getJornadas().filter(jugada = False)
 		jornada_actual = None
 		if len(jornadas_restantes) > 0:
 			# No ha acabado aun
@@ -181,7 +185,7 @@ class Liga(models.Model):
 			jornada.fecha_fin = datetime.datetime.now() + datetime.timedelta(days = i + 1)
 			jornada.save()
 			for emparejamiento in jornadas[i]:
-				partido = Partido(jornada = jornada, equipo_local = emparejamiento[0], equipo_visitante = emparejamiento[1], jugado = False)
+				partido = Partido(liga = self, jornada = jornada, equipo_local = emparejamiento[0], equipo_visitante = emparejamiento[1], jugado = False)
 				partido.fecha_inicio = datetime.datetime.now() + datetime.timedelta(days = i)
 				partido.fecha_fin = datetime.datetime.now() + datetime.timedelta(days = i + 1, hours = 2)
 				partido.save()
@@ -193,7 +197,7 @@ class Liga(models.Model):
 	def avanzarJornada(self):
 		''' Avanza una jornada en la liga '''
 		# Sacar primera jornada no jugada
-		jornada = self.obtenerJornadaActual()
+		jornada = self.getJornadaActual()
 		if not jornada:
 			return False
 
@@ -210,7 +214,7 @@ class Liga(models.Model):
 				subasta.save()
 
 		# Generar los datos de clasificacion de la siguiente jornada
-		siguiente_jornada = self.obtenerJornadaActual()
+		siguiente_jornada = self.getJornadaActual()
 		if siguiente_jornada:
 			siguiente_jornada.generarClasificacion()
 			siguiente_jornada.mantenerAlineaciones(jornada)
@@ -219,7 +223,7 @@ class Liga(models.Model):
 
 	def getNumJornadas(self):
 		""" Devuelve el número de jornadas que tiene la liga """
-		return self.jornada_set.all().count()
+		return self.getJornadas().count()
 
 	def __unicode__(self):
 		''' Devuelve una cadena de texto que representa la clase '''

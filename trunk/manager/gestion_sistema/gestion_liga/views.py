@@ -65,10 +65,10 @@ def ver_liga(request):
 	equipos = liga.equipo_set.all()
 
 	# Obtenemos las jornadas
-	jornadas = liga.jornada_set.all()
+	jornadas = liga.getJornadas()
 
 	# Obtenemos las jornadas no jugadas
-	jornadas_restantes = liga.jornada_set.filter(jugada = False)
+	jornadas_restantes = liga.getJornadas().filter(jugada = False)
 
 	activada = liga.activada()
 	jornada_actual = None
@@ -90,7 +90,7 @@ def ver_liga(request):
 
 	if activada:
 		# Comprobamos si la liga ha acabado
-		jornada_actual = liga.obtenerJornadaActual()
+		jornada_actual = liga.getJornadaActual()
 		jornada_anterior = None
 
 		# Si la liga ha acabado
@@ -98,7 +98,7 @@ def ver_liga(request):
 			liga_acabada = True
 		else:
 			if jornada_actual.numero >= 2:
-				jornada_anterior = liga.jornada_set.get(numero = jornada_actual.numero)
+				jornada_anterior = liga.getJornadas().get(numero = jornada_actual.numero)
 				clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
 				clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
 			elif jornada_actual.numero == 1: # Generar clasificacion vacía
@@ -106,7 +106,7 @@ def ver_liga(request):
 				clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
 
 		if liga_acabada:
-			jornada_anterior = liga.jornada_set.all()[len(liga.jornada_set.all()) - 1]
+			jornada_anterior = liga.getJornadas()[liga.getNumJornadas() - 1]
 			clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
 			clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
 
@@ -195,7 +195,7 @@ def avanzar_jornada_liga(request):
 		return devolverMensaje(request, "No eres el creador de esta liga")
 
 	# Obtenemos las jornadas no jugadas
-	jornadas = liga.jornada_set.filter(jugada = False)
+	jornadas = liga.getJornadas().filter(jugada = False)
 
 	if jornadas.count() == 0:
 		return devolverMensaje(request, "Esta liga ya esta acabada", "/ligas/ver/%d/" % liga.id)
@@ -254,7 +254,7 @@ def activar_liga(request):
 			liga.generarJornadas()
 
 			# Generar primera clasificacion de la liga
-			jornada = liga.obtenerJornadaActual()
+			jornada = liga.getJornadaActual()
 			jornada.generarClasificacion()
 
 			for equipo in liga.equipo_set.exclude(usuario = None):

@@ -71,7 +71,7 @@ def ver_equipo(request):
 		valor_equipo += jugador.valorMercado()
 
 		# Edad del equipo
-		anios, dias = jugador.obtenerEdad()
+		anios, dias = jugador.getEdad()
 		suma_edad = suma_edad + anios
 
 	if len(jugadores) > 0:

@@ -617,8 +617,8 @@ class Partido(Evento):
 		self.jugado = True
 
 		# Actualizar datos de la clasificacion dependiendo del ganador
-		clasificacion_local = self.jornada.obtenerClasificacionEquipo(self.equipo_local)
-		clasificacion_visitante = self.jornada.obtenerClasificacionEquipo(self.equipo_visitante)
+		clasificacion_local = self.jornada.getClasificacionEquipo(self.equipo_local)
+		clasificacion_visitante = self.jornada.getClasificacionEquipo(self.equipo_visitante)
 
 		# Actualizar los goles
 		clasificacion_local.goles_favor += self.goles_local
