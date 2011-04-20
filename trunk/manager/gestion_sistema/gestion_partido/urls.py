@@ -28,6 +28,7 @@ urlpatterns = patterns('',
    	# Modulo de partidos
    	(r'^ver/$', 'gestion_sistema.gestion_partido.views.ver_partido'),
    	(r'^ver/(?P<partido_id>\d+)/$', 'gestion_sistema.gestion_partido.views.ver_partido_id'),
+   	(r'^mis_partidos/$', 'gestion_sistema.gestion_partido.views.ver_partidos_propios'),
    	(r'^proximo/$', 'gestion_sistema.gestion_partido.views.proximo_partido'),
    	(r'^repeticion/$', 'gestion_sistema.gestion_partido.views.ver_repeticion_partido'),
    	(r'^preparar/$', 'gestion_sistema.gestion_partido.views.preparar_partido'),

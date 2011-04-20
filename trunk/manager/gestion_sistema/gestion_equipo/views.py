@@ -94,6 +94,47 @@ def ver_equipo(request):
 ########################################################################
 
 @login_required
+def ver_equipo_propio(request):
+	''' Muestra los datos de un equipo '''
+	# Obtenemos el usuario
+	usuario = request.user
+
+	equipo = request.session['equipo_propio']
+
+	# Obtenemos los jugadores
+	jugadores = equipo.getJugadores()
+
+	# Obtener datos de los jugadores
+	suma_edad = 0
+	valor_equipo = 0
+	for jugador in jugadores:
+		# Valor total del equipo
+		valor_equipo += jugador.valorMercado()
+
+		# Edad del equipo
+		anios, dias = jugador.getEdad()
+		suma_edad = suma_edad + anios
+
+	if len(jugadores) > 0:
+		edad_media_equipo = (suma_edad * 1.0) / len(jugadores)
+	else:
+		edad_media_equipo = 0
+
+	# Obtenemos la liga
+	liga = equipo.liga
+
+	d = {"usuario" : usuario,
+				 "liga" : liga,
+				 "equipo" : equipo,
+				 "jugadores" : jugadores,
+				 "valor_equipo" : valor_equipo,
+				 "edad_media_equipo" : edad_media_equipo
+				}
+	return generarPagina("juego/equipos/ver_equipo.html", d, request)
+
+########################################################################
+
+@login_required
 def crear_equipo(request):
 	''' Muestra la pagina para crear un equipo '''
 	usuario = request.user

@@ -1,0 +1,39 @@
+{% extends "base_juego.html" %}
+
+{% block css_extra %}
+{% endblock %}
+
+{% block situacion %}
+	<ul id="menu_superior_situacion">
+		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
+		<li><a href="/jornadas/ver/{{ jornada.id }}/">Jornada {{ jornada.numero }}</a></li>
+		<li>Partido {{ partido.id }}</li>
+	</ul>
+{% endblock %}
+
+{% block contenido %}
+	Próximo partido:
+	{% if partido_actual %}
+		<a href="/partidos/ver/{{ partido_actual.id }}/">{{ partido_actual }}</a>
+	{% else %}
+		No hay mas partidos
+	{% endif %}
+	<br>
+	Partidos no jugados:
+	<ul>
+		{% for partido in partidos_no_jugados %}
+			<li><a href="/partidos/ver/{{ partido.id }}/">{{ partido }}</a></li>
+		{% empty %}
+			<li>No hay</li>
+		{% endfor %}
+	</ul>
+
+	Partidos jugados:
+	<ul>
+		{% for partido in partidos_jugados %}
+			<li><a href="/partidos/ver/{{ partido.id }}/">{{ partido }}</a></li>
+		{% empty %}
+			<li>No hay</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

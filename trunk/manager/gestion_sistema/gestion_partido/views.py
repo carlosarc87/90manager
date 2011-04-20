@@ -24,6 +24,7 @@ Copyright 2011 by
 
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 from models import Partido
 from forms import PrepararEquipoForm
@@ -393,25 +394,43 @@ def ver_repeticion_partido(request):
 ########################################################################
 
 @login_required
-def proximo_partido(request):
+def ver_partidos_propios(request):
 	""" Accede directamente al siguiente partido """
-	return devolverMensaje(request, "Aun no esta hecho")
 
 	liga = request.session['liga_actual']
 	equipo = request.session['equipo_propio']
 
-	jornada_actual = liga.getJornadaActual()
+	partidos = liga.partido_set.filter(Q(equipo_local = equipo) | Q(equipo_visitante = equipo))
 
-	if jornada_actual:
-		pass
+	partidos_jugados = partidos.filter(jugado = True)
+	partidos_no_jugados = partidos.filter(jugado = False)
+	if partidos_no_jugados.count() > 0:
+		partido_actual = partidos_no_jugados[0]
+	else:
+		partido_actual = None
 
-	partidos = liga.partido_set.filter(jugado = False).count() > 0
+	d = {"partidos_jugados" : partidos_jugados,
+		 "partidos_no_jugados" : partidos_no_jugados,
+		 "partido_actual" : partido_actual,
+		 }
 
-	if partidos.count() == 0:
+	return generarPagina("juego/partidos/listar_partidos_equipo.html", d, request)
+
+########################################################################
+
+@login_required
+def proximo_partido(request):
+	""" Accede directamente al siguiente partido """
+	liga = request.session['liga_actual']
+	equipo = request.session['equipo_propio']
+
+	partidos = liga.partido_set.filter(jugado = False).filter(Q(equipo_local = equipo) | Q(equipo_visitante = equipo))
+
+	if partidos.count() > 0:
+		partido_actual = partidos[0]
+	else:
 		return devolverMensaje(request, "Error, no hay mas partidos por jugar en la liga")
 
-	request.session['partido_actual'] = partidos[0]
-
-	return redireccionar('/partidos/ver/%s/' % (partido.id))
+	return redireccionar('/partidos/ver/%s/' % (partido_actual.id))
 
 ########################################################################
