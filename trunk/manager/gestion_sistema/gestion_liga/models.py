@@ -25,7 +25,9 @@ from django.db import models
 
 from gestion_usuario.models import Usuario
 
-import random, datetime
+import random
+
+from datetime import datetime, timedelta
 
 ########################################################################
 
@@ -36,6 +38,15 @@ class Liga(models.Model):
 	nombre = models.CharField(max_length = 50)
 	num_equipos = models.PositiveIntegerField(null = True, default = 0)
 	publica = models.BooleanField(default = True) # Visibilidad de la liga
+
+	# Fecha en la que se activa la liga
+	fecha_real_inicio = models.DateTimeField(null = True)
+
+	# Fecha (ficticia) en la que comienza la liga
+	fecha_ficticia_inicio = models.DateTimeField(null = True)
+
+	# Factor de tiempo de las ligas
+	factor_tiempo = models.PositiveIntegerField(default = 1)
 
 	# Reglas liga
 	sexo_permitido = models.PositiveIntegerField(default = 0)
@@ -48,13 +59,22 @@ class Liga(models.Model):
 	num_jugadores_inicial = models.PositiveIntegerField(default = 20, max_length = 3)
 	nivel_max_jugadores_inicio = models.PositiveIntegerField(default = 50, max_length = 3) # Nivel máximo inicial de los jugadores al comienzo de la liga (10 - 100)
 
+	def getFecha(self):
+		""" Devuelve la fecha ficticia de la liga """
+		ahora_real = datetime.now()
+		factor = 60
+		t_real_transcurrida = ahora_real - self.fecha_real_inicio
+		t_ficticio_transcurrida = t_real_transcurrida * factor
+		ahora_ficticia = self.fecha_ficticia_inicio + t_ficticio_transcurrida
+		return ahora_ficticia
+
 	def getJornadas(self):
 		""" Devuelve todas las jornadas de la liga """
 		return self.jornada_set.all()
 
 	def activada(self):
 		''' Devuelve si una liga ya ha empezado a jugarse '''
-		return self.getJornadas().count() > 0
+		return self.fecha_real_inicio is not None
 
 	def getJornadaActual(self):
 		''' Devuelve la jornada actual de la liga o None en caso de haber acabado '''
@@ -181,13 +201,13 @@ class Liga(models.Model):
 		# Guardar jornadas y partidos
 		for i in range(len(jornadas)):
 			jornada = Jornada(liga = self, numero = i + 1, jugada = False)
-			jornada.fecha_inicio = datetime.datetime.now() + datetime.timedelta(days = i)
-			jornada.fecha_fin = datetime.datetime.now() + datetime.timedelta(days = i + 1)
+			jornada.fecha_inicio = datetime.now() + timedelta(days = i)
+			jornada.fecha_fin = datetime.now() + timedelta(days = i + 1)
 			jornada.save()
 			for emparejamiento in jornadas[i]:
 				partido = Partido(liga = self, jornada = jornada, equipo_local = emparejamiento[0], equipo_visitante = emparejamiento[1], jugado = False)
-				partido.fecha_inicio = datetime.datetime.now() + datetime.timedelta(days = i)
-				partido.fecha_fin = datetime.datetime.now() + datetime.timedelta(days = i + 1, hours = 2)
+				partido.fecha_inicio = datetime.now() + timedelta(days = i)
+				partido.fecha_fin = datetime.now() + timedelta(days = i + 1, hours = 2)
 				partido.save()
 
 	def agregarEquipo(self, equipo):

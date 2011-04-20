@@ -65,7 +65,7 @@
 							{% for notificacion in ultimas_notificaciones %}
 								<li><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></li>
 							{% empty %}
-								<li><a href="#">No hay pendientes</a></li>
+								<li><a href="#">No hay notificaciones nuevas</a></li>
 							{% endfor %}
 							<li>---------</li>
 							<li><a href="/cuentas/notificaciones/listar_liga/">Ver todas</a></li>
@@ -77,7 +77,7 @@
 						<ul>
 							<li><a href="/mercado/subastas/ver/liga/">Subastas</a></li>
 							<li><a href="/mercado/subastas/propias/">Mis subastas</a></li>
-							<li><a href="/mercado/subastas/compras/">Mis compras</a></li>
+							<li><a href="/mercado/subastas/pujas/">Mis pujas</a></li>
 							<li><a href="/mercado/subastas/historial/">Historial</a></li>
 						</ul>
 					</li>
@@ -101,7 +101,7 @@
 				</ul>
 			{% endblock %}
 
-			<!--<div>Fecha de la liga: {{ fecha_actual_liga }}</div>-->
+			Fecha de la liga: {{ fecha_actual_liga }}
 		</div>
 <!--
 		<div class="submenu">

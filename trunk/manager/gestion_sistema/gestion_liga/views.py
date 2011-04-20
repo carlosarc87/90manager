@@ -26,6 +26,8 @@ Copyright 2011 by
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 
+from datetime import datetime
+
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_equipo.forms import EquipoForm
 
@@ -260,6 +262,9 @@ def activar_liga(request):
 			for equipo in liga.equipo_set.exclude(usuario = None):
 				notificar(equipo.usuario, tipo = TipoNotificacion.LIGA_ACTIVADA, identificador = liga.id, liga = liga)
 
+			liga.fecha_real_inicio = datetime.now()
+			liga.fecha_ficticia_inicio = datetime(2000, 1, 15, 0, 0)
+			liga.factor_tiempo = 60
 			liga.save()
 
 			return devolverMensaje(request, "Se ha generado la liga correctamente", "/ligas/ver/%d/" % liga.id)

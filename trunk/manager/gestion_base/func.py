@@ -62,7 +62,7 @@ def generarPagina(template, parametros, request, form = False, agregar_parametro
 		equipo = request.session['equipo_propio']
 		parametros['equipo_propio'] = equipo
 		parametros['ultimas_notificaciones'] = usuario.notificacion_set.filter(leida=False)[:5]
-		parametros['fecha_actual_liga'] = "00:00:00 02/02/2002"
+		parametros['fecha_actual_liga'] = liga.getFecha()
 	return render_to_response(template, parametros, context_instance = RequestContext(request))
 
 ########################################################################

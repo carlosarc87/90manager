@@ -41,13 +41,13 @@ class LigaForm(forms.ModelForm):
 	inteligencia_bots = forms.ChoiceField(label = "Inteligencia de los robots", initial = 3, choices = TIPOS_IA)
 	sexo_permitido = forms.ChoiceField(label = "Sexos permitidos", widget = forms.RadioSelect(renderer = HorizRadioRenderer), initial = 0, choices = TIPOS_SEXO)
 	tipo_avance_jornadas = forms.ChoiceField(label = "Tipo de avance de jornadas", widget = forms.RadioSelect(renderer = HorizRadioRenderer), initial = 0, choices = TIPOS_AVANCE)
-	
+
 	num_jugadores_inicial = forms.IntegerField(initial = 20, min_value = 7, max_value = 99)
 	nivel_max_jugadores_inicio = forms.IntegerField(initial = 50, min_value = 10, max_value = 100)
-	
+
 	class Meta:
 		model = Liga
-		exclude = ('creador', 'fecha_creacion', 'num_equipos')
+		exclude = ('creador', 'num_equipos', 'fecha_real_inicio', 'fecha_ficticia_inicio', 'factor_tiempo')
 
 ########################################################################
 
@@ -74,7 +74,7 @@ class ActivarLigaForm(forms.ModelForm):
 
 	class Meta:
 		model = Liga
-		exclude = ('creador', 'fecha_creacion', 'publica', 'nombre', 'sexo_permitido', 'permitir_bots', 'inteligencia_bots', 'tipo_avance_jornadas', 'dinero_inicial', 'num_jugadores_inicial', 'nivel_max_jugadores_inicio')
+		exclude = ('creador', 'fecha_real_inicio', 'fecha_ficticia_inicio', 'factor_tiempo', 'publica', 'nombre', 'sexo_permitido', 'permitir_bots', 'inteligencia_bots', 'tipo_avance_jornadas', 'dinero_inicial', 'num_jugadores_inicial', 'nivel_max_jugadores_inicio')
 
 ########################################################################################
 
