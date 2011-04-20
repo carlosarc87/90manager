@@ -1,0 +1,40 @@
+h2{
+	text-align: center;
+}
+
+/* FORMULARIO CREAR EQUIPO */
+
+#form_crear_equipo{
+	background-color: #fff;
+	border: solid 1px #555;
+	margin: 0 auto;
+	padding: 20px;
+	margin-bottom: 20px;
+	width: 400px;
+}
+
+#form_crear_equipo input[type=text]{
+	
+}
+
+#form_crear_equipo input[type=text]:focus{
+	
+}
+
+#form_crear_equipo input[type=submit]{
+	
+}
+
+#contenido_nombre{ padding: 5px 0px; }
+#contenido_nombre label{
+	float: left;
+	font-weight: bold;
+	width: 150px;
+}
+
+#contenido_siglas{ padding: 5px 0px; }
+#contenido_siglas label{
+	float: left;
+	font-weight: bold;
+	width: 150px;
+}

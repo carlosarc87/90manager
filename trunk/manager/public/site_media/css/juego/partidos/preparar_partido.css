@@ -1,0 +1,120 @@
+h2{
+	margin: 10px;
+	text-align: center;
+}
+
+.cuadro_jugador{
+	background: url('/media/img/circulo.png') no-repeat;
+	background-position: center top;
+	color: #000;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 0.8em;
+	height: 70px;
+	margin: 5px;
+	text-align: center;
+	width: 50px;
+}
+
+.cuadro_jugador:hover{
+	background: url('/media/img/circulo_hover.png') no-repeat;
+	background-position: center top;
+	color: #000066;
+}
+
+.cuadro_jugador .mejor_posicion_jugador{
+	font-weight: bold;
+	float: left;
+	margin: 10px 0px 12px;
+	width: 100%;
+}
+
+.cuadro_jugador .apodo_jugador{
+	float: left;
+	width: 100%;
+}
+
+.cuadro_jugador .valor_jugador{
+	float: left;
+	width: 100%;
+}
+
+#caja_alineacion{
+	float: right;
+	width: 444px;
+}
+
+#caja_boton_aceptar{
+	padding: 5px 0px;
+}
+
+#caja_boton_limpiar{
+	padding: 5px 0px;
+}
+
+#campo_titulares{
+	background-image: url('/media/img/campo_futbol_mitad.png');
+	float: right;
+	height: 363px;
+	text-align: center;
+	width: 100%;
+}
+
+#campo_suplentes{
+	background: rgb(0, 200, 0);
+	border: dotted 2px #fff;
+	float: left;
+	height: 80px;
+	width: 440px;
+}
+
+#fila_delanteros{
+	background: rgb(0, 200, 0);
+	background: rgba(0, 200, 0, 0.4);
+	height: 80px;
+	margin: 23px 20px 0px 20px;
+}
+
+#fila_centrocampistas{
+	height: 80px;
+	margin: 0px 20px;
+}
+
+#fila_defensas{
+	background: rgb(0, 200, 0);
+	background: rgba(0, 200, 0, 0.4);
+	height: 80px;
+	margin: 0px 20px;
+}
+
+#fila_portero{
+	height: 75px;
+	margin: 0 auto;
+	margin: 0px 20px;
+}
+
+#fila_suplentes{
+	background: rgb(0, 200, 0);
+	height: 100%;
+	width: 100%;
+}
+
+#form_oculto{
+	display: none;
+}
+
+#jugadores{
+	border: dotted 2px #000;
+	float: left;
+	min-height: 330px;
+	width: 330px;
+}
+
+#caja_num_jugadores_alineacion, #caja_num_jugadores_suplentes{
+	padding: 5px 0px;
+}
+
+#num_jugadores_alineacion, #num_jugadores_suplentes{
+	color: #5555aa;
+	font-weight: bold;
+}

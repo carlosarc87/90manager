@@ -1,0 +1,63 @@
+h2{
+	margin: 10px;
+	text-align: center;
+}
+
+#dinero_actual{
+	margin: 10px auto;
+	width: 400px;
+}
+
+#edad_equipo{
+	margin: 10px auto;
+	width: 400px;
+}
+
+#jugadores_subastados{
+	margin: 10px auto;
+	width: 400px;
+}
+
+/* Tabla jugadores */
+
+#col_texto_valor_equipo{
+	text-align: right;
+}
+
+#col_valor_equipo{
+	color: #5555aa;
+	font-weight: bold;
+	text-align: right;
+}
+
+#tabla_jugadores{
+	margin: 20px auto;
+	width: 500px;
+}
+
+.col_mejorPosicion_jug{}
+
+.col_nombre_jug{}
+
+.col_numero_jug{
+	color: #5555aa;
+	text-align: right;
+}
+
+.col_valorMercado_jug{
+	color: #5555aa;
+	text-align: right;
+}
+
+/* Fin tabla jugadores */
+
+
+/* Tabla cuentas */
+
+#tabla_cuentas{
+	display: none;
+	margin: 20px auto;
+	width: 500px;
+}
+
+/* Fin tabla cuentas */¡

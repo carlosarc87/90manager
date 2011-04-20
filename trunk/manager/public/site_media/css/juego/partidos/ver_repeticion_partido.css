@@ -1,0 +1,95 @@
+#caja_botones{
+	margin: 10px 0px;
+	text-align: center;
+}
+
+#caja_multiplicador{
+	clear: both;
+	height: 20px;
+	padding: 5px 0px;
+}
+
+#caja_multiplicador label{
+	float: left;
+	width: 200px;
+}
+
+#caja_multiplicador #valor_multiplicador{
+	float: left;
+	text-align: right;
+	width: 100px;
+}
+
+#caja_multiplicador #boton_multiplicador{
+	float: right;
+}
+
+#caja_velocidad{
+	clear: both;
+	height: 20px;
+	padding: 5px 0px;
+}
+
+#caja_velocidad label{
+	float: left;
+	width: 200px;
+}
+
+#caja_velocidad #valor_velocidad{
+	float: left;
+	text-align: right;
+	width: 100px;
+}
+
+#caja_velocidad #boton_velocidad{
+	float: right;
+}
+
+#contenido_contador_tiempo{
+	margin: 10px auto;
+	text-align: center;
+	width: 500px;
+}
+
+#contenido_goles{
+	margin: 10px auto;
+	width: 500px;
+}
+
+#contenido_opciones{
+	background: #fff;
+	border: solid 1px #555;
+	padding: 10px;
+	margin: 10px auto;
+	width: 478px;
+}
+
+/* Tabla resultado */
+
+#tabla_resultado{
+	margin: 10px auto;
+	width: 500px;
+}
+
+#col_local{
+	font-size: 1.2em;
+	text-align: right;
+	width: 40%;
+}
+
+#col_resultado{
+	font-size: 1.4em;
+	text-align: center;
+}
+
+#col_visitante{
+	font-size: 1.2em;
+	width: 40%;
+}
+
+/* Fin tabla resultado */
+
+#tabla_sucesos{
+	margin: 10px auto;
+	width: 500px;
+}
