@@ -1,71 +1,8 @@
 {% extends "base_juego.html" %}
 
 {% block css_extra %}
-	<style type="text/css">
-		h2, h4{
-			margin: 10px;
-			text-align: center;
-		}
-
-		#boton_compra_directa{
-			height: 30px;
-			margin: 10px auto;
-			width: 400px;
-		}
-
-		#boton_compra_directa input{
-			float: right;
-		}
-
-		#contenido_form_oferta{
-			background: #fff;
-			border: solid 1px #555;
-			margin: 10px auto;
-			padding: 20px;
-			width: 400px;
-		}
-
-		/* Formulario oferta */
-
-		#form_oferta{
-			height: 30px;
-		}
-
-		#contenido_oferta label{
-			float: left;
-			width: 50px;
-		}
-
-		#contenido_oferta #caja_cantidad{
-			float: left;
-			width: 120px;
-		}
-
-		#contenido_oferta #caja_cantidad input{
-			text-align: right;
-			width: 100px;
-		}
-
-		#contenido_oferta #caja_oferta{
-			float: right;
-			width: 150px;
-		}
-
-		#contenido_oferta #caja_oferta input{
-			float: right;
-		}
-
-		/* Fin formulario oferta */
-
-		/* Tabla subasta */
-
-		#tabla_subasta{
-			margin: 10px auto;
-			width: 400px;
-		}
-
-		/* Fin tabla subasta */
-	</style>
+	<link rel="stylesheet" href="/media/css/tablas.css" type="text/css" />
+    <link rel="stylesheet" href="/media/css/juego/subastas/ver_subasta.css" type="text/css" media="screen" />
 {% endblock %}
 
 {% block situacion %}

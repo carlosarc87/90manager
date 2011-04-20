@@ -136,6 +136,8 @@ def ver_equipo_propio(request):
 
 @login_required
 def crear_equipo(request):
+	from gestion_sistema.gestion_equipo.func import ObtenerNombreYSiglasAleatorio
+	
 	''' Muestra la pagina para crear un equipo '''
 	usuario = request.user
 
@@ -160,7 +162,9 @@ def crear_equipo(request):
 	else:
 		form = EquipoForm(liga)
 
-	d = {"form": form, "usuario" : usuario, "liga" : liga }
+	nombre_aleatorio, siglas = ObtenerNombreYSiglasAleatorio(liga)
+
+	d = {"form": form, "usuario" : usuario, "liga" : liga, "nombre_aleatorio" : nombre_aleatorio, "siglas" : siglas }
 	return generarPagina("juego/equipos/crear_equipo.html", d, request, True)
 
 ########################################################################

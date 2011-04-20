@@ -1,46 +1,46 @@
 
 .tabla1{
 	background: #fff;
-	border: solid 1px #444;
-	border-spacing: 1px;
+	border-collapse: collapse;
+	border-top: solid 1px #aaa;
+	border-left: solid 1px #aaa;
 	margin-bottom: 10px;
 }
 
 .tabla1 a{
-	color: #5555aa;
-	padding: 4px;
+	color: #44d;
+	padding: 5px;
 }
 
 .tabla1 caption{
-	background-color: #ddd;
-	border-top: solid 1px #444;
-	border-right: solid 1px #444;
-	border-left: solid 1px #444;
+	background: #ddd;
+	border: solid 1px #aaa;
 	color: #666;
 	font-size: 1.2em;
 	font-weight: bold;
-	padding: 5px 0px;
+	padding: 5px;
 	text-align: center;
 }
 
 .tabla1 thead, .tabla1 tfoot{
-	background-color: #ccc;
-	border: solid 1px #444;
+	background: #ccc;
+	border: solid 1px #aaa;
 	color: #666;
 	font-size: 1.1em;
 	font-weight: bold;
 }
 
 .tabla1 tbody{
-	background-color: #eee;
-	border: solid 1px #444;
-	color: #444;
+	border: solid 1px #aaa;
+	color: #222;
 }
 
-.tabla1 tr{
-	border: solid 1px #444;
+.tabla1 td, .tabla1 th{
+	border-right: solid 1px #aaa;
+	border-bottom: solid 1px #aaa;
+	padding: 4px;
 }
 
 .tabla1 tr:nth-child(2n){ /* Filas pares */
-	background-color: #ddd;
+	background-color: #eee;
 }

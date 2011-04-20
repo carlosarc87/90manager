@@ -16,7 +16,7 @@
 }
 
 #header #logo{
-	background: url("../img/logo_mini.png") no-repeat;
+	background: url("../../img/logo_mini.png") no-repeat;
 	cursor: pointer;
 	display: table-cell;
 	height: 50px;
@@ -85,7 +85,7 @@
 #navigation{
 	font-size: 1em;
 	height: 30px;
-	list-style-image: url('../img/icons/favicon.ico');
+	list-style-image: url('../../img/icons/favicon.ico');
 }
 
 #navigation li{

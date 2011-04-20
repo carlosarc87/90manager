@@ -1,36 +1,20 @@
 {% extends "base_juego.html" %}
 
 {% block css_extra %}
-	<style type="text/css">
-		h2{
-			text-align: center;
-		}
+	<link rel="stylesheet" href="/media/css/formularios.css" type="text/css" />
+    <link rel="stylesheet" href="/media/css/juego/equipos/crear_equipo.css" type="text/css" media="screen" />
+{% endblock %}
 
-		/* FORMULARIO CREAR EQUIPO */
-
-		#form_crear_equipo{
-			background-color: #fff;
-			border: solid 1px #555;
-			margin: 0 auto;
-			padding: 20px;
-			margin-bottom: 20px;
-			width: 400px;
+{% block js_extra %}
+	<script type="text/javascript">
+		function generarNombre(){
+			var caja_nombre = document.getElementById('id_nombre');
+			var caja_siglas = document.getElementById('id_siglas');
+			
+			caja_nombre.value = {{ nombre_aleatorio }};
+			caja_siglas.value = {{ siglas }};
 		}
-
-		#contenido_nombre{ padding: 5px 0px; }
-		#contenido_nombre label{
-			float: left;
-			font-weight: bold;
-			width: 150px;
-		}
-
-		#contenido_siglas{ padding: 5px 0px; }
-		#contenido_siglas label{
-			float: left;
-			font-weight: bold;
-			width: 150px;
-		}
-	</style>
+	</script>
 {% endblock %}
 
 {% block situacion %}
@@ -65,6 +49,11 @@
 			<label for="id_siglas">Siglas:</label>
 
 			<div id="caja_siglas">{{ form.siglas }}</div>
+		</div>
+
+		<!-- Boton generar nombre aleatorio -->
+		<div id="contenido_boton_generar">
+			<input type="button" name="generar" value="Generar nombre aleatorio" onclick="generarNombre()" />
 		</div>
 
 		<!-- Boton crear -->

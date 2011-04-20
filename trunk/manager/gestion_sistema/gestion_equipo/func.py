@@ -117,3 +117,73 @@ def generarSiglasNombre(nombre_equipo):
 	return partes[0][0] + partes[1][0] + partes[1][1]
 
 ########################################################################
+
+def ObtenerNombreYSiglasAleatorio(liga):
+	# Generar nombre de equipo aleatorio
+	# -------------------------------------------------
+	# Obtener listas de nombres
+	# -------------------------------------------------
+	# Tipo club
+	lista_nombres_tipo_club = listaNombres('nombres_equipos/tipo_club.txt') # Tipos de club
+	lon_lista_nombres_tipo_club = len(lista_nombres_tipo_club)
+
+	# Parte 1
+	lista_parte1 = [[], []]
+
+	# Animales
+	lista_nombres_animales = listaNombres('nombres_equipos/animales.txt')
+	lista_parte1[0] += lista_nombres_animales[0]
+	lista_parte1[1] += lista_nombres_animales[1]
+
+	# Comidas
+	lista_nombres_comidas = listaNombres('nombres_equipos/comidas.txt')
+	lista_parte1[0] += lista_nombres_comidas[0]
+	lista_parte1[1] += lista_nombres_comidas[1]
+
+	# Profesiones
+	lista_nombres_profesiones = listaNombres('nombres_equipos/profesiones.txt')
+	lista_parte1[0] += lista_nombres_profesiones[0]
+	lista_parte1[1] += lista_nombres_profesiones[1]
+
+	# Razas
+	lista_nombres_razas = listaNombres('nombres_equipos/razas.txt')
+	lista_parte1[0] += lista_nombres_razas[0]
+	lista_parte1[1] += lista_nombres_razas[1]
+
+	# Objetos
+	lista_nombres_objetos = listaNombres('nombres_equipos/objetos.txt')
+	lista_parte1[0] += lista_nombres_objetos[0]
+	lista_parte1[1] += lista_nombres_objetos[1]
+
+	# Parte 2
+	lista_parte2 = [[], []]
+
+	# Colores
+	lista_nombres_colores = listaNombres('nombres_equipos/colores.txt')
+	lista_parte2[0] += lista_nombres_colores[0]
+	lista_parte2[1] += lista_nombres_colores[1]
+
+	# Formas
+	lista_nombres_formas = listaNombres('nombres_equipos/formas.txt')
+	lista_parte2[0] += lista_nombres_formas[0]
+	lista_parte2[1] += lista_nombres_formas[1]
+	# -------------------------------------------------
+
+	nombre_aleatorio = ''
+	siglas = ''
+	for i in range(liga.equipo_set.count(), liga.num_equipos):
+		nombre_eq = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
+		siglas_eq = generarSiglasNombre(nombre_eq)
+
+		# Comprobar que las siglas no se repitan
+		c = 1
+		while self.equipo_set.filter(siglas = siglas_eq).count() > 0:
+			siglas_eq = siglas_eq[:-1] + str(c)
+			c += 1
+
+		nombre_aleatorio = nombre_eq
+		siglas = siglas_eq
+
+	return nombre_aleatorio, siglas
+
+########################################################################

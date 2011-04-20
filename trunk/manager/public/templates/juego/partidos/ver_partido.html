@@ -1,72 +1,8 @@
 {% extends "base_juego.html" %}
 
 {% block css_extra %}
-	<style type="text/css">
-		#fila_mensaje_estado th{
-			padding: 5px 0px;
-		}
-
-		#fila_jugar_partido th{
-			padding: 5px 0px;
-		}
-
-		#titulares{
-			clear: both;
-			height: 400px;
-		}
-
-		#tabla_resultado{
-			margin: 20px auto;
-			width: 500px;
-		}
-
-		#tabla_resumen{
-			margin: 20px auto;
-		}
-
-		#tabla_sucesos{
-			margin: 20px auto;
-		}
-
-		#tabla_titulares_local{
-			background-color: #5555ff;
-			float: left;
-		}
-
-		#tabla_titulares_visitante{
-			background-color: #ff5555;
-			float: right;
-		}
-
-		#ver_repeticion{
-			padding: 5px 0px;
-			text-align: center;
-		}
-
-		.col_local{
-			text-align: right;
-			width: 40%;
-		}
-
-		.col_local a{
-			font-size: 1.2em;
-		}
-
-		.col_resultado{
-			font-size: 1.5em;
-			text-align: center;
-		}
-
-		.col_visitante{
-			width: 40%;
-		}
-
-		.col_visitante a{
-			color: #ff5555;
-			font-size: 1.2em;
-			width: 40%;
-		}
-	</style>
+	<link rel="stylesheet" href="/media/css/tablas.css" type="text/css" />
+    <link rel="stylesheet" href="/media/css/juego/partidos/ver_partido.css" type="text/css" media="screen" />
 {% endblock %}
 
 {% block situacion %}
