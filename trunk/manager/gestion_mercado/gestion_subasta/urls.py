@@ -32,4 +32,6 @@ urlpatterns = patterns('',
    	(r'^ver/$', 'gestion_mercado.gestion_subasta.views.ver_subasta'),
    	(r'^comprar/$', 'gestion_mercado.gestion_subasta.views.comprar_subasta'),
    	(r'^crear/$', 'gestion_mercado.gestion_subasta.views.crear_subasta'),
+   	(r'^propias/$', 'gestion_mercado.gestion_subasta.views.mis_subastas'),
+   	(r'^pujas/$', 'gestion_mercado.gestion_subasta.views.mis_pujas'),
 )

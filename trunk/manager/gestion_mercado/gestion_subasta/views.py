@@ -196,3 +196,15 @@ def comprar_subasta(request):
 	return devolverMensaje(request, "Ha comprado al jugador correctamente", "/mercado/subastas/ver/%s/" % subasta_id)
 
 ########################################################################
+
+@login_required
+def mis_subastas(request):
+	return devolverMensaje(request, "No implementado aun")
+
+########################################################################
+
+@login_required
+def mis_pujas(request):
+	return devolverMensaje(request, "No implementado aun")
+
+########################################################################
