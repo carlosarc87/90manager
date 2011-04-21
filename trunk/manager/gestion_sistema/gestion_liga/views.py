@@ -28,6 +28,8 @@ from django.db import transaction
 
 from datetime import datetime
 
+from gestion_sistema.func import calcularCambios
+
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_equipo.forms import EquipoForm
 
@@ -58,6 +60,9 @@ def ver_ligas_publicas(request):
 @login_required
 def ver_liga(request):
 	''' Muestra los datos de una liga determinada '''
+	# Calculamos los cambios
+	calcularCambios(request)
+
 	# Obtenemos el usuario
 	usuario = request.user
 

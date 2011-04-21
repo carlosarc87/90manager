@@ -14,7 +14,7 @@
 
 {% block contenido %}
 
-	<h2>Subastas en {{ liga.nombre }}</h2>
+	<h2>Subastas propias</h2>
 
 	<!-- Subastas de la liga -->
 	<table class="tabla1" id="tabla_mercado">
@@ -25,7 +25,6 @@
 					<th>Posición</th>
 					<th>Sexo</th>
 					<th>Nombre</th>
-					<th>Equipo</th>
 					<th>Valor</th>
 					<th>Precio subasta</th>
 					<th>Precio compra</th>
@@ -55,11 +54,6 @@
 						<!-- Nombre del jugador -->
 						<td>
 							<a href="/jugadores/ver/{{ subasta.atributos_jugador.jugador.id }}/">{{ subasta.atributos_jugador.jugador.nombre }}</a>
-						</td>
-
-						<!-- Equipo del jugador -->
-						<td>
-							<a href="/equipos/ver/{{ subasta.atributos_jugador.equipo.id }}/">{{ subasta.atributos_jugador.equipo.nombre }}</a>
 						</td>
 
 						<!-- Valor -->

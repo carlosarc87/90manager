@@ -35,12 +35,12 @@
 	<form id="form_subastar" action="/mercado/subastas/crear/" method="post">
 		{% csrf_token %}
 		<!-- Oferta inicial -->
-		<div id="contenido_oferta">
-			{% if form.oferta.errors %}
-				{{ form.oferta.errors }}
+		<div id="contenido_puja">
+			{% if form.puja.errors %}
+				{{ form.puja.errors }}
 			{% endif %}
-			<label for="id_oferta">Oferta inicial:</label>
-			<div id="caja_oferta">{{ form.oferta }}</div>
+			<label for="id_puja">Puja inicial:</label>
+			<div id="caja_puja">{{ form.puja }}</div>
 		</div>
 
 		<!-- Compra directa -->
@@ -52,13 +52,13 @@
 			<div id="caja_precio_compra">{{ form.precio_compra }}</div>
 		</div>
 
-		<!-- Compra directa -->
-		<div id="contenido_expira">
-			{% if form.expira.errors %}
-				{{ form.expira.errors }}
+		<!-- Fecha final de subasta -->
+		<div id="contenido_fecha_fin">
+			{% if form.fecha_fin.errors %}
+				{{ form.fecha_fin.errors }}
 			{% endif %}
-			<label for="id_expira">Jornadas de duracion de la subasta:</label>
-			<div id="caja_expira">{{ form.expira }}</div>
+			<label for="id_fecha_fin">Fecha final de la subasta:</label>
+			<div id="caja_fecha_fin">{{ form.fecha_fin }}</div>
 		</div>
 
 		<!-- Boton crear -->

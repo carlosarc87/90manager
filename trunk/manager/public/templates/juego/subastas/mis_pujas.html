@@ -14,7 +14,7 @@
 
 {% block contenido %}
 
-	<h2>Subastas en {{ liga.nombre }}</h2>
+	<h2>Pujas del equipo</h2>
 
 	<!-- Subastas de la liga -->
 	<table class="tabla1" id="tabla_mercado">
@@ -29,7 +29,6 @@
 					<th>Valor</th>
 					<th>Precio subasta</th>
 					<th>Precio compra</th>
-					<th>Comprador</th>
 					<th>Fecha comienzo</th>
 					<th>Fecha fin</th>
 					<th>Tiempo restante</th>
@@ -75,15 +74,6 @@
 						<!-- Precio compra -->
 						<td class="cuadro_num_azul_der">
 							<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.precio_compra }}</a>
-						</td>
-
-						<!-- Comprador -->
-						<td>
-							{% if subasta.comprador %}
-								<a href="/equipos/ver/{{ subasta.comprador.id }}/">{{ subasta.comprador }}</a>
-							{% else %}
-								Sin comprador
-							{% endif %}
 						</td>
 
 						<!-- Fecha inicial -->

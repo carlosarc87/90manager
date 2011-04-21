@@ -26,7 +26,7 @@ Copyright 2011 by
 from django.contrib.auth.decorators import login_required
 
 from models import Subasta
-from forms import SubastaForm, ApostarForm
+from forms import SubastaForm, PujarForm
 from gestion_sistema.gestion_jugador.models import Jugador
 from gestion_sistema.gestion_liga.models import Liga
 from gestion_sistema.gestion_equipo.models import Equipo
@@ -57,7 +57,9 @@ def crear_subasta(request):
 		form = SubastaForm(jugador, request.POST)
 		if form.is_valid():
 			subasta = form.save(commit = False)
-			comision = subasta.oferta * (subasta.expira / (duracion_liga * 1.0))
+
+			#comision = subasta.puja * (subasta.getTiempoRestante() / (duracion_liga * 1.0))
+			comision = 5
 
 			if comision > jugador.atributos.equipo.dinero:
 				return devolverMensaje(request, "No tienes suficiente dinero para pagar la comision", "/mercado/subastas/crear/%d/" % jugador.id)
@@ -128,14 +130,14 @@ def ver_subasta(request):
 		if request.method == 'POST':
 			if not equipo_usuario:
 				devolverMensaje('No puedes pujar en una liga en la que no juegas')
-			form = ApostarForm(subasta, equipo_usuario, request.POST)
+			form = PujarForm(subasta, equipo_usuario, request.POST)
 			if form.is_valid():
 				cantidad = form.cleaned_data['cantidad']
 				subasta.pujar(equipo_usuario, cantidad)
 				subasta.save()
 				return devolverMensaje(request, "Cantidad apostada correctamente", "/mercado/subastas/ver/%d/" % subasta.id)
 		else:
-			form = ApostarForm(subasta, equipo_usuario)
+			form = PujarForm(subasta, equipo_usuario)
 
 	d = {"equipo_usuario" : equipo_usuario,
 		"subasta" : subasta,
@@ -199,12 +201,24 @@ def comprar_subasta(request):
 
 @login_required
 def mis_subastas(request):
-	return devolverMensaje(request, "No implementado aun")
+	""" Muestra las subastas de un equipo """
+	equipo = request.session['equipo_propio']
+
+	subastas = equipo.subastas_como_vendedor.all()
+	d = {"subastas" : subastas,
+		}
+	return generarPagina("juego/subastas/mis_subastas.html", d, request)
 
 ########################################################################
 
 @login_required
 def mis_pujas(request):
-	return devolverMensaje(request, "No implementado aun")
+	""" Muestra las subastas de un equipo """
+	equipo = request.session['equipo_propio']
+
+	subastas = equipo.subastas_como_comprador.all()
+	d = {"subastas" : subastas,
+		}
+	return generarPagina("juego/subastas/mis_pujas.html", d, request)
 
 ########################################################################

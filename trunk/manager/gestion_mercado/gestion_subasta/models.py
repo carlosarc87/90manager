@@ -39,7 +39,7 @@ from gestion_usuario.gestion_notificacion.func import notificar, TipoNotificacio
 class Subasta(Evento):
 	''' Representa una subasta de un jugador en el sistema '''
 	# Datos principales
-	oferta_inicial = models.PositiveIntegerField(default = 0)
+	puja = models.PositiveIntegerField(default = 1)
 	precio_compra = models.PositiveIntegerField(null = True, blank = True)
 	estado = models.PositiveIntegerField(max_length = 1, default = 0)
 
@@ -54,26 +54,25 @@ class Subasta(Evento):
 		if self.tieneComprador():
 			if self.comprador != equipo:
 				notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA_COMPRADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
-				self.comprador.pagar(self.subasta.oferta)
+				self.comprador.pagar(self.subasta.puja)
 
 		self.estado = COMPRADA # Indicar que se ha comprado
 		self.comprador = equipo
 		equipo.cobrar(self.precio_compra)
-		self.expira = 1 # Indicamos que expira en esa jornada
 
 	def tieneComprador(self):
 		''' Indica si alguien ha subastado '''
 		return self.comprador != None
 
 	def pujar(self, equipo, cantidad):
-		''' Realiza una oferta de un equipo '''
+		''' Realiza una puja de un equipo '''
 		# Notificar al anterior
 		if self.tieneComprador():
 			if self.comprador != equipo:
 				notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA, identificador = self.id, liga = self.liga)
-				self.comprador.pagar(self.subasta.oferta)
+				self.comprador.pagar(self.subasta.puja)
 
-		self.oferta = cantidad
+		self.puja = cantidad
 		self.comprador = equipo
 		equipo.cobrar(cantidad)
 
@@ -84,7 +83,11 @@ class Subasta(Evento):
 			notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_GANADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
 			self.atributos_jugador.jugador.setEquipo(self.comprador)
 		notificar(self.vendedor.usuario, TipoNotificacion.SUBASTA_FINALIZADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
-		self.vendedor.pagar(self.oferta)
+		self.vendedor.pagar(self.puja)
 		self.atributos_jugador.save()
+
+	def getTiempoRestante(self):
+		""" Devuelve el tiempo restante de la subasta """
+		return self.fecha_fin - self.fecha_inicio
 
 ########################################################################

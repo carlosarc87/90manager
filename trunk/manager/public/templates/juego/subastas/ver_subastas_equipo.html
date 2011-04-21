@@ -18,7 +18,7 @@
 	<h2>Subastas de {{ equipo.nombre }}</h2>
 
 	<h4>Ventas</h4>
-	
+
 	<!-- Tabla vendedor -->
 	<table class="tabla1" id="tabla_vendedor">
 		<caption>Subastas de jugadores</caption>
@@ -32,7 +32,9 @@
 					<th>Precio subasta</th>
 					<th>Precio compra</th>
 					<th>Comprador actual</th>
-					<th>Días restantes</th>
+					<th>Fecha comienzo</th>
+					<th>Fecha fin</th>
+					<th>Tiempo restante</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -42,7 +44,7 @@
 						<td>
 							{{ subasta.atributos_jugador.jugador.mejorPosicion }}
 						</td>
-						
+
 						<!-- Sexo -->
 						<td>
 							{% if subasta.atributos_jugador.jugador.sexo == 'M' %}
@@ -51,27 +53,27 @@
 								<img src="/media/img/icons/a/genero_fem.png" alt="F" title="" />
 							{% endif %}
 						</td>
-						
+
 						<!-- Nombre del jugador -->
 						<td>
 							<a href="/jugadores/ver/{{ subasta.atributos_jugador.jugador.id }}/">{{ subasta.atributos_jugador.jugador.nombre }}</a>
 						</td>
-						
+
 						<!-- Valor -->
 						<td class="cuadro_num_azul_der">
 							{{ subasta.atributos_jugador.jugador.valorMercado }}
 						</td>
-						
+
 						<!-- Precio subasta -->
 						<td class="cuadro_num_azul_der">
 							<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.oferta }}</a>
 						</td>
-						
+
 						<!-- Precio compra -->
 						<td class="cuadro_num_azul_der">
 							<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.precio_compra }}</a>
 						</td>
-						
+
 						<!-- Comprador -->
 						<td>
 							{% if subasta.comprador %}
@@ -80,10 +82,20 @@
 								Sin comprador
 							{% endif %}
 						</td>
-						
-						<!-- Dias restantes de subasta -->
+
+						<!-- Fecha inicial -->
 						<td class="cuadro_num_azul_der">
-							{{ subasta.expira }}
+							{{ subasta.fecha_inicio }}
+						</td>
+
+						<!-- Fecha final -->
+						<td class="cuadro_num_azul_der">
+							{{ subasta.fecha_final }}
+						</td>
+
+						<!-- Tiempo restante -->
+						<td class="cuadro_num_azul_der">
+							{{ subasta.tiempoRestante }}
 						</td>
 					</tr>
 				{% endfor %}
@@ -94,9 +106,9 @@
 			</tr>
 		{% endif %}
 	</table>
-	
+
 	<h4>Compras</h4>
-	
+
 	<!-- Tabla comprador -->
 	<table class="tabla1" id="tabla_comprador">
 		<caption>Subastas de jugadores</caption>
@@ -120,7 +132,7 @@
 						<td>
 							{{ subasta.atributos_jugador.jugador.mejorPosicion }}
 						</td>
-						
+
 						<!-- Sexo -->
 						<td>
 							{% if subasta.atributos_jugador.jugador.sexo == 'M' %}
@@ -129,32 +141,32 @@
 								<img src="/media/img/icons/a/genero_fem.png" alt="F" title="" />
 							{% endif %}
 						</td>
-						
+
 						<!-- Nombre del jugador -->
 						<td>
 							<a href="/jugadores/ver/{{ subasta.atributos_jugador.jugador.id }}/">{{ subasta.atributos_jugador.jugador.nombre }}</a>
 						</td>
-						
+
 						<!-- Equipo Vendedor -->
 						<td>
 							<a href="/equipos/ver/{{ subasta.vendedor.id }}/">{{ subasta.vendedor }}</a>
 						</td>
-						
+
 						<!-- Valor -->
 						<td class="cuadro_num_azul_der">
 							{{ subasta.atributos_jugador.jugador.valorMercado }}
 						</td>
-						
+
 						<!-- Precio subasta -->
 						<td class="cuadro_num_azul_der">
 							<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.oferta }}</a>
 						</td>
-						
+
 						<!-- Precio compra -->
 						<td class="cuadro_num_azul_der">
 							<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.precio_compra }}</a>
 						</td>
-						
+
 						<!-- Dias restantes de subasta -->
 						<td class="cuadro_num_azul_der">
 							{{ subasta.expira }}
