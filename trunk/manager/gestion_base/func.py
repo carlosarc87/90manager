@@ -33,6 +33,18 @@ from gestion_sistema.gestion_liga.models import Liga
 
 ########################################################################
 
+def renderizar(request, template, parametros):
+	""" Acceso directo para renderizar templates con RequestContext """
+	return render_to_response(template, parametros, context_instance = RequestContext(request))
+
+########################################################################
+
+def redireccionar(direccion):
+	""" Redirecciona a otra pagina web """
+	return HttpResponseRedirect(direccion)
+
+########################################################################
+
 def devolverMensaje(request, mensaje, url_salida = None):
 	''' Devuelve un mensaje rapidamente como una pagina nueva
 
@@ -40,7 +52,7 @@ def devolverMensaje(request, mensaje, url_salida = None):
 		mensaje    -- mensaje a mostrar
 		url_salida -- url hacia la que redireccionar
 	'''
-	return render_to_response("mensaje.html", {"usuario" : request.user, "mensaje" : mensaje, "url_salida" : url_salida})
+	return renderizar(request, "mensaje.html", {"mensaje" : mensaje, "url_salida" : url_salida})
 
 ########################################################################
 
@@ -64,10 +76,6 @@ def generarPagina(template, parametros, request, form = False, agregar_parametro
 		parametros['ultimas_notificaciones'] = usuario.notificacion_set.filter(leida=False)[:5]
 		if liga.activada():
 			parametros['fecha_actual_liga'] = liga.getFecha()
-	return render_to_response(template, parametros, context_instance = RequestContext(request))
+	return renderizar(request, template, parametros)
 
 ########################################################################
-
-def redireccionar(direccion):
-	""" Redirecciona a otra pagina web """
-	return HttpResponseRedirect(direccion)

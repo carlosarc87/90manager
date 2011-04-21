@@ -21,30 +21,26 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.template import RequestContext
-
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 
-import datetime
+from datetime import datetime
 
 from forms import ContactoForm
 
-from gestion_base.func import devolverMensaje
+from gestion_base.func import devolverMensaje, redireccionar, renderizar
 
 ########################################################################
 
 @login_required
 def index(request):
 	''' Devuelve la pagina principal '''
-	return HttpResponseRedirect("/tablon")
+	return redireccionar("/tablon")
 
 ########################################################################
 
 def creditos(request):
 	''' Ir a la pagina de creditos '''
-	return render_to_response("web/creditos.html", {})
+	return renderizar(request, "web/creditos.html", {})
 
 ########################################################################
 
@@ -61,7 +57,7 @@ def contacto(request):
 			mensaje =  "-----------------------------------------------------------------\n"
 			mensaje += " Mensaje de contacto enviado mediante el formulario de 90manager \n"
 			mensaje += "  De: " + emisor + "\n"
-			mensaje += "  Enviado a las: " + str(datetime.datetime.now()) + " \n"
+			mensaje += "  Enviado a las: " + str(datetime.now()) + " \n"
 			mensaje += "-----------------------------------------------------------------\n"
 			mensaje += "\n"
 			mensaje += mensaje_puro
@@ -72,32 +68,32 @@ def contacto(request):
 	else:
 		form = ContactoForm()
 
-	c = RequestContext(request, { "form" : form })
+	c = { "form" : form }
 
-	return render_to_response("web/contacto.html", c)
+	return renderizar(request, "web/contacto.html", c)
 
 ########################################################################
 
 def changelog(request):
 	''' Muestra el historial de versiones de la web '''
-	return render_to_response("web/changelog.html", {})
+	return renderizar(request, "web/changelog.html", {})
 
 ########################################################################
 
 def siguenos(request):
 	''' Muestra las páginas donde seguir el proyecto '''
-	return render_to_response("web/siguenos.html", {})
+	return renderizar(request, "web/siguenos.html", {})
 
 ########################################################################
 
 def condiciones(request):
 	''' Muestra las condiciones de uso '''
-	return render_to_response("web/condiciones.html", {})
+	return renderizar(request, "web/condiciones.html", {})
 
 ########################################################################
 
 def bajoConstruccion(request):
 	''' Mensaje para los enlaces que no estan construidos aun '''
-	return HttpResponse("La página que deseas visitar aún no está acabada =(")
+	return renderizar(request, "La página que deseas visitar aún no está acabada =(", {})
 
 ########################################################################
