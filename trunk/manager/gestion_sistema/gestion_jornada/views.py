@@ -27,6 +27,8 @@ from django.contrib.auth.decorators import login_required
 
 from models import Jornada
 
+from gestion_sistema.decorators import actualizarLiga
+
 from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 ########################################################################
@@ -46,6 +48,7 @@ def ver_jornada_id(request, jornada_id):
 ########################################################################
 
 @login_required
+@actualizarLiga
 def ver_jornada(request):
 	''' Muestra los datos de una jornada '''
 	# Obtenemos el usuario
@@ -110,6 +113,7 @@ def ver_jornada(request):
 ########################################################################
 
 @login_required
+@actualizarLiga
 def listar_jornadas(request):
 	""" Muestra las jornadas de la liga """
 	# Obtenemos la liga
@@ -122,6 +126,7 @@ def listar_jornadas(request):
 ########################################################################
 
 @login_required
+@actualizarLiga
 def jornada_actual(request):
 	""" Redirige a la jornada actual de la liga """
 	# Obtenemos la liga

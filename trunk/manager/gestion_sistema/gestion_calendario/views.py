@@ -22,5 +22,7 @@ Copyright 2011 by
 
 """
 
+from gestion_sistema.decorators import actualizarLiga
+
 # Vistas del sistema
 

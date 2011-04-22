@@ -95,7 +95,7 @@
 									{% if not equipo.liga.getJornadaActual %}
 										<td class="col_estado"><span class="liga_finalizada">FINALIZADA</span></td>
 									{% else %}
-										<td class="col_estado"><span class="liga_comenzada">JORNADA {{ liga.getJornadaActual.numero }}</span></td>
+										<td class="col_estado"><span class="liga_comenzada">JORNADA {{ equipo.liga.getJornadaActual.numero }}</span></td>
 									{% endif %}
 								{% else %}
 									<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>

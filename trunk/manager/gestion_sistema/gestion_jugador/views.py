@@ -27,6 +27,8 @@ from django.contrib.auth.decorators import login_required
 
 from models import Jugador
 
+from gestion_sistema.decorators import actualizarLiga
+
 from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 ########################################################################
@@ -50,6 +52,7 @@ def ver_jugador_id(request, jugador_id):
 ########################################################################
 
 @login_required
+@actualizarLiga
 def ver_jugador(request):
 	''' Muestra los datos de un jugador '''
 	# Obtenemos el usuario

@@ -28,7 +28,7 @@ from django.db import transaction
 
 from datetime import datetime
 
-from gestion_sistema.func import calcularCambios
+from gestion_sistema.decorators import actualizarLiga
 
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_equipo.forms import EquipoForm
@@ -58,15 +58,13 @@ def ver_ligas_publicas(request):
 ########################################################################
 
 @login_required
+@actualizarLiga
 def ver_liga(request):
 	''' Muestra los datos de una liga determinada '''
 	# Obtenemos el usuario
 	usuario = request.user
 
 	liga = request.session['liga_actual']
-
-	# Calculamos los cambios
-	calcularCambios(request)
 
 	# Obtenemos los equipos que juegan en la liga
 	equipos = liga.equipo_set.all()
@@ -192,6 +190,7 @@ def ver_liga_id(request, liga_id):
 @login_required
 def avanzar_jornada_liga(request):
 	''' Avanza una liga de jornada actual '''
+	return devolverMensaje(request, "Desactualizado, pendiente de eliminar")
 	# Obtenemos el usuario
 	usuario = request.user
 

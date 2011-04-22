@@ -25,6 +25,8 @@ Copyright 2011 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 
+from gestion_sistema.decorators import actualizarLiga
+
 from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 from gestion_sistema.gestion_liga.models import Liga
@@ -32,6 +34,7 @@ from gestion_sistema.gestion_liga.models import Liga
 ########################################################################
 
 @login_required
+@actualizarLiga
 def listar_notificaciones(request):
 	''' Lista todas las notificaciones de un usuario '''
 	usuario = request.user
@@ -43,6 +46,7 @@ def listar_notificaciones(request):
 ########################################################################
 
 @login_required
+@actualizarLiga
 def listar_notificaciones_liga(request):
 	''' Muestra las notificaciones de una liga '''
 	usuario = request.user
@@ -56,6 +60,7 @@ def listar_notificaciones_liga(request):
 ########################################################################
 
 @login_required
+@actualizarLiga
 def borrar_notificacion(request, notificacion_id):
 	''' Borra una notificacion '''
 	# Obtenemos el usuario
@@ -75,6 +80,7 @@ def borrar_notificacion(request, notificacion_id):
 ########################################################################
 
 @login_required
+@actualizarLiga
 def ver_notificacion(request, notificacion_id):
 	''' Marca una notificación como leída y redirecciona a su contenido '''
 	# Obtenemos el usuario

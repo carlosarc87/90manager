@@ -28,6 +28,8 @@ from django.contrib.auth.decorators import login_required
 from models import Equipo
 from forms import EquipoForm
 
+from gestion_sistema.decorators import actualizarLiga
+
 from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 from gestion_sistema.gestion_liga.models import Liga
@@ -53,6 +55,7 @@ def ver_equipo_id(request, equipo_id):
 ########################################################################
 
 @login_required
+@actualizarLiga
 def ver_equipo(request):
 	''' Muestra los datos de un equipo '''
 	# Obtenemos el usuario
@@ -94,6 +97,7 @@ def ver_equipo(request):
 ########################################################################
 
 @login_required
+@actualizarLiga
 def ver_equipo_propio(request):
 	''' Muestra los datos de un equipo '''
 	# Obtenemos el usuario
@@ -135,9 +139,10 @@ def ver_equipo_propio(request):
 ########################################################################
 
 @login_required
+@actualizarLiga
 def crear_equipo(request):
 	from gestion_sistema.gestion_equipo.func import ObtenerNombreYSiglasAleatorio
-	
+
 	''' Muestra la pagina para crear un equipo '''
 	usuario = request.user
 
@@ -170,6 +175,7 @@ def crear_equipo(request):
 ########################################################################
 
 @login_required
+@actualizarLiga
 def listar_equipos_liga(request):
 	""" Muestra los equipos de una liga """
 	# Obtenemos el usuario

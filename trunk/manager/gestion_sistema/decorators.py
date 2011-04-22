@@ -21,33 +21,37 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+
+from functools import wraps
+from gestion_sistema.func import calcularCambios
+
 ########################################################################
 
-def calcularCambios(request):
-	""" Calcula los cambios realizados en una liga """
-	liga = request.session['liga_actual']
-	if liga.activada():
-		fecha = liga.getFecha()
-		# Calculos de subastas
+def actualizarLiga(function=None, redirect_field_name=None):
+	"""Check that the user is NOT logged in.
 
-		# Traspasos de jugadores
-		# Tomar en cuenta alineaciones en las que se cambia un jugador
+	This decorator ensures that the view functions it is called on can be
+	accessed only by anonymous users. When an authenticated user accesses
+	such a protected view, they are redirected to the address specified in
+	the field named in `next_field` or, lacking such a value, the URL in
+	`home_url`, or the `USER_HOME_URL` setting.
+	"""
 
-		# Avanzar Jornadas
-		jornadas_acabadas = liga.jornada_set.filter(jugada = False, fecha_fin__lt = liga.getFecha())
-		for jornada in jornadas_acabadas:
-			liga.avanzarJornada()
+	def _dec(view_func):
+		def _view(request, *args, **kwargs):
+			calcularCambios(request)
+			return view_func(request, *args, **kwargs)
 
-		# Jugar Partidos de esta jornada
-		partidos_acabados = liga.partido_set.filter(jugado = False, fecha_fin__lt = liga.getFecha())
-		for partido in partidos_acabados:
-			partido.jugar()
+		_view.__name__ = view_func.__name__
+		_view.__dict__ = view_func.__dict__
+		_view.__doc__ = view_func.__doc__
 
-		partidos_iniciados = liga.partido_set.filter(jugado = False, fecha_inicio__lt = liga.getFecha())
-		# Iniciar partidos
-		# bla bla bla
-		return True
+		return _view
+
+	if function is None:
+		return _dec
 	else:
-		return False
+		return _dec(function)
 
 ########################################################################
+
