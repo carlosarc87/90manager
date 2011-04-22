@@ -2,9 +2,12 @@
 
 {% block css_extra %}
     <link rel="stylesheet" href="/media/css/web/principal.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/js/jquery-ui-1.8.11.custom/css/custom-theme/jquery-ui-1.8.11.custom.css" type="text/css" media="screen" />
 {% endblock %}
 
 {% block js_extra %}
+	<script src="/media/js/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js" type="text/javascript"></script>
+	
 	<!-- No tocar que hay que arreglarlo un poco aun -->
 	<script type="text/javascript">
 		// Calcula el tiempo dependiendo de num1 y num2
@@ -124,6 +127,7 @@
 		   contadorDesactualizado(gsegs);
 		});
 		
+		/* Oculta la caja del login y muestra el registro */
 		function mostrarRegistro(){
 			var login = document.getElementById('login');
 			var registro = document.getElementById('registro');
@@ -133,6 +137,7 @@
 			})
 		}
 		
+		/* Oculta la caja del registro y muestra el login */
 		function mostrarLogin(){
 			var login = document.getElementById('login');
 			var registro = document.getElementById('registro');
@@ -141,6 +146,8 @@
 				$(login).fadeToggle(300, "linear");
 			})
 		}
+		
+		
 	</script>
 {% endblock %}
 
@@ -148,117 +155,106 @@
 {% endblock %}
 
 {% block contenido %}
-	<div id="contenido_sup">
-		<div id="div_logo">
-			<a href="/">
-				<img id="logo_login" src="/media/img/logoAlter.png" alt="logo_login" title="" />
-			</a>
-			
-			<p id="descripcion">
-				<a href="http://90manager.wordpress.com/">90manager</a> es un juego multijugador donde puedes ser
-				entrenador y presidente de un equipo de fútbol.
-			</p>
-		</div>
-		
-		<div id="div_acceso">
-			<div id="login">
-				{% if form.errors %}
-					<p class="texto_error">Usuario y/o contraseña no válidos</p>
-				{% endif %}
+	<!-- Logo -->
+	<div id="div_logo" onclick="location.href='/'"></div>
+	
+	<!-- Descripcion -->
+	<div id="descripcion">
+		Es un juego multijugador donde puedes ser entrenador y presidente de un equipo de fútbol.
+	</div>
+	
+	<div id="div_acceso">
+		<div id="login">
+			{% if form.errors %}
+				<p class="texto_error">Usuario y/o contraseña no válidos</p>
+			{% endif %}
 
-				<form action="/" method="post">
-					{% csrf_token %}
+			<form action="/" method="post">
+				{% csrf_token %}
+				<ul>
 					<!-- Usuario -->
-					<div id="caja_usuario">
-						<label for="login_username">Usuario:</label>
+					<li id="caja_usuario">
+						<label for="login_username">Usuario</label>
 						<input id="login_username" type="text" name="login_username" value="" maxlength="50" />
-					</div>
+						<a href="#" onclick="mostrarRegistro();">Registro</a>
+					</li>
 
 					<!-- Clave -->
-					<div id="caja_clave">
-						<label for="login_password">Contraseña:</label>
+					<li id="caja_clave">
+						<label for="login_password">Contraseña</label>
 						<input id="login_password" type="password" name="login_password" value="" maxlength="50" />
-					</div>
+						<a href="#">Recordar contraseña</a>
+					</li>
 
 					<!-- Boton entrar -->
-					<div id="caja_entrar">
+					<li id="caja_entrar">
 						<input id="entrar" type="submit" name="login" value="Entrar" />
+					</li>
+				</ul>
+			</form>
+		</div>
+		
+		<div id="registro">
+			<form action="/" method="post">
+				{% csrf_token %}
+				<!-- Usuario -->
+				{% if form_reg.username.errors %}
+					<div class="texto_error">{{ form_reg.username.errors }}</div>
+				{% endif %}
+
+				<div id="contenido_usuario_reg">
+					<label for="id_username">Nombre de usuario:</label>
+					<div id="caja_usuario_reg">
+						<input id="id_username" type="text" name="username" value="" maxlength="50" />
 					</div>
+				</div>
 
-					<!-- Recordar clave -->
-					<div id="caja_recordar">
-						<a href="#">Recordar contraseña</a>
+				<!-- Contrasena -->
+				{% if form_reg.password.errors %}
+					<div class="texto_error">{{ form_reg.password.errors }}</div>
+				{% endif %}
+
+				<div id="contenido_password">
+					<label for="id_password">Contraseña:</label>
+					<div id="caja_password">
+						<input id="id_password" type="password" name="password" value="" maxlength="50" />
 					</div>
+				</div>
 
-					<!-- Registro -->
-					<div id="caja_registro">
-						<a href="#" onclick="mostrarRegistro();">Registro</a>
+				<!-- E-mail -->
+				{% if form_reg.email.errors %}
+					<div class="texto_error">{{ form_reg.email.errors }}</div>
+				{% endif %}
+
+				<div id="contenido_email">
+					<label for="id_email">E-Mail:</label>
+					<div id="caja_email">
+						<input id="id_email" type="text" name="email" value="" maxlength="100" />
 					</div>
-				</form>
-			</div>
-			
-			<div id="registro">
-				<form action="/" method="post">
-					{% csrf_token %}
-					<!-- Usuario -->
-					{% if form_reg.username.errors %}
-						<div class="texto_error">{{ form_reg.username.errors }}</div>
-					{% endif %}
+				</div>
 
-					<div id="contenido_usuario_reg">
-						<label for="id_username">Nombre de usuario:</label>
-						<div id="caja_usuario_reg">
-							<input id="id_username" type="text" name="username" value="" maxlength="50" />
-						</div>
-					</div>
+				<!-- Condiciones de uso -->
+				{% if form_reg.aceptar_condiciones.errors %}
+					<div class="texto_error">{{ form_reg.aceptar_condiciones.errors }}</div>
+				{% endif %}
 
-					<!-- Contrasena -->
-					{% if form_reg.password.errors %}
-						<div class="texto_error">{{ form_reg.password.errors }}</div>
-					{% endif %}
+				<div id="contenido_aceptar_condiciones">
+					<label for="id_aceptar_condiciones">Acepto las <a href="/condiciones/" onclick="this.target='_blank'">condiciones de uso</a></label>
+					<div id="caja_aceptar_condiciones">{{ form_reg.aceptar_condiciones }}</div>
+				</div>
 
-					<div id="contenido_password">
-						<label for="id_password">Contraseña:</label>
-						<div id="caja_password">
-							<input id="id_password" type="password" name="password" value="" maxlength="50" />
-						</div>
-					</div>
+				<div id="contenido_campos_obligatorios">Todos los campos son obligatorios</div>
 
-					<!-- E-mail -->
-					{% if form_reg.email.errors %}
-						<div class="texto_error">{{ form_reg.email.errors }}</div>
-					{% endif %}
+				<!-- Boton registrar -->
+				<div id="contenido_boton_registrar">
+					<input type="submit" name="registrar_usuario" value="Registrar" />
+				</div>
 
-					<div id="contenido_email">
-						<label for="id_email">E-Mail:</label>
-						<div id="caja_email">
-							<input id="id_email" type="text" name="email" value="" maxlength="100" />
-						</div>
-					</div>
-
-					<!-- Condiciones de uso -->
-					{% if form_reg.aceptar_condiciones.errors %}
-						<div class="texto_error">{{ form_reg.aceptar_condiciones.errors }}</div>
-					{% endif %}
-
-					<div id="contenido_aceptar_condiciones">
-						<label for="id_aceptar_condiciones">Acepto las <a href="/condiciones/" onclick="this.target='_blank'">condiciones de uso</a></label>
-						<div id="caja_aceptar_condiciones">{{ form_reg.aceptar_condiciones }}</div>
-					</div>
-
-					<div id="contenido_campos_obligatorios">Todos los campos son obligatorios</div>
-
-					<!-- Boton registrar -->
-					<div id="contenido_boton_registrar">
-						<input type="submit" name="registrar_usuario" value="Registrar" />
-					</div>
-
-					<!-- Login -->
-					<div id="caja_ir_login">
-						<a href="#" onclick="mostrarLogin();">Login</a>
-					</div>
-				</form>
-			</div>
+				<!-- Login -->
+				<div id="caja_ir_login">
+					<a href="#" onclick="mostrarLogin();">Login</a>
+				</div>
+			</form>
 		</div>
 	</div>
 	

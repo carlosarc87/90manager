@@ -99,19 +99,14 @@
 					</li>
 				</ul>
 			{% endblock %}
-
-			Fecha de la liga: {{ fecha_actual_liga }}
 		</div>
-<!--
-		<div class="submenu">
-			{% block submenu %}
-			{% endblock %}
-		</div>-->
 
 		<!-- Situacion -->
 		<div id="navigation">
 			{% block situacion %}
 			{% endblock %}
+			
+			<span id="fecha_liga">Fecha de la liga: {{ fecha_actual_liga }}</span>
 		</div>
 	</div>
 {% endblock %}

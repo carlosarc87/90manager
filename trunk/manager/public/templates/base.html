@@ -28,39 +28,37 @@
 
 	<div id="wrap">
 		<!-- Contenedor central -->
-		<div class="contenido2">
-			{% block contenido %}
+		{% block contenido %}
+		{% endblock %}
+	</div>
+
+	<!-- Pie de pagina -->
+	<div id="footer">
+		{% block pie_pagina %}
+			{% block enlaces_pie_pagina_internos %}
+				<div id="enlaces_internos">
+					<a href="/contacto/">Contacta con nosotros</a> |
+					<a href="/creditos/">Créditos</a> |
+					<a href="/changelog/">Cambios</a> |
+					<a href="/condiciones/">Condiciones de uso</a> |
+					<a href="/siguenos/">Síguenos</a>
+				</div>
 			{% endblock %}
-		</div>
 
-		<!-- Pie de pagina -->
-		<div id="footer">
-			{% block pie_pagina %}
-				{% block enlaces_pie_pagina_internos %}
-					<div id="enlaces_internos">
-						<a href="/contacto/">Contacta con nosotros</a> |
-						<a href="/creditos/">Créditos</a> |
-						<a href="/changelog/">Cambios</a> |
-						<a href="/condiciones/">Condiciones de uso</a> |
-						<a href="/siguenos/">Síguenos</a>
-					</div>
-				{% endblock %}
-
-				{% block enlaces_pie_pagina_externos %}
-					<div id="enlaces_externos">
-						<a href="https://forja.rediris.es/projects/cusl5-90manager/" onclick="target='_blank'">Forja</a> |
-						<a href="http://90manager.wordpress.com/" onclick="target='_blank'">Blog</a> |
-						<a href="https://forja.rediris.es/plugins/wiki/index.php?id=862&amp;type=g" onclick="target='_blank'">Wiki</a>
-					</div>
-				{% endblock %}
-
-				{% block logos_pie_pagina %}
-				{% endblock %}
-
-				{% block contador_desactualizacion %}
-				{% endblock %}
+			{% block enlaces_pie_pagina_externos %}
+				<div id="enlaces_externos">
+					<a href="https://forja.rediris.es/projects/cusl5-90manager/" onclick="target='_blank'">Forja</a> |
+					<a href="http://90manager.wordpress.com/" onclick="target='_blank'">Blog</a> |
+					<a href="https://forja.rediris.es/plugins/wiki/index.php?id=862&amp;type=g" onclick="target='_blank'">Wiki</a>
+				</div>
 			{% endblock %}
-		</div>
+
+			{% block logos_pie_pagina %}
+			{% endblock %}
+
+			{% block contador_desactualizacion %}
+			{% endblock %}
+		{% endblock %}
 	</div>
 
 	{% block js %}{% endblock %}

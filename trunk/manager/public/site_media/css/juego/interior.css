@@ -7,6 +7,7 @@
 	position: fixed;
 	top: 0px;
 	width: 100%;
+	z-index: 10;
 }
 
 #header{
@@ -26,20 +27,19 @@
 
 #menu{
 	display: table-cell;
-	width: 800px;
 }
 
 #menu_superior{
-	height: 30px;
-	width: 800px;
+	height: 20px;
+	margin: 0;
+	padding: 0;
 }
 
-/* Style */
-#lista_botones, #lista_botones ul {
+/* Lista de botones */
+#menu_superior ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	text-indent: 0;
 }
 
 #lista_botones li {
@@ -86,12 +86,20 @@
 	font-size: 1em;
 	height: 30px;
 	list-style-image: url('../../img/icons/favicon.ico');
+	margin: 0px;
+	padding: 0px;
 }
 
 #navigation li{
 	float: left;
 	height: 20px;
 	padding: 5px;
+}
+
+#navigation #fecha_liga{
+	color: #888;
+	float: right;
+	font-weight: bold;
 }
 
 /* Fin header */
@@ -101,9 +109,4 @@
 	box-shadow: 3px 3px 7px #777;
 	margin: 70px auto;
 	width: 950px;
-}
-
-.contenido2{
-	background: #fff;
-	min-height: 250px;
 }

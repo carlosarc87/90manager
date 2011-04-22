@@ -1,80 +1,80 @@
 
 #caja_mensajico{
+	clear: both;
 	height: 40px;
 	padding: 5px 0px;
 	text-align: center;
 }
 
-#contenido_sup{
-	display: table;
-}
-
 #descripcion{
 	clear: both;
 	height: 50px;
+	margin: 0 auto;
 	padding: 5px;
-}
-
-#div_logo{
-	display: table-cell;
-	height: 330px;
-	width: 40%;
+	width: 380px;
 }
 
 #div_acceso{
-	display: table-cell;
-	width: 60%;
+	margin: 0 auto;
+	width: 500px;
+}
+
+#div_logo{
+	background: url('../../img/logoAlter.png');
+	cursor: pointer;
+	height: 175px;
+	margin: 0 auto;
+	width: 387px;
 }
 
 /* login */
 
 #login{
-	background-color: #fff;
-	border: solid 1px #555;
-	float: right;
-	margin: 20px;
-	padding: 20px;
-	width: 380px;
+	border-top: solid 1px #555;
+	border-bottom: solid 1px #555;
+	margin: 20px auto;
+	padding: 10px 0px;
+	width: 450px;
+}
+
+#login ul{
+	height: 70px;
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+#login li{
+	float: left;
+	padding: 5px;
 }
 
 #login #caja_clave{
-	clear: both;
-	padding: 5px 0px;
-	width: 100%;
+	width: 170px;
+}
+
+#login #caja_clave input{
+	width: 160px;
 }
 
 #login #caja_entrar{
-	clear: both;
-	height: 15px;
-	padding: 5px 0px;
+	width: 80px;
 }
 
-#login #caja_recordar{
-	clear: both;
-	padding: 5px 0px;
-}
-
-#login #caja_registro{
-	clear: both;
-	padding: 5px 0px;
+#entrar{
+	margin-top: 15px;
 }
 
 #login #caja_usuario{
+	width: 170px;
+}
+
+#login #caja_usuario input{
+	width: 160px;
+}
+
+#login a, #login label{
 	clear: both;
-	padding: 5px 0px;
-	width: 100%;
-}
-
-#login #entrar, #login #login_password, #login #login_username{
-	float: right;
-}
-
-#logo_login{
-	border: 0px;
-	float: left;
-	margin: 20px 0px;
-	height: 175px;
-	width: 387px;
 }
 
 /* fin login */
@@ -82,11 +82,6 @@
 #mensajico{
 	cursor: pointer;
 	font-style: italic;
-}
-
-label{
-	float: left;
-	width: 150px;
 }
 
 /* registro */
@@ -112,10 +107,14 @@ label{
 	background-color: #fff;
 	border: solid 1px #555555;
 	display: none;
-	float: right;
-	margin: 20px;
+	margin: 20px auto;
 	padding: 20px;
 	width: 380px;
+}
+
+#registro label{
+	float: left;
+	width: 150px;
 }
 
 #registro input{

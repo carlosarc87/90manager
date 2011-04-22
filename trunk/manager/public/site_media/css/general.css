@@ -40,9 +40,9 @@ h1, h2, h3, h4{
 }
 
 #footer{
-	background-color: #fff;
 	border-top: solid 1px #555555;
 	clear: both;
+	padding: 10px;
 	text-align: center;
 }
 
@@ -131,18 +131,6 @@ h1, h2, h3, h4{
 
 #lista_botones li ul li a {
 	font-size: 1em;
-}
-
-#navigation{
-	font-size: 1em;
-	height: 30px;
-	list-style-image: url('../img/icons/favicon.ico');
-}
-
-#navigation li{
-	float: left;
-	height: 20px;
-	padding: 5px;
 }
 
 /* Fin header */

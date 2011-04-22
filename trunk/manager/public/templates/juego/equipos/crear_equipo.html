@@ -5,18 +5,6 @@
     <link rel="stylesheet" href="/media/css/juego/equipos/crear_equipo.css" type="text/css" media="screen" />
 {% endblock %}
 
-{% block js_extra %}
-	<script type="text/javascript">
-		function generarNombre(){
-			var caja_nombre = document.getElementById('id_nombre');
-			var caja_siglas = document.getElementById('id_siglas');
-			
-			caja_nombre.value = {{ nombre_aleatorio }};
-			caja_siglas.value = {{ siglas }};
-		}
-	</script>
-{% endblock %}
-
 {% block situacion %}
 	<ul id="menu_superior_situacion">
 		<li>{{ liga.nombre }}</li>
@@ -49,11 +37,6 @@
 			<label for="id_siglas">Siglas:</label>
 
 			<div id="caja_siglas">{{ form.siglas }}</div>
-		</div>
-
-		<!-- Boton generar nombre aleatorio -->
-		<div id="contenido_boton_generar">
-			<input type="button" name="generar" value="Generar nombre aleatorio" onclick="generarNombre()" />
 		</div>
 
 		<!-- Boton crear -->

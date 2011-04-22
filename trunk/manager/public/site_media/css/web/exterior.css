@@ -2,7 +2,7 @@
 /* footer */
 
 #contador_desactualizacion{
-	color: #888;
+	color: #555;
 	padding: 5px 0px;
 }
 
@@ -16,13 +16,6 @@
 
 #enlaces_internos{
 	padding: 5px 0px;
-}
-
-#footer{
-	background-color: #fff;
-	border-top: solid 1px #555555;
-	clear: both;
-	text-align: center;
 }
 
 #logos{
@@ -39,13 +32,7 @@
 /* Fin header */
 
 #wrap{
-	border: solid 1px #555;
 	box-shadow: 3px 3px 7px #777;
-	margin: 70px auto;
+	margin: 10px auto;
 	width: 950px;
-}
-
-.contenido2{
-	background: #fff;
-	min-height: 250px;
 }
