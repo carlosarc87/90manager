@@ -147,7 +147,11 @@
 			})
 		}
 		
-		
+		/* Para el funcionamiento de tema css con jquery */
+		$(function() {
+			$("input:submit", "#div_acceso").button();
+			/*$("input:text", "#div_acceso").button();*/
+		});
 	</script>
 {% endblock %}
 

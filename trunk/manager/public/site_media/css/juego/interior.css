@@ -3,6 +3,7 @@
 #barra_header{
 	background-color: #fff;
 	border-bottom: solid 1px #555555;
+	height: 60px;
 	left: 0px;
 	position: fixed;
 	top: 0px;
@@ -11,7 +12,6 @@
 }
 
 #header{
-	display: table;
 	margin: 0 auto;
 	width: 950px;
 }
@@ -19,94 +19,46 @@
 #header #logo{
 	background: url("../../img/logo_mini.png") no-repeat;
 	cursor: pointer;
-	display: table-cell;
+	float: left;
 	height: 50px;
-	padding-right: 25px;
 	width: 125px;
 }
 
 #menu{
-	display: table-cell;
+	top: 5px;
 }
 
-#menu_superior{
-	height: 20px;
-	margin: 0;
-	padding: 0;
+#menu div{
+	margin: 10px 0px;
 }
 
-/* Lista de botones */
-#menu_superior ul {
+#menu div ul{
 	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-#lista_botones li {
-	background-color: #39f;
-	display: inline;
-	float: left;
-	margin: 0;
-	padding: 0;
-	position: relative;
-	text-indent: 0;
-	width: 130px;
-}
-
-#lista_botones li a {
-	background-color: #55aa55;
-	color: #000;
-	display: block;
-	font-size: 1.1em;
-	padding: 4px;
-	text-decoration: none;
-	width: 120px;
-}
-
-#lista_botones li a:hover, #lista_botones li a:active {
-	background-color: #88dd88;
-}
-
-#lista_botones li ul {
-	display: none;
-	position: absolute;
-}
-
-#lista_botones li ul li {
-	display: list-item;
-	float: none;
-	margin: 0;
-}
-
-#lista_botones li ul li a {
-	font-size: 1em;
-}
-
-#navigation{
-	font-size: 1em;
-	height: 30px;
-	list-style-image: url('../../img/icons/favicon.ico');
 	margin: 0px;
 	padding: 0px;
 }
 
-#navigation li{
+#menu div ul li{
 	float: left;
-	height: 20px;
-	padding: 5px;
+	padding-right: 20px;
 }
 
-#navigation #fecha_liga{
-	color: #888;
-	float: right;
+#menu div ul a{
+	color: #5555cc;
 	font-weight: bold;
+}
+
+#fecha_liga{
+	color: #eee;
+	float: right;
+	font-size: 0.8em;
+	font-weight: bold;
+	padding: 8px;
 }
 
 /* Fin header */
 
 #wrap{
-	border: solid 1px #555;
-	box-shadow: 3px 3px 7px #777;
 	margin: 70px auto;
 	width: 950px;
 }
