@@ -39,6 +39,7 @@
 			<tr>
 				<th>Local</th>
 				<th>Visitante</th>
+				<th>Fecha</th>
 				<th>Resultado</th>
 			</tr>
 		</thead>
@@ -50,6 +51,9 @@
 					</td>
 					<td>
 						<a href="/equipos/ver/{{ emparejamiento.equipo_visitante.id }}/">{{ emparejamiento.equipo_visitante }}</a>
+					</td>
+					<td>
+						{{ emparejamiento.fecha_inicio }}
 					</td>
 					<th>
 						<a href="/partidos/ver/{{ emparejamiento.id }}/">

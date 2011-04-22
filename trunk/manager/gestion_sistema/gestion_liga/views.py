@@ -60,13 +60,13 @@ def ver_ligas_publicas(request):
 @login_required
 def ver_liga(request):
 	''' Muestra los datos de una liga determinada '''
-	# Calculamos los cambios
-	calcularCambios(request)
-
 	# Obtenemos el usuario
 	usuario = request.user
 
 	liga = request.session['liga_actual']
+
+	# Calculamos los cambios
+	calcularCambios(request)
 
 	# Obtenemos los equipos que juegan en la liga
 	equipos = liga.equipo_set.all()
@@ -256,6 +256,9 @@ def activar_liga(request):
 			#equipos_descartados = form.cleaned_data['equipos']
 			#for equipo in equipos_descartados:
 			#	Equipo.delete(Equipo.objects.get(id = equipo)) # A lo bruten xD
+			liga.fecha_real_inicio = datetime.now()
+			liga.fecha_ficticia_inicio = datetime(2000, 1, 15, 0, 0)
+			liga.factor_tiempo = 60
 			liga.save()
 			liga.rellenarLiga()
 			liga.generarJornadas()
@@ -267,9 +270,6 @@ def activar_liga(request):
 			for equipo in liga.equipo_set.exclude(usuario = None):
 				notificar(equipo.usuario, tipo = TipoNotificacion.LIGA_ACTIVADA, identificador = liga.id, liga = liga)
 
-			liga.fecha_real_inicio = datetime.now()
-			liga.fecha_ficticia_inicio = datetime(2000, 1, 15, 0, 0)
-			liga.factor_tiempo = 60
 			liga.save()
 
 			return devolverMensaje(request, "Se ha generado la liga correctamente", "/ligas/ver/%d/" % liga.id)

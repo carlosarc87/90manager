@@ -149,6 +149,8 @@
 			<thead>
 				<tr>
 					<th>Jornada</th>
+					<th>Fecha inicio</th>
+					<th>Fecha fin</th>
 					<th>Jugada</th>
 				</tr>
 			</thead>
@@ -157,6 +159,12 @@
 					<tr>
 						<td class="cuadro_num_azul_der">
 							<a href="/jornadas/ver/{{ jornada.id }}/">{{ jornada.numero }}</a>
+						</td>
+						<td>
+							{{ jornada.fecha_inicio }}
+						</td>
+						<td>
+							{{ jornada.fecha_fin }}
 						</td>
 						<th>
 							{% if jornada.jugada %}

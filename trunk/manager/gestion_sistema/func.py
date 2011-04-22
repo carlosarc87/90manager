@@ -23,14 +23,15 @@ Copyright 2011 by
 """
 def calcularCambios(request):
 	""" Calcula los cambios realizados en una liga """
-	print "Holo"
-
+	liga = request.session['liga_actual']
+	fecha = liga.getFecha()
 	# Calculos de subastas
 
 	# Traspasos de jugadores
 	# Tomar en cuenta alineaciones en las que se cambia un jugador
 
+	# Jugar Partidos
+	liga.partido_set.all()
 	# Avanzar Jornadas
 
-	# Jugar Partidos
 

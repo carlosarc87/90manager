@@ -201,13 +201,13 @@ class Liga(models.Model):
 		# Guardar jornadas y partidos
 		for i in range(len(jornadas)):
 			jornada = Jornada(liga = self, numero = i + 1, jugada = False)
-			jornada.fecha_inicio = datetime.now() + timedelta(days = i)
-			jornada.fecha_fin = datetime.now() + timedelta(days = i + 1)
+			jornada.fecha_inicio = self.fecha_ficticia_inicio + timedelta(days = i)
+			jornada.fecha_fin = jornada.fecha_inicio + timedelta(days = i + 1)
 			jornada.save()
 			for emparejamiento in jornadas[i]:
 				partido = Partido(liga = self, jornada = jornada, equipo_local = emparejamiento[0], equipo_visitante = emparejamiento[1], jugado = False)
-				partido.fecha_inicio = datetime.now() + timedelta(days = i)
-				partido.fecha_fin = datetime.now() + timedelta(days = i + 1, hours = 2)
+				partido.fecha_inicio = jornada.fecha_inicio + timedelta(days = i)
+				partido.fecha_fin = partido.fecha_inicio + timedelta(hours = 2)
 				partido.save()
 
 	def agregarEquipo(self, equipo):
