@@ -6,13 +6,23 @@
     <link rel="stylesheet" href="/media/css/juego/ligas/crear_liga.css" type="text/css" media="screen" />
 {% endblock %}
 
-{% block menu %}
+{% block js_extra %}
+	<!-- No tocar que hay que arreglarlo un poco aun -->
+	<script type="text/javascript">
+		/* Para el funcionamiento de tema css con jquery */
+		$(function() {
+			$("input:checkbox", "#form_crear_liga").button();
+			$("input:radio", "#form_crear_liga").buttonset();
+			$("input:submit", "#form_crear_liga").button();
+			$("input:text", "#form_crear_liga").text();
+		});
+	</script>
 {% endblock %}
 
 {% block contenido %}
 	<h2>Creación de nueva liga</h2>
 
-	<div id="crear_liga">
+	<div id="contenido_crear_liga">
 		<form id="form_crear_liga" action="/ligas/crear/" method="post">
 			{% csrf_token %}
 			<!-- Nombre de la liga -->

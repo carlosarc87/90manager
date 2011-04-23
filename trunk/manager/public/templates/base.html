@@ -11,8 +11,6 @@
 	{% block favicon %}<link rel="icon" href="/media/img/icons/favicon.ico" />{% endblock %}
 
 	<link rel="stylesheet" href="/media/css/general.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="/media/css/juego/exterior.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="/media/css/juego/interior.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="/media/js/jquery-ui-1.8.11.custom/css/custom-theme/jquery-ui-1.8.11.custom.css" type="text/css" media="screen" />
 	{% block css_extra %}{% endblock %}
 </head>
@@ -87,10 +85,10 @@
 						{% endif %}
 					{% else %}
 						<!-- Crear Liga -->
-						<li id="crear_liga" title="Crear liga"></li>
+						<li id="crear_liga" onclick="location.href='/ligas/crear/'" title="Crear liga"></li>
 
 						<!-- Ver ligas publicas -->
-						<li id="ligas_publicas" title="Ver ligas públicas"></li>
+						<li id="ligas_publicas" onclick="location.href='/ligas/publicas/'" title="Ver ligas públicas"></li>
 					{% endif %}
 
 					<!-- Notificaciones -->
