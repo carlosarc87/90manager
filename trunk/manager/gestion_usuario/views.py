@@ -34,7 +34,7 @@ from settings import URL_PROPIA, vper
 from models import Usuario, ClaveRegistroUsuario
 from forms import UsuarioForm
 
-from gestion_base.func import devolverMensaje, redireccionar, generarPagina
+from gestion_base.func import devolverMensaje, redireccionar, generarPagina, renderizar
 
 from gestion_sistema.gestion_liga.models import Liga
 
@@ -102,7 +102,7 @@ def principal(request):
 	else:
 		form_reg = UsuarioForm()
 
-	return render_to_response("web/principal.html", { "form_reg" : form_reg, "login_error" : login_error }, context_instance = RequestContext(request))
+	return renderizar(request, "web/principal.html", { "form_reg" : form_reg, "login_error" : login_error })
 
 ########################################################################
 
@@ -122,7 +122,7 @@ def tablon(request):
 		 "equipos" : equipos,
 		}
 
-	return render_to_response("juego/tablon.html", d)
+	return renderizar(request, "juego/tablon.html", d)
 
 ########################################################################
 

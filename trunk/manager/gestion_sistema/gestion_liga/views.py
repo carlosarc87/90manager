@@ -36,7 +36,7 @@ from gestion_sistema.gestion_equipo.forms import EquipoForm
 from models import Liga
 from forms import LigaForm, ActivarLigaForm
 
-from gestion_base.func import devolverMensaje, redireccionar, generarPagina
+from gestion_base.func import devolverMensaje, redireccionar, generarPagina, renderizar
 
 from gestion_usuario.models import Usuario
 from gestion_usuario.gestion_notificacion.func import notificar, TipoNotificacion
@@ -53,7 +53,7 @@ def ver_ligas_publicas(request):
 		liga.inscritos = liga.equipo_set.all().count()
 
 	d = { "ligas" : ligas }
-	return generarPagina("juego/ligas/ver_ligas_publicas.html", d, request)
+	return renderizar(request, "juego/ligas/ver_ligas_publicas.html", d)
 
 ########################################################################
 
