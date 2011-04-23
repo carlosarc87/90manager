@@ -26,7 +26,7 @@ Copyright 2011 by
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
-from gestion_sistema.decorators import actualizarLiga
+from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 
 from models import Partido
 from forms import PrepararEquipoForm
@@ -36,6 +36,7 @@ from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 ########################################################################
 
 @login_required
+@comprobarSesion(['partido_actual'])
 def jugar_partido(request):
 	''' Juega un partido '''
 	return devolverMensaje(request, "Desactualizado, pendiente de actualizacion")
@@ -94,6 +95,7 @@ def ver_partido_id(request, partido_id):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['partido_actual'])
 def ver_partido(request):
 	''' Muestra los datos de un partido '''
 	# Obtenemos el usuario
@@ -291,6 +293,7 @@ def ver_partido(request):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['partido_actual'])
 def preparar_partido(request):
 	''' Muestra los datos para preparar un partido '''
 	usuario = request.user
@@ -357,6 +360,7 @@ def preparar_partido(request):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['partido_actual'])
 def ver_repeticion_partido(request):
 	''' Muestra la repeticion de un partido '''
 	# Obtenemos el usuario
@@ -401,6 +405,7 @@ def ver_repeticion_partido(request):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['liga_actual', 'equipo_propio'])
 def ver_partidos_propios(request):
 	""" Accede directamente al siguiente partido """
 
@@ -427,6 +432,7 @@ def ver_partidos_propios(request):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['liga_actual', 'equipo_propio'])
 def proximo_partido(request):
 	""" Accede directamente al siguiente partido """
 	liga = request.session['liga_actual']

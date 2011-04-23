@@ -25,7 +25,7 @@ Copyright 2011 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 
-from gestion_sistema.decorators import actualizarLiga
+from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 
 from models import Subasta
 from forms import SubastaForm, PujarForm
@@ -39,6 +39,7 @@ from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['jugador_actual'])
 def crear_subasta(request):
 	''' Crea una subasta de un jugador '''
 	usuario = request.user
@@ -93,6 +94,7 @@ def crear_subasta(request):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['liga_actual'])
 def ver_subastas_liga(request):
 	''' Muestra las subastas de una liga '''
 	liga = request.session['liga_actual']
@@ -122,6 +124,7 @@ def ver_subasta_id(request, subasta_id):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['subasta_actual'])
 def ver_subasta(request):
 	''' Muestra los datos de una subasta '''
 	# Obtenemos el usuario
@@ -159,6 +162,7 @@ def ver_subasta(request):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['equipo_actual'])
 def ver_subastas_equipo(request):
 	''' Muestra las subastas de un equipo '''
 	equipo = request.session['equipo_actual']
@@ -179,6 +183,7 @@ def ver_subastas_equipo(request):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['subasta_actual'])
 def comprar_subasta(request):
 	''' Muestra los datos de una subasta '''
 	# Obtenemos el usuario
@@ -218,6 +223,7 @@ def comprar_subasta(request):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['equipo_propio'])
 def mis_subastas(request):
 	""" Muestra las subastas de un equipo """
 	equipo = request.session['equipo_propio']
@@ -235,6 +241,7 @@ def mis_subastas(request):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['equipo_propio'])
 def mis_pujas(request):
 	""" Muestra las subastas de un equipo """
 	equipo = request.session['equipo_propio']

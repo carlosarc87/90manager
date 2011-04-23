@@ -28,7 +28,7 @@ from django.contrib.auth.decorators import login_required
 from models import Equipo
 from forms import EquipoForm
 
-from gestion_sistema.decorators import actualizarLiga
+from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 
 from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
@@ -56,6 +56,7 @@ def ver_equipo_id(request, equipo_id):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['equipo_actual'])
 def ver_equipo(request):
 	''' Muestra los datos de un equipo '''
 	# Obtenemos el usuario
@@ -98,6 +99,7 @@ def ver_equipo(request):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['equipo_propio'])
 def ver_equipo_propio(request):
 	''' Muestra los datos de un equipo '''
 	# Obtenemos el usuario
@@ -140,6 +142,7 @@ def ver_equipo_propio(request):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['liga_actual'])
 def crear_equipo(request):
 	from gestion_sistema.gestion_equipo.func import ObtenerNombreYSiglasAleatorio
 
@@ -176,6 +179,7 @@ def crear_equipo(request):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['liga_actual', 'equipo_propio'])
 def listar_equipos_liga(request):
 	""" Muestra los equipos de una liga """
 	# Obtenemos el usuario

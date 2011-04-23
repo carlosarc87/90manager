@@ -25,11 +25,13 @@ Copyright 2011 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 
+from gestion_sistema.decorators import comprobarSesion
 from gestion_base.func import devolverMensaje, generarPagina
 
 ########################################################################
 
 @login_required
+@comprobarSesion(['liga_actual'])
 def ver_clasificacion(request):
 	""" Muestra la clasificacion actual del sistema """
 

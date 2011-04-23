@@ -28,7 +28,7 @@ from django.db import transaction
 
 from datetime import datetime
 
-from gestion_sistema.decorators import actualizarLiga
+from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_equipo.forms import EquipoForm
@@ -59,6 +59,7 @@ def ver_ligas_publicas(request):
 
 @login_required
 @actualizarLiga
+@comprobarSesion(['liga_actual'])
 def ver_liga(request):
 	''' Muestra los datos de una liga determinada '''
 	# Obtenemos el usuario
@@ -188,6 +189,7 @@ def ver_liga_id(request, liga_id):
 ########################################################################
 
 @login_required
+@comprobarSesion(['liga_actual'])
 def avanzar_jornada_liga(request):
 	''' Avanza una liga de jornada actual '''
 	return devolverMensaje(request, "Desactualizado, pendiente de eliminar")
@@ -235,6 +237,7 @@ def crear_liga(request):
 
 @login_required
 @transaction.commit_on_success
+@comprobarSesion(['liga_actual'])
 def activar_liga(request):
 	''' Formulario para activar una liga '''
 	usuario = request.user
