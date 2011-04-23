@@ -27,7 +27,7 @@
 					{% if liga_actual %}
 						<!-- Liga -->
 						<li id="liga" onclick="mostrarMenu(this)">
-							<ul>
+							<ul class="desplegable">
 								<li><a href="/ligas/ver/">Información</a></li>
 								<li><a href="/clasificacion/ver/">Clasificación</a></li>
 								<li><a href="/jornadas/listar/">Jornadas</a></li>
@@ -38,14 +38,14 @@
 						
 						<!-- Equipo -->
 						<li id="equipo" onclick="mostrarMenu(this)">
-							<ul>
+							<ul class="desplegable">
 								{% if equipo_propio %}
 									<li><a href="/equipos/mi_equipo/">Información</a></li>
 									<li><a href="#">Entrenamientos</a></li>
 									<li><a href="/partidos/mis_partidos/">Partidos</a></li>
 									<li><a href="/partidos/proximo/">Próximo partido</a></li>
 								{% else %}
-									<li>Sin Equipo</li>
+									<li><a>Sin Equipo</a></li>
 								{% endif %}
 							</ul>
 						</li>
@@ -56,7 +56,7 @@
 					
 						<!-- Mercado -->
 						<li id="mercado" onclick="mostrarMenu(this)">
-							<ul>
+							<ul class="desplegable">
 								<li><a href="/mercado/subastas/ver/liga/">Subastas</a></li>
 								<li><a href="/mercado/subastas/propias/">Mis subastas</a></li>
 								<li><a href="/mercado/subastas/pujas/">Mis pujas</a></li>
@@ -66,7 +66,7 @@
 					
 					<!-- Notificaciones -->
 					<li id="notificaciones" onclick="mostrarMenu(this)">
-						<ul>
+						<ul class="desplegable">
 							{% for notificacion in ultimas_notificaciones %}
 								<li><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></li>
 							{% empty %}
@@ -78,8 +78,8 @@
 					
 					<!-- Usuario -->
 					<li id="usuario" onclick="mostrarMenu(this)">
-						{{ user.username }}
-						<ul>
+						<span>{{ user.username }}</span>
+						<ul class="desplegable">
 							<li><a href="/tablon/">Tablón</a></li>
 							<li><a href="/cuentas/preferencias/">Preferencias</a></li>
 							<li><a href="/ayuda/">Ayuda</a></li>
