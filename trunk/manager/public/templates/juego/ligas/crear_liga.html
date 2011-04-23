@@ -11,10 +11,8 @@
 	<script type="text/javascript">
 		/* Para el funcionamiento de tema css con jquery */
 		$(function() {
-			$("input:checkbox", "#form_crear_liga").button();
-			$("input:radio", "#form_crear_liga").buttonset();
+			$("#caja_sexo_permitido", "#form_crear_liga").buttonset();
 			$("input:submit", "#form_crear_liga").button();
-			$("input:text", "#form_crear_liga").text();
 		});
 	</script>
 {% endblock %}
@@ -59,7 +57,14 @@
 					<span class="label">Géneros permitidos:</span>
 
 					<div id="caja_sexo_permitido">
-						{{ form.sexo_permitido }}
+						<input type="radio" id="sexo_permitido_0" name="sexo_permitido" value="0" checked="checked" />
+						<label for="sexo_permitido_0">Solo hombres</label>
+						
+						<input type="radio" id="sexo_permitido_1" name="sexo_permitido" value="1" />
+						<label for="sexo_permitido_1">Solo mujeres</label>
+						
+						<input type="radio" id="sexo_permitido_2" name="sexo_permitido" value="2" />
+						<label for="sexo_permitido_2">Hombres y mujeres</label>
 					</div>
 				</div>
 

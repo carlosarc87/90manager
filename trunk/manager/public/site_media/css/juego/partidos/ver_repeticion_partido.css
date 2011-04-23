@@ -4,6 +4,19 @@
 	width: 400px;
 }
 
+#barra_repeticion #contador_tiempo2{
+	background: #222;
+	border: solid 1px #ccc;
+	color: #cccc00;
+	padding: 5px;
+}
+
+#barra_repeticion #velocidad_tiempo{
+	color: #0000cc;
+	font-weight: bold;
+	padding: 5px;
+}
+
 #caja_botones{
 	margin: 10px 0px;
 	text-align: center;

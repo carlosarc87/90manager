@@ -46,7 +46,7 @@ fieldset{
 	font-weight: bold;
 }
 #caja_sexo_permitido label{
-	display: block;
+	font-size: 1em;
 }
 
 #contenido_inteligencia_bots{ display: none; padding: 5px 0px; }

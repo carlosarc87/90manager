@@ -14,6 +14,8 @@
 				s = "0" + s;
 			return s;
 		}
+		
+		var velocidad = 0;
 
 		var array_sucesos = [];
 
@@ -39,7 +41,12 @@
 			str_tiempo = formato_tiempo.replace(/%%M%%/g, calcularTiempo(segundos, 60, 400));
 			str_tiempo = str_tiempo.replace(/%%S%%/g, calcularTiempo(segundos, 1, 60));
 			document.getElementById("contador_tiempo").innerHTML = "Tiempo: " + str_tiempo;
+			document.getElementById("contador_tiempo2").innerHTML = str_tiempo;
 			annadirFila();
+		}
+		
+		function actualizarVelocidad() {
+			document.getElementById("velocidad_tiempo").innerHTML = "x" + (velocidad / 10);
 		}
 
 		function contadorTiempo() {
@@ -56,7 +63,31 @@
 
 		var timeout = 990;
 		var ultimaFilaAgregada = -1;
-
+		
+		function incrementarVelocidad() {
+			if (velocidad < 20) {
+				velocidad = velocidad + 1;
+			}
+			else if (velocidad < 100) {
+				velocidad = velocidad + 10;
+			}
+			actualizarVelocidad();
+			
+			timeout = (1 / velocidad) * 1000;
+		}
+		
+		function decrementarVelocidad() {
+			if (velocidad > 20) {
+				velocidad = velocidad - 10;
+			}
+			else if (velocidad > 1) {
+				velocidad = velocidad - 1;
+			}
+			actualizarVelocidad();
+			
+			timeout = (1 / velocidad) * 1000;
+		}
+		
 		function cambiarVelocidad(elem) {
 			vel = document.getElementById("valor_velocidad").value;
 			timeout = vel * 990;
@@ -234,12 +265,16 @@
 		
 		<!-- Barra extra prueba -->
 		<div id="barra_repeticion" class="ui-widget-header ui-corner-all">
-			<button id="beginning">go to beginning</button>
-			<button id="rewind">rewind</button>
-			<button id="play">play</button>
-			<button id="stop">stop</button>
-			<button id="forward">fast forward</button>
+			<button id="beginning" onclick="reiniciarContador(this);">go to beginning</button>
+			<button id="rewind" onclick="decrementarVelocidad();">rewind</button>
+			<button id="play" onclick="pausarContador(this);">play</button>
+			<button id="stop" onclick="reiniciarContador(this);">stop</button>
+			<button id="forward" onclick="incrementarVelocidad();">fast forward</button>
 			<button id="end">go to end</button>
+			
+			<span id="contador_tiempo2">0:00</span>
+			
+			<span id="velocidad_tiempo">x0</span>
 			
 			<input type="checkbox" id="shuffle" /><label for="shuffle">Shuffle</label>
 			

@@ -5,14 +5,6 @@
     <link rel="stylesheet" href="/media/css/juego/partidos/ver_partido.css" type="text/css" media="screen" />
 {% endblock %}
 
-{% block situacion %}
-	<ul id="menu_superior_situacion">
-		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
-		<li><a href="/jornadas/ver/{{ jornada.id }}/">Jornada {{ jornada.numero }}</a></li>
-		<li>Partido {{ partido.id }}</li>
-	</ul>
-{% endblock %}
-
 {% block contenido %}
 	<div id="ver_repeticion"><a href="/partidos/repeticion/">Ver repetición</a></div>
 

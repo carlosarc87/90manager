@@ -173,7 +173,7 @@ def crear_equipo(request):
 	nombre_aleatorio, siglas = ObtenerNombreYSiglasAleatorio(liga)
 
 	d = {"form": form, "usuario" : usuario, "liga" : liga, "nombre_aleatorio" : nombre_aleatorio, "siglas" : siglas }
-	return generarPagina(ObtenerNombreYSiglasAleatorio"juego/equipos/crear_equipo.html", d)
+	return generarPagina(request, "juego/equipos/crear_equipo.html", d)
 
 ########################################################################
 

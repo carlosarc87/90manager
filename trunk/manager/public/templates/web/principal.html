@@ -175,20 +175,20 @@
 					<!-- Usuario -->
 					<li id="caja_usuario">
 						<label for="login_username">Usuario</label>
-						<input id="login_username" type="text" name="login_username" value="" maxlength="50" />
-						<a href="#" onclick="mostrarRegistro();">Registro</a>
+						<input id="login_username" type="text" name="login_username" value="" maxlength="50" tabindex="1" />
+						<a href="#" onclick="mostrarRegistro();" tabindex="4">Registro</a>
 					</li>
 
 					<!-- Clave -->
 					<li id="caja_clave">
 						<label for="login_password">Contraseña</label>
-						<input id="login_password" type="password" name="login_password" value="" maxlength="50" />
-						<a href="#">Recordar contraseña</a>
+						<input id="login_password" type="password" name="login_password" value="" maxlength="50" tabindex="2" />
+						<a href="#" tabindex="5">Recordar contraseña</a>
 					</li>
 
 					<!-- Boton entrar -->
 					<li id="caja_entrar">
-						<input id="entrar" type="submit" name="login" value="Entrar" />
+						<input id="entrar" type="submit" name="login" value="Entrar" tabindex="3" />
 					</li>
 				</ul>
 			</form>
@@ -205,7 +205,7 @@
 				<div id="contenido_usuario_reg">
 					<label for="id_username">Nombre de usuario:</label>
 					<div id="caja_usuario_reg">
-						<input id="id_username" type="text" name="username" value="" maxlength="50" />
+						<input id="id_username" type="text" name="username" value="" maxlength="50" tabindex="1" />
 					</div>
 				</div>
 
@@ -217,7 +217,7 @@
 				<div id="contenido_password">
 					<label for="id_password">Contraseña:</label>
 					<div id="caja_password">
-						<input id="id_password" type="password" name="password" value="" maxlength="50" />
+						<input id="id_password" type="password" name="password" value="" maxlength="50" tabindex="2" />
 					</div>
 				</div>
 
@@ -229,7 +229,7 @@
 				<div id="contenido_email">
 					<label for="id_email">E-Mail:</label>
 					<div id="caja_email">
-						<input id="id_email" type="text" name="email" value="" maxlength="100" />
+						<input id="id_email" type="text" name="email" value="" maxlength="100" tabindex="3" />
 					</div>
 				</div>
 
@@ -247,7 +247,7 @@
 
 				<!-- Boton registrar -->
 				<div id="contenido_boton_registrar">
-					<input type="submit" name="registrar_usuario" value="Registrar" />
+					<input type="submit" name="registrar_usuario" value="Registrar" tabindex="4" />
 				</div>
 
 				<!-- Login -->
