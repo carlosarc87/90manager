@@ -16,6 +16,10 @@
 			comision = calcularComision(cantidad, dias);
 			return confirm("Te vamos a sablar " + comision + " de comision");
 		}
+		$(function() {
+			$("#id_fecha_fin").datepicker();
+
+		});
 	</script>
 {% endblock %}
 
@@ -29,7 +33,6 @@
 {% endblock %}
 
 {% block contenido %}
-
 	<h2>Subastando a {{ jugador.nombre }}</h2>
 
 	<form id="form_subastar" action="/mercado/subastas/crear/" method="post">
