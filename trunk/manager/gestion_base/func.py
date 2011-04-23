@@ -65,18 +65,21 @@ class HorizRadioRenderer(forms.RadioSelect.renderer):
 
 ########################################################################
 
-def generarPagina(template, parametros, request, form = False, agregar_parametros=True):
+def generarPagina(template, parametros, request, agregar_parametros=True):
 	""" Genera una pagina web con los templates añadiendo unos parámetros por defecto """
 	usuario = request.user
 	if agregar_parametros:
-		liga = request.session['liga_actual']
-		parametros['num_notificaciones'] = usuario.notificacion_set.filter(leida = False).count()
-		parametros['liga_actual'] = liga
-		equipo = request.session['equipo_propio']
-		parametros['equipo_propio'] = equipo
-		parametros['ultimas_notificaciones'] = usuario.notificacion_set.filter(leida=False)[:5]
-		if liga.activada():
-			parametros['fecha_actual_liga'] = liga.getFecha()
+		try:
+			liga = request.session['liga_actual']
+			parametros['num_notificaciones'] = usuario.notificacion_set.filter(leida = False).count()
+			parametros['liga_actual'] = liga
+			equipo = request.session['equipo_propio']
+			parametros['equipo_propio'] = equipo
+			parametros['ultimas_notificaciones'] = usuario.notificacion_set.filter(leida=False)[:5]
+			if liga.activada():
+				parametros['fecha_actual_liga'] = liga.getFecha()
+		except KeyError:
+			pass
 	return renderizar(request, template, parametros)
 
 ########################################################################

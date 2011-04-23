@@ -27,20 +27,20 @@ from datetime import datetime
 
 from forms import ContactoForm
 
-from gestion_base.func import devolverMensaje, redireccionar, renderizar
+from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 ########################################################################
 
 @login_required
 def index(request):
 	''' Devuelve la pagina principal '''
-	return redireccionar("/tablon")
+	return redireccionar("/tablon/")
 
 ########################################################################
 
 def creditos(request):
 	''' Ir a la pagina de creditos '''
-	return renderizar(request, "web/creditos.html", {})
+	return generarPagina("web/creditos.html", {}, request)
 
 ########################################################################
 
@@ -70,30 +70,30 @@ def contacto(request):
 
 	c = { "form" : form }
 
-	return renderizar(request, "web/contacto.html", c)
+	return generarPagina("web/contacto.html", c, request)
 
 ########################################################################
 
 def changelog(request):
 	''' Muestra el historial de versiones de la web '''
-	return renderizar(request, "web/changelog.html", {})
+	return generarPagina("web/changelog.html", {}, request)
 
 ########################################################################
 
 def siguenos(request):
 	''' Muestra las páginas donde seguir el proyecto '''
-	return renderizar(request, "web/siguenos.html", {})
+	return generarPagina("web/siguenos.html", {}, request)
 
 ########################################################################
 
 def condiciones(request):
 	''' Muestra las condiciones de uso '''
-	return renderizar(request, "web/condiciones.html", {})
+	return generarPagina("web/condiciones.html", {}, request)
 
 ########################################################################
 
 def bajoConstruccion(request):
 	''' Mensaje para los enlaces que no estan construidos aun '''
-	return renderizar(request, "La página que deseas visitar aún no está acabada =(", {})
+	return generarPagina("La página que deseas visitar aún no está acabada =(", {}, request)
 
 ########################################################################
