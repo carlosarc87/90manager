@@ -34,17 +34,24 @@ from gestion_usuario.gestion_notificacion.func import notificar, Notificacion
 from random import randint
 from func import probabilidadExito
 
-POSICIONES = (
-	('BA', 'BANQUILLO'),
-	('PO', 'PORTERO'),
-	('DF', 'DEFENSA'),
-	('CC', 'CENTROCAMPISTA'),
-	('DL', 'DELANTERO'),
-)
-
 ########################################################################
 
 class JugadorPartido(models.Model):
+	""" Represente la posicion de un jugador en un partido """
+	BANQUILLO = 'BA'
+	PORTERO = 'PO'
+	DEFENSA = 'DF'
+	CENTROCAMPISTA = 'CC'
+	DELANTERO = 'DL'
+
+	POSICIONES = (
+		(BANQUILLO, 'BANQUILLO'),
+		(PORTERO, 'PORTERO'),
+		(DEFENSA, 'DEFENSA'),
+		(CENTROCAMPISTA, 'CENTROCAMPISTA'),
+		(DELANTERO, 'DELANTERO'),
+	)
+
 	''' Representa los atributos de un jugador en un partido '''
 	# Datos principales
 	atributos = models.ForeignKey(AtributosVariablesJugador)
@@ -71,31 +78,31 @@ class AlineacionEquipo(models.Model):
 		self.borrarAlineacion()
 
 		atributos = self.equipo.atributosvariablesjugador_set.get(jugador__id = portero)
-		p = JugadorPartido(atributos = atributos, posicion = 'PO')
+		p = JugadorPartido(atributos = atributos, posicion = JugadorPartido.PORTERO)
 		p.save()
 		self.jugadores.add(p)
 
 		for id_jugador in defensas:
 			atributos = self.equipo.atributosvariablesjugador_set.get(jugador__id = id_jugador)
-			p = JugadorPartido(atributos = atributos, posicion = 'DF')
+			p = JugadorPartido(atributos = atributos, posicion = JugadorPartido.DEFENSA)
 			p.save()
 			self.jugadores.add(p)
 
 		for id_jugador in centrocampistas:
 			atributos = self.equipo.atributosvariablesjugador_set.get(jugador__id = id_jugador)
-			p = JugadorPartido(atributos = atributos, posicion = 'CC')
+			p = JugadorPartido(atributos = atributos, posicion = JugadorPartido.CENTROCAMPISTA)
 			p.save()
 			self.jugadores.add(p)
 
 		for id_jugador in delanteros:
 			atributos = self.equipo.atributosvariablesjugador_set.get(jugador__id = id_jugador)
-			p = JugadorPartido(atributos = atributos, posicion = 'DL')
+			p = JugadorPartido(atributos = atributos, posicion = JugadorPartido.DELANTERO)
 			p.save()
 			self.jugadores.add(p)
 
 		for id_jugador in suplentes:
 			atributos = self.equipo.atributosvariablesjugador_set.get(jugador__id = id_jugador)
-			p = JugadorPartido(atributos = atributos, posicion = 'BA')
+			p = JugadorPartido(atributos = atributos, posicion = JugadorPartido.BANQUILLO)
 			p.save()
 			self.jugadores.add(p)
 
@@ -128,46 +135,46 @@ class AlineacionEquipo(models.Model):
 
 	def getDelanteros(self):
 		''' Devuelve los delanteros del equipo '''
-		lista = self.jugadores.filter(posicion = 'DL')
+		lista = self.jugadores.filter(posicion = JugadorPartido.DELANTERO)
 		if len(lista) > 0:
 			return lista
 		return None
 
 	def getCentrocampistas(self):
 		''' Devuelve los centrocampistas del equipo '''
-		lista = self.jugadores.filter(posicion = 'CC')
+		lista = self.jugadores.filter(posicion = JugadorPartido.CENTROCAMPISTA)
 		if len(lista) > 0:
 			return lista
 		return None
 
 	def getDefensas(self):
 		''' Devuelve los defensas del equipo '''
-		lista = self.jugadores.filter(posicion = 'DF')
+		lista = self.jugadores.filter(posicion = JugadorPartido.DEFENSA)
 		if len(lista) > 0:
 			return lista
 		return None
 
 	def getPortero(self):
 		''' Devuelve al portero del equipo '''
-		lista = self.jugadores.filter(posicion = 'PO')
+		lista = self.jugadores.filter(posicion = JugadorPartido.PORTERO)
 		if len(lista) > 0:
 			return lista[0]
 		return None
 
 	#def getSuplentes(self):
 		#''' Devuelve los suplentes del equipo '''
-		#lista = self.jugadores.filter(posicion = 'BA')
+		#lista = self.jugadores.filter(posicion = JugadorPartido.BANQUILLO)
 		#if len(lista) > 0:
 			#return lista
 		#return None
 
 	def getDatosTitulares(self):
 		''' Devuelve los datos de los titulares '''
-		return self.jugadores.all().exclude(posicion = 'BA')
+		return self.jugadores.all().exclude(posicion = JugadorPartido.BANQUILLO)
 
 	def getDatosSuplentes(self):
 		''' Devuelve los datos de los suplentes '''
-		return self.jugadores.filter(posicion = 'BA')
+		return self.jugadores.filter(posicion = JugadorPartido.BANQUILLO)
 
 	def setAleatoria(self):
 		jugadores_equipo = self.equipo.atributosvariablesjugador_set.all()
@@ -199,25 +206,25 @@ class AlineacionEquipo(models.Model):
 
 		# De momento poner una 4-4-2 con los jugadores que haya
 		if len(lista_PO) > 0:
-			jugador = JugadorPartido(atributos = lista_PO.pop(0), posicion = 'PO')
+			jugador = JugadorPartido(atributos = lista_PO.pop(0), posicion = JugadorPartido.PORTERO)
 			jugador.save()
 			self.jugadores.add(jugador)
 
 		for i in range(0, 4):
 			if len(lista_DF) > 0:
-				jugador = JugadorPartido(atributos = lista_DF.pop(0), posicion = 'DF')
+				jugador = JugadorPartido(atributos = lista_DF.pop(0), posicion = JugadorPartido.DEFENSA)
 				jugador.save()
 				self.jugadores.add(jugador)
 
 		for i in range(0, 4):
 			if len(lista_CC) > 0:
-				jugador = JugadorPartido(atributos = lista_CC.pop(0), posicion = 'CC')
+				jugador = JugadorPartido(atributos = lista_CC.pop(0), posicion = JugadorPartido.CENTROCAMPISTA)
 				jugador.save()
 				self.jugadores.add(jugador)
 
 		for i in range(0, 2):
 			if len(lista_DL) > 0:
-				jugador = JugadorPartido(atributos = lista_DL.pop(0), posicion = 'DL')
+				jugador = JugadorPartido(atributos = lista_DL.pop(0), posicion = JugadorPartido.DELANTERO)
 				jugador.save()
 				self.jugadores.add(jugador)
 
