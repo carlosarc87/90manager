@@ -68,10 +68,9 @@ class Jornada(Evento):
 
 	def jugarPartidosRestantes(self):
 		''' Juega todos los partidos de la jornada que no se han finalizado '''
-		partidos = self.partido_set.all()
+		partidos = self.partido_set.filter(jugado = False)
 		for partido in partidos:
-			if not partido.finalizado():
-				partido.jugar()
+			partido.jugar()
 		self.jugada = True
 		self.save()
 

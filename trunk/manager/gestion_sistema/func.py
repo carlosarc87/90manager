@@ -34,16 +34,21 @@ def calcularCambios(request):
 		# Tomar en cuenta alineaciones en las que se cambia un jugador
 
 		# Avanzar Jornadas
+		print "Analizando jornadas"
 		jornadas_acabadas = liga.jornada_set.filter(jugada = False, fecha_fin__lt = liga.getFecha())
 		for jornada in jornadas_acabadas:
+			print "Avanzando jornada", jornada
 			liga.avanzarJornada()
 
 		# Jugar Partidos de esta jornada
+		print "Analizando partidos acabados"
 		partidos_acabados = liga.partido_set.filter(jugado = False, fecha_fin__lt = liga.getFecha())
 		for partido in partidos_acabados:
+			print "Jugando el partido", partido
 			partido.jugar()
 
-		partidos_iniciados = liga.partido_set.filter(jugado = False, fecha_inicio__lt = liga.getFecha())
+		print "Fin"
+		#partidos_iniciados = liga.partido_set.filter(jugado = False, fecha_inicio__lt = liga.getFecha())
 		# Iniciar partidos
 		# bla bla bla
 		return True

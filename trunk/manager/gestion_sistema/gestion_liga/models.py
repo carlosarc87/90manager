@@ -62,7 +62,7 @@ class Liga(models.Model):
 	def getFecha(self):
 		""" Devuelve la fecha ficticia de la liga """
 		ahora_real = datetime.now()
-		factor = 60
+		factor = 3600
 		t_real_transcurrida = ahora_real - self.fecha_real_inicio
 		t_ficticio_transcurrida = t_real_transcurrida * factor
 		ahora_ficticia = self.fecha_ficticia_inicio + t_ficticio_transcurrida
@@ -221,24 +221,27 @@ class Liga(models.Model):
 		if not jornada:
 			return False
 
+		print "Jugando partidos restantes"
 		jornada.jugarPartidosRestantes()
 
 		# Actualizar subastas
-		for subasta in self.subasta_set.all():
-			subasta.expira -= 1
-			if subasta.expira == 0:
-				# Completar el traslado
-				subasta.finalizar()
-				subasta.delete()
-			else:
-				subasta.save()
+#		print "Actualizando subastas"
+#		for subasta in self.subasta_set.all():
+#			subasta.expira -= 1
+#			if subasta.expira == 0:
+#				# Completar el traslado
+#				subasta.finalizar()
+#				subasta.delete()
+#			else:
+#				subasta.save()
 
 		# Generar los datos de clasificacion de la siguiente jornada
+		print "Generando clasificaciones"
 		siguiente_jornada = self.getJornadaActual()
 		if siguiente_jornada:
 			siguiente_jornada.generarClasificacion()
 			siguiente_jornada.mantenerAlineaciones(jornada)
-
+		print "Fin"
 		return True
 
 	def getNumJornadas(self):

@@ -21,7 +21,7 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.db import models
+from django.db import models, transaction
 
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
@@ -392,6 +392,7 @@ class Partido(Evento):
 		''' Indica si un partido ya ha acabado '''
 		return self.jugado
 
+	@transaction.commit_on_success
 	def jugar(self):
 		''' Juega el partido '''
 		num_goles = [0, 0]
