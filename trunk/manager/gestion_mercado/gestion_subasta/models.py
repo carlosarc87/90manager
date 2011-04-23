@@ -28,7 +28,7 @@ from gestion_sistema.gestion_liga.models import Liga
 from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
 from gestion_sistema.gestion_calendario.models import Evento
 
-from gestion_usuario.gestion_notificacion.func import notificar, TipoNotificacion
+from gestion_usuario.gestion_notificacion.func import notificar, Notificacion
 
 ########################################################################
 
@@ -69,7 +69,7 @@ class Subasta(Evento):
 		# Notificar al anterior
 		if self.tieneComprador():
 			if self.comprador != equipo:
-				notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_SUPERADA, identificador = self.id, liga = self.liga)
+				notificar(self.comprador.usuario, Notificacion.SUBASTA_SUPERADA, identificador = self.id, liga = self.liga)
 				self.comprador.pagar(self.subasta.puja)
 
 		self.puja = cantidad
@@ -80,9 +80,9 @@ class Subasta(Evento):
 		''' Finaliza y realiza los trámites oportunos de la subasta '''
 		self.atributos_jugador.ofertado = False
 		if self.comprador:
-			notificar(self.comprador.usuario, TipoNotificacion.SUBASTA_GANADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
+			notificar(self.comprador.usuario, Notificacion.SUBASTA_GANADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
 			self.atributos_jugador.jugador.setEquipo(self.comprador)
-		notificar(self.vendedor.usuario, TipoNotificacion.SUBASTA_FINALIZADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
+		notificar(self.vendedor.usuario, Notificacion.SUBASTA_FINALIZADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
 		self.vendedor.pagar(self.puja)
 		self.atributos_jugador.save()
 
