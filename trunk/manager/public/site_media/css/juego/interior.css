@@ -3,7 +3,7 @@
 #barra_header{
 	background-color: #fff;
 	border-bottom: solid 1px #555555;
-	height: 60px;
+	height: 25px;
 	left: 0px;
 	position: fixed;
 	top: 0px;
@@ -13,47 +13,97 @@
 
 #header{
 	margin: 0 auto;
-	width: 950px;
-}
-
-#header #logo{
-	background: url("../../img/logo_mini.png") no-repeat;
-	cursor: pointer;
-	float: left;
-	height: 50px;
-	width: 125px;
+	width: 600px;
 }
 
 #menu{
-	top: 5px;
-}
-
-#menu div{
-	margin: 10px 0px;
-}
-
-#menu div ul{
 	list-style: none;
 	margin: 0px;
 	padding: 0px;
 }
 
-#menu div ul li{
+#menu li{
+	cursor: pointer;
+	display: inline;
 	float: left;
-	padding-right: 20px;
+	height: 25px;
+	margin: 0;
+	position: relative;
 }
 
-#menu div ul a{
-	color: #5555cc;
-	font-weight: bold;
+#menu li + li{
+	border-left: solid 1px #555;
 }
 
-#fecha_liga{
+#menu li ul {
+	position: absolute;
+	display: none;
+}
+
+#menu li ul li {
+	display: list-item;
+	float: none;
+	margin: 0;
+}
+
+#menu li ul li a {
+	background-color: #39f;
+	color: #000;
+	display: block;
+	font-size: 1em;
+	padding: 2px 5px;
+	text-decoration: none;
+	width: 140px;
+}
+
+#menu li ul li a:hover, #menu li ul li a:active {
+	background-color: #f93;
+}
+
+#menu #logo{
+	background: #fff url("../../img/icons/menu_iconos/general.png") no-repeat top left;
+	height: 25px;
+	width: 25px;
+}
+
+#menu #liga{
+	background: #fff url("../../img/icons/menu_iconos/liga.png") no-repeat top left;
+	height: 25px;
+	width: 25px;
+}
+
+#menu #equipo{
+	background: #fff url("../../img/icons/menu_iconos/equipo.png") no-repeat top left;
+	height: 25px;
+	width: 25px;
+}
+
+#menu #calendario{
+	background: #fff;
 	color: #eee;
-	float: right;
 	font-size: 0.8em;
 	font-weight: bold;
-	padding: 8px;
+	height: 25px;
+	width: 300px;
+}
+
+#menu #mercado{
+	background: #fff url("../../img/icons/menu_iconos/mercado.png") no-repeat top left;
+	height: 25px;
+	width: 25px;
+}
+
+#menu #notificaciones{
+	background: #fff url("../../img/icons/menu_iconos/notificacion.png") no-repeat top left;
+	height: 25px;
+	width: 25px;
+}
+
+#menu #usuario{
+	background: #fff;
+	float: right;
+	height: 25px;
+	width: 100px;
 }
 
 /* Fin header */

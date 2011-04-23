@@ -1,4 +1,4 @@
-{% extends "base_juego.html" %}
+{% extends "base.html" %}
 
 {% block css_extra %}
 	<link rel="stylesheet" href="/media/css/tablas.css" type="text/css" />
@@ -19,10 +19,6 @@
 			}
 		);
 	</script>
-{% endblock %}
-
-{% block situacion %}
-		<li>{{ liga.nombre }}</li>
 {% endblock %}
 
 {% block contenido %}
