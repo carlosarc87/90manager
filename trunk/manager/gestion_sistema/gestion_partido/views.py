@@ -39,14 +39,14 @@ from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 @comprobarSesion(['partido_actual'])
 def jugar_partido(request):
 	''' Juega un partido '''
-	return devolverMensaje(request, "Desactualizado, pendiente de actualizacion")
+	return devolverMensaje(request, "Desactualizado, pendiente de actualizacion", 0)
 	# Obtenemos el usuario
 	usuario = request.user
 
 	partido = request.session['partido_actual']
 
 	if partido.finalizado():
-		return devolverMensaje(request, "Este partido ya se jugo", "/partidos/ver/%d/" % partido.id)
+		return devolverMensaje(request, "Este partido ya se jugo", 0, "/partidos/ver/%d/" % partido.id)
 
 	jornada_actual = partido.jornada.liga.getJornadaActual()
 	if partido.jornada != jornada_actual:
@@ -302,7 +302,7 @@ def preparar_partido(request):
 
 	# Comprobar que el partido no se haya jugado ya
 	if partido.finalizado():
-		return devolverMensaje(request, "Este partido ya acabo", "/partidos/ver/%d/" % partido.id)
+		return devolverMensaje(request, "Este partido ya acabo", 0, "/partidos/ver/%d/" % partido.id)
 
 	# Comprobar si el usuario juega en el partido
 	if (partido.equipo_local.usuario == usuario): # Juega como local
@@ -312,7 +312,7 @@ def preparar_partido(request):
 		equipo = partido.equipo_visitante
 		alineacion = partido.alineacion_visitante
 	else: # No juega como naaaaaaaaaaaaaaa
-		return devolverMensaje(request, "No tienes equipo en este partido", "/partidos/ver/%d/" % partido.id)
+		return devolverMensaje(request, "No tienes equipo en este partido", 0, "/partidos/ver/%d/" % partido.id)
 
 	editar = alineacion.estaPreparada();
 
@@ -328,9 +328,9 @@ def preparar_partido(request):
 			alineacion.save()
 			# Preparar la alineacion perfectamente
 			if editar:
-				return devolverMensaje(request, "Se ha editado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
+				return devolverMensaje(request, "Se ha editado correctamente la alineacion", 1, "/partidos/ver/%d/" % partido.id)
 			else:
-				return devolverMensaje(request, "Se ha creado correctamente la alineacion", "/partidos/ver/%d/" % partido.id)
+				return devolverMensaje(request, "Se ha creado correctamente la alineacion", 1, "/partidos/ver/%d/" % partido.id)
 	else:
 		form = PrepararEquipoForm(alineacion, equipo)
 
@@ -385,7 +385,7 @@ def ver_repeticion_partido(request):
 
 	# Si el partido ha finalizado
 	if not finalizado:
-		return devolverMensaje(request, "Error, el partido no acabó", "/partidos/ver/%d/" % partido.id)
+		return devolverMensaje(request, "Error, el partido no acabó", 0, "/partidos/ver/%d/" % partido.id)
 
 	siglas_local = partido.equipo_local.siglas
 	siglas_visitante = partido.equipo_visitante.siglas
@@ -443,7 +443,7 @@ def proximo_partido(request):
 	if partidos.count() > 0:
 		partido_actual = partidos[0]
 	else:
-		return devolverMensaje(request, "Error, no hay mas partidos por jugar en la liga")
+		return devolverMensaje(request, "Error, no hay mas partidos por jugar en la liga", 0)
 
 	return redireccionar('/partidos/ver/%s/' % (partido_actual.id))
 

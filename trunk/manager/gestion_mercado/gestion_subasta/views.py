@@ -47,16 +47,16 @@ def crear_subasta(request):
 	jugador = request.session['jugador_actual']
 
 	if not jugador.atributos.equipo.liga.activada():
-		return devolverMensaje(request, "La liga no esta activada y no hay mercado aun")
+		return devolverMensaje(request, "La liga no esta activada y no hay mercado aun", 0)
 
 	if jugador.atributos.ofertado:
-		return devolverMensaje(request, "Este jugador ya está en subasta", "/jugadores/ver/%d/" % jugador.id)
+		return devolverMensaje(request, "Este jugador ya está en subasta", 0, "/jugadores/ver/%d/" % jugador.id)
 
 	if jugador.atributos.equipo.usuario != usuario:
-		return devolverMensaje(request, "No eres propietario del equipo del jugador")
+		return devolverMensaje(request, "No eres propietario del equipo del jugador", 0)
 
 	if not jugador.atributos.equipo.liga.activada():
-		return devolverMensaje(request, "Hasta que la liga no esté activada no pueden haber subastas")
+		return devolverMensaje(request, "Hasta que la liga no esté activada no pueden haber subastas", 0)
 
 	duracion_liga = jugador.atributos.equipo.liga.getNumJornadas();
 
@@ -69,7 +69,7 @@ def crear_subasta(request):
 			comision = 5
 
 			if comision > jugador.atributos.equipo.dinero:
-				return devolverMensaje(request, "No tienes suficiente dinero para pagar la comision", "/mercado/subastas/crear/%d/" % jugador.id)
+				return devolverMensaje(request, "No tienes suficiente dinero para pagar la comision", 0, "/mercado/subastas/crear/%d/" % jugador.id)
 
 			subasta.liga = jugador.atributos.equipo.liga
 			subasta.estado = 0
@@ -82,7 +82,7 @@ def crear_subasta(request):
 			jugador.atributos.ofertado = True
 			jugador.atributos.save()
 			subasta.save()
-			return devolverMensaje(request, "Se ha creado correctamente", "/mercado/subastas/ver/%d/" % subasta.id)
+			return devolverMensaje(request, "Se ha creado correctamente", 1, "/mercado/subastas/ver/%d/" % subasta.id)
 	else:
 		form = SubastaForm(jugador)
 
@@ -101,7 +101,7 @@ def ver_subastas_liga(request):
 
 	# Comprobamos que la liga este activada
 	if not liga.activada():
-		return devolverMensaje(request, "La liga no esta activada y no hay mercado aun")
+		return devolverMensaje(request, "La liga no esta activada y no hay mercado aun", 0)
 
 	subastas = liga.subasta_set.all()
 
@@ -114,7 +114,7 @@ def ver_subasta_id(request, subasta_id):
 	''' Muestra los datos de una subasta '''
 	subastas = Subasta.objects.filter(id = subasta_id)
 	if subastas.count() == 0:
-		return devolverMensaje(request, "Error, no existe una subasta con identificador %s" % subasta_id)
+		return devolverMensaje(request, "Error, no existe una subasta con identificador %s" % subasta_id, 0)
 
 	request.session['subasta_actual'] = subasta[0]
 
@@ -142,13 +142,13 @@ def ver_subasta(request):
 	if subasta.vendedor != equipo_usuario:
 		if request.method == 'POST':
 			if not equipo_usuario:
-				devolverMensaje('No puedes pujar en una liga en la que no juegas')
+				devolverMensaje(request, 'No puedes pujar en una liga en la que no juegas', 0)
 			form = PujarForm(subasta, equipo_usuario, request.POST)
 			if form.is_valid():
 				cantidad = form.cleaned_data['cantidad']
 				subasta.pujar(equipo_usuario, cantidad)
 				subasta.save()
-				return devolverMensaje(request, "Cantidad apostada correctamente", "/mercado/subastas/ver/%d/" % subasta.id)
+				return devolverMensaje(request, "Cantidad apostada correctamente", 1, "/mercado/subastas/ver/%d/" % subasta.id)
 		else:
 			form = PujarForm(subasta, equipo_usuario)
 
@@ -169,7 +169,7 @@ def ver_subastas_equipo(request):
 
 	# Comprobamos que la liga este activada
 	if not equipo.liga.activada():
-		return devolverMensaje(request, "La liga no esta activada y no hay mercado aun")
+		return devolverMensaje(request, "La liga no esta activada y no hay mercado aun", 0)
 
 	subastas_comprador = equipo.subastas_como_comprador.all()
 	subastas_vendedor = equipo.subastas_como_vendedor.all()
@@ -194,30 +194,30 @@ def comprar_subasta(request):
 
 	# Comprobamos que la liga este activada
 	if not subasta.liga.activada():
-		return devolverMensaje(request, "La liga no esta activada y no hay mercado aun")
+		return devolverMensaje(request, "La liga no esta activada y no hay mercado aun", 0)
 
 	if not usuario.equipo_set.filter(liga = subasta.liga).count():
-		return devolverMensaje(request, "Error, no tienes equipo en esta liga")
+		return devolverMensaje(request, "Error, no tienes equipo en esta liga", 0)
 
 	if subasta.estado is not 0:
-		return devolverMensaje(request, "Error, la subasta %s ya acabó" % subasta_id)
+		return devolverMensaje(request, "Error, la subasta %s ya acabó" % subasta_id, 0)
 
 	if not subasta.precio_compra:
-		return devolverMensaje(request, "Error, la subasta %s no puede comprarse directamente" % subasta_id)
+		return devolverMensaje(request, "Error, la subasta %s no puede comprarse directamente" % subasta_id, 0)
 
 	equipo = usuario.equipo_set.get(liga = subasta.liga)
 
 	if subasta.vendedor == equipo:
-		return devolverMensaje(request, "Error, no puedes comprarte tu propia subasta")
+		return devolverMensaje(request, "Error, no puedes comprarte tu propia subasta", 0)
 
 	if subasta.precio_compra > equipo.dinero:
-		return devolverMensaje(request, "Error, no tienes dinero para comprar esta subasta", "/mercado/subastas/ver/%s/" % subasta_id)
+		return devolverMensaje(request, "Error, no tienes dinero para comprar esta subasta", 0, "/mercado/subastas/ver/%s/" % subasta_id)
 
 	# Burocracia de comprar al jugador
 	subasta.comprar(equipo)
 	subasta.save()
 
-	return devolverMensaje(request, "Ha comprado al jugador correctamente", "/mercado/subastas/ver/%s/" % subasta_id)
+	return devolverMensaje(request, "Ha comprado al jugador correctamente", 1, "/mercado/subastas/ver/%s/" % subasta_id)
 
 ########################################################################
 
@@ -230,7 +230,7 @@ def mis_subastas(request):
 
 	# Comprobamos que la liga este activada
 	if not equipo.liga.activada():
-		return devolverMensaje(request, "La liga no esta activada y no hay mercado aun")
+		return devolverMensaje(request, "La liga no esta activada y no hay mercado aun", 0)
 
 	subastas = equipo.subastas_como_vendedor.all()
 	d = {"subastas" : subastas,
@@ -248,7 +248,7 @@ def mis_pujas(request):
 
 	# Comprobamos que la liga este activada
 	if not equipo.liga.activada():
-		return devolverMensaje(request, "La liga no esta activada y no hay mercado aun")
+		return devolverMensaje(request, "La liga no esta activada y no hay mercado aun", 0)
 
 	subastas = equipo.subastas_como_comprador.all()
 	d = {"subastas" : subastas,

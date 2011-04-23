@@ -45,7 +45,7 @@ def ver_equipo_id(request, equipo_id):
 	equipos = Equipo.objects.filter(id = equipo_id)
 
 	if equipos.count() == 0:
-		return devolverMensaje(request, "Error, no existe un equipo con identificador %s" % equipo_id)
+		return devolverMensaje(request, "Error, no existe un equipo con identificador %s" % equipo_id, 0)
 
 	# Obtenemos el equipo
 	request.session['equipo_actual'] = equipos[0]
@@ -152,10 +152,10 @@ def crear_equipo(request):
 	liga = request.session['liga_actual']
 
 	if liga.activada():
-		return devolverMensaje(request, "Esta liga ya no acepta mas equipos", "/ligas/ver/%d/" % liga.id)
+		return devolverMensaje(request, "Esta liga ya no acepta mas equipos", 0, "/ligas/ver/%d/" % liga.id)
 
 	if liga.equipo_set.filter(usuario = usuario).count() > 0:
-		return devolverMensaje(request, "Ya tienes un equipo en esta liga", "/ligas/ver/%d/" % liga.id)
+		return devolverMensaje(request, "Ya tienes un equipo en esta liga", 0, "/ligas/ver/%d/" % liga.id)
 
 	if request.method == 'POST':
 		form = EquipoForm(liga, request.POST)
@@ -166,7 +166,7 @@ def crear_equipo(request):
 			equipo.dinero = liga.dinero_inicial
 			equipo.save()
 			equipo.generarJugadoresAleatorios(liga.sexo_permitido, liga.num_jugadores_inicial, liga.nivel_max_jugadores_inicio)
-			return devolverMensaje(request, "Se ha creado correctamente", "/equipos/ver/%d/" % equipo.id)
+			return devolverMensaje(request, "Se ha creado correctamente", 1, "/equipos/ver/%d/" % equipo.id)
 	else:
 		form = EquipoForm(liga)
 

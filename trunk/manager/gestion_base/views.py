@@ -64,7 +64,7 @@ def contacto(request):
 
 			# Mandar correo
 			mail_admins('[CONTACTO]: ' + asunto, mensaje)
-			return devolverMensaje(request, "Se nos ha enviado el mensaje, ¡Gracias! (O no, si nos has insultado xD).", "/")
+			return devolverMensaje(request, "Se nos ha enviado el mensaje, ¡Gracias! (O no, si nos has insultado xD).", 1, "/")
 	else:
 		form = ContactoForm()
 

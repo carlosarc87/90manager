@@ -26,7 +26,7 @@ Copyright 2011 by
 from django.contrib.auth.decorators import login_required
 
 from gestion_sistema.decorators import comprobarSesion
-from gestion_base.func import devolverMensaje, generarPagina
+from gestion_base.func import generarPagina
 
 ########################################################################
 

@@ -39,7 +39,7 @@ def ver_jornada_id(request, jornada_id):
 	jornadas = Jornada.objects.filter(id = jornada_id)
 
 	if jornadas.count() == 0:
-		return devolverMensaje(request, "Error, no existe una jornada con identificador %s" % jornada_id)
+		return devolverMensaje(request, "Error, no existe una jornada con identificador %s" % jornada_id, 0)
 
 	request.session['jornada_actual'] = jornadas[0]
 
@@ -137,7 +137,7 @@ def jornada_actual(request):
 
 	jornada = liga.getJornadaActual()
 	if jornada is None:
-		return devolverMensaje(request, "Error, la liga ya acabó")
+		return devolverMensaje(request, "Error, la liga ya acabó", 0)
 
 	return redireccionar('/jornadas/ver/%s/' % (jornada.id))
 

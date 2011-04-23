@@ -179,7 +179,7 @@ def ver_liga(request):
 @login_required
 def ver_liga_id(request, liga_id):
 	if Liga.objects.filter(id = liga_id).count() == 0:
-		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id)
+		return devolverMensaje(request, "Error, no existe una liga con identificador %s" % liga_id, 0)
 
 	# Obtenemos la liga
 	liga = Liga.objects.get(id = liga_id)
@@ -192,7 +192,7 @@ def ver_liga_id(request, liga_id):
 @comprobarSesion(['liga_actual'])
 def avanzar_jornada_liga(request):
 	''' Avanza una liga de jornada actual '''
-	return devolverMensaje(request, "Desactualizado, pendiente de eliminar")
+	return devolverMensaje(request, "Desactualizado, pendiente de eliminar", 0)
 	# Obtenemos el usuario
 	usuario = request.user
 
@@ -200,13 +200,13 @@ def avanzar_jornada_liga(request):
 	liga = request.session['liga_actual']
 
 	if liga.creador != usuario:
-		return devolverMensaje(request, "No eres el creador de esta liga")
+		return devolverMensaje(request, "No eres el creador de esta liga", 0)
 
 	# Obtenemos las jornadas no jugadas
 	jornadas = liga.getJornadas().filter(jugada = False)
 
 	if jornadas.count() == 0:
-		return devolverMensaje(request, "Esta liga ya esta acabada", "/ligas/ver/%d/" % liga.id)
+		return devolverMensaje(request, "Esta liga ya esta acabada", 0, "/ligas/ver/%d/" % liga.id)
 
 	liga.avanzarJornada()
 
@@ -226,7 +226,7 @@ def crear_liga(request):
 			liga.creador = Usuario.objects.get(id = request.user.id)
 			liga.save()
 
-			return devolverMensaje(request, "Se ha creado correctamente", "/ligas/ver/%d/" % liga.id)
+			return devolverMensaje(request, "Se ha creado correctamente", 1, "/ligas/ver/%d/" % liga.id)
 	else:
 		form = LigaForm()
 
@@ -246,10 +246,10 @@ def activar_liga(request):
 	liga = request.session['liga_actual']
 
 	if liga.creador != usuario:
-		return devolverMensaje(request, "Error, solo el creador de la liga puede activarla")
+		return devolverMensaje(request, "Error, solo el creador de la liga puede activarla", 0)
 
 	if liga.activada():
-		return devolverMensaje(request, "Ya esta activada esta liga", "/ligas/ver/%d/" % liga.id)
+		return devolverMensaje(request, "Ya esta activada esta liga", 0, "/ligas/ver/%d/" % liga.id)
 
 	if request.method == 'POST':
 		form = ActivarLigaForm(request.POST, instance=liga)
@@ -274,7 +274,7 @@ def activar_liga(request):
 
 			liga.save()
 
-			return devolverMensaje(request, "Se ha generado la liga correctamente", "/ligas/ver/%d/" % liga.id)
+			return devolverMensaje(request, "Se ha generado la liga correctamente", 1, "/ligas/ver/%d/" % liga.id)
 	else:
 		form = ActivarLigaForm(instance = liga)
 

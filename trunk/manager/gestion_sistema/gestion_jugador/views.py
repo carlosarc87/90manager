@@ -42,7 +42,7 @@ def ver_jugador_id(request, jugador_id):
 	jugadores = Jugador.objects.filter(id = jugador_id)
 
 	if jugadores.count() == 0:
-		return devolverMensaje(request, "Error, no existe un jugador con identificador %s" % jugador_id)
+		return devolverMensaje(request, "Error, no existe un jugador con identificador %s" % jugador_id, 0)
 
 	# Obtenemos el jugador
 	request.session['jugador_actual'] = jugadores[0]
