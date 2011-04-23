@@ -7,10 +7,6 @@
 
 {% block js_extra %}
 	<script type="text/javascript">
-		// ---------------------------------------------------------- //
-		//                Cuidado! Aquí hay dragones...               //
-		// ---------------------------------------------------------- //
-
 		// Calcula el tiempo dependiendo de num1 y num2
 		function calcularTiempo(segundos, num1, num2) {
 			s = ((Math.floor(segundos / num1)) % num2).toString();
@@ -143,10 +139,71 @@
 		
 		/* Para el funcionamiento de tema css con jquery */
 		$(function() {
-			$("input:checkbox", "#contenido_opciones").button();
-			$("input:radio", "#contenido_opciones").buttonset();
-			$("input:submit", "#contenido_opciones").button();
-			$("input:text", "#contenido_opciones").text();
+			$( "#beginning" ).button({
+				text: false,
+				icons: {
+					primary: "ui-icon-seek-start"
+				}
+			});
+			$( "#rewind" ).button({
+				text: false,
+				icons: {
+					primary: "ui-icon-seek-prev"
+				}
+			});
+			$( "#play" ).button({
+				text: false,
+				icons: {
+					primary: "ui-icon-play"
+				}
+			})
+			.click(function() {
+				var options;
+				if ( $( this ).text() === "play" ) {
+					options = {
+						label: "pause",
+						icons: {
+							primary: "ui-icon-pause"
+						}
+					};
+				} else {
+					options = {
+						label: "play",
+						icons: {
+							primary: "ui-icon-play"
+						}
+					};
+				}
+				$( this ).button( "option", options );
+			});
+			$( "#stop" ).button({
+				text: false,
+				icons: {
+					primary: "ui-icon-stop"
+				}
+			})
+			.click(function() {
+				$( "#play" ).button( "option", {
+					label: "play",
+					icons: {
+						primary: "ui-icon-play"
+					}
+				});
+			});
+			$( "#forward" ).button({
+				text: false,
+				icons: {
+					primary: "ui-icon-seek-next"
+				}
+			});
+			$( "#end" ).button({
+				text: false,
+				icons: {
+					primary: "ui-icon-seek-end"
+				}
+			});
+			$( "#shuffle" ).button();
+			$( "#repeat" ).buttonset();
 		});
 	</script>
 {% endblock %}
@@ -173,6 +230,24 @@
 				<input type="button" id="boton_reinicio" name="buttonReinicio" value="Iniciar/Reiniciar" onclick="reiniciarContador(this);" />
 				<input type="button" id="boton_pausa" name="buttonPausa" value="Pausar/Continuar" onclick="pausarContador(this);" />
 			</div>
+		</div>
+		
+		<!-- Barra extra prueba -->
+		<div id="barra_repeticion" class="ui-widget-header ui-corner-all">
+			<button id="beginning">go to beginning</button>
+			<button id="rewind">rewind</button>
+			<button id="play">play</button>
+			<button id="stop">stop</button>
+			<button id="forward">fast forward</button>
+			<button id="end">go to end</button>
+			
+			<input type="checkbox" id="shuffle" /><label for="shuffle">Shuffle</label>
+			
+			<span id="repeat">
+				<input type="radio" id="repeat0" name="repeat" checked="checked" /><label for="repeat0">No Repeat</label>
+				<input type="radio" id="repeat1" name="repeat" /><label for="repeat1">Once</label>
+				<input type="radio" id="repeatall" name="repeat" /><label for="repeatall">All</label>
+			</span>
 		</div>
 
 		<div id="contenido_contador_tiempo">

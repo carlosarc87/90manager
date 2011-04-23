@@ -17,7 +17,7 @@ body{
 	color: #000000;
 	font-family: Calibri, Arial, Helvetica, sans-serif;
 	font-size: 0.8em;
-	margin: 10px;
+	margin: 0px;
 	padding: 0px;
 }
 
@@ -195,7 +195,7 @@ h1, h2, h3, h4{
 /* Fin header */
 
 #wrap{
-	margin: 0 auto;
+	margin: 0px auto;
 	margin-top: 26px;
 	width: 950px;
 }
