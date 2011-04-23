@@ -28,7 +28,7 @@ from django.db.models import Q
 
 from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 
-from models import Partido
+from models import Partido, JugadorPartido
 from forms import PrepararEquipoForm
 
 from gestion_base.func import devolverMensaje, redireccionar, generarPagina
@@ -249,11 +249,11 @@ def ver_partido(request):
 			equipo_local.valor_titulares += t.atributos.valorMercado()
 
 			# Número de jugadores por posición
-			if t.posicion == 'DF':
+			if t.posicion == JugadorPartido.DEFENSA:
 				equipo_local.num_df += 1
-			elif t.posicion == 'CC':
+			elif t.posicion == JugadorPartido.CENTROCAMPISTA:
 				equipo_local.num_cc += 1
-			elif t.posicion == 'DL':
+			elif t.posicion == JugadorPartido.DELANTERO:
 				equipo_local.num_dl += 1
 
 		# Obtener valor total de los titulares del equipo visitante
@@ -268,26 +268,26 @@ def ver_partido(request):
 			equipo_visitante.valor_titulares += t.atributos.valorMercado()
 
 			# Número de jugadores por posición
-			if t.posicion == 'DF':
+			if t.posicion == JugadorPartido.DEFENSA:
 				equipo_visitante.num_df += 1
-			elif t.posicion == 'CC':
+			elif t.posicion == JugadorPartido.CENTROCAMPISTA:
 				equipo_visitante.num_cc += 1
-			elif t.posicion == 'DL':
+			elif t.posicion == JugadorPartido.DELANTERO:
 				equipo_visitante.num_dl += 1
 
 	d = {"jornada" : jornada,
-				 "equipo_local" : equipo_local,
-				 "equipo_visitante" : equipo_visitante,
-				 "liga" : liga,
-				 "partido" : partido,
-				 "usuario" : usuario,
-				 "finalizado" : finalizado,
-				 "es_creador" : es_creador,
-				 "tiene_equipo" : tiene_equipo,
-				 "es_jugable" : es_jugable,
-				 "editar" : editar,
-				}
-	return generarPagina("juego/partidos/ver_partido.html", d, request)
+		 "equipo_local" : equipo_local,
+		 "equipo_visitante" : equipo_visitante,
+		 "liga" : liga,
+		 "partido" : partido,
+		 "usuario" : usuario,
+		 "finalizado" : finalizado,
+		 "es_creador" : es_creador,
+		 "tiene_equipo" : tiene_equipo,
+		 "es_jugable" : es_jugable,
+		 "editar" : editar,
+		}
+	return generarPagina(request, "juego/partidos/ver_partido.html", d)
 
 ########################################################################
 
@@ -354,7 +354,7 @@ def preparar_partido(request):
 		"suplentes" : suplentes
 		}
 
-	return generarPagina("juego/partidos/preparar_partido.html", d, request, True)
+	return generarPagina(request, "juego/partidos/preparar_partido.html", d)
 
 ########################################################################
 
@@ -399,7 +399,7 @@ def ver_repeticion_partido(request):
 		"siglas_visitante" : siglas_visitante
 	}
 
-	return generarPagina("juego/partidos/ver_repeticion_partido.html", d, request)
+	return generarPagina(request, "juego/partidos/ver_repeticion_partido.html", d)
 
 ########################################################################
 
@@ -426,7 +426,7 @@ def ver_partidos_propios(request):
 		 "partido_actual" : partido_actual,
 		 }
 
-	return generarPagina("juego/partidos/listar_partidos_equipo.html", d, request)
+	return generarPagina(request, "juego/partidos/listar_partidos_equipo.html", d)
 
 ########################################################################
 

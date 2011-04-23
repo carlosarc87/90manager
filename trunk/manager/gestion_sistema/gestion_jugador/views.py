@@ -83,6 +83,6 @@ def ver_jugador(request):
 				 "anios" : anios,
 				 "dias" : dias
 				}
-	return generarPagina("juego/jugadores/ver_jugador.html", d, request)
+	return generarPagina(request, "juego/jugadores/ver_jugador.html", d)
 
 ########################################################################

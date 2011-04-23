@@ -67,7 +67,7 @@ class HorizRadioRenderer(forms.RadioSelect.renderer):
 
 ########################################################################
 
-def generarPagina(template, parametros, request, agregar_parametros=True):
+def generarPagina(request, template, parametros = {}, agregar_parametros = True):
 	""" Genera una pagina web con los templates añadiendo unos parámetros por defecto """
 	usuario = request.user
 	if agregar_parametros:

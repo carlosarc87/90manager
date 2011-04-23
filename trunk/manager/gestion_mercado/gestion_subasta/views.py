@@ -88,7 +88,7 @@ def crear_subasta(request):
 
 	d = { "form": form, "jugador" : jugador, "duracion_liga" : duracion_liga }
 
-	return generarPagina("juego/subastas/crear_subasta.html", d, request, True)
+	return generarPagina(request, "juego/subastas/crear_subasta.html", d)
 
 ########################################################################
 
@@ -105,7 +105,7 @@ def ver_subastas_liga(request):
 
 	subastas = liga.subasta_set.all()
 
-	return generarPagina("juego/subastas/ver_subastas_liga.html", { "subastas" : subastas, "liga" : liga }, request)
+	return generarPagina(request, "juego/subastas/ver_subastas_liga.html", { "subastas" : subastas, "liga" : liga })
 
 ########################################################################
 
@@ -156,7 +156,7 @@ def ver_subasta(request):
 		"subasta" : subasta,
 		"form" : form,
 		}
-	return generarPagina("juego/subastas/ver_subasta.html", d, request, True)
+	return generarPagina(request, "juego/subastas/ver_subasta.html", d)
 
 ########################################################################
 
@@ -177,7 +177,7 @@ def ver_subastas_equipo(request):
 		"subastas_vendedor" : subastas_vendedor,
 		"equipo" : equipo,
 		}
-	return generarPagina("juego/subastas/ver_subastas_equipo.html", d, request)
+	return generarPagina(request, "juego/subastas/ver_subastas_equipo.html", d)
 
 ########################################################################
 
@@ -235,7 +235,7 @@ def mis_subastas(request):
 	subastas = equipo.subastas_como_vendedor.all()
 	d = {"subastas" : subastas,
 		}
-	return generarPagina("juego/subastas/mis_subastas.html", d, request)
+	return generarPagina(request, "juego/subastas/mis_subastas.html", d)
 
 ########################################################################
 
@@ -253,6 +253,6 @@ def mis_pujas(request):
 	subastas = equipo.subastas_como_comprador.all()
 	d = {"subastas" : subastas,
 		}
-	return generarPagina("juego/subastas/mis_pujas.html", d, request)
+	return generarPagina(request, "juego/subastas/mis_pujas.html", d)
 
 ########################################################################

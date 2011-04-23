@@ -114,7 +114,7 @@ def ver_clasificacion(request):
 		 "clasificacion" : clasificacion,
 		 "jornada_actual" : jornada_actual,
 		}
-	return generarPagina("juego/clasificaciones/ver_liga.html", d, request)
+	return generarPagina(request, "juego/clasificaciones/ver_liga.html", d)
 
 
 ########################################################################

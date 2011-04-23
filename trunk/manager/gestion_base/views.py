@@ -40,7 +40,7 @@ def index(request):
 
 def creditos(request):
 	''' Ir a la pagina de creditos '''
-	return generarPagina("web/creditos.html", {}, request)
+	return generarPagina(request, "web/creditos.html")
 
 ########################################################################
 
@@ -70,30 +70,30 @@ def contacto(request):
 
 	c = { "form" : form }
 
-	return generarPagina("web/contacto.html", c, request)
+	return generarPagina(request, "web/contacto.html", c)
 
 ########################################################################
 
 def changelog(request):
 	''' Muestra el historial de versiones de la web '''
-	return generarPagina("web/changelog.html", {}, request)
+	return generarPagina(request, "web/changelog.html")
 
 ########################################################################
 
 def siguenos(request):
 	''' Muestra las páginas donde seguir el proyecto '''
-	return generarPagina("web/siguenos.html", {}, request)
+	return generarPagina(request, "web/siguenos.html")
 
 ########################################################################
 
 def condiciones(request):
 	''' Muestra las condiciones de uso '''
-	return generarPagina("web/condiciones.html", {}, request)
+	return generarPagina(request, "web/condiciones.html")
 
 ########################################################################
 
 def bajoConstruccion(request):
 	''' Mensaje para los enlaces que no estan construidos aun '''
-	return generarPagina("La página que deseas visitar aún no está acabada =(", {}, request)
+	return generarPagina(request, "La página que deseas visitar aún no está acabada =(")
 
 ########################################################################

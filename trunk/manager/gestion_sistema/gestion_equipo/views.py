@@ -87,13 +87,13 @@ def ver_equipo(request):
 	liga = equipo.liga
 
 	d = {"usuario" : usuario,
-				 "liga" : liga,
-				 "equipo" : equipo,
-				 "jugadores" : jugadores,
-				 "valor_equipo" : valor_equipo,
-				 "edad_media_equipo" : edad_media_equipo
-				}
-	return generarPagina("juego/equipos/ver_equipo.html", d, request)
+		 "liga" : liga,
+		 "equipo" : equipo,
+		 "jugadores" : jugadores,
+		 "valor_equipo" : valor_equipo,
+		 "edad_media_equipo" : edad_media_equipo
+		}
+	return generarPagina(request, "juego/equipos/ver_equipo.html", d)
 
 ########################################################################
 
@@ -136,7 +136,7 @@ def ver_equipo_propio(request):
 				 "valor_equipo" : valor_equipo,
 				 "edad_media_equipo" : edad_media_equipo
 				}
-	return generarPagina("juego/equipos/ver_equipo.html", d, request)
+	return generarPagina(request, "juego/equipos/ver_equipo.html", d)
 
 ########################################################################
 
@@ -173,7 +173,7 @@ def crear_equipo(request):
 	nombre_aleatorio, siglas = ObtenerNombreYSiglasAleatorio(liga)
 
 	d = {"form": form, "usuario" : usuario, "liga" : liga, "nombre_aleatorio" : nombre_aleatorio, "siglas" : siglas }
-	return generarPagina("juego/equipos/crear_equipo.html", d, request, True)
+	return generarPagina(ObtenerNombreYSiglasAleatorio"juego/equipos/crear_equipo.html", d)
 
 ########################################################################
 
@@ -200,7 +200,7 @@ def listar_equipos_liga(request):
 		"activada" : activada,
 		"equipo_propio" : equipo_propio,
 		}
-	return generarPagina("juego/equipos/listar_liga.html", d, request)
+	return generarPagina(request, "juego/equipos/listar_liga.html", d)
 
 ########################################################################
 

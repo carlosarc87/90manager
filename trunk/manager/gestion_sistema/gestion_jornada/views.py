@@ -109,7 +109,7 @@ def ver_jornada(request):
 				 "es_creador" : es_creador,
 				 "es_jornada_actual" : es_jornada_actual,
 				}
-	return generarPagina("juego/jornadas/ver_jornada.html", d, request)
+	return generarPagina(request, "juego/jornadas/ver_jornada.html", d)
 
 ########################################################################
 
@@ -123,7 +123,7 @@ def listar_jornadas(request):
 	jornadas = liga.getJornadas()
 
 	d = { "jornadas" : jornadas }
-	return generarPagina("juego/jornadas/listar_liga.html", d, request)
+	return generarPagina(request, "juego/jornadas/listar_liga.html", d)
 
 ########################################################################
 

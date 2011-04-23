@@ -162,17 +162,17 @@ def ver_liga(request):
 
 	# Cargamos la plantilla con los parametros y la devolvemos
 	d = {"liga" : liga,
-				 "equipos" : equipos,
-				 "jornadas" : jornadas,
-				 "jornada_actual" : jornada_actual,
-				 "jornadas_restantes" : jornadas_restantes,
-				 "activada" : activada,
-				 "equipo_propio" : equipo_propio,
-				 "clasificacion" : clasificacion,
-				 "liga_acabada" : liga_acabada,
-				 "es_creador" : es_creador
-				}
-	return generarPagina("juego/ligas/ver_liga.html", d, request)
+		 "equipos" : equipos,
+		 "jornadas" : jornadas,
+		 "jornada_actual" : jornada_actual,
+		 "jornadas_restantes" : jornadas_restantes,
+		 "activada" : activada,
+		 "equipo_propio" : equipo_propio,
+		 "clasificacion" : clasificacion,
+		 "liga_acabada" : liga_acabada,
+		 "es_creador" : es_creador
+		}
+	return generarPagina(request, "juego/ligas/ver_liga.html", d)
 
 ########################################################################
 
@@ -231,7 +231,7 @@ def crear_liga(request):
 		form = LigaForm()
 
 	d = { "form" : form }
-	return generarPagina("juego/ligas/crear_liga.html", d, request, True, False)
+	return generarPagina(request, "juego/ligas/crear_liga.html", d, False)
 
 ########################################################################
 
@@ -279,6 +279,6 @@ def activar_liga(request):
 		form = ActivarLigaForm(instance = liga)
 
 	d = {"form" : form, "liga" : liga }
-	return generarPagina("juego/ligas/activar_liga.html", d, request, True)
+	return generarPagina(request, "juego/ligas/activar_liga.html", d)
 
 ########################################################################
