@@ -12,7 +12,10 @@
 		/* Para el funcionamiento de tema css con jquery */
 		$(function() {
 			$("#caja_sexo_permitido", "#form_crear_liga").buttonset();
+			$("#caja_tipo_avance_jornadas", "#form_crear_liga").buttonset();
 			$("input:submit", "#form_crear_liga").button();
+			$("#fecha_real_inicio", "#form_crear_liga").datepicker();
+			$("#fecha_ficticia_inicio", "#form_crear_liga").datepicker();
 		});
 	</script>
 {% endblock %}
@@ -80,16 +83,46 @@
 					</div>
 				</div>
 
-				<!-- Tipo avance jornadas -->
-				<div id="contenido_tipo_avance_jornadas">
-					{% if form.tipo_avance_jornadas.errors %}
-						{{ form.tipo_avance_jornadas.errors }}
+				<!-- Fecha de activacion de la liga -->
+				<div id="contenido_fecha_real_inicio">
+					{% if form.fecha_real_inicio.errors %}
+						{{ form.fecha_real_inicio.errors }}
 					{% endif %}
 
-					<span class="label">Avance de las jornadas:</span>
+					<label for="id_fecha_real_inicio">Fecha de activación:</label>
 
-					<div id="caja_tipo_avance_jornadas">
-						{{ form.tipo_avance_jornadas }}
+					<div id="caja_fecha_real_inicio">
+						<input id="fecha_real_inicio" type="text" />
+					</div>
+				</div>
+				
+				<!-- Fecha de inicio ficticia de la liga -->
+				<div id="contenido_fecha_ficticia_inicio">
+					{% if form.fecha_ficticia_inicio.errors %}
+						{{ form.fecha_ficticia_inicio.errors }}
+					{% endif %}
+
+					<label for="id_fecha_ficticia_inicio">Fecha ficticia de inicio:</label>
+
+					<div id="caja_fecha_ficticia_inicio">
+						<input id="fecha_ficticia_inicio" type="text" />
+					</div>
+				</div>
+				
+				<!-- Velocidad de la liga -->
+				<div id="contenido_factor_tiempo">
+					{% if form.factor_tiempo.errors %}
+						{{ form.factor_tiempo.errors }}
+					{% endif %}
+
+					<label for="id_factor_tiempo">Duración de un día ficticio:</label>
+
+					<div id="caja_factor_tiempo">
+						<select id="factor_tiempo">
+
+								<option>1</option>
+							
+						</select>
 					</div>
 				</div>
 			</fieldset>

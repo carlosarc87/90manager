@@ -56,13 +56,18 @@ fieldset{
 	width: 200px;
 }
 
-#contenido_tipo_avance_jornadas{ display: none; padding: 5px 0px; }
-#contenido_tipo_avance_jornadas .label{
-	display: block;
+#contenido_fecha_real_inicio{ padding: 5px 0px; }
+#contenido_fecha_real_inicio label{
+	float: left;
 	font-weight: bold;
+	width: 150px;
 }
-#caja_tipo_avance_jornadas label{
-	display: block;
+
+#contenido_fecha_ficticia_inicio{ padding: 5px 0px; }
+#contenido_fecha_ficticia_inicio label{
+	float: left;
+	font-weight: bold;
+	width: 150px;
 }
 
 /* REGLAS EQUIPOS */
