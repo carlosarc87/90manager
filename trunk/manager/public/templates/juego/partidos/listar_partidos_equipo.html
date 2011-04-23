@@ -3,14 +3,6 @@
 {% block css_extra %}
 {% endblock %}
 
-{% block situacion %}
-	<ul id="menu_superior_situacion">
-		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
-		<li><a href="/jornadas/ver/{{ jornada.id }}/">Jornada {{ jornada.numero }}</a></li>
-		<li>Partido {{ partido.id }}</li>
-	</ul>
-{% endblock %}
-
 {% block contenido %}
 	Próximo partido:
 	{% if partido_actual %}

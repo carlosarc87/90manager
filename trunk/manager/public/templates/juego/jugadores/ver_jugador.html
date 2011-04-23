@@ -5,14 +5,6 @@
     <link rel="stylesheet" href="/media/css/juego/jugadores/ver_jugador.css" type="text/css" media="screen" />
 {% endblock %}
 
-{% block situacion %}
-	<ul id="menu_superior_situacion">
-		<li><a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a></li>
-		<li><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
-		<li><span>{{ jugador.nombre }}</span></li>
-	</ul>
-{% endblock %}
-
 {% block contenido %}
 
 	<h2>{{ jugador.nombre }}</h2>

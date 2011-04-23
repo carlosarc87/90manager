@@ -5,14 +5,6 @@
     <link rel="stylesheet" href="/media/css/juego/subastas/ver_subastas_equipo.css" type="text/css" media="screen" />
 {% endblock %}
 
-{% block situacion %}
-	<ul id="menu_superior_situacion">
-		<li><a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a></li>
-		<li><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></li>
-		<li><span>Subastas</span></li>
-	</ul>
-{% endblock %}
-
 {% block contenido %}
 
 	<h2>Subastas de {{ equipo.nombre }}</h2>
