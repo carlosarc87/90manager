@@ -22,11 +22,11 @@
 			<div id="header">
 				<ul id="menu">
 					<!-- Logo -->
-					<li id="logo"></li>
+					<li id="logo" onclick="location.href='/'"></li>
 					
 					{% if liga_actual %}
 						<!-- Liga -->
-						<li id="liga" onclick="mostrarMenu(this)">
+						<li id="liga" onclick="mostrarMenu(this)" title="Liga">
 							<ul class="desplegable">
 								<li><a href="/ligas/ver/">Información</a></li>
 								<li><a href="/clasificacion/ver/">Clasificación</a></li>
@@ -35,9 +35,18 @@
 								<li><a href="/equipos/listar/">Equipos</a></li>
 							</ul>
 						</li>
+					
+						<!-- Mercado -->
+						<li id="mercado" onclick="mostrarMenu(this)" title="Mercado">
+							<ul class="desplegable">
+								<li><a href="/mercado/subastas/ver/liga/">Subastas</a></li>
+								<li><a href="/mercado/subastas/propias/">Mis subastas</a></li>
+								<li><a href="/mercado/subastas/pujas/">Mis pujas</a></li>
+							</ul>
+						</li>
 						
 						<!-- Equipo -->
-						<li id="equipo" onclick="mostrarMenu(this)">
+						<li id="equipo" onclick="mostrarMenu(this)" title="Equipo">
 							<ul class="desplegable">
 								{% if equipo_propio %}
 									<li><a href="/equipos/mi_equipo/">Información</a></li>
@@ -50,22 +59,19 @@
 							</ul>
 						</li>
 						
-						<li id="calendario" onclick="mostrarMenu(this)">
+						<li id="calendario" onclick="mostrarMenu(this)" title="Calendario">
 							<a href="/calendario/ver/">- {{ fecha_actual_liga }} -</a>
 						</li>
-					
-						<!-- Mercado -->
-						<li id="mercado" onclick="mostrarMenu(this)">
-							<ul class="desplegable">
-								<li><a href="/mercado/subastas/ver/liga/">Subastas</a></li>
-								<li><a href="/mercado/subastas/propias/">Mis subastas</a></li>
-								<li><a href="/mercado/subastas/pujas/">Mis pujas</a></li>
-							</ul>
-						</li>
+					{% else %}
+						<!-- Crear Liga -->
+						<li id="crear_liga" title="Crear liga"></li>
+						
+						<!-- Ver ligas publicas -->
+						<li id="ligas_publicas" title="Ver ligas públicas"></li>
 					{% endif %}
 					
 					<!-- Notificaciones -->
-					<li id="notificaciones" onclick="mostrarMenu(this)">
+					<li id="notificaciones" onclick="mostrarMenu(this)" title="Notificaciones">
 						<ul class="desplegable">
 							{% for notificacion in ultimas_notificaciones %}
 								<li><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></li>
@@ -118,7 +124,7 @@
 				</div>
 			{% endblock %}
 
-			{% if user.is_authenticated %}
+			{% if not user.is_authenticated %}
 				{% block logos_pie_pagina %}
 					<div id="logos">
 						<a href="http://www.w3.org/html/logo/" onclick="target='_blank'">
@@ -137,10 +143,11 @@
 						</a>
 					</div>
 				{% endblock %}
+				
+				<div id="contador_desactualizacion">
+					<span id="contador_desactualizado"></span>
+				</div>
 			{% endif %}
-
-			{% block contador_desactualizacion %}
-			{% endblock %}
 		{% endblock %}
 	</div>
 	

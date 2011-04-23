@@ -9,9 +9,17 @@
 	<div id="fondo_tablon">
 		<div id="contenido_tablon">
 			<h2>Tablón de {{ user.username }}</h2>
-
-			<a href="/ligas/crear/">Crear Liga</a>
-			<a href="/ligas/publicas/">Ligas públicas</a>
+			
+			<table class="tabla1" id="tabla_notificaciones">
+				<caption>Notificaciones</caption>
+				<thead>
+				{% for notificacion in ultimas_notificaciones %}
+					<tr><td><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></td></tr>
+				{% empty %}
+					<tr><td><a href="#">No hay notificaciones nuevas</a></td></tr>
+				{% endfor %}
+				</thead>
+			</table>
 
 			<table class="tabla1" id="tabla_ligas_creadas">
 				<caption>Ligas creadas</caption>
