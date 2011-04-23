@@ -1,4 +1,4 @@
-{% extends "base_juego.html" %}
+{% extends "base.html" %}
 
 {% block css_extra %}
 	<link rel="stylesheet" href="/media/css/tablas.css" type="text/css" />
@@ -165,28 +165,28 @@
 			<input id="valor_multiplicador" type="text" name="multiplicador" />
 			<input id="boton_multiplicador" type="button" value="Cambiar" onclick="cambiarMultiplicador();" />
 		</div>
-		
+
 		<!-- Velocidad -->
 		<div id="caja_velocidad">
 			<label for="valor_velocidad">Velocidad:</label>
 			<input id="valor_velocidad" type="text" name="velocidad" />
 			<input id="boton_velocidad" type="button" value="Cambiar" onclick="cambiarVelocidad();" />
 		</div>
-		
+
 		<!-- Botones -->
 		<div id="caja_botones">
 			<input type="button" id="boton_reinicio" name="buttonReinicio" value="Iniciar/Reiniciar" onclick="reiniciarContador(this);" />
 			<input type="button" id="boton_pausa" name="buttonPausa" value="Pausar/Continuar" onclick="pausarContador(this);" />
 		</div>
 	</div>
-	
+
 	<div id="contenido_contador_tiempo">
 		<span id="contador_tiempo">Pulse el botón para iniciar el partido</span>
 	</div>
-	
+
 	<table class="tabla1" id="tabla_resultado">
 		<caption>Resultado</caption>
-		
+
 		<tbody>
 			<tr>
 				<td id="col_local">{{ siglas_local }}</td>
@@ -195,7 +195,7 @@
 			</tr>
 		</tbody>
 	</table>
-	
+
 	<!-- Sucesos -->
 	<table class="tabla1" id="tabla_sucesos">
 		<caption>Sucesos</caption>

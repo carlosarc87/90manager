@@ -1,4 +1,4 @@
-{% extends "base_juego.html" %}
+{% extends "base.html" %}
 
 {% block css_extra %}
     <link rel="stylesheet" href="/media/css/tablas.css" type="text/css" media="screen" />
@@ -22,9 +22,9 @@
 			{% for liga in ligas %}
 				<tr>
 					<td class="col_creador">{{ liga.creador }}</td>
-					
+
 					<td class="col_nombre"><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
-					
+
 					<td class="col_inscritos">{{ liga.inscritos }}</td>
 				</tr>
 			{% empty %}
