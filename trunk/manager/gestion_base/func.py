@@ -29,6 +29,8 @@ from django.contrib.sessions.models import Session
 from django import forms
 from django.utils.safestring import mark_safe
 
+from datetime import datetime
+
 from gestion_sistema.gestion_liga.models import Liga
 
 ########################################################################
@@ -77,7 +79,9 @@ def generarPagina(template, parametros, request, agregar_parametros=True):
 			parametros['equipo_propio'] = equipo
 			parametros['ultimas_notificaciones'] = usuario.notificacion_set.filter(leida=False)[:5]
 			if liga.activada():
-				parametros['fecha_actual_liga'] = liga.getFecha()
+				fecha = liga.getFecha()
+				parametros['fecha_actual_liga'] = fecha.date().strftime("%d/%m/%Y")
+				parametros['hora_actual_liga'] = fecha.time().strftime("%H:%M")
 		except KeyError:
 			pass
 	return renderizar(request, template, parametros)
