@@ -139,141 +139,70 @@ def ver_partido(request):
 	# Si el partido ha finalizado
 	if finalizado:
 		# Obtener datos sobre los sucesos del partido
-		#--------------------------------------------------
-		# Equipo local
-		#--------------------------------------------------
-		q = partido.suceso_set.filter(equipo = equipo_local)
-		equipo_local.num_acciones = q.count()
+		for equipo in (equipo_local, equipo_visitante):
+			sucesos = partido.suceso_set.filter(equipo = equipo)
+			equipo.num_acciones = sucesos.count()
 
-		# Regates
-		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Regate realizado")
-		equipo_local.regates_realizados = q.count()
-		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Regate fallado")
-		equipo_local.regates_fallados = q.count()
+			# Regates
+			equipo.regates_realizados = sucesos.filter(tipo = "Regate realizado").count()
+			equipo.regates_fallados = sucesos.filter(tipo = "Regate fallado").count()
 
-		if equipo_local.regates_realizados + equipo_local.regates_fallados == 0:
-			equipo_local.porcentaje_regates_exito = 0
-		else:
-			equipo_local.porcentaje_regates_exito = (1.0 * equipo_local.regates_realizados) / (equipo_local.regates_realizados + equipo_local.regates_fallados)
+			if equipo.regates_realizados + equipo.regates_fallados == 0:
+				equipo.porcentaje_regates_exito = 0
+			else:
+				equipo.porcentaje_regates_exito = (1.0 * equipo.regates_realizados) / (equipo.regates_realizados + equipo.regates_fallados)
 
-		equipo_local.regates_totales = equipo_local.regates_realizados + equipo_local.regates_fallados
+			equipo.regates_totales = equipo.regates_realizados + equipo.regates_fallados
 
-		# Pases
-		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Pase realizado")
-		equipo_local.pases_realizados = q.count()
-		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Pase fallado")
-		equipo_local.pases_fallados = q.count()
+			# Pases
+			equipo.pases_realizados = sucesos.filter(tipo = "Pase realizado").count()
+			equipo.pases_fallados = sucesos.filter(tipo = "Pase fallado").count()
 
-		if equipo_local.pases_realizados + equipo_local.pases_fallados == 0:
-			equipo_local.porcentaje_pases_exito = 0
-		else:
-			equipo_local.porcentaje_pases_exito = (1.0 * equipo_local.pases_realizados) / (equipo_local.pases_realizados + equipo_local.pases_fallados)
+			if equipo.pases_realizados + equipo.pases_fallados == 0:
+				equipo.porcentaje_pases_exito = 0
+			else:
+				equipo.porcentaje_pases_exito = (1.0 * equipo.pases_realizados) / (equipo.pases_realizados + equipo.pases_fallados)
 
-		equipo_local.pases_totales = equipo_local.pases_realizados + equipo_local.pases_fallados
+			equipo.pases_totales = equipo.pases_realizados + equipo.pases_fallados
 
-		# Disparos
-		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Disparo parado")
-		equipo_local.disparos_parados = q.count()
-		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Disparo fuera")
-		equipo_local.disparos_fuera = q.count()
-		q = partido.suceso_set.filter(equipo = equipo_local, tipo = "Gol")
-		equipo_local.goles = q.count()
-		#--------------------------------------------------
+			# Disparos
+			equipo.disparos_parados = sucesos.filter(tipo = "Disparo parado").count()
+			equipo.disparos_fuera = sucesos.filter(tipo = "Disparo fuera").count()
+			equipo.goles = sucesos.filter(tipo = "Gol").count()
 
-		# Equipo visitante
-		#--------------------------------------------------
-		q = partido.suceso_set.filter(equipo = equipo_visitante)
-		equipo_visitante.num_acciones = q.count()
+			equipo.remates_puerta = equipo.goles + equipo.disparos_parados + equipo.disparos_fuera
+			equipo.balones_perdidos = equipo.regates_fallados + equipo.pases_fallados + equipo.disparos_parados + equipo.disparos_fuera
 
-		# Regates
-		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Regate realizado")
-		equipo_visitante.regates_realizados = q.count()
-		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Regate fallado")
-		equipo_visitante.regates_fallados = q.count()
-
-		if equipo_visitante.regates_realizados + equipo_visitante.regates_fallados == 0:
-			equipo_visitante.porcentaje_regates_exito = 0
-		else:
-			equipo_visitante.porcentaje_regates_exito = (1.0 * equipo_visitante.regates_realizados) / (equipo_visitante.regates_realizados + equipo_visitante.regates_fallados)
-
-		equipo_visitante.regates_totales = equipo_visitante.regates_realizados + equipo_visitante.regates_fallados
-
-		# Pases
-		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Pase realizado")
-		equipo_visitante.pases_realizados = q.count()
-		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Pase fallado")
-		equipo_visitante.pases_fallados = q.count()
-
-		if equipo_visitante.pases_realizados + equipo_visitante.pases_fallados == 0:
-			equipo_visitante.porcentaje_pases_exito = 0
-		else:
-			equipo_visitante.porcentaje_pases_exito = (1.0 * equipo_visitante.pases_realizados) / (equipo_visitante.pases_realizados + equipo_visitante.pases_fallados)
-
-		equipo_visitante.pases_totales = equipo_visitante.pases_realizados + equipo_visitante.pases_fallados
-
-		# Disparos
-		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Disparo parado")
-		equipo_visitante.disparos_parados = q.count()
-		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Disparo fuera")
-		equipo_visitante.disparos_fuera = q.count()
-		q = partido.suceso_set.filter(equipo = equipo_visitante, tipo = "Gol")
-		equipo_visitante.goles = q.count()
-
-		equipo_local.remates_puerta = equipo_local.goles + equipo_local.disparos_parados + equipo_local.disparos_fuera
-		equipo_local.balones_perdidos = equipo_local.regates_fallados + equipo_local.pases_fallados + equipo_local.disparos_parados + equipo_local.disparos_fuera
 		equipo_local.balones_recuperados = equipo_visitante.regates_fallados + equipo_visitante.pases_fallados + equipo_visitante.disparos_parados
-
-		equipo_visitante.remates_puerta = equipo_visitante.goles + equipo_visitante.disparos_parados + equipo_visitante.disparos_fuera
-		equipo_visitante.balones_perdidos = equipo_visitante.regates_fallados + equipo_visitante.pases_fallados + equipo_visitante.disparos_parados + equipo_visitante.disparos_fuera
 		equipo_visitante.balones_recuperados = equipo_local.regates_fallados + equipo_local.pases_fallados + equipo_local.disparos_parados
 		#--------------------------------------------------
 
 		# Porcentajes
-		equipo_local.porc_posesion = round((100.0 * equipo_local.num_acciones) / (equipo_local.num_acciones + equipo_visitante.num_acciones), 1)
-		equipo_local.porc_regates_exito = round((100.0 * equipo_local.regates_realizados) / equipo_local.regates_totales, 1)
-		equipo_local.porc_pases_exito = round((100.0 * equipo_local.pases_realizados) / equipo_local.pases_totales, 1)
+		num_acciones_total = equipo_local.num_acciones + equipo_visitante.num_acciones
+		for equipo in (equipo_local, equipo_visitante):
+			equipo.porc_posesion = round((100.0 * equipo.num_acciones) / num_acciones_total, 1)
+			equipo.porc_regates_exito = round((100.0 * equipo.regates_realizados) / equipo.regates_totales, 1)
+			equipo.porc_pases_exito = round((100.0 * equipo.pases_realizados) / equipo.pases_totales, 1)
 
-		equipo_visitante.porc_posesion = round((100.0 * equipo_visitante.num_acciones) / (equipo_local.num_acciones + equipo_visitante.num_acciones), 1)
-		equipo_visitante.porc_regates_exito = round((100.0 * equipo_visitante.regates_realizados) / equipo_visitante.regates_totales, 1)
-		equipo_visitante.porc_pases_exito = round((100.0 * equipo_visitante.pases_realizados) / equipo_visitante.pases_totales, 1)
+		for equipo, alineacion in ((equipo_local, partido.alineacion_local), (equipo_visitante, partido.alineacion_visitante)):
+			# Obtener datos de los titulares del equipo
+			equipo.titulares = alineacion.getDatosTitulares()
 
-		# Obtener datos de los titulares del equipo local
-		equipo_local.titulares = partido.alineacion_local.getDatosTitulares()
+			equipo.valor_titulares = 0
+			equipo.num_df = 0
+			equipo.num_cc = 0
+			equipo.num_dl = 0
+			for t in equipo.titulares:
+				# Valor total del equipo
+				equipo.valor_titulares += t.atributos.valorMercado()
 
-		equipo_local.valor_titulares = 0
-		equipo_local.num_df = 0
-		equipo_local.num_cc = 0
-		equipo_local.num_dl = 0
-		for t in equipo_local.titulares:
-			# Valor total del equipo
-			equipo_local.valor_titulares += t.atributos.valorMercado()
-
-			# Número de jugadores por posición
-			if t.posicion == JugadorPartido.DEFENSA:
-				equipo_local.num_df += 1
-			elif t.posicion == JugadorPartido.CENTROCAMPISTA:
-				equipo_local.num_cc += 1
-			elif t.posicion == JugadorPartido.DELANTERO:
-				equipo_local.num_dl += 1
-
-		# Obtener valor total de los titulares del equipo visitante
-		equipo_visitante.titulares = partido.alineacion_visitante.getDatosTitulares()
-
-		equipo_visitante.valor_titulares = 0
-		equipo_visitante.num_df = 0
-		equipo_visitante.num_cc = 0
-		equipo_visitante.num_dl = 0
-		for t in equipo_visitante.titulares:
-			# Valor total del equipo
-			equipo_visitante.valor_titulares += t.atributos.valorMercado()
-
-			# Número de jugadores por posición
-			if t.posicion == JugadorPartido.DEFENSA:
-				equipo_visitante.num_df += 1
-			elif t.posicion == JugadorPartido.CENTROCAMPISTA:
-				equipo_visitante.num_cc += 1
-			elif t.posicion == JugadorPartido.DELANTERO:
-				equipo_visitante.num_dl += 1
+				# Número de jugadores por posición
+				if t.posicion == JugadorPartido.DEFENSA:
+					equipo.num_df += 1
+				elif t.posicion == JugadorPartido.CENTROCAMPISTA:
+					equipo.num_cc += 1
+				elif t.posicion == JugadorPartido.DELANTERO:
+					equipo.num_dl += 1
 
 	d = {"jornada" : jornada,
 		 "equipo_local" : equipo_local,
