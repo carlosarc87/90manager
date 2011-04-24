@@ -165,7 +165,7 @@
 	
 	<div id="div_acceso">
 		<div id="login">
-			{% if form.errors %}
+			{% if form_login.errors %}
 				<p class="texto_error">Usuario y/o contraseña no válidos</p>
 			{% endif %}
 
@@ -197,6 +197,7 @@
 		<div id="registro">
 			<form action="/" method="post">
 				{% csrf_token %}
+				
 				<!-- Usuario -->
 				{% if form_reg.username.errors %}
 					<div class="texto_error">{{ form_reg.username.errors }}</div>

@@ -14,7 +14,7 @@
 			$("#caja_sexo_permitido", "#form_crear_liga").buttonset();
 			$("#caja_tipo_avance_jornadas", "#form_crear_liga").buttonset();
 			$("input:submit", "#form_crear_liga").button();
-			$("#fecha_real_inicio", "#form_crear_liga").datepicker();
+			$("#fecha_real_inicio", "#form_crear_liga").datetimepicker();
 			$("#fecha_ficticia_inicio", "#form_crear_liga").datepicker();
 		});
 	</script>
@@ -26,6 +26,7 @@
 	<div id="contenido_crear_liga">
 		<form id="form_crear_liga" action="/ligas/crear/" method="post">
 			{% csrf_token %}
+			
 			<!-- Nombre de la liga -->
 			<div id="contenido_nombre">
 				{% if form.nombre.errors %}
@@ -92,7 +93,7 @@
 					<label for="id_fecha_real_inicio">Fecha de activación:</label>
 
 					<div id="caja_fecha_real_inicio">
-						<input id="fecha_real_inicio" type="text" />
+						<input id="fecha_real_inicio" name="fecha_real_inicio" type="text" />
 					</div>
 				</div>
 				
@@ -105,7 +106,7 @@
 					<label for="id_fecha_ficticia_inicio">Fecha ficticia de inicio:</label>
 
 					<div id="caja_fecha_ficticia_inicio">
-						<input id="fecha_ficticia_inicio" type="text" />
+						<input id="fecha_ficticia_inicio" name="fecha_ficticia_inicio" type="text" />
 					</div>
 				</div>
 				
@@ -115,13 +116,34 @@
 						{{ form.factor_tiempo.errors }}
 					{% endif %}
 
-					<label for="id_factor_tiempo">Duración de un día ficticio:</label>
+					<label for="id_factor_tiempo">Duración de un día ficticio en horas reales:</label>
 
 					<div id="caja_factor_tiempo">
-						<select id="factor_tiempo">
-
-								<option>1</option>
-							
+						<select id="factor_tiempo" name="factor_tiempo">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
+							<option>8</option>
+							<option>9</option>
+							<option>10</option>
+							<option>11</option>
+							<option>12</option>
+							<option>13</option>
+							<option>14</option>
+							<option>15</option>
+							<option>16</option>
+							<option>17</option>
+							<option>18</option>
+							<option>19</option>
+							<option>20</option>
+							<option>21</option>
+							<option>22</option>
+							<option>23</option>
+							<option>24</option>
 						</select>
 					</div>
 				</div>
@@ -171,7 +193,7 @@
 
 			<!-- Boton crear -->
 			<div id="contenido_boton_crear">
-				<input type="submit" value="Crear" />
+				<input type="submit" value="Crear liga" />
 			</div>
 		</form>
 	</div>
