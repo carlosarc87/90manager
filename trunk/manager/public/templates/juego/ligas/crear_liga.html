@@ -2,13 +2,49 @@
 
 {% block css_extra %}
 	<link rel="stylesheet" href="/media/css/formularios.css" type="text/css" />
-    <link rel="stylesheet" href="/media/css/tablas.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="/media/css/juego/ligas/crear_liga.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/tablas.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/juego/ligas/crear_liga.css" type="text/css" media="screen" />
 {% endblock %}
 
 {% block js_extra %}
 	<!-- No tocar que hay que arreglarlo un poco aun -->
 	<script type="text/javascript">
+		// Traduccion a español
+		jQuery(function($){
+			$.datepicker.regional['es'] = {
+				closeText: 'Cerrar',
+				prevText: '&#x3c;Ant',
+				nextText: 'Sig&#x3e;',
+				currentText: 'Hoy',
+				monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+				'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+				monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+				'Jul','Ago','Sep','Oct','Nov','Dic'],
+				dayNames: ['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'],
+				dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
+				dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
+				weekHeader: 'Sm',
+				dateFormat: 'dd/mm/yy',
+				firstDay: 1,
+				isRTL: false,
+				showMonthAfterYear: false,
+				yearSuffix: ''};
+			$.datepicker.setDefaults($.datepicker.regional['es']);
+			
+			$.timepicker.regional['es'] = {
+				timeOnlyTitle: 'Hora',
+				timeText: 'Hora',
+				hourText: 'Hora',
+				minuteText: 'Minutos',
+				secondText: 'Segundos',
+				currentText: 'Ahora',
+				closeText: 'Cerrar',
+				hourGrid: 6,
+				minuteGrid: 10
+			}
+			$.timepicker.setDefaults($.timepicker.regional['es']);
+		});		
+		
 		/* Para el funcionamiento de tema css con jquery */
 		$(function() {
 			$("#caja_sexo_permitido", "#form_crear_liga").buttonset();
@@ -27,7 +63,6 @@
 	<div id="contenido_crear_liga">
 		<form class="form1" id="form_crear_liga" action="/ligas/crear/" method="post">
 			{% csrf_token %}
-			
 			<!-- Nombre de la liga -->
 			<div id="contenido_nombre">
 				{% if form.nombre.errors %}

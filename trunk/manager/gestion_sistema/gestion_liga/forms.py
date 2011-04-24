@@ -47,7 +47,7 @@ class LigaForm(forms.ModelForm):
 
 	class Meta:
 		model = Liga
-		exclude = ('creador', 'num_equipos', 'tipo_avance_jornadas')
+		exclude = ('creador', 'tipo_avance_jornadas', 'fecha_real_inicio', 'num_equipos')
 
 ########################################################################
 

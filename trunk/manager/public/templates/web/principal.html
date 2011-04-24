@@ -166,8 +166,8 @@
 	
 	<div id="div_acceso">
 		<div id="login">
-			{% if form.errors %}
-				<p class="texto_error">Usuario y/o contraseña no válidos</p>
+			{% if login_error %}
+				<p class="texto_error">{{ login_error }}</p>
 			{% endif %}
 
 			<form class="form1" action="/" method="post">

@@ -62,7 +62,7 @@ class Liga(models.Model):
 	def getFecha(self):
 		""" Devuelve la fecha ficticia de la liga """
 		ahora_real = datetime.now()
-		factor = 3600
+		factor = self.factor_tiempo
 		t_real_transcurrida = ahora_real - self.fecha_real_inicio
 		t_ficticio_transcurrida = t_real_transcurrida * factor
 		ahora_ficticia = self.fecha_ficticia_inicio + t_ficticio_transcurrida
