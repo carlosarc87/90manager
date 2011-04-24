@@ -22,6 +22,15 @@
 	width: 100%;
 }
 
+.form1 textarea{
+	border: solid 1px #79b7e7;
+	padding: 2px;
+}
+
+.form1 textarea:hover{
+	border: solid 1px #1d5987;
+}
+
 .form1 input[type="text"], .form1 input[type="password"]{
 	border: solid 1px #79b7e7;
 	font-size: 1em;

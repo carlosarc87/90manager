@@ -6,98 +6,94 @@
 {% endblock %}
 
 {% block contenido %}
-	<div id="fondo_tablon">
-		<div id="contenido_tablon">
-			<h2>Tablón de {{ user.username }}</h2>
-			
-			<table class="tabla1" id="tabla_notificaciones">
-				<caption>Notificaciones</caption>
-				<thead>
-				{% for notificacion in ultimas_notificaciones %}
-					<tr><td><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></td></tr>
-				{% empty %}
-					<tr><td><a href="#">No hay notificaciones nuevas</a></td></tr>
+	<h2>Tablón de {{ user.username }}</h2>
+	
+	<table class="tabla1" id="tabla_notificaciones">
+		<caption>Notificaciones</caption>
+		<thead>
+		{% for notificacion in ultimas_notificaciones %}
+			<tr><td><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></td></tr>
+		{% empty %}
+			<tr><td><a href="#">No hay notificaciones nuevas</a></td></tr>
+		{% endfor %}
+		</thead>
+	</table>
+
+	<table class="tabla1" id="tabla_ligas_creadas">
+		<caption>Ligas creadas</caption>
+		{% if ligas_creadas %}
+			<thead>
+				<tr>
+					<th>Nombre de la liga</th>
+					<th>Num. equipos</th>
+					<th>Estado</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for liga in ligas_creadas %}
+					<tr>
+						<td class="col_nombre_liga"><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
+
+						<td class="col_num_equipos">{{ liga.num_equipos }}</td>
+
+						{% if liga.activada %}
+							{% if not liga.getJornadaActual %}
+								<td class="col_estado"><span class="liga_finalizada">FINALIZADA</span></td>
+							{% else %}
+								<td class="col_estado"><span class="liga_comenzada">JORNADA {{ liga.getJornadaActual.numero }}</span></td>
+							{% endif %}
+						{% else %}
+							<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>
+						{% endif %}
+					</tr>
 				{% endfor %}
-				</thead>
-			</table>
+			</tbody>
+		{% else %}
+			<tr>
+				<th>No tienes ninguna liga creada</th>
+			</tr>
+		{% endif %}
+	</table>
 
-			<table class="tabla1" id="tabla_ligas_creadas">
-				<caption>Ligas creadas</caption>
-				{% if ligas_creadas %}
-					<thead>
-						<tr>
-							<th>Nombre de la liga</th>
-							<th>Num. equipos</th>
-							<th>Estado</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for liga in ligas_creadas %}
-							<tr>
-								<td class="col_nombre_liga"><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></td>
-
-								<td class="col_num_equipos">{{ liga.num_equipos }}</td>
-
-								{% if liga.activada %}
-									{% if not liga.getJornadaActual %}
-										<td class="col_estado"><span class="liga_finalizada">FINALIZADA</span></td>
-									{% else %}
-										<td class="col_estado"><span class="liga_comenzada">JORNADA {{ liga.getJornadaActual.numero }}</span></td>
-									{% endif %}
-								{% else %}
-									<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>
-								{% endif %}
-							</tr>
-						{% endfor %}
-					</tbody>
-				{% else %}
+	<table class="tabla1" id="tabla_ligas_participando">
+		<caption>Ligas en las que participa</caption>
+		{% if equipos %}
+			<thead>
+				<tr>
+					<th>Creador</th>
+					<th>Nombre de la liga</th>
+					<th>Equipo</th>
+					<th>Num. equipos</th>
+					<th>Estado</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for equipo in equipos %}
 					<tr>
-						<th>No tienes ninguna liga creada</th>
+						<td class="col_creador">{{ equipo.liga.creador }}</td>
+
+						<td class="col_nombre_liga"><a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a></td>
+
+						<td class="col_nombre_equipo"><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></td>
+
+						<td class="col_num_equipos">{{ equipo.liga.num_equipos }}</td>
+
+						{% if equipo.liga.activada %}
+							{% if not equipo.liga.getJornadaActual %}
+								<td class="col_estado"><span class="liga_finalizada">FINALIZADA</span></td>
+							{% else %}
+								<td class="col_estado"><span class="liga_comenzada">JORNADA {{ equipo.liga.getJornadaActual.numero }}</span></td>
+							{% endif %}
+						{% else %}
+							<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>
+						{% endif %}
 					</tr>
-				{% endif %}
-			</table>
-
-			<table class="tabla1" id="tabla_ligas_participando">
-				<caption>Ligas en las que participa</caption>
-				{% if equipos %}
-					<thead>
-						<tr>
-							<th>Creador</th>
-							<th>Nombre de la liga</th>
-							<th>Equipo</th>
-							<th>Num. equipos</th>
-							<th>Estado</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for equipo in equipos %}
-							<tr>
-								<td class="col_creador">{{ equipo.liga.creador }}</td>
-
-								<td class="col_nombre_liga"><a href="/ligas/ver/{{ equipo.liga.id }}/">{{ equipo.liga.nombre }}</a></td>
-
-								<td class="col_nombre_equipo"><a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a></td>
-
-								<td class="col_num_equipos">{{ equipo.liga.num_equipos }}</td>
-
-								{% if equipo.liga.activada %}
-									{% if not equipo.liga.getJornadaActual %}
-										<td class="col_estado"><span class="liga_finalizada">FINALIZADA</span></td>
-									{% else %}
-										<td class="col_estado"><span class="liga_comenzada">JORNADA {{ equipo.liga.getJornadaActual.numero }}</span></td>
-									{% endif %}
-								{% else %}
-									<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>
-								{% endif %}
-							</tr>
-						{% endfor %}
-					</tbody>
-				{% else %}
-					<tr>
-						<th>No participas en ninguna liga</th>
-					</tr>
-				{% endif %}
-			</table>
-		</div>
-	</div>
+				{% endfor %}
+			</tbody>
+		{% else %}
+			<tr>
+				<th>No participas en ninguna liga</th>
+			</tr>
+		{% endif %}
+	</table>
 {% endblock %}

@@ -1,11 +1,10 @@
-h4{
-	padding: 10px 0px;
-	text-align: center;
-}
-
 label{
 	float: left;
 	width: 100px;
+}
+
+p{
+	text-align: center;
 }
 
 #contacto{
@@ -13,9 +12,7 @@ label{
 }
 
 #contacto form{
-	border: solid 1px #555;
 	margin: 0px auto;
-	padding: 20px;
 	width: 400px;
 }
 
@@ -26,3 +23,9 @@ label{
 #contenido_enviar{ clear: both; padding: 5px 0px; }
 
 #id_mensaje{ width: 90%; }
+
+#wrap{
+	background: #fff;
+	border-left: solid 1px #555;
+	border-right: solid 1px #555;
+}

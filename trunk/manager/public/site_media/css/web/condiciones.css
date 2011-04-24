@@ -5,3 +5,9 @@ h4{
 #condiciones{
 	padding: 10px;
 }
+
+#wrap{
+	background: #fff;
+	border-left: solid 1px #555;
+	border-right: solid 1px #555;
+}

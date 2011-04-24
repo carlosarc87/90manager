@@ -1,16 +1,27 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
-    <link rel="stylesheet" href="/media/css/tablas.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/formularios.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/media/css/web/contacto.css" type="text/css" media="screen" />
 {% endblock %}
 
+{% block js_extra %}
+	<script type="text/javascript">
+		/* Para el funcionamiento de tema css con jquery */
+		$(function() {
+			$("input:submit", "#contacto").button();
+		});
+	</script>
+{% endblock %}
+
 {% block contenido %}
-	<h4>Envíenos insultos, amenazas de muerte, citaciones para juzgado, etc
-	mediante el siguiente formulario de contacto con los administradores</h4>
+	<h4>Contacto</h4>
+	
+	<p>Envíenos insultos, amenazas de muerte, citaciones para juzgado, etc
+	mediante el siguiente formulario de contacto con los administradores</p>
 
 	<div id="contacto">
-		<form action="/contacto/" method="post">
+		<form class="form1" action="/contacto/" method="post">
 			{% csrf_token %}
 			<div id="contenido_emisor">
 				{% if form.emisor.errors %}

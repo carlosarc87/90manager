@@ -1,22 +1,15 @@
-h4{
-	font-size: 1.2em;
-}
-
 ul{
-	padding: 0px 0px 0px 15px;
+	padding: 0px 0px 0px 25px;
 }
 
 #creditos{
 	display: table-cell;
-	padding: 10px 10px 10px 50px;
+	padding-left: 50px;
 	margin: 10px;
 }
 
 #info{
-	border: solid 1px #000;
 	display: table-cell;
-	padding: 10px;
-	margin: 10px;
 	width: 500px;
 }
 
@@ -24,4 +17,10 @@ ul{
 	display: table;
 	margin: 20px auto;
 	width: 900px;
+}
+
+#wrap{
+	background: #fff;
+	border-left: solid 1px #555;
+	border-right: solid 1px #555;
 }

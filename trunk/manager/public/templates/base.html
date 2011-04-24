@@ -59,8 +59,8 @@
 								</ul>
 							</li>
 
-							<li id="calendario" onclick="mostrarMenu(this)" title="Calendario">
-								<a href="/calendario/ver/">- {{ fecha_actual_liga }} - {{ hora_actual_liga }} -</a>
+							<li id="calendario" onclick="location.href='/'" title="Calendario">
+								<strong>Liga "{{ liga.nombre }}": </strong><span id="fecha_liga">{{ fecha_actual_liga }} | {{ hora_actual_liga }}</span>
 							</li>
 						{% else %}
 							<!-- Liga -->
@@ -120,9 +120,11 @@
 	{% endif %}
 
 	<div id="wrap">
-		<!-- Contenedor central -->
-		{% block contenido %}
-		{% endblock %}
+		<div id="wrap-content">
+			<!-- Contenedor central -->
+			{% block contenido %}
+			{% endblock %}
+		</div>
 	</div>
 
 	<!-- Pie de pagina -->

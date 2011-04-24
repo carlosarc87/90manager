@@ -1,18 +1,16 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
-	<link rel="stylesheet" href="/media/css/tablesorter_green/style.css" type="text/css" />
+	<link rel="stylesheet" href="/media/js/tablesorter/themes/blue/style.css" type="text/css" />
     <link rel="stylesheet" href="/media/css/tablas.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/media/css/juego/jornadas/listar_liga.css" type="text/css" media="screen" />
 {% endblock %}
 
-{% block js_extra %}
-{% endblock %}
-
 {% block contenido %}
 	<h2>Jornadas de la liga: {{ liga.nombre }}</h2>
+	
 	<!-- Tabla jornadas -->
-	<table class="tabla1" id="tabla_jornadas">
+	<table class="tablesorter" id="tabla_jornadas">
 		<caption>Listado de jornadas</caption>
 		<thead>
 			<tr>
@@ -26,13 +24,13 @@
 					<td class="cuadro_num_azul_der">
 						<a href="/jornadas/ver/{{ jornada.id }}/">{{ jornada.numero }}</a>
 					</td>
-					<th>
+					<td>
 						{% if jornada.jugada %}
 							<span class="jornada_jugada">SÍ</span>
 						{% else %}
 							<span class="jornada_no_jugada">NO</span>
 						{% endif %}
-					</th>
+					</td>
 				</tr>
 			{% endfor %}
 		</tbody>

@@ -1,16 +1,10 @@
-h2{
-	padding-bottom: 10px;
-	text-align: center;
-}
-
-#contenido_tablon{
-	background: rgba(255, 255, 255, 0.8);
-	padding: 20px;
-}
-
-#fondo_tablon{
+#wrap{
 	background: url('../../img/Chicas-Futbol-Americano-grupo.jpg') no-repeat;
 	background-position: center;
+}
+
+#wrap-content{
+	background: rgba(255, 255, 255, 0.8);
 }
 
 #tabla_ligas_creadas{

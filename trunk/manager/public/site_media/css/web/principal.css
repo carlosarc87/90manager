@@ -22,7 +22,7 @@
 	background: url('../../img/logoAlter.png');
 	cursor: pointer;
 	height: 175px;
-	margin: 0 auto;
+	margin: 10px auto;
 	width: 387px;
 }
 
@@ -115,3 +115,8 @@
 }
 
 /* fin registro */
+
+#wrap{
+	background: none;
+	border: none;
+}

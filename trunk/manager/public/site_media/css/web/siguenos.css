@@ -1,13 +1,15 @@
-h4{
-	padding: 5px 0px;
+p{
 	text-align: center;
+}
+
+th{
+	text-align: right;
 }
 
 #fila_identi_ca{
 }
 
 #fila_tuenti{
-	display: none;
 }
 
 #fila_twitter img{
@@ -15,7 +17,8 @@ h4{
 }
 
 #siguenos{
-	margin: 10px auto;
+	margin: 0px auto;
+	padding: 10px 0px;
 	width: 500px;
 }
 
@@ -23,7 +26,8 @@ h4{
 	width: 100%;
 }
 
-.nombre{
-	font-weight: bold;
-	text-align: right;
+#wrap{
+	background: #fff;
+	border-left: solid 1px #555;
+	border-right: solid 1px #555;
 }

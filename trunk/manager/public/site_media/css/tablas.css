@@ -43,3 +43,8 @@
 .tabla1 tr:nth-child(2n){ /* Filas pares */
 	background-color: #eee;
 }
+
+.tabla1 .num1{
+	color: #0000aa;
+	text-align: right;
+}

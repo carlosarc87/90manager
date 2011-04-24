@@ -22,7 +22,11 @@ body{
 }
 
 h1, h2, h3, h4{
-	margin: 0px;
+	background: #fff url('../css/custom-theme-redmond/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png') 0% 50% repeat-x;
+	border: solid 1px #4297d7;
+	margin: 0px 0px 10px 0px;
+	padding: 5px 0px;
+	text-align: center;
 }
 
 /* footer */
@@ -45,6 +49,7 @@ h1, h2, h3, h4{
 }
 
 #footer{
+	background: #fff;
 	border-top: solid 1px #555555;
 	clear: both;
 	padding: 10px;
@@ -168,9 +173,8 @@ h1, h2, h3, h4{
 
 #menu #calendario{
 	background: #fff url("../img/icons/calendario.png") no-repeat top left;
-	color: #eee;
-	font-size: 0.8em;
-	font-weight: bold;
+	color: #888;
+	font-size: 0.9em;
 	height: 17px;
 	padding: 4px 0px;
 	text-align: center;
