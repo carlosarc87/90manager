@@ -224,7 +224,7 @@ def crear_liga(request):
 		if form.is_valid():
 			liga = form.save(commit = False)
 			liga.creador = Usuario.objects.get(id = request.user.id)
-			liga.factor_tiempo = (liga.factor_tiempo / 24) * (3600 * 24)
+			liga.factor_tiempo = 24 / liga.factor_tiempo
 			liga.save()
 			return devolverMensaje(request, "Se ha creado correctamente", 1, "/ligas/ver/%d/" % liga.id)
 	else:
