@@ -15,7 +15,8 @@
 			$("#caja_tipo_avance_jornadas", "#form_crear_liga").buttonset();
 			$("input:submit", "#form_crear_liga").button();
 			$("#fecha_real_inicio", "#form_crear_liga").datetimepicker();
-			$("#fecha_ficticia_inicio", "#form_crear_liga").datepicker();
+			$("#fecha_ficticia_inicio", "#form_crear_liga").datetimepicker();
+			$("#factor_tiempo", "#form_crear_liga").select();
 		});
 	</script>
 {% endblock %}
@@ -24,7 +25,7 @@
 	<h2>Creación de nueva liga</h2>
 
 	<div id="contenido_crear_liga">
-		<form id="form_crear_liga" action="/ligas/crear/" method="post">
+		<form class="form1" id="form_crear_liga" action="/ligas/crear/" method="post">
 			{% csrf_token %}
 			
 			<!-- Nombre de la liga -->

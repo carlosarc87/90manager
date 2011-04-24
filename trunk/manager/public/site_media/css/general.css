@@ -137,8 +137,12 @@ h1, h2, h3, h4{
 }
 
 #menu #liga{
-	background: #fff url("../img/icons/menu_iconos/liga.png") no-repeat top left;
+	background: #fff url("../img/icons/copa.png") no-repeat top left;
 	width: 25px;
+}
+
+#menu #liga:hover{
+	background-color: #aaaaff;
 }
 
 #menu #crear_liga{
@@ -163,7 +167,7 @@ h1, h2, h3, h4{
 }
 
 #menu #calendario{
-	background: #fff;
+	background: #fff url("../img/icons/calendario.png") no-repeat top left;
 	color: #eee;
 	font-size: 0.8em;
 	font-weight: bold;
@@ -174,8 +178,12 @@ h1, h2, h3, h4{
 }
 
 #menu #notificaciones{
-	background: #fff url("../img/icons/menu_iconos/notificacion.png") no-repeat top left;
+	background: #fff url("../img/icons/notificacion.png") no-repeat top left;
 	width: 25px;
+}
+
+#menu #notificaciones:hover{
+	background-color: #aaaaff;
 }
 
 #menu #usuario{

@@ -1,4 +1,15 @@
+.form1{
+	border-radius: 10px;
+}
 
+.form1 fieldset{
+	border: solid 1px #aaaaff;
+}
+
+.form1 legend{
+	color: #5555aa;
+	font-weight: bold;
+}
 
 .errorlist{
 	color: #cc0000;
