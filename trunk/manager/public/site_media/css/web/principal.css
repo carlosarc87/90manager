@@ -29,11 +29,8 @@
 /* login */
 
 #login{
-	border-top: solid 1px #555;
-	border-bottom: solid 1px #555;
 	margin: 20px auto;
-	padding: 10px 0px;
-	width: 450px;
+	width: 500px;
 }
 
 #login ul{
@@ -103,12 +100,9 @@
 #contenido_campos_obligatorios{ clear: both; height: 20px; padding: 5px 0px; }
 
 #registro{
-	background-color: #fff;
-	border: solid 1px #555555;
 	display: none;
 	margin: 20px auto;
-	padding: 20px;
-	width: 380px;
+	width: 400px;
 }
 
 #registro label{

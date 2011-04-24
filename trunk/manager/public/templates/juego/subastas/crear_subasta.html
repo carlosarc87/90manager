@@ -43,7 +43,7 @@
 {% block contenido %}
 	<h2>Subastando a {{ jugador.nombre }}</h2>
 
-	<form id="form_subastar" action="/mercado/subastas/crear/" method="post">
+	<form class="form1" id="form_subastar" action="/mercado/subastas/crear/" method="post">
 		{% csrf_token %}
 		<!-- Oferta inicial -->
 		<div id="contenido_puja">

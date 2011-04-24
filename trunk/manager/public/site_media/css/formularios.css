@@ -1,22 +1,54 @@
 .form1{
-	border-radius: 10px;
+	background: #fcfdfd;
+	border: solid 1px #79b7e7;
+	border-radius: 5px;
+	color: #004488;
+	padding: 20px;
 }
 
 .form1 fieldset{
-	border: solid 1px #aaaaff;
+	border: solid 1px #79b7e7;
+	margin: 20px 0px;
 }
 
 .form1 legend{
-	color: #5555aa;
+	background: #dfeffc;
+	border: solid 1px #79b7e7;
+	border-radius: 5px;
+	color: #2e6e9e;
 	font-weight: bold;
+	padding: 5px 0px;
+	text-align: center;
+	width: 100%;
+}
+
+.form1 input[type="text"], .form1 input[type="password"]{
+	border: solid 1px #79b7e7;
+	font-size: 1em;
+	padding: 2px;
+}
+
+.form1 input[type="text"]:hover, .form1 input[type="password"]:hover{
+	border: solid 1px #1d5987;
+}
+
+.form1 input[type="text"]:focus, .form1 input[type="password"]:focus{
+	border: solid 1px #e17009;
+}
+
+.form1 input[type="checkbox"]{
+	background: #ff0000;
+	border: solid 1px #79b7e7;
 }
 
 .errorlist{
-	color: #cc0000;
+	background: #fef1ec;
+	border: solid 1px #cd0a0a;
+	border-radius: 5px;
+	color: #cd0a0a;
 	font-size: 1em;
-	font-weight: bold;
-	margin: 0px 0px 15px 0px;
-	padding: 0px 0px 0px 15px;
+	margin: 10px 0px;
+	padding: 0px 0px 0px 20px;
 }
 
 .errorlist li{

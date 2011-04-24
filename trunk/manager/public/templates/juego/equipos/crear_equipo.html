@@ -14,7 +14,7 @@
 {% block contenido %}
 	<h2>Creación de un nuevo equipo en la liga {{ liga.nombre }}</h2>
 
-	<form id="form_crear_equipo" action="/equipos/crear/" method="post">
+	<form class="form1" id="form_crear_equipo" action="/equipos/crear/" method="post">
 		{% csrf_token %}
 
 		<!-- Nombre del equipo -->

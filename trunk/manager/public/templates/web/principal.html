@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
+    <link rel="stylesheet" href="/media/css/formularios.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/media/css/web/principal.css" type="text/css" media="screen" />
 {% endblock %}
 
@@ -165,11 +166,11 @@
 	
 	<div id="div_acceso">
 		<div id="login">
-			{% if form_login.errors %}
+			{% if form.errors %}
 				<p class="texto_error">Usuario y/o contraseña no válidos</p>
 			{% endif %}
 
-			<form action="/" method="post">
+			<form class="form1" action="/" method="post">
 				{% csrf_token %}
 				<ul>
 					<!-- Usuario -->
@@ -195,7 +196,7 @@
 		</div>
 		
 		<div id="registro">
-			<form action="/" method="post">
+			<form class="form1" action="/" method="post">
 				{% csrf_token %}
 				
 				<!-- Usuario -->
