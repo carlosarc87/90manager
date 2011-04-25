@@ -1,8 +1,4 @@
-h2{
-	margin: 10px;
-	text-align: center;
-}
-
+/* textos */
 #en_forma{
 	color: #55aa55;
 	font-weight: bold;
@@ -16,8 +12,56 @@ h2{
 #subasta{
 	text-align: center;
 }
+/* fin textos */
+
+#contenido_datos_personales{
+	background: #ddddff;
+	border: solid 1px #ccc;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 20px auto;
+	width: 400px;
+}
+
+#contenido_datos_personales2{
+	background: #fff;
+	padding: 10px;
+	height: 150px;
+}
 
 #tabla_datos_personales{
+	background: #fff;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	float: left;
+	margin: 0px;
+	width: 250px;
+}
+
+#tabla_datos_personales #col_nombre{
+	font-size: 1.2em;
+}
+
+#tabla_datos_personales #col_equipo{
+	color: #888;
+	font-size: 1.5em;
+}
+
+#foto_m{
+	background: #fff url('../../../img/hombre1-min.png') top left no-repeat;
+	float: right;
+	height: 150px;
+	width: 125px;
+}
+
+#foto_f{
+	background: #fff url('../../../img/mujer1-min.png') top left no-repeat;
+	float: right;
+	height: 150px;
+	width: 125px;
+}
+
+#tabla_datos{
 	margin: 10px auto;
 	width: 300px;
 }

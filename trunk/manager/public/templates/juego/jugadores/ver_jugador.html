@@ -7,7 +7,7 @@
 
 {% block contenido %}
 
-	<h2>{{ jugador.nombre }}</h2>
+	<h2>Datos de "{{ jugador.nombre }}"</h2>
 
 	<div id="subasta">
 		{% if subasta %}
@@ -18,33 +18,68 @@
 	</div>
 
 	<!-- Datos personales -->
-	<table class="tabla1" id="tabla_datos_personales">
-		<caption>Datos personales</caption>
+	<div id="contenido_datos_personales">
+		<div id="contenido_datos_personales2">
+			<table id="tabla_datos_personales">
+				<tbody>
+					<tr>
+						<!-- Sexo -->
+						<td id="col_sexo">
+							{% if jugador.sexo == 'M' %}
+								<img src="/media/img/icons/a/genero_masc.png" alt="M" title="Masculino" height="16" width="16" />
+							{% else %}
+								<img src="/media/img/icons/a/genero_fem.png" alt="F" title="Femenino" height="16" width="16" />
+							{% endif %}
+						</td>
+						
+						<!-- Nombre -->
+						<td id="col_nombre">
+							{{ jugador.nombre }}
+						</td>
+					</tr>
+
+					<!-- Fecha de nacimiento -->
+					<tr>
+						<td></td>
+						<td id="col_fecha_nacimiento">{{ jugador.fecha_nacimiento }}</td>
+					</tr>
+					
+					<!-- Equipo -->
+					<tr>
+						<td></td>
+						<td id="col_equipo">
+							{{ equipo.nombre }}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<!-- Foto -->
+			{% if jugador.sexo == 'M' %}
+				<div id="foto_m">
+			{% else %}
+				<div id="foto_f">
+			{% endif %}
+			</div>
+		</div>
+	</div>
+	
+	<!-- Datos -->
+	<table class="tabla1" id="tabla_datos">
+		<caption>Datos</caption>
 		<tbody>
-			<!-- Sexo -->
-			<tr>
-				<td>Sexo</td>
-				<td>
-					{% if jugador.sexo == 'M' %}
-						<img src="/media/img/icons/a/genero_masc.png" alt="M" title="Masculino" height="16" width="16" />
-					{% else %}
-						<img src="/media/img/icons/a/genero_fem.png" alt="F" title="Femenino" height="16" width="16" />
-					{% endif %}
-				</td>
-			</tr>
-
-			<!-- Fecha de nacimiento -->
-			<tr>
-				<td>Fecha de nacimiento</td>
-				<td>{{ jugador.fecha_nacimiento }}</td>
-			</tr>
-
 			<!-- Edad -->
 			<tr>
 				<td>Edad</td>
 				<td>{{ anios }} años y {{ dias }} días</td>
 			</tr>
-
+		</tbody>
+	</table>
+	
+	<!-- Fisico -->
+	<table class="tabla1" id="tabla_fisico">
+		<caption>Físico</caption>
+		<tbody>
 			<!-- Estado -->
 			<tr>
 				<td>Estado</td>
@@ -56,13 +91,7 @@
 					{% endif %}
 				</td>
 			</tr>
-		</tbody>
-	</table>
-
-	<!-- Fisico -->
-	<table class="tabla1" id="tabla_fisico">
-		<caption>Físico</caption>
-		<tbody>
+			
 			<!-- Altura -->
 			<tr>
 				<td>Altura</td>
