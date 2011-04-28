@@ -10,7 +10,7 @@
 
 	<!-- Resultado del partido -->
 	<table class="tabla1" id="tabla_resultado">
-		<caption>Partido {{ partido.id }}</caption>
+		<caption>Partido</caption>
 
 		<tbody>
 			<tr>
@@ -227,29 +227,30 @@
 				{% for suceso in partido.sucesos %}
 					<tr>
 						<td>
-							{% if suceso.tipo == "Gol" %}
+							{% if suceso.tipo == 666 %}
 								<img src="/media/img/icons/favicon.ico" alt="Gol" title="Gol" height="20" width="20" />
 							{% endif %}
 
-							{% if suceso.tipo == "Disparo fuera" %}
-								<img src="/media/img/icons/tiro_fallado.png" alt="Disparo fuera" title="Disparo fuera" height="20" width="20" />
+							{% if suceso.tipo == 400 %}
+								{% if suceso.valor == 0 %}
+									<img src="/media/img/icons/tiro_fallado.png" alt="Disparo fuera" title="Disparo fuera" height="20" width="20" />
+								{% else %}
+									<img src="/media/img/icons/tiro_fallado.png" alt="Disparo parado" title="Disparo parado" height="20" width="20" />									
+								{% endif %}
 							{% endif %}
 
-							{% if suceso.tipo == "Disparo parado" %}
-								<img src="/media/img/icons/tiro_fallado.png" alt="Disparo parado" title="Disparo parado" height="20" width="20" />
-							{% endif %}
-
-							{% if suceso.tipo == "FIN DE LA 1ª PARTE" %}
-								<img src="/media/img/icons/silbato.png" alt="Fin primera parte" title="Fin primera parte" height="16" width="15" />
-							{% endif %}
-
-							{% if suceso.tipo == "FIN DE LA 2ª PARTE" %}
-								<img src="/media/img/icons/silbato.png" alt="Fin partido" title="Fin partido" height="16" width="15" />
+							{% if suceso.tipo == 101 %}
+								{% if suceso.valor == 1 %}
+									<img src="/media/img/icons/silbato.png" alt="Fin primera parte" title="Fin primera parte" height="16" width="15" />
+								{% else %}
+									<img src="/media/img/icons/silbato.png" alt="Fin partido" title="Fin partido" height="16" width="15" />
+								{% endif %}
+								
 							{% endif %}
 						</td>
-						<td class="cuadro_num_azul_der">{{ suceso.getMinuto }}:{{ suceso.getSegundo }}</td>
+						<td class="cuadro_num_azul_der">{{ suceso.getTiempo }}</td>
 						<td>{{ suceso.equipo.siglas }}</td>
-						<td>{{ suceso.tipo }}</td>
+						<td>{{ suceso.getTexto }}</td>
 					</tr>
 				{% endfor %}
 			</tbody>

@@ -79,9 +79,8 @@ def generarPagina(request, template, parametros = {}, agregar_parametros = True)
 			parametros['equipo_propio'] = equipo
 			parametros['ultimas_notificaciones'] = usuario.notificacion_set.filter(leida=False)[:5]
 			if liga.activada():
-				fecha = liga.getFecha()
-				parametros['fecha_actual_liga'] = fecha.date().strftime("%d/%m/%Y")
-				parametros['hora_actual_liga'] = fecha.time().strftime("%H:%M")
+				parametros['fecha_hora_liga'] = liga.getFecha()
+				parametros['factor_tiempo'] = liga.factor_tiempo
 		except KeyError:
 			pass
 	return renderizar(request, template, parametros)

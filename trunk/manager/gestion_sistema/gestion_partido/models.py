@@ -469,10 +469,8 @@ class Partido(Evento):
 			else:
 				equipo_suceso = self.equipo_visitante
 
-			texto = "Equipo comienza"
-			#print texto
-			suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
-			self.suceso_set.add(suceso)
+			suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.COMENZAR, equipo = equipo_suceso)
+			suceso.save()
 
 			# Iniciar variables
 			seg_restantes = 45 * 60
@@ -495,10 +493,8 @@ class Partido(Evento):
 				seg_accion = 2 + (int)((100.0 - velocidad[id_equipo_atacante]) / 10) + randint(0, 2)
 
 				if num_acciones <= 4:
-					texto = "Contraataque"
-					#print texto
-					suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
-					self.suceso_set.add(suceso)
+					suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.CONTRAATAQUE, equipo = equipo_suceso)
+					suceso.save()
 
 				#print "\t" + "num_acciones: " + str(num_acciones) + " (" + str(seg_accion) + " seg / accion)"
 				formula = ataque[id_equipo_atacante] / (10.0 * pases[id_equipo_atacante])
@@ -520,15 +516,11 @@ class Partido(Evento):
 							if(randint(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
 
-								texto = "Regate fallado"
-								#print texto
-								suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
-								self.suceso_set.add(suceso)
+								suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.REGATE, valor = 0, equipo = equipo_suceso)
+								suceso.save()
 							else:
-								texto = "Regate realizado"
-								#print texto
-								suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
-								self.suceso_set.add(suceso)
+								suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.REGATE, valor = 1, equipo = equipo_suceso)
+								suceso.save()
 						# Pase
 						elif p <= 100:
 							formula = (pases[id_equipo_atacante] * 2.0) / (defensa[id_equipo_defensor] + velocidad[id_equipo_defensor])
@@ -537,21 +529,16 @@ class Partido(Evento):
 							if(randint(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
 
-								texto = "Pase fallado"
-								#print texto
-								suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
-								self.suceso_set.add(suceso)
+								suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.PASE, valor = 0, equipo = equipo_suceso)
+								suceso.save()
 							else:
-								texto = "Pase realizado"
-								#print texto
-								suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
-								self.suceso_set.add(suceso)
+								suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.PASE, valor = 1, equipo = equipo_suceso)
+								suceso.save()
 						# Moverse con el balón
 						else:
-							texto = "Movimiento con balón"
-							#print texto
-							suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
-							self.suceso_set.add(suceso)
+							suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.MOVIMIENTO_BALON, equipo = equipo_suceso)
+							suceso.save()
+
 
 					# Disparo a puerta
 					else:
@@ -568,18 +555,16 @@ class Partido(Evento):
 							prob_exito = probabilidadExito(formula)
 							#print "Disparo a puerta (" + str(prob_exito) + "%) "
 							if(randint(1, 100) > prob_exito):
-								texto = "Disparo parado"
-								#print texto
-								suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
-								self.suceso_set.add(suceso)
+								# Disparo parado
+								suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.DISPARO, valor = 1, equipo = equipo_suceso)
+								suceso.save()
 							# Marcar gol
 							else:
 								num_goles[id_equipo_atacante] += 1
 
-								texto = "Gol"
-								#print texto
-								suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
-								self.suceso_set.add(suceso)
+								# Gol
+								suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.GOL, equipo = equipo_suceso)
+								suceso.save()
 
 								# Tiempo perdido en la celebración del gol
 								seg_restantes -= 30
@@ -587,10 +572,9 @@ class Partido(Evento):
 								seg_descuento += 30
 						# Fuera
 						else:
-							texto = "Disparo fuera"
-							#print texto
-							suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
-							self.suceso_set.add(suceso)
+							# Disparo fuera
+							suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.DISPARO, valor = 0, equipo = equipo_suceso)
+							suceso.save()
 
 							seg_descuento += 10
 
@@ -608,15 +592,11 @@ class Partido(Evento):
 						min_descuento = 1 + (seg_descuento / 60)
 						seg_restantes += ((min_descuento * 60) + randint(0, 30))
 
-						texto = "TIEMPO DESCUENTO (" + str(min_descuento) + " minutos)"
-						#print texto
-						suceso = Suceso(segundo_partido = segundos_jugados - (segundos_jugados % 60), tipo = texto, equipo = equipo_suceso)
-						self.suceso_set.add(suceso)
+						suceso = Suceso(partido = self, segundo_partido = segundos_jugados - (segundos_jugados % 60), tipo = Suceso.TIEMPO_DESCUENTO, valor = min_descuento, equipo = equipo_suceso)
+						suceso.save()
 					else:
-						texto = "FIN DE LA " + str(num_parte) + "ª PARTE"
-						#print texto
-						suceso = Suceso(segundo_partido = segundos_jugados, tipo = texto, equipo = equipo_suceso)
-						self.suceso_set.add(suceso)
+						suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.FIN_PARTE, valor = num_parte, equipo = equipo_suceso)
+						suceso.save()
 
 			num_parte += 1
 
@@ -662,16 +642,56 @@ class Partido(Evento):
 
 class Suceso(models.Model):
 	''' Representa un suceso de un partido (gol, falta, etc) '''
+	COMENZAR = 100
+	MOVIMIENTO_BALON = 200
+	CONTRAATAQUE = 201
+	REGATE = 300
+	PASE = 301
+	DISPARO = 400
+	GOL = 666
+	TIEMPO_DESCUENTO = 102
+	FIN_PARTE = 101
+
+	TIPO_SUCESOS = (
+		(COMENZAR, 'Comienza equipo'),
+		(MOVIMIENTO_BALON, 'Movimiento del balon'),
+		(CONTRAATAQUE, 'Contrataque'),
+		(REGATE, 'Regate'),
+		(PASE, 'Pase'),
+		(DISPARO, 'Disparo'),
+		(TIEMPO_DESCUENTO, 'Tiempo de descuento'),
+		(FIN_PARTE, 'Fin de la parte'),
+		(GOL, 'Gol'),
+	)	
 	segundo_partido = models.PositiveIntegerField(null = True, blank = True)
-	tipo = models.CharField(max_length = 50)
+	tipo = models.PositiveIntegerField(choices = TIPO_SUCESOS)
+	# Valor adicional del suceso (minutos de descuento, que parte ha acabado)
+	valor = models.PositiveIntegerField(default = None, null = True, blank = True)
 
 	equipo = models.ForeignKey(Equipo)
 	partido = models.ForeignKey(Partido)
 
 	def getMinuto(self):
+		""" Devuelve los minutos del suceso """
 		return self.segundo_partido / 60
 
 	def getSegundo(self):
+		""" Devuelve los segundos del suceso """
 		return self.segundo_partido % 60
+	
+	def getTexto(self):
+		""" Convierte el suceso en una cadena de caracteres """
+		cadena += suceso.get_tipo_display()
+		if valor != None:
+			cadena += " " + str(self.valor)
+		return cadena
+	
+	def getTiempo(self):
+		""" Devuelve el tiempo como una cadena formateada """
+		return "%02d:%02d" % (self.getMinuto(), self.getSegundo())
+
+	def __unicode__(self):
+		""" Devuelve una cadena de texto en unicode representando al Suceso """
+		return self.getTiempo()+ " - " + self.getTexto()
 
 ########################################################################
