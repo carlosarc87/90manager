@@ -45,9 +45,20 @@ class LigaForm(forms.ModelForm):
 	num_jugadores_inicial = forms.IntegerField(initial = 20, min_value = 7, max_value = 99)
 	nivel_max_jugadores_inicio = forms.IntegerField(initial = 50, min_value = 10, max_value = 100)
 
+	def clean_num_equipos(self):
+		''' Comprueba que haya un numero de equipos positivo y par y en caso afirmativo los devuelve '''
+		valor = self.cleaned_data['num_equipos']
+		if valor % 2 != 0:
+			raise forms.ValidationError("Debe de introducir un valor par para los equipos")
+		if valor <= 0:
+			raise forms.ValidationError("Debe haber al menos 2 equipos")
+		if valor > 30:
+			raise forms.ValidationError("No se permiten ligas con mas de 30 equipos")
+		return valor
+
 	class Meta:
 		model = Liga
-		exclude = ('creador', 'tipo_avance_jornadas', 'fecha_real_inicio', 'num_equipos')
+		exclude = ('creador', 'tipo_avance_jornadas', 'fecha_real_inicio')
 
 ########################################################################
 

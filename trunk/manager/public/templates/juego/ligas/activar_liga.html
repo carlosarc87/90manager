@@ -6,29 +6,17 @@
 {% endblock %}
 
 {% block contenido %}
+	<b>Lista de equipos apuntados: </b>
+	<ul>
+		{% for equipo in equipos %}
+			<li>{{ equipo.nombre }} de {{ equipo.creador }}</li>
+		{% empty %}
+			<li>No hay ningun equipo apuntado</li>
+		{% endfor %}
+	</ul>
+	
 	<form class="form1" id="form_activar_liga" action="/ligas/activar/" method="post">
 		{% csrf_token %}
-
-		<h4>Equipos apuntados:</h4>
-
-		<div id="contenido_equipos_apuntados">
-			{{ form.equipos.errors }}
-			{{ form.equipos }}
-		</div>
-
-		<!-- Numero de equipos -->
-		<div id="contenido_num_equipos">
-			{% if form.num_equipos.errors %}
-				{{ form.num_equipos.errors }}
-			{% endif %}
-
-			<b>Número de equipos controlados por la IA:</b>
-
-			<div id="caja_num_equipos">
-				<input type="text" id="id_num_equipos" name="num_equipos" value="0" maxlength="3" />
-			</div>
-		</div>
-
 		<!-- Boton crear -->
 		<div id="contenido_boton_activar"><input type="submit" value="Activar" /></div>
 	</form>

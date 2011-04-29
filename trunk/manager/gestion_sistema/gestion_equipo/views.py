@@ -154,6 +154,9 @@ def crear_equipo(request):
 	if liga.activada():
 		return devolverMensaje(request, "Esta liga ya no acepta mas equipos", 0, "/ligas/ver/%d/" % liga.id)
 
+	if liga.equipo_set.count() > liga.num_equipos:
+		return devolverMensaje(request, "Esta liga ya está llena", 0, "/ligas/ver/%d/" % liga.id)
+
 	if liga.equipo_set.filter(usuario = usuario).count() > 0:
 		return devolverMensaje(request, "Ya tienes un equipo en esta liga", 0, "/ligas/ver/%d/" % liga.id)
 

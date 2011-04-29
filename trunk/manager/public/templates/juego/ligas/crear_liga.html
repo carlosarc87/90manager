@@ -121,15 +121,15 @@
 				</div>
 
 				<!-- Fecha de activacion de la liga -->
-				<div id="contenido_fecha_real_inicio">
-					{% if form.fecha_real_inicio.errors %}
-						{{ form.fecha_real_inicio.errors }}
+				<div id="contenido_num_equipos">
+					{% if form.num_equipos.errors %}
+						{{ form.num_equipos.errors }}
 					{% endif %}
 
-					<label for="id_fecha_real_inicio">Fecha de activación:</label>
+					<label for="id_num_equipos">Número máximo de equipos:</label>
 
-					<div id="caja_fecha_real_inicio">
-						<input id="fecha_real_inicio" name="fecha_real_inicio" type="text" />
+					<div id="caja_num_equipos">
+						{{ form.num_equipos }}
 					</div>
 				</div>
 				

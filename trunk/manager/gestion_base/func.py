@@ -77,7 +77,7 @@ def generarPagina(request, template, parametros = {}, agregar_parametros = True)
 			parametros['liga_actual'] = liga
 			equipo = request.session['equipo_propio']
 			parametros['equipo_propio'] = equipo
-			parametros['ultimas_notificaciones'] = usuario.notificacion_set.filter(leida=False)[:5]
+			parametros['ultimas_notificaciones'] = usuario.notificacion_set.filter(liga = liga, leida = False)[:5]
 			if liga.activada():
 				parametros['fecha_hora_liga'] = liga.getFecha()
 				parametros['factor_tiempo'] = liga.factor_tiempo

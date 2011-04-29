@@ -177,7 +177,7 @@ def ObtenerNombreYSiglasAleatorio(liga):
 
 		# Comprobar que las siglas no se repitan
 		c = 1
-		while self.equipo_set.filter(siglas = siglas_eq).count() > 0:
+		while liga.equipo_set.filter(siglas = siglas_eq).count() > 0:
 			siglas_eq = siglas_eq[:-1] + str(c)
 			c += 1
 

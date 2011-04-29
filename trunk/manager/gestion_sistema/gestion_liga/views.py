@@ -251,32 +251,26 @@ def activar_liga(request):
 	if liga.activada():
 		return devolverMensaje(request, "Ya esta activada esta liga", 0, "/ligas/ver/%d/" % liga.id)
 
+	equipos = liga.equipo_set.all()
+
 	if request.method == 'POST':
-		form = ActivarLigaForm(request.POST, instance=liga)
-		if form.is_valid():
-			liga = form.save(commit = False)
-			#equipos_descartados = form.cleaned_data['equipos']
-			#for equipo in equipos_descartados:
-			#	Equipo.delete(Equipo.objects.get(id = equipo)) # A lo bruten xD
-			liga.fecha_real_inicio = datetime.now()
-			liga.save()
-			liga.rellenarLiga()
-			liga.generarJornadas()
+		liga.fecha_real_inicio = datetime.now()
+		liga.save()
+		liga.rellenarLiga()
+		liga.generarJornadas()
 
-			# Generar primera clasificacion de la liga
-			jornada = liga.getJornadaActual()
-			jornada.generarClasificacion()
+		# Generar primera clasificacion de la liga
+		jornada = liga.getJornadaActual()
+		jornada.generarClasificacion()
 
-			for equipo in liga.equipo_set.exclude(usuario = None):
-				notificar(equipo.usuario, tipo = Notificacion.LIGA_ACTIVADA, identificador = liga.id, liga = liga)
+		for equipo in liga.equipo_set.exclude(usuario = None):
+			notificar(equipo.usuario, tipo = Notificacion.LIGA_ACTIVADA, identificador = liga.id)
 
-			liga.save()
+		liga.save()
 
-			return devolverMensaje(request, "Se ha generado la liga correctamente", 1, "/ligas/ver/%d/" % liga.id)
-	else:
-		form = ActivarLigaForm(instance = liga)
+		return devolverMensaje(request, "Se ha generado la liga correctamente", 1, "/ligas/ver/%d/" % liga.id)
 
-	d = {"form" : form, "liga" : liga }
+	d = { "liga" : liga, "equipos" : equipos }
 	return generarPagina(request, "juego/ligas/activar_liga.html", d)
 
 ########################################################################
