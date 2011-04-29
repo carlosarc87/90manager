@@ -681,8 +681,8 @@ class Suceso(models.Model):
 	
 	def getTexto(self):
 		""" Convierte el suceso en una cadena de caracteres """
-		cadena += suceso.get_tipo_display()
-		if valor != None:
+		cadena = self.get_tipo_display()
+		if self.valor != None:
 			cadena += " " + str(self.valor)
 		return cadena
 	

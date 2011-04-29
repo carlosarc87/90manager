@@ -28,7 +28,7 @@ from django.db.models import Q
 
 from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 
-from models import Partido, JugadorPartido
+from models import Partido, JugadorPartido, Suceso
 from forms import PrepararEquipoForm
 
 from gestion_base.func import devolverMensaje, redireccionar, generarPagina
@@ -144,8 +144,8 @@ def ver_partido(request):
 			equipo.num_acciones = sucesos.count()
 
 			# Regates
-			equipo.regates_realizados = sucesos.filter(tipo = "Regate realizado").count()
-			equipo.regates_fallados = sucesos.filter(tipo = "Regate fallado").count()
+			equipo.regates_realizados = sucesos.filter(tipo = Suceso.REGATE, valor = 1).count()
+			equipo.regates_fallados = sucesos.filter(tipo = Suceso.REGATE, valor = 0).count()
 
 			if equipo.regates_realizados + equipo.regates_fallados == 0:
 				equipo.porcentaje_regates_exito = 0
@@ -155,8 +155,8 @@ def ver_partido(request):
 			equipo.regates_totales = equipo.regates_realizados + equipo.regates_fallados
 
 			# Pases
-			equipo.pases_realizados = sucesos.filter(tipo = "Pase realizado").count()
-			equipo.pases_fallados = sucesos.filter(tipo = "Pase fallado").count()
+			equipo.pases_realizados = sucesos.filter(tipo = Suceso.PASE, valor = 1).count()
+			equipo.pases_fallados = sucesos.filter(tipo = Suceso.PASE, valor = 0).count()
 
 			if equipo.pases_realizados + equipo.pases_fallados == 0:
 				equipo.porcentaje_pases_exito = 0
@@ -166,9 +166,9 @@ def ver_partido(request):
 			equipo.pases_totales = equipo.pases_realizados + equipo.pases_fallados
 
 			# Disparos
-			equipo.disparos_parados = sucesos.filter(tipo = "Disparo parado").count()
-			equipo.disparos_fuera = sucesos.filter(tipo = "Disparo fuera").count()
-			equipo.goles = sucesos.filter(tipo = "Gol").count()
+			equipo.disparos_parados = sucesos.filter(tipo = Suceso.DISPARO, valor = 1).count()
+			equipo.disparos_fuera = sucesos.filter(tipo = Suceso.DISPARO, valor = 0).count()
+			equipo.goles = sucesos.filter(tipo = Suceso.GOL).count()
 
 			equipo.remates_puerta = equipo.goles + equipo.disparos_parados + equipo.disparos_fuera
 			equipo.balones_perdidos = equipo.regates_fallados + equipo.pases_fallados + equipo.disparos_parados + equipo.disparos_fuera

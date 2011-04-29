@@ -217,13 +217,13 @@
 		
 		function lanzarReloj() {
 			tiempo_actual = new Date("{{ fecha_hora_liga.isoformat }}");
-			setInterval("actualizarReloj()", 1000);
+			setInterval("actualizarReloj()", 1000 / {{ factor_tiempo }});
 		}
 		function actualizarReloj()
 		{
-			tiempo_actual = new Date(tiempo_actual.getTime() + 1000 * {{ factor_tiempo }});
+			tiempo_actual = new Date(tiempo_actual.getTime() + 1000);
 			document.getElementById("fecha_liga").firstChild.nodeValue = ('0' + tiempo_actual.getDate()).slice(-2) + '/' + ('0' + (tiempo_actual.getMonth()+1)).slice(-2) + '/' + tiempo_actual.getFullYear();
-			document.getElementById("tiempo_liga").firstChild.nodeValue = ('0' + tiempo_actual.getHours()).slice(-2) + ':' + ('0' + (tiempo_actual.getSeconds()+1)).slice(-2);
+			document.getElementById("tiempo_liga").firstChild.nodeValue = ('0' + tiempo_actual.getHours()).slice(-2) + ':' + ('0' + (tiempo_actual.getMinutes()+1)).slice(-2) + ':' + ('0' + (tiempo_actual.getSeconds()+1)).slice(-2);
 		}
 	
 	</script>	
