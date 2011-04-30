@@ -55,7 +55,7 @@ def listar_notificaciones_liga(request):
 
 	notificaciones = usuario.notificacion_set.filter(liga = liga)
 
-	return generarPagina("juego/notificaciones/listar_liga.html", { "notificaciones" : notificaciones }, request)
+	return generarPagina(request, "juego/notificaciones/listar_liga.html", { "notificaciones" : notificaciones })
 
 ########################################################################
 

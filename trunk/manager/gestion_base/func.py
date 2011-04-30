@@ -55,7 +55,7 @@ def devolverMensaje(request, mensaje, tipo = 0, url_salida = None):
 		tipo       -- tipo de mensaje (0 - error, 1 - advertencia)
 		url_salida -- url hacia la que redireccionar
 	"""
-	return renderizar(request, "mensaje.html", { "mensaje" : mensaje, "url_salida" : url_salida, "tipo" : tipo })
+	return generarPagina(request, "mensaje.html", { "mensaje" : mensaje, "url_salida" : url_salida, "tipo" : tipo })
 
 ########################################################################
 
@@ -71,18 +71,23 @@ def generarPagina(request, template, parametros = {}, agregar_parametros = True)
 	""" Genera una pagina web con los templates añadiendo unos parámetros por defecto """
 	usuario = request.user
 	if agregar_parametros:
-		try:
+		notificaciones = None
+		if 'liga_actual' in request.session:
 			liga = request.session['liga_actual']
-			parametros['num_notificaciones'] = usuario.notificacion_set.filter(leida = False).count()
 			parametros['liga_actual'] = liga
-			equipo = request.session['equipo_propio']
-			parametros['equipo_propio'] = equipo
-			parametros['ultimas_notificaciones'] = usuario.notificacion_set.filter(liga = liga, leida = False)[:5]
+			notificaciones = usuario.notificacion_set.filter(liga = liga, leida = False)
 			if liga.activada():
 				parametros['fecha_hora_liga'] = liga.getFecha()
 				parametros['factor_tiempo'] = liga.factor_tiempo
-		except KeyError:
-			pass
+	
+			if 'equipo_propio' in request.session:
+				equipo = request.session['equipo_propio']
+				parametros['equipo_propio'] = equipo
+		else:
+			print "BUUGG"
+			notificaciones = usuario.notificacion_set.filter(liga = None, leida = False)
+		parametros['num_notificaciones'] = notificaciones.count()
+		parametros['ultimas_notificaciones'] = notificaciones[:5]
 	return renderizar(request, template, parametros)
 
 ########################################################################
