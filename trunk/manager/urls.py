@@ -9,14 +9,14 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+# Uncomment the admin/doc line below to enable admin documentation:
+# (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
 	# Required to make static serving work
 	(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 
-    # Administracion
-    (r'^admin/', include(admin.site.urls)),
+# Administracion
+	(r'^admin/', include(admin.site.urls)),
 
 	# Modulos
 	(r'^cuentas/', include('gestion_usuario.urls')),

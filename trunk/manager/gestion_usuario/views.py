@@ -25,7 +25,8 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.core.urlresolvers import reverse
 
 import datetime, random, hashlib
 
@@ -148,3 +149,11 @@ def activar_usuario(request, clave):
 	return devolverMensaje(request, "Se activó al usuario correctamente", "/")
 
 ########################################################################
+
+def desconectar(request):
+	""" Desconecta un usuario del sistema """
+	logout(request)
+	return redireccionar('/cuentas/login/')
+
+########################################################################
+
