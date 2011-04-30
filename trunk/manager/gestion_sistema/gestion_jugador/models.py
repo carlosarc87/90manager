@@ -134,8 +134,8 @@ class Jugador(models.Model):
 	def setNumero(self, numero):
 		self.atributos.setNumero(numero)
 
-	def valorMercado(self):
-		return self.atributos.valorMercado()
+	def valorMercado(self, posicion = None):
+		return self.atributos.valorMercado(posicion)
 
 	def setHabilidadesAleatorias(self, posicion, nivel):
 		return self.atributos.setHabilidadesAleatorias(posicion, nivel)

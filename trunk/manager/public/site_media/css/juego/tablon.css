@@ -1,12 +1,3 @@
-#wrap{
-	background: url('../../img/Chicas-Futbol-Americano-grupo.jpg') no-repeat;
-	background-position: center;
-}
-
-#wrap-content{
-	background: rgba(255, 255, 255, 0.8);
-}
-
 #tabla_ligas_creadas{
 	margin: 20px auto;
 	width: 500px;

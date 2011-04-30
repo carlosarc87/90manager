@@ -1,19 +1,19 @@
 a{
-	color: #005500;
+	color: #000055;
 	text-decoration: none;
 }
 
 a:hover{
-	color: #00aa00;
+	color: #0000aa;
 	text-decoration: underline;
 }
 
 a:visited{
-	color: #880000;
+	color: #008800;
 }
 
 body{
-	background: #aaffaa;
+	background: #ddddff;
 	color: #000000;
 	font-family: Calibri, Arial, Helvetica, sans-serif;
 	font-size: 0.8em;
@@ -81,7 +81,7 @@ h1, h2, h3, h4{
 
 #header{
 	margin: 0 auto;
-	width: 600px;
+	width: 800px;
 }
 
 #menu, #menu ul{
@@ -136,9 +136,29 @@ h1, h2, h3, h4{
 	background-color: #bbbbff;
 }
 
-#menu #logo{
-	background: #fff url("../img/icons/menu_iconos/general.png") no-repeat top left;
-	width: 100px;
+#menu #calendario{
+	background: #fff url("../img/icons/calendario.png") no-repeat top left;
+	color: #888;
+	font-size: 0.9em;
+	height: 17px;
+	padding: 4px 0px;
+	text-align: center;
+	width: 440px;
+}
+
+#menu #crear_liga{
+	background: #fff url("../img/icons/menu_iconos/crear_liga.png") no-repeat top left;
+	width: 25px;
+}
+
+#menu #equipo{
+	background: #fff url("../img/icons/menu_iconos/equipo.png") no-repeat top left;
+	width: 25px;
+}
+
+#menu #ligas_publicas{
+	background: #fff url("../img/icons/menu_iconos/ver_ligas_publicas.png") no-repeat top left;
+	width: 25px;
 }
 
 #menu #liga{
@@ -150,35 +170,15 @@ h1, h2, h3, h4{
 	background-color: #aaaaff;
 }
 
-#menu #crear_liga{
-	background: #fff url("../img/icons/menu_iconos/crear_liga.png") no-repeat top left;
-	width: 25px;
-}
-
-#menu #ligas_publicas{
-	background: #fff url("../img/icons/menu_iconos/ver_ligas_publicas.png") no-repeat top left;
-	width: 25px;
+#menu #logo{
+	background: #fff url("../img/icons/menu_iconos/general.png") no-repeat top left;
+	width: 100px;
 }
 
 #menu #mercado{
 	background: #fff url("../img/icons/menu_iconos/mercado.png") no-repeat top left;
 	height: 25px;
 	width: 25px;
-}
-
-#menu #equipo{
-	background: #fff url("../img/icons/menu_iconos/equipo.png") no-repeat top left;
-	width: 25px;
-}
-
-#menu #calendario{
-	background: #fff url("../img/icons/calendario.png") no-repeat top left;
-	color: #888;
-	font-size: 0.9em;
-	height: 17px;
-	padding: 4px 0px;
-	text-align: center;
-	width: 300px;
 }
 
 #menu #notificaciones{

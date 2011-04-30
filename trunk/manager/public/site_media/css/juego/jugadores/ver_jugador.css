@@ -15,8 +15,7 @@
 /* fin textos */
 
 #contenido_datos_personales{
-	background: #ddddff;
-	border: solid 1px #ccc;
+	background: #bbb;
 	border-radius: 5px;
 	padding: 10px;
 	margin: 20px auto;
@@ -29,22 +28,29 @@
 	height: 150px;
 }
 
-#tabla_datos_personales{
+#datos_personales{
 	background: #fff;
-	border-collapse: collapse;
-	border-spacing: 0px;
 	float: left;
 	margin: 0px;
 	width: 250px;
 }
 
-#tabla_datos_personales #col_nombre{
+#datos_personales div{
+	padding: 4px 0px;
+}
+
+#datos_personales strong{
+	font-size: 0.9em;
+	padding-top: 10px;
+}
+
+#datos_personales #nombre{
 	font-size: 1.2em;
 }
 
-#tabla_datos_personales #col_equipo{
-	color: #888;
-	font-size: 1.5em;
+#datos_personales #equipo{
+	color: #000088;
+	font-size: 1.4em;
 }
 
 #foto_m{
@@ -84,4 +90,29 @@
 #tabla_habilidades_mentales{
 	margin: 10px auto;
 	width: 300px;
+}
+
+.barra_progreso{
+	border: solid 1px #79b7e7;
+	height: 20px;
+	margin: 5px;
+	text-align: center;
+	width: 200px;
+}
+
+.barra_progreso div{
+	background-color: #4444aa;
+	height: 100%;
+}
+
+.fila_mejor_posicion{
+	font-weight: bold;
+}
+
+.rendimiento{
+	text-align: right;
+}
+
+.valor_mercado{
+	text-align: right;
 }

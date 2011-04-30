@@ -60,9 +60,20 @@ def ver_jugador(request):
 	usuario = request.user
 
 	jugador = request.session['jugador_actual']
+	
+	valorMercado_mejor = jugador.valorMercado()
 
-	# Obtener mejor posición
-	mejor_posicion = jugador.mejorPosicion()
+	# Obtener valores por posición
+	valorMercado_PO = jugador.valorMercado("PORTERO")
+	valorMercado_DF = jugador.valorMercado("DEFENSA")
+	valorMercado_CC = jugador.valorMercado("CENTROCAMPISTA")
+	valorMercado_DL = jugador.valorMercado("DELANTERO")
+
+	# Obtener rendimiento por posición
+	rendimiento_PO = (int)((valorMercado_PO * 100) / valorMercado_mejor)
+	rendimiento_DF = (int)((valorMercado_DF * 100) / valorMercado_mejor)
+	rendimiento_CC = (int)((valorMercado_CC * 100) / valorMercado_mejor)
+	rendimiento_DL = (int)((valorMercado_DL * 100) / valorMercado_mejor)
 
 	# Obtener edad
 	anios, dias = jugador.getEdad()
@@ -79,9 +90,16 @@ def ver_jugador(request):
 				 "usuario" : usuario,
 				 "jugador" : jugador,
 				 "subasta" : subasta,
-				 "mejor_posicion" : mejor_posicion,
 				 "anios" : anios,
-				 "dias" : dias
+				 "dias" : dias,
+				 "rendimiento_PO" : rendimiento_PO,
+				 "rendimiento_DF" : rendimiento_DF,
+				 "rendimiento_CC" : rendimiento_CC,
+				 "rendimiento_DL" : rendimiento_DL,
+				 "valorMercado_PO" : valorMercado_PO,
+				 "valorMercado_DF" : valorMercado_DF,
+				 "valorMercado_CC" : valorMercado_CC,
+				 "valorMercado_DL" : valorMercado_DL,
 				}
 	return generarPagina(request, "juego/jugadores/ver_jugador.html", d)
 
