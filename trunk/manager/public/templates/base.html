@@ -6,7 +6,7 @@
 	<meta name="keywords" content="entrenador futbol, juego online, juego web multijugador, ligas mixtas, ligas personalizadas, manager futbol, presidente futbol" />
 	<meta name="robots" content="NOINDEX, NOFOLLOW, NOARCHIVE" />
 
-    <title>{% block title %}90manager{% endblock %}</title>
+	<title>{% block title %}90manager{% endblock %}</title>
 
 	{% block favicon %}<link rel="icon" href="/media/img/icons/favicon.ico" />{% endblock %}
 
@@ -15,7 +15,11 @@
 	<link rel="stylesheet" href="/media/css/jquery-ui-timepicker-addon.css" type="text/css" media="screen" />
 	{% block css_extra %}{% endblock %}
 </head>
+{% if liga_actual %}
 <body onload="lanzarReloj()">
+{% else %}
+<body>
+{% endif %}
 	{% if user.is_authenticated %}
 		<div id="barra_header">
 			<div id="header">
@@ -62,6 +66,17 @@
 							<li id="calendario" onclick="location.href='/'" title="Calendario">
 								<strong>Liga "{{ liga.nombre }}": </strong><span id="fecha_liga">00/00/00</span> | <span id="tiempo_liga">00:00:00</span>
 							</li>
+							<!-- Notificaciones -->
+							<li id="notificaciones" onclick="mostrarMenu(this)" title="Notificaciones">
+								<ul class="desplegable">
+									{% for notificacion in ultimas_notificaciones %}
+										<li><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></li>
+									{% empty %}
+										<li><a href="#">No hay novedades</a></li>
+									{% endfor %}
+									<li><a href="/cuentas/notificaciones/listar_liga/">Ver todas</a></li>
+								</ul>
+							</li>
 						{% else %}
 							<!-- Liga -->
 							<li id="liga" onclick="mostrarMenu(this)" title="Liga">
@@ -82,7 +97,6 @@
 									{% endif %}
 								</ul>
 							</li>
-
 						{% endif %}
 					{% else %}
 						<!-- Crear Liga -->
@@ -91,18 +105,6 @@
 						<!-- Ver ligas publicas -->
 						<li id="ligas_publicas" onclick="location.href='/ligas/publicas/'" title="Ver ligas públicas"></li>
 					{% endif %}
-
-					<!-- Notificaciones -->
-					<li id="notificaciones" onclick="mostrarMenu(this)" title="Notificaciones">
-						<ul class="desplegable">
-							{% for notificacion in ultimas_notificaciones %}
-								<li><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></li>
-							{% empty %}
-								<li><a href="#">No hay notificaciones nuevas</a></li>
-							{% endfor %}
-							<li><a href="/cuentas/notificaciones/listar_liga/">Ver todas</a></li>
-						</ul>
-					</li>
 
 					<!-- Usuario -->
 					<li id="usuario" onclick="mostrarMenu(this)">
@@ -211,23 +213,23 @@
 		});
 		*/
 	</script>
-	
-	<script type="text/javascript">
-		var tiempo_actual;
-		
-		function lanzarReloj() {
-			tiempo_actual = new Date("{{ fecha_hora_liga.isoformat }}");
-			setInterval("actualizarReloj()", 1000 / {{ factor_tiempo }});
-		}
-		function actualizarReloj()
-		{
-			tiempo_actual = new Date(tiempo_actual.getTime() + 1000);
-			document.getElementById("fecha_liga").firstChild.nodeValue = ('0' + tiempo_actual.getDate()).slice(-2) + '/' + ('0' + (tiempo_actual.getMonth()+1)).slice(-2) + '/' + tiempo_actual.getFullYear();
-			document.getElementById("tiempo_liga").firstChild.nodeValue = ('0' + tiempo_actual.getHours()).slice(-2) + ':' + ('0' + (tiempo_actual.getMinutes()+1)).slice(-2) + ':' + ('0' + (tiempo_actual.getSeconds()+1)).slice(-2);
-		}
-	
-	</script>	
-	
+
+	{% if liga_actual %}
+		<script type="text/javascript">
+			var tiempo_actual;
+
+			function lanzarReloj() {
+				tiempo_actual = new Date("{{ fecha_hora_liga.isoformat }}");
+				setInterval("actualizarReloj()", 1000 / {{ factor_tiempo }});
+			}
+			function actualizarReloj()
+			{
+				tiempo_actual = new Date(tiempo_actual.getTime() + 1000);
+				document.getElementById("fecha_liga").firstChild.nodeValue = ('0' + tiempo_actual.getDate()).slice(-2) + '/' + ('0' + (tiempo_actual.getMonth()+1)).slice(-2) + '/' + tiempo_actual.getFullYear();
+				document.getElementById("tiempo_liga").firstChild.nodeValue = ('0' + tiempo_actual.getHours()).slice(-2) + ':' + ('0' + (tiempo_actual.getMinutes()+1)).slice(-2) + ':' + ('0' + (tiempo_actual.getSeconds()+1)).slice(-2);
+			}
+		</script>
+	{% endif %}
 	{% block js_extra %}{% endblock %}
 </body>
 </html>

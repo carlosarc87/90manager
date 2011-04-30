@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
 """
 Copyright 2011 by
-    * Juan Miguel Lechuga Pérez
-    * Jose Luis López Pino
-    * Carlos Antonio Rivera Cabello
+	* Juan Miguel Lechuga Pérez
+	* Jose Luis López Pino
+	* Carlos Antonio Rivera Cabello
 
  This file is part of 90Manager.
 
-    90Manager is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	90Manager is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    90Manager is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	90Manager is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU General Public License
+	along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 from django.shortcuts import render_to_response
@@ -114,6 +114,9 @@ def tablon(request):
 	# Obtenemos las ligas creadas por el usuario
 	ligas_creadas = Liga.objects.filter(creador = usuario)
 
+	if 'liga_actual' in request.session:
+		del request.session['liga_actual']
+
 	# Obtenemos los equipos
 	equipos = usuario.equipo_set.all()
 
@@ -123,7 +126,7 @@ def tablon(request):
 		 "equipos" : equipos,
 		}
 
-	return renderizar(request, "juego/tablon.html", d)
+	return generarPagina(request, "juego/tablon.html", d)
 
 ########################################################################
 
@@ -149,11 +152,3 @@ def activar_usuario(request, clave):
 	return devolverMensaje(request, "Se activó al usuario correctamente", "/")
 
 ########################################################################
-
-def desconectar(request):
-	""" Desconecta un usuario del sistema """
-	logout(request)
-	return redireccionar('/cuentas/login/')
-
-########################################################################
-

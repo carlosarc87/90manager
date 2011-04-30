@@ -49,13 +49,12 @@ def redireccionar(direccion):
 
 def devolverMensaje(request, mensaje, tipo = 0, url_salida = None):
 	""" Devuelve un mensaje rapidamente como una pagina nueva
-
 		Parametros:
 		mensaje    -- mensaje a mostrar
 		tipo       -- tipo de mensaje (0 - error, 1 - advertencia)
 		url_salida -- url hacia la que redireccionar
 	"""
-	return generarPagina(request, "mensaje.html", { "mensaje" : mensaje, "url_salida" : url_salida, "tipo" : tipo })
+	return renderizar(request, "mensaje.html", { "mensaje" : mensaje, "url_salida" : url_salida, "tipo" : tipo })
 
 ########################################################################
 
@@ -71,23 +70,24 @@ def generarPagina(request, template, parametros = {}, agregar_parametros = True)
 	""" Genera una pagina web con los templates añadiendo unos parámetros por defecto """
 	usuario = request.user
 	if agregar_parametros:
-		notificaciones = None
-		if 'liga_actual' in request.session:
-			liga = request.session['liga_actual']
-			parametros['liga_actual'] = liga
-			notificaciones = usuario.notificacion_set.filter(liga = liga, leida = False)
-			if liga.activada():
-				parametros['fecha_hora_liga'] = liga.getFecha()
-				parametros['factor_tiempo'] = liga.factor_tiempo
-	
-			if 'equipo_propio' in request.session:
-				equipo = request.session['equipo_propio']
-				parametros['equipo_propio'] = equipo
-		else:
-			print "BUUGG"
-			notificaciones = usuario.notificacion_set.filter(liga = None, leida = False)
-		parametros['num_notificaciones'] = notificaciones.count()
-		parametros['ultimas_notificaciones'] = notificaciones[:5]
+		if usuario.is_authenticated():
+			notificaciones = None
+			if 'liga_actual' in request.session:
+				liga = request.session['liga_actual']
+				parametros['liga_actual'] = liga
+				notificaciones = usuario.notificacion_set.filter(liga = liga, leida = False)
+				parametros['ultimas_notificaciones'] = notificaciones[:5]
+				if liga.activada():
+					parametros['fecha_hora_liga'] = liga.getFecha()
+					parametros['factor_tiempo'] = liga.factor_tiempo
+
+				if 'equipo_propio' in request.session:
+					equipo = request.session['equipo_propio']
+					parametros['equipo_propio'] = equipo
+			else:
+				notificaciones = usuario.notificacion_set.filter(liga = None, leida = False)
+				parametros['ultimas_notificaciones'] = notificaciones
+			parametros['num_notificaciones'] = notificaciones.count()
 	return renderizar(request, template, parametros)
 
 ########################################################################

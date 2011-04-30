@@ -7,9 +7,10 @@
 
 {% block contenido %}
 	<h2>Tablón de {{ user.username }}</h2>
-	
+
 	<table class="tabla1" id="tabla_notificaciones">
 		<caption>Notificaciones</caption>
+		<a href="/cuentas/notificaciones/listar_tablon/">Ver todas</a>
 		<thead>
 		{% for notificacion in ultimas_notificaciones %}
 			<tr><td><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></td></tr>

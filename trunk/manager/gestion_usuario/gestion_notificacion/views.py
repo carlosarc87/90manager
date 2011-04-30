@@ -34,14 +34,24 @@ from gestion_sistema.gestion_liga.models import Liga
 ########################################################################
 
 @login_required
-@actualizarLiga
 def listar_notificaciones(request):
 	''' Lista todas las notificaciones de un usuario '''
 	usuario = request.user
 
 	notificaciones = usuario.notificacion_set.all()
 
-	return generarPagina("juego/notificaciones/listar.html", { "notificaciones" : notificaciones }, request)
+	return generarPagina(request, "juego/notificaciones/listar.html", { "notificaciones" : notificaciones })
+
+########################################################################
+
+@login_required
+def listar_notificaciones_tablon(request):
+	''' Lista todas las notificaciones sin liga de un usuario '''
+	usuario = request.user
+
+	notificaciones = usuario.notificacion_set.filter(liga = None)
+
+	return generarPagina(request, "juego/notificaciones/listar.html", { "notificaciones" : notificaciones })
 
 ########################################################################
 
@@ -60,7 +70,6 @@ def listar_notificaciones_liga(request):
 ########################################################################
 
 @login_required
-@actualizarLiga
 def borrar_notificacion(request, notificacion_id):
 	''' Borra una notificacion '''
 	# Obtenemos el usuario
@@ -80,7 +89,6 @@ def borrar_notificacion(request, notificacion_id):
 ########################################################################
 
 @login_required
-@actualizarLiga
 def ver_notificacion(request, notificacion_id):
 	''' Marca una notificación como leída y redirecciona a su contenido '''
 	# Obtenemos el usuario

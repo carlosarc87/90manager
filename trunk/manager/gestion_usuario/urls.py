@@ -26,9 +26,14 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
 	# Modulo de login
-	(r'^logout/$', 'gestion_usuario.views.desconectar'),
+	(r'^logout/$', 'django.contrib.auth.views.logout_then_login'),
 	(r'^login/$', 'gestion_usuario.views.principal'),
-#    (r'^perfil/$', 'gestion_usuario.views.perfil_usuario'),
 	(r'^confirmar/(?P<clave>\w+)/$', 'gestion_usuario.views.activar_usuario'),
 	(r'^notificaciones/', include('gestion_usuario.gestion_notificacion.urls')),
+	(r'^password/cambiar/$', 'gestion_usuario.views.principal'),
+	(r'^password/cambiar/hecho/$', 'django.contrib.auth.views.logout_then_login'),
+	(r'^password/recordar/$', 'django.contrib.auth.views.password_reset', {}),
+	(r'^password/recordar/completar/$', 'django.contrib.auth.views.password_reset_complete', {}),
+	(r'^password/recordar/hecho/$', 'django.contrib.auth.views.password_reset_done', {}),
+	(r'^password/recordar/confirmar/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm', {}),
 )
