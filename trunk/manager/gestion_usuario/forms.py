@@ -29,12 +29,7 @@ from models import Usuario
 
 class UsuarioForm(forms.ModelForm):
 	''' Formulario para registrar un usuario '''
-	aceptar_condiciones = forms.BooleanField()
 	email = forms.EmailField(required = True)
-
-	def clean_aceptar_condiciones(self):
-		if not self.cleaned_data['aceptar_condiciones']:
-			raise forms.ValidationError("Debes de aceptar las condiciones de uso para registrarte en el juego")
 
 	class Meta:
 		model = Usuario

@@ -82,27 +82,14 @@
 
 /* registro */
 
-#caja_usuario_reg{ float: left; width: 200px; }
-#caja_password{ float: left; width: 200px; }
-#caja_nombre{ float: left; width: 200px; }
-#caja_email{ float: left; width: 200px; }
-#caja_aceptar_condiciones{ float: left; width: 50px; }
-#caja_ir_login{ clear: both; height: 20px; padding: 5px 0px; }
-
-#contenido_usuario_reg{ clear: both; height: 20px; padding: 5px 0px; }
-#contenido_password{ clear: both; height: 20px; padding: 5px 0px; }
-#contenido_nombre{ clear: both; height: 20px; padding: 5px 0px; }
-#contenido_email{ clear: both; height: 20px; padding: 5px 0px; }
-#contenido_aceptar_condiciones{ clear: both; height: 20px; padding: 5px 0px; }
-#contenido_aceptar_condiciones label{ width: 300px; }
-#contenido_boton_registrar{ clear: both; height: 20px; padding: 5px 0px; }
-#contenido_boton_registrar input{ margin-right: 30px; }
-#contenido_campos_obligatorios{ clear: both; height: 20px; padding: 5px 0px; }
-
 #registro{
 	display: none;
 	margin: 20px auto;
 	width: 400px;
+}
+
+#registro input[type=text], #registro input[type=password]{
+	float: right;
 }
 
 #registro label{
@@ -110,8 +97,24 @@
 	width: 150px;
 }
 
-#registro input{
-	float: right;
+#registro #caja_boton_registro{
+	text-align: right;
+}
+
+#registro #datos_registro{
+	list-style: none;
+	margin: 0px 0px 20px 0px;
+	padding: 0px;
+}
+
+#registro #datos_registro li{
+	clear: both;
+	height: 20px;
+	padding: 5px 0px;
+}
+
+#registro #volver_login{
+	text-align: center;
 }
 
 /* fin registro */

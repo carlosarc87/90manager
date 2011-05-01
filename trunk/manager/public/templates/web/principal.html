@@ -54,7 +54,7 @@
 		r_text.push("404 - Gracia not found.");
 		r_text.push("Ahora con más lechuga.");
 		r_text.push("Alt + F4 no activa los trucos.");
-		r_text.push("Aunque un roedor pudiera roer robles, no tendría por qué roer robles si pudiera roer robles, asi que un roedor no roería robles porque pudiera roer una cantidad de robles.");
+		//r_text.push("Aunque un roedor pudiera roer robles, no tendría por qué roer robles si pudiera roer robles, asi que un roedor no roería robles porque pudiera roer una cantidad de robles.");
 		r_text.push("Chuck no está entre los nombres de jugadores.");
 		r_text.push("¡Con efectos especiales!");
 		r_text.push("¡Con jugadores tan famosos como Eufemio Teunuco Malvérez de la Fuente!");
@@ -73,25 +73,25 @@
 		r_text.push("¿Galletillas saladas?");
 		r_text.push("¡GOOOOOL!");
 		r_text.push("Hay webs que presumen que no van en Internet Explorer 6. En la nuestra ni hemos probado.");
-		r_text.push("Hola, soy Edu. Feliz navidad.");
+		//r_text.push("Hola, soy Edu. Feliz navidad.");
 		r_text.push("¡HTML 5 POWER!");
-		r_text.push("IDDQD Forever.");
-		r_text.push("In Soviet Russia 90manager plays you!");
+		//r_text.push("IDDQD Forever.");
+		//r_text.push("In Soviet Russia 90manager plays you!");
 		r_text.push("¡Instalable con diskettes de 3'5!");
 		r_text.push("JJ se nos frustró por las cervezas del hackathón.");
 		r_text.push("Juanmi se aburre mucho y crea estos mensajicos.");
 		r_text.push("La OSL-UGR nos prometió mujeres por meternos en el concurso. ¿Para cuándo?");
 		r_text.push("Las tostadas de tomate de la cafetería de la ETSIIT son lo mejor.");
-		r_text.push("Limones, limones everywhere.");
+		//r_text.push("Limones, limones everywhere.");
 		r_text.push("Logro desbloqueado: Ver este mensaje.");
 		r_text.push("No tendremos al gato cebolla, al pollo, o a las barbacoas, pero tenemos al Juanmi que como mascota vale.");
 		r_text.push("No tenemos los derechos de Crisóstomo Amaranto, pero tampoco hay derecho de que alguien se llame así.");
-		r_text.push("Patrocinado por Hostelería Silma, que nos hace tartas porque es el único rato que estamos callados.");
-		r_text.push("Pino! resucita!");
+		//r_text.push("Patrocinado por Hostelería Silma, que nos hace tartas porque es el único rato que estamos callados.");
+		r_text.push("¡Pino, resucita!");
 		r_text.push("Programado a mano.");
 		r_text.push("Pulse [aquí] para recibir su fortuna.");
 		r_text.push("¡Qué ganas de que llegue el verano!");
-		r_text.push("Sacaremos gorricos para el Team Fortress 2.");
+		//r_text.push("Sacaremos gorricos para el Team Fortress 2.");
 		r_text.push("Si ves algo sin validar correctamente, Carlos lo sabrá.");
 		r_text.push("Sí, nosotros también nos entretenemos clickando en esto.");
 		r_text.push("Tan sencillo como comerse un bocadillo.");
@@ -196,65 +196,58 @@
 		</div>
 		
 		<div id="registro">
+			<!-- Login -->
+			<p id="volver_login"><a href="#" onclick="mostrarLogin();">Volver a Login</a></p>
+			
 			<form class="form1" action="/" method="post">
 				{% csrf_token %}
 				
-				<!-- Usuario -->
-				{% if form_reg.username.errors %}
-					<div class="texto_error">{{ form_reg.username.errors }}</div>
-				{% endif %}
+				<ul id="datos_registro">
+					{% if form_reg.username.errors %}
+						{{ form_reg.username.errors }}
+					{% endif %}
+					
+					<!-- Usuario -->
+					<li id="contenido_usuario_reg">
+						<label for="id_username">Nombre de usuario:</label>
+						<div id="caja_usuario_reg">
+							<input id="id_username" type="text" name="username" value="" maxlength="50" tabindex="1" />
+						</div>
+					</li>
 
-				<div id="contenido_usuario_reg">
-					<label for="id_username">Nombre de usuario:</label>
-					<div id="caja_usuario_reg">
-						<input id="id_username" type="text" name="username" value="" maxlength="50" tabindex="1" />
-					</div>
-				</div>
+					{% if form_reg.password.errors %}
+						{{ form_reg.password.errors }}
+					{% endif %}
+					
+					<!-- Contrasena -->
+					<li id="contenido_password">
+						<label for="id_password">Contraseña:</label>
+						<div id="caja_password">
+							<input id="id_password" type="password" name="password" value="" maxlength="50" tabindex="2" />
+						</div>
+					</li>
 
-				<!-- Contrasena -->
-				{% if form_reg.password.errors %}
-					<div class="texto_error">{{ form_reg.password.errors }}</div>
-				{% endif %}
+					{% if form_reg.email.errors %}
+						{{ form_reg.email.errors }}
+					{% endif %}
 
-				<div id="contenido_password">
-					<label for="id_password">Contraseña:</label>
-					<div id="caja_password">
-						<input id="id_password" type="password" name="password" value="" maxlength="50" tabindex="2" />
-					</div>
-				</div>
-
-				<!-- E-mail -->
-				{% if form_reg.email.errors %}
-					<div class="texto_error">{{ form_reg.email.errors }}</div>
-				{% endif %}
-
-				<div id="contenido_email">
-					<label for="id_email">E-Mail:</label>
-					<div id="caja_email">
-						<input id="id_email" type="text" name="email" value="" maxlength="100" tabindex="3" />
-					</div>
-				</div>
+					<!-- E-mail -->
+					<li id="contenido_email">
+						<label for="id_email">E-Mail:</label>
+						<div id="caja_email">
+							<input id="id_email" type="text" name="email" value="" maxlength="100" tabindex="3" />
+						</div>
+					</li>
+				</ul>
+				
+				<p>Todos los campos son obligatorios</p>
 
 				<!-- Condiciones de uso -->
-				{% if form_reg.aceptar_condiciones.errors %}
-					<div class="texto_error">{{ form_reg.aceptar_condiciones.errors }}</div>
-				{% endif %}
-
-				<div id="contenido_aceptar_condiciones">
-					<label for="id_aceptar_condiciones">Acepto las <a href="/condiciones/" onclick="this.target='_blank'">condiciones de uso</a></label>
-					<div id="caja_aceptar_condiciones">{{ form_reg.aceptar_condiciones }}</div>
-				</div>
-
-				<div id="contenido_campos_obligatorios">Todos los campos son obligatorios</div>
-
+				<p>Registrándome acepto las <a href="/condiciones/" onclick="this.target='_blank'">condiciones de uso</a>.</p>
+				
 				<!-- Boton registrar -->
-				<div id="contenido_boton_registrar">
+				<div id="caja_boton_registro">
 					<input type="submit" name="registrar_usuario" value="Registrar" tabindex="4" />
-				</div>
-
-				<!-- Login -->
-				<div id="caja_ir_login">
-					<a href="#" onclick="mostrarLogin();">Login</a>
 				</div>
 			</form>
 		</div>
