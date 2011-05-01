@@ -18,31 +18,29 @@
 {% endblock %}
 
 {% block contenido %}
-	<div id="contenido_mensaje">
-		{% if tipo == 1 %}
-			<div class="ui-widget">
-				<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-					<p>
-						<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-						{{ mensaje }}
-					</p>
-				</div>
+	{% if tipo == 1 %}
+		<div class="ui-widget">
+			<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+				<p>
+					<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+					{{ mensaje }}
+				</p>
 			</div>
-		{% else %}
-			<div class="ui-widget">
-				<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
-					<p>
-						<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-						{{ mensaje }}
-					</p>
-				</div>
+		</div>
+	{% else %}
+		<div class="ui-widget">
+			<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
+				<p>
+					<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+					{{ mensaje }}
+				</p>
 			</div>
-		{% endif %}
+		</div>
+	{% endif %}
 
-		{% if url_salida %}
-			<div id="caja_boton">
-				<input type="submit" name="mensaje_salir" value="Volver" onclick="location.href='{{ url_salida }}'" />
-			</div>
-		{% endif %}
-	</div>
+	{% if url_salida %}
+		<div id="caja_boton">
+			<input type="submit" name="mensaje_salir" value="Volver" onclick="location.href='{{ url_salida }}'" />
+		</div>
+	{% endif %}
 {% endblock %}

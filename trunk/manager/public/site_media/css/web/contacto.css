@@ -1,3 +1,9 @@
+form{
+	margin: 0px auto;
+	margin-bottom: 20px;
+	width: 400px;
+}
+
 label{
 	float: left;
 	width: 100px;
@@ -7,14 +13,6 @@ p{
 	text-align: center;
 }
 
-#contacto{
-	padding: 20px;
-}
-
-#contacto form{
-	margin: 0px auto;
-	width: 400px;
-}
 
 #contenido_emisor{ clear: both; padding: 5px 0px; }
 #contenido_asunto{ clear: both; padding: 5px 0px; }
@@ -26,6 +24,6 @@ p{
 
 #wrap{
 	background: #fff;
-	border-left: solid 1px #555;
-	border-right: solid 1px #555;
+	border: solid 1px #555;
+	margin: 30px auto;
 }

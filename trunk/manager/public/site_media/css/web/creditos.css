@@ -2,10 +2,15 @@ ul{
 	padding: 0px 0px 0px 25px;
 }
 
+#contenido{
+	display: table;
+	padding: 10px;
+	width: 930px;
+}
+
 #creditos{
 	display: table-cell;
 	padding-left: 50px;
-	margin: 10px;
 }
 
 #info{
@@ -13,14 +18,8 @@ ul{
 	width: 500px;
 }
 
-#sup{
-	display: table;
-	margin: 20px auto;
-	width: 900px;
-}
-
 #wrap{
 	background: #fff;
-	border-left: solid 1px #555;
-	border-right: solid 1px #555;
+	border: solid 1px #555;
+	margin: 30px auto;
 }

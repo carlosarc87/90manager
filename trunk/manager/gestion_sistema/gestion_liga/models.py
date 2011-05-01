@@ -150,8 +150,13 @@ class Liga(models.Model):
 
 		for i in range(self.equipo_set.count(), self.num_equipos):
 			nombre_eq = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
-			siglas_eq = generarSiglasNombre(nombre_eq)
+			
+			# Comprobar que el nombre no se repita
+			while self.equipo_set.filter(nombre = nombre_eq).count() > 0:
+				nombre_eq = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
 
+			siglas_eq = generarSiglasNombre(nombre_eq)
+			
 			# Comprobar que las siglas no se repitan
 			c = 1
 			while self.equipo_set.filter(siglas = siglas_eq).count() > 0:

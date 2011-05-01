@@ -16,18 +16,14 @@ th{
 	border: 0px;
 }
 
-#siguenos{
-	margin: 0px auto;
-	padding: 10px 0px;
-	width: 500px;
-}
-
 #tabla_enlaces_siguenos{
-	width: 100%;
+	margin: 0px auto;
+	margin-bottom: 20px;
+	width: 300px;
 }
 
 #wrap{
 	background: #fff;
-	border-left: solid 1px #555;
-	border-right: solid 1px #555;
+	border: solid 1px #555;
+	margin: 30px auto;
 }

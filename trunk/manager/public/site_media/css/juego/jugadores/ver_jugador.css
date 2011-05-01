@@ -53,10 +53,13 @@
 	font-size: 1.4em;
 }
 
+/* FOTO */
+
 #foto_m{
 	background: #fff url('../../../img/hombre1-min.png') top left no-repeat;
 	float: right;
 	height: 150px;
+	position: relative;
 	width: 125px;
 }
 
@@ -64,8 +67,35 @@
 	background: #fff url('../../../img/mujer1-min.png') top left no-repeat;
 	float: right;
 	height: 150px;
+	position: relative;
 	width: 125px;
 }
+
+#ojos{
+	height: 8px;
+	left: 42px;
+	position: absolute;
+	top: 55px;
+	width: 45px;
+}
+
+#piel{
+	height: 105px;
+	left: 26px;
+	position: absolute;
+	top: 31px;
+	width: 75px;
+}
+
+#pelo{
+	height: 74px;
+	left: 25px;
+	position: absolute;
+	top: 3px;
+	width: 76px;
+}
+
+/* FIN FOTO */
 
 #tabla_datos{
 	margin: 10px auto;

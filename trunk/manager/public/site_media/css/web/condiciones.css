@@ -1,13 +1,9 @@
-h4{
-	padding: 5px 0px;
-}
-
-#condiciones{
-	padding: 10px;
-}
-
 #wrap{
 	background: #fff;
-	border-left: solid 1px #555;
-	border-right: solid 1px #555;
+	border: solid 1px #555;
+	margin: 30px auto;
+}
+
+#wrap-content{
+	padding: 10px;
 }

@@ -180,7 +180,7 @@ class Equipo(models.Model):
 			fecha_nacimiento = date.today() - timedelta(randint(edad_min, edad_max) * 365) + timedelta(randint(0, 364))
 
 			# Reducir un poco el nivel máximo dependiendo de la edad
-			hoy = date.today()
+			hoy = self.liga.fecha_ficticia_inicio.date()
 			edad = hoy - fecha_nacimiento
 			anios = (int)(edad.days / 365)
 

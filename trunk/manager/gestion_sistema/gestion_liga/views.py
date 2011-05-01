@@ -85,7 +85,7 @@ def ver_liga(request):
 
 	es_creador = liga.creador == usuario
 
-
+	form_fecha = None
 
 	if es_creador:
 		if request.method == 'POST':

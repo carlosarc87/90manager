@@ -15,41 +15,39 @@
 {% endblock %}
 
 {% block contenido %}
-	<h4>Contacto</h4>
+	<h2>Contacto</h2>
 	
 	<p>Envíenos insultos, amenazas de muerte, citaciones para juzgado, etc
 	mediante el siguiente formulario de contacto con los administradores</p>
 
-	<div id="contacto">
-		<form class="form1" action="/contacto/" method="post">
-			{% csrf_token %}
-			<div id="contenido_emisor">
-				{% if form.emisor.errors %}
-					{{ form.emisor.errors }}
-				{% endif %}
-				<label for="id_emisor">Emisor:</label>
-				<input id="id_emisor" type="text" name="emisor" />
-			</div>
+	<form class="form1" action="/contacto/" method="post">
+		{% csrf_token %}
+		<div id="contenido_emisor">
+			{% if form.emisor.errors %}
+				{{ form.emisor.errors }}
+			{% endif %}
+			<label for="id_emisor">Emisor:</label>
+			<input id="id_emisor" type="text" name="emisor" />
+		</div>
 
-			<div id="contenido_asunto">
-				{% if form.asunto.errors %}
-					{{ form.asunto.errors }}
-				{% endif %}
-				<label for="id_asunto">Asunto:</label>
-				<input id="id_asunto" type="text" name="asunto" maxlength="100" />
-			</div>
+		<div id="contenido_asunto">
+			{% if form.asunto.errors %}
+				{{ form.asunto.errors }}
+			{% endif %}
+			<label for="id_asunto">Asunto:</label>
+			<input id="id_asunto" type="text" name="asunto" maxlength="100" />
+		</div>
 
-			<div id="contenido_mensaje">
-				{% if form.mensaje.errors %}
-					{{ form.mensaje.errors }}
-				{% endif %}
-				<label for="id_mensaje">Mensaje:</label>
-				<textarea id="id_mensaje" name="mensaje" rows="5" cols="50">Quiero un hijo vuestro</textarea>
-			</div>
+		<div id="contenido_mensaje">
+			{% if form.mensaje.errors %}
+				{{ form.mensaje.errors }}
+			{% endif %}
+			<label for="id_mensaje">Mensaje:</label>
+			<textarea id="id_mensaje" name="mensaje" rows="5" cols="50">Quiero un hijo vuestro</textarea>
+		</div>
 
-			<div id="contenido_enviar">
-				<input type="submit" value="Enviar" />
-			</div>
-		</form>
-	</div>
+		<div id="contenido_enviar">
+			<input type="submit" value="Enviar" />
+		</div>
+	</form>
 {% endblock %}

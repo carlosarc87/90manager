@@ -57,9 +57,22 @@
 			<!-- Foto -->
 			{% if jugador.sexo == 'M' %}
 				<div id="foto_m">
+					<!-- Pelo -->
+					<img src="/media/img/jugadores/hombres/pelo_{{ jugador.color_pelo }}.png" id="pelo" alt="" />
+					
+					<!-- Piel -->
+					<img src="/media/img/jugadores/hombres/piel_{{ jugador.color_piel }}.png" id="piel" alt="" />
 			{% else %}
 				<div id="foto_f">
+					<!-- Pelo -->
+					<img src="/media/img/jugadores/mujeres/pelo_{{ jugador.color_pelo }}.png" id="pelo" alt="" />
+					
+					<!-- Piel -->
+					<img src="/media/img/jugadores/mujeres/piel_{{ jugador.color_piel }}.png" id="piel" alt="" />
 			{% endif %}
+			
+				<!-- Ojos -->
+				<img src="/media/img/jugadores/ojos_{{ jugador.color_ojos }}.png" id="ojos" alt="" />
 			</div>
 		</div>
 	</div>
@@ -209,25 +222,45 @@
 			<!-- Agresividad -->
 			<tr>
 				<td>Agresividad</td>
-				<td class="cuadro_num_azul_der">{{ jugador.atributos.agresividad }}</td>
+				<td>
+					<div class="barra_progreso" title="{{ jugador.atributos.agresividad }}">
+						<div style="width: {{ jugador.atributos.agresividad }}px;">
+						</div>
+					</div>
+				</td>
 			</tr>
 
 			<!-- Concentracion -->
 			<tr>
 				<td>Concentración</td>
-				<td class="cuadro_num_azul_der">{{ jugador.atributos.concentracion }}</td>
+				<td>
+					<div class="barra_progreso" title="{{ jugador.atributos.concentracion }}">
+						<div style="width: {{ jugador.atributos.concentracion }}px;">
+						</div>
+					</div>
+				</td>
 			</tr>
 
 			<!-- Estabilidad -->
 			<tr>
 				<td>Estabilidad</td>
-				<td class="cuadro_num_azul_der">{{ jugador.atributos.estabilidad }}</td>
+				<td>
+					<div class="barra_progreso" title="{{ jugador.atributos.estabilidad }}">
+						<div style="width: {{ jugador.atributos.estabilidad }}px;">
+						</div>
+					</div>
+				</td>
 			</tr>
 
 			<!-- Moral -->
 			<tr>
 				<td>Moral</td>
-				<td class="cuadro_num_azul_der">{{ jugador.atributos.moral }}</td>
+				<td>
+					<div class="barra_progreso" title="{{ jugador.atributos.moral }}">
+						<div style="width: {{ jugador.atributos.moral }}px;">
+						</div>
+					</div>
+				</td>
 			</tr>
 		</tbody>
 	</table>

@@ -58,8 +58,11 @@ class Jugador(models.Model):
 
 	def getEdad(self):
 		from datetime import date
-		hoy = date.today()
-		edad = hoy - self.fecha_nacimiento
+		if self.atributos.equipo.liga.activada():
+			fecha_actual_liga = self.atributos.equipo.liga.getFecha()
+		else:
+			fecha_actual_liga = self.atributos.equipo.liga.fecha_ficticia_inicio
+		edad = fecha_actual_liga.date() - self.fecha_nacimiento
 		anios = (int)(edad.days / 365)
 		dias = edad.days % 365
 		return anios, dias
@@ -75,45 +78,41 @@ class Jugador(models.Model):
 		# Color de la piel
 		a = randint(1, 1000)
 		if a <= 100:
-			self.color_piel = "Blanca"
-		elif a <= 200:
-			self.color_piel = "Amarilla"
+			self.color_piel = "blanca"
+		elif a <= 350:
+			self.color_piel = "clara"
 		elif a <= 700:
-			self.color_piel = "Morena"
+			self.color_piel = "morena"
 		elif a <= 900:
-			self.color_piel = "Oscura"
+			self.color_piel = "oscura"
 		else:
-			self.color_piel = "Negra"
+			self.color_piel = "negra"
 
 		# Color del pelo
 		a = randint(1, 1000)
-		if a <= 250:
-			self.color_pelo = "Negro"
-		elif a <= 500:
-			self.color_pelo = "Marrón oscuro"
+		if a <= 300:
+			self.color_pelo = "negro"
 		elif a <= 750:
-			self.color_pelo = "Marrón claro"
+			self.color_pelo = "marron"
 		elif a <= 800:
-			self.color_pelo = "Rojo"
+			self.color_pelo = "rojo"
 		elif a <= 950:
-			self.color_pelo = "Rubio"
+			self.color_pelo = "rubio"
 		else:
-			self.color_pelo = "Blanco"
+			self.color_pelo = "blanco"
 
 		# Color de los ojos
 		a = randint(1, 1000)
 		if a <= 300:
-			self.color_ojos = "Negros"
-		elif a <= 600:
-			self.color_ojos = "Marrones oscuros"
+			self.color_ojos = "negros"
 		elif a <= 850:
-			self.color_ojos = "Marrones claros"
+			self.color_ojos = "marrones"
 		elif a <= 900:
-			self.color_ojos = "Verdes"
+			self.color_ojos = "verdes"
 		elif a <= 950:
-			self.color_ojos = "Grises"
+			self.color_ojos = "grises"
 		else:
-			self.color_ojos = "Azules"
+			self.color_ojos = "azules"
 
 	def siglasPosicion(self):
 		mejor_posicion = self.mejorPosicion();
@@ -177,34 +176,34 @@ class AtributosVariablesJugador(models.Model):
 		# Habilidades de juego
 		if (posicion == "DELANTERO"):
 			self.ataque 	= randint((int)(nivel * 0.8), nivel)
-			self.defensa 	= randint(1, (int)(nivel * 0.2))
-			self.velocidad 	= randint((int)(nivel * 0.4), (int)(nivel * 0.6))
-			self.pases 		= randint((int)(nivel * 0.4), (int)(nivel * 0.6))
+			self.defensa 	= randint(1, (int)(nivel * 0.6))
+			self.velocidad 	= randint((int)(nivel * 0.4), (int)(nivel * 0.8))
+			self.pases 		= randint((int)(nivel * 0.4), (int)(nivel * 0.8))
 			self.anotacion 	= randint((int)(nivel * 0.8), nivel)
-			self.portero 	= randint(1, (int)(nivel * 0.2))
+			self.portero 	= randint(1, (int)(nivel * 0.4))
 
 		elif (posicion == "CENTROCAMPISTA"):
-			self.ataque 	= randint((int)(nivel * 0.4), (int)(nivel * 0.6))
-			self.defensa 	= randint((int)(nivel * 0.4), (int)(nivel * 0.6))
+			self.ataque 	= randint((int)(nivel * 0.4), (int)(nivel * 0.8))
+			self.defensa 	= randint((int)(nivel * 0.4), (int)(nivel * 0.8))
 			self.velocidad 	= randint((int)(nivel * 0.8), nivel)
 			self.pases 		= randint((int)(nivel * 0.8), nivel)
-			self.anotacion 	= randint((int)(nivel * 0.4), (int)(nivel * 0.6))
-			self.portero 	= randint(1, (int)(nivel * 0.2))
+			self.anotacion 	= randint((int)(nivel * 0.4), (int)(nivel * 0.8))
+			self.portero 	= randint(1, (int)(nivel * 0.5))
 
 		elif (posicion == "DEFENSA"):
-			self.ataque 	= randint(1, (int)(nivel * 0.2))
+			self.ataque 	= randint(1, (int)(nivel * 0.6))
 			self.defensa 	= randint((int)(nivel * 0.8), nivel)
-			self.velocidad 	= randint((int)(nivel * 0.4), (int)(nivel * 0.6))
-			self.pases 		= randint((int)(nivel * 0.4), (int)(nivel * 0.6))
-			self.anotacion 	= randint(1, (int)(nivel * 0.2))
-			self.portero 	= randint(1, (int)(nivel * 0.2))
+			self.velocidad 	= randint((int)(nivel * 0.4), (int)(nivel * 0.8))
+			self.pases 		= randint((int)(nivel * 0.4), (int)(nivel * 0.8))
+			self.anotacion 	= randint(1, (int)(nivel * 0.6))
+			self.portero 	= randint(1, (int)(nivel * 0.6))
 
 		elif (posicion == "PORTERO"):
-			self.ataque 	= randint(1, (int)(nivel * 0.2))
-			self.defensa 	= randint(1, (int)(nivel * 0.2))
-			self.velocidad 	= randint(1, (int)(nivel * 0.2))
-			self.pases 		= randint((int)(nivel * 0.4), (int)(nivel * 0.6))
-			self.anotacion 	= randint(1, (int)(nivel * 0.2))
+			self.ataque 	= randint(1, (int)(nivel * 0.5))
+			self.defensa 	= randint(1, (int)(nivel * 0.5))
+			self.velocidad 	= randint(1, (int)(nivel * 0.5))
+			self.pases 		= randint((int)(nivel * 0.4), (int)(nivel * 0.8))
+			self.anotacion 	= randint(1, (int)(nivel * 0.5))
 			self.portero 	= randint((int)(nivel * 0.8), nivel)
 
 		else:
@@ -222,7 +221,7 @@ class AtributosVariablesJugador(models.Model):
 		self.agresividad 	= randint(1, 100)
 		self.concentracion	= randint(1, 100)
 		self.estabilidad 	= randint(1, 100)
-		self.moral 			= 50
+		self.moral 			= randint(1, 100)
 
 		return self
 
