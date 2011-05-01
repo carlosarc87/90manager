@@ -89,7 +89,7 @@ class ActivarLigaForm(forms.ModelForm):
 
 ########################################################################################
 
-def CambiarFechaForm(forms.Form):
+class CambiarFechaForm(forms.Form):
 	""" Formulario para cambiar la fecha de una liga """
 	fecha_nueva = forms.fields.DateTimeField()
 

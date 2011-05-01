@@ -85,6 +85,8 @@ def ver_liga(request):
 
 	es_creador = liga.creador == usuario
 
+
+
 	if es_creador:
 		if request.method == 'POST':
 			form_fecha = CambiarFechaForm(request.POST)
