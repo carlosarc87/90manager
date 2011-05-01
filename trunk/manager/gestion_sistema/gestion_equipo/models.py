@@ -33,7 +33,9 @@ from gestion_usuario.models import Usuario
 class Equipo(models.Model):
 	''' Representa un equipo en el sistema '''
 	nombre = models.CharField(max_length = 50)
+	#tipo_club = models.PositiveIntField(default = 0)
 	siglas = models.CharField(max_length = 3)
+
 	usuario = models.ForeignKey(Usuario, null = True)
 	liga = models.ForeignKey(Liga)
 

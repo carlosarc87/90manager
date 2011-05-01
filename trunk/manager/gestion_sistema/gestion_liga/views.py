@@ -34,7 +34,7 @@ from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_equipo.forms import EquipoForm
 
 from models import Liga
-from forms import LigaForm, ActivarLigaForm
+from forms import LigaForm, ActivarLigaForm, CambiarFechaForm
 
 from gestion_base.func import devolverMensaje, redireccionar, generarPagina, renderizar
 
@@ -84,6 +84,16 @@ def ver_liga(request):
 	liga_acabada = False
 
 	es_creador = liga.creador == usuario
+
+	if es_creador:
+		if request.method == 'POST':
+			form_fecha = CambiarFechaForm(request.POST)
+			if form_fecha.is_valid():
+				fecha_nueva = form_fecha.clean['fecha_nueva']
+				liga.setFecha(fecha_nueva)
+				return redireccionar('/ligas/ver/')
+		else:
+			form_fecha = CambiarFechaForm()
 
 	# Comprobamos si el jugador tiene un equipo en esta liga
 	equipo_propio = liga.equipo_set.filter(usuario = usuario)
@@ -170,7 +180,8 @@ def ver_liga(request):
 		 "equipo_propio" : equipo_propio,
 		 "clasificacion" : clasificacion,
 		 "liga_acabada" : liga_acabada,
-		 "es_creador" : es_creador
+		 "es_creador" : es_creador,
+		 "form_fecha" : form_fecha,
 		}
 	return generarPagina(request, "juego/ligas/ver_liga.html", d)
 

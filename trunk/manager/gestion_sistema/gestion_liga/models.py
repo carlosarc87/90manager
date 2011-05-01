@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
 """
 Copyright 2011 by
-    * Juan Miguel Lechuga Pérez
-    * Jose Luis López Pino
-    * Carlos Antonio Rivera Cabello
+	* Juan Miguel Lechuga Pérez
+	* Jose Luis López Pino
+	* Carlos Antonio Rivera Cabello
 
  This file is part of 90Manager.
 
-    90Manager is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	90Manager is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    90Manager is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	90Manager is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU General Public License
+	along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 from django.db import models
@@ -58,6 +58,13 @@ class Liga(models.Model):
 	dinero_inicial = models.IntegerField(default = 20000, max_length = 15)
 	num_jugadores_inicial = models.PositiveIntegerField(default = 20, max_length = 3)
 	nivel_max_jugadores_inicio = models.PositiveIntegerField(default = 50, max_length = 3) # Nivel máximo inicial de los jugadores al comienzo de la liga (10 - 100)
+
+	def setFecha(self, nueva_fecha):
+		""" Establece una fecha de la liga """
+		dif_f = self.getFecha() - nueva_fecha
+		dif_r = dif_f / self.factor_tiempo
+		self.fecha_real_inicio += dif_r
+		self.save()
 
 	def getFecha(self):
 		""" Devuelve la fecha ficticia de la liga """
