@@ -91,9 +91,9 @@ def ver_liga(request):
 		if request.method == 'POST':
 			form_fecha = CambiarFechaForm(request.POST)
 			if form_fecha.is_valid():
-				fecha_nueva = form_fecha.clean['fecha_nueva']
+				fecha_nueva = form_fecha.cleaned_data['fecha_nueva']
 				liga.setFecha(fecha_nueva)
-				return redireccionar('/ligas/ver/')
+				return redireccionar('/ligas/ver/%d/' % liga.id)
 		else:
 			form_fecha = CambiarFechaForm()
 

@@ -11,11 +11,33 @@
 	<script src="/media/js/tablesorter/jquery.tablesorter.pager.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
+		jQuery(function($){
+			$.datepicker.regional['es'] = {
+				closeText: 'Cerrar',
+				prevText: '&#x3c;Ant',
+				nextText: 'Sig&#x3e;',
+				currentText: 'Hoy',
+				monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+				'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+				monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+				'Jul','Ago','Sep','Oct','Nov','Dic'],
+				dayNames: ['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'],
+				dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
+				dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
+				weekHeader: 'Sm',
+				dateFormat: 'dd/mm/yy',
+				firstDay: 1,
+				isRTL: false,
+				showMonthAfterYear: false,
+				yearSuffix: ''};
+			$.datepicker.setDefaults($.datepicker.regional['es']);
+		});
 		$(document).ready(
 			function() {
 				$("#tabla_clasificacion")
 				.tablesorter({widthFixed: true, widgets: ['zebra']})
 				.tablesorterPager({container: $("#pager")});
+				$("#id_fecha_nueva").datetimepicker();
 			}
 		);
 	</script>
@@ -29,6 +51,14 @@
 			<h4>Jornada actual: <a href="/jornadas/ver/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></h4>
 			{% if es_creador %}
 				<h4><a href="/ligas/avanzar/">Avanzar jornada</a></h4>
+				<!-- Esto es meramente para acelerar la presentacion del miercoles -->
+				<form class="form1" id="form_ver_liga" action="/ligas/ver/" method="post">
+					{{ form_fecha.as_p }}
+					<!-- Boton crear -->
+					<div id="contenido_boton_crear">
+						<input type="submit" value="Cambiar" />
+					</div>
+				</form>
 			{% endif %}
 		{% else %}
 			<h4>FINALIZADA</h4>
