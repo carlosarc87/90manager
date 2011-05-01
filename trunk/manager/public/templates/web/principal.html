@@ -96,7 +96,7 @@
 		r_text.push("Sí, nosotros también nos entretenemos clickando en esto.");
 		r_text.push("Tan sencillo como comerse un bocadillo.");
 		r_text.push("Tiene nombres mil... tiene nombres mil...");
-		r_text.push("Un día de estos nos dá por implementar el recordar contraseña...");
+		//r_text.push("Un día de estos nos dá por implementar el recordar contraseña...");
 
 		var num_mensajicos = r_text.length;
 
@@ -122,28 +122,36 @@
 		$(document).ready(function(){
 		   cargarMensajico(document.getElementById("mensajico"));
 		   contadorDesactualizado(gsegs);
+		   {% if form_reg.errors %}
+			var login = document.getElementById('login');
+			var registro = document.getElementById('registro');
+
+			$(login).fadeToggle(0, function(){
+				$(registro).fadeToggle(0, "linear");
+			})
+		   {% endif %}
 		});
-		
+
 		/* Oculta la caja del login y muestra el registro */
 		function mostrarRegistro(){
 			var login = document.getElementById('login');
 			var registro = document.getElementById('registro');
-			
+
 			$(login).fadeToggle(300, function(){
 				$(registro).fadeToggle(300, "linear");
 			})
 		}
-		
+
 		/* Oculta la caja del registro y muestra el login */
 		function mostrarLogin(){
 			var login = document.getElementById('login');
 			var registro = document.getElementById('registro');
-			
+
 			$(registro).fadeToggle(300, function(){
 				$(login).fadeToggle(300, "linear");
 			})
 		}
-		
+
 		/* Para el funcionamiento de tema css con jquery */
 		$(function() {
 			$("input:submit", "#div_acceso").button();
@@ -158,12 +166,12 @@
 {% block contenido %}
 	<!-- Logo -->
 	<div id="div_logo" onclick="location.href='/'"></div>
-	
+
 	<!-- Descripcion -->
 	<div id="descripcion">
 		Juego multijugador donde puedes ser entrenador y presidente de un equipo de fútbol.
 	</div>
-	
+
 	<div id="div_acceso">
 		<div id="login">
 			{% if login_error %}
@@ -194,19 +202,19 @@
 				</ul>
 			</form>
 		</div>
-		
+
 		<div id="registro">
 			<!-- Login -->
 			<p id="volver_login"><a href="#" onclick="mostrarLogin();">Volver a Login</a></p>
-			
+
 			<form class="form1" action="/" method="post">
 				{% csrf_token %}
-				
+
 				<ul id="datos_registro">
 					{% if form_reg.username.errors %}
 						{{ form_reg.username.errors }}
 					{% endif %}
-					
+
 					<!-- Usuario -->
 					<li id="contenido_usuario_reg">
 						<label for="id_username">Nombre de usuario:</label>
@@ -218,7 +226,7 @@
 					{% if form_reg.password.errors %}
 						{{ form_reg.password.errors }}
 					{% endif %}
-					
+
 					<!-- Contrasena -->
 					<li id="contenido_password">
 						<label for="id_password">Contraseña:</label>
@@ -239,12 +247,12 @@
 						</div>
 					</li>
 				</ul>
-				
+
 				<p>Todos los campos son obligatorios</p>
 
 				<!-- Condiciones de uso -->
 				<p>Registrándome acepto las <a href="/condiciones/" onclick="this.target='_blank'">condiciones de uso</a>.</p>
-				
+
 				<!-- Boton registrar -->
 				<div id="caja_boton_registro">
 					<input type="submit" name="registrar_usuario" value="Registrar" tabindex="4" />
@@ -252,7 +260,7 @@
 			</form>
 		</div>
 	</div>
-	
+
 	<div id="caja_mensajico">
 		<span id="mensajico" onclick="cargarMensajico(this)"></span>
 	</div>

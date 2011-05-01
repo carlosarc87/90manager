@@ -30,28 +30,15 @@
 				showMonthAfterYear: false,
 				yearSuffix: ''};
 			$.datepicker.setDefaults($.datepicker.regional['es']);
-			
-			$.timepicker.regional['es'] = {
-				timeOnlyTitle: 'Hora',
-				timeText: 'Hora',
-				hourText: 'Hora',
-				minuteText: 'Minutos',
-				secondText: 'Segundos',
-				currentText: 'Ahora',
-				closeText: 'Cerrar',
-				hourGrid: 6,
-				minuteGrid: 10
-			}
-			$.timepicker.setDefaults($.timepicker.regional['es']);
-		});		
-		
+
+		});
+
 		/* Para el funcionamiento de tema css con jquery */
 		$(function() {
 			$("#caja_sexo_permitido", "#form_crear_liga").buttonset();
 			$("#caja_tipo_avance_jornadas", "#form_crear_liga").buttonset();
 			$("input:submit", "#form_crear_liga").button();
-			$("#fecha_real_inicio", "#form_crear_liga").datetimepicker();
-			$("#fecha_ficticia_inicio", "#form_crear_liga").datetimepicker();
+			$("#fecha_ficticia_inicio", "#form_crear_liga").datepicker();
 			$("#factor_tiempo", "#form_crear_liga").select();
 		});
 	</script>
@@ -99,10 +86,10 @@
 					<div id="caja_sexo_permitido">
 						<input type="radio" id="sexo_permitido_0" name="sexo_permitido" value="0" checked="checked" />
 						<label for="sexo_permitido_0">Solo hombres</label>
-						
+
 						<input type="radio" id="sexo_permitido_1" name="sexo_permitido" value="1" />
 						<label for="sexo_permitido_1">Solo mujeres</label>
-						
+
 						<input type="radio" id="sexo_permitido_2" name="sexo_permitido" value="2" />
 						<label for="sexo_permitido_2">Hombres y mujeres</label>
 					</div>
@@ -132,7 +119,7 @@
 						{{ form.num_equipos }}
 					</div>
 				</div>
-				
+
 				<!-- Fecha de inicio ficticia de la liga -->
 				<div id="contenido_fecha_ficticia_inicio">
 					{% if form.fecha_ficticia_inicio.errors %}
@@ -145,7 +132,7 @@
 						<input id="fecha_ficticia_inicio" name="fecha_ficticia_inicio" type="text" />
 					</div>
 				</div>
-				
+
 				<!-- Velocidad de la liga -->
 				<div id="contenido_factor_tiempo">
 					{% if form.factor_tiempo.errors %}

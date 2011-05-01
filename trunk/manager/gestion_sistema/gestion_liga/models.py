@@ -27,6 +27,7 @@ from gestion_usuario.models import Usuario
 
 import random
 
+from math import ceil
 from datetime import datetime, timedelta
 
 ########################################################################
@@ -210,17 +211,53 @@ class Liga(models.Model):
 			jornadas.append(emparejamientos_jornada)
 			j += 1
 
+		# Generar las fechas para una jornada
+		# Datos base
+		l_dias = [0, 0, 0, 0, 0, 1, 1]
+		primera_hora = 18 * 4
+		ultima_hora = 22 * 4
+		partidos = range(num_emparejamientos_jornada)
+
+		# Generamos los ordenes de una jornada
+		dias_jugables = l_dias.count(1)
+		partidos_por_dia = int(ceil(len(partidos) * 1.0 / dias_jugables))
+		huecos = (ultima_hora - primera_hora)
+		if partidos_por_dia > 1:
+				espacio_entre_partidos = huecos / (partidos_por_dia - 1)
+		else:
+				espacio_entre_partidos = 0
+		orden_jornada = []
+		indice_partido = 0
+		dia_inicio = self.fecha_ficticia_inicio.weekday()
+		for dia in range(len(l_dias)):
+			dia_actual = dia + dia_inicio
+			if l_dias[dia_actual % len(l_dias)]:
+				lista_partidos = []
+				for partido in range(partidos_por_dia):
+					hora = (partido % huecos) * espacio_entre_partidos
+					lista_partidos.append([hora, (indice_partido * partidos_por_dia) + partido])
+				indice_partido += 1
+				orden_jornada.append([dia_actual, lista_partidos])
+
 		# Guardar jornadas y partidos
+		dia_inicio_partidos = self.fecha_ficticia_inicio.weekday()
+
 		for i in range(len(jornadas)):
 			jornada = Jornada(liga = self, numero = i + 1, jugada = False)
-			jornada.fecha_inicio = self.fecha_ficticia_inicio + timedelta(days = i)
-			jornada.fecha_fin = jornada.fecha_inicio + timedelta(days = 1)
+			jornada.fecha_inicio = self.fecha_ficticia_inicio + timedelta(days = i * 7)
+			jornada.fecha_fin = jornada.fecha_inicio + timedelta(days = 7)
 			jornada.save()
-			for emparejamiento in jornadas[i]:
-				partido = Partido(liga = self, jornada = jornada, equipo_local = emparejamiento[0], equipo_visitante = emparejamiento[1], jugado = False)
-				partido.fecha_inicio = jornada.fecha_inicio
-				partido.fecha_fin = partido.fecha_inicio + timedelta(hours = 2)
-				partido.save()
+
+			for siguiente_dia, orden_dia in orden_jornada:
+				fecha = jornada.fecha_inicio + timedelta(days = siguiente_dia - dia_inicio)
+				for enfrentamiento in orden_dia:
+					if enfrentamiento[1] < len(jornadas[i]):
+						emparejamiento = jornadas[i][enfrentamiento[1]]
+						partido = Partido(liga = self, jornada = jornada, equipo_local = emparejamiento[0], equipo_visitante = emparejamiento[1], jugado = False)
+						hora = fecha + timedelta(hours = 18 + (enfrentamiento[0] / 4), minutes = 15 * (enfrentamiento[0] % 4))
+						partido.fecha_inicio = hora
+						partido.fecha_fin = partido.fecha_inicio + timedelta(hours = 2)
+						partido.save()
 
 	def agregarEquipo(self, equipo):
 		''' Agrega un equipo a la liga '''
