@@ -12,11 +12,11 @@
 
 	<script type="text/javascript">
 		$(document).ready(
-			function() {
+			/**function() {
 				$("#tabla_clasificacion")
 				.tablesorter({widthFixed: true, widgets: ['zebra']})
 				.tablesorterPager({container: $("#pager")});
-			}
+			}*/
 		);
 	</script>
 {% endblock %}
@@ -24,7 +24,7 @@
 {% block contenido %}
 	{% if clasificacion %}
 		<h2>Clasificación de liga "{{ liga.nombre }}"</h2>
-		
+
 		<!-- Tabla clasificacion -->
 		<table class="tabla1 + tablesorter" id="tabla_clasificacion">
 			{% if liga_acabada %}

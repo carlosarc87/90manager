@@ -6,12 +6,10 @@
 {% endblock %}
 
 {% block contenido %}
-	<div id="ver_repeticion"><a href="/partidos/repeticion/">Ver repetición</a></div>
-
 	<!-- Resultado del partido -->
 	<table class="tabla1" id="tabla_resultado">
 		<caption>Partido</caption>
-
+		<div id="ver_repeticion"><a href="/partidos/repeticion/">Ver repetición</a></div>
 		<tbody>
 			<tr>
 				<!-- Equipo local -->
@@ -56,7 +54,6 @@
 				<tr id="fila_mensaje_estado">
 					<th colspan="3">FINALIZADO</th>
 				</tr>
-
 			{% else %}
 				{% if tiene_equipo %}
 					<!-- Enlace a alineacion -->
@@ -86,15 +83,12 @@
 				<tr id="fila_mensaje_estado">
 					<th colspan="3">SIN INICIAR</th>
 				</tr>
-
-				{% if es_creador and es_jugable %}
-					<!-- Jugar partido -->
-					<tr id="fila_jugar_partido">
-						<th colspan="3">
-							<a href="/partidos/jugar/">JUGAR</a>
-						</th>
-					</tr>
-				{% endif %}
+				<!-- Jugar partido -->
+				<tr id="fila_jugar_partido">
+					<th colspan="3">
+						{{ partido.fecha_inicio }}
+					</th>
+				</tr>
 			{% endif %}
 		</tbody>
 	</table>
@@ -224,7 +218,7 @@
 		<table class="tabla1" id="tabla_sucesos">
 			<caption>SUCESOS</caption>
 			<tbody>
-				{% for suceso in partido.sucesos %}
+				{% for suceso in sucesos %}
 					<tr>
 						<td>
 							{% if suceso.tipo == 666 %}
@@ -235,7 +229,7 @@
 								{% if suceso.valor == 0 %}
 									<img src="/media/img/icons/tiro_fallado.png" alt="Disparo fuera" title="Disparo fuera" height="20" width="20" />
 								{% else %}
-									<img src="/media/img/icons/tiro_fallado.png" alt="Disparo parado" title="Disparo parado" height="20" width="20" />									
+									<img src="/media/img/icons/tiro_fallado.png" alt="Disparo parado" title="Disparo parado" height="20" width="20" />
 								{% endif %}
 							{% endif %}
 
@@ -245,7 +239,7 @@
 								{% else %}
 									<img src="/media/img/icons/silbato.png" alt="Fin partido" title="Fin partido" height="16" width="15" />
 								{% endif %}
-								
+
 							{% endif %}
 						</td>
 						<td class="cuadro_num_azul_der">{{ suceso.getTiempo }}</td>

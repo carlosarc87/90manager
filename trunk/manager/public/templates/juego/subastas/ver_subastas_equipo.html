@@ -26,7 +26,6 @@
 					<th>Comprador actual</th>
 					<th>Fecha comienzo</th>
 					<th>Fecha fin</th>
-					<th>Tiempo restante</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -58,12 +57,16 @@
 
 						<!-- Precio subasta -->
 						<td class="cuadro_num_azul_der">
-							<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.oferta }}</a>
+							<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.puja }}</a>
 						</td>
 
 						<!-- Precio compra -->
 						<td class="cuadro_num_azul_der">
-							<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.precio_compra }}</a>
+							{% if subasta.precio_compra %}
+								<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.precio_compra }}</a>
+							{% else %}
+								<a href="/mercado/subastas/ver/{{ subasta.id }}">Ninguno aún</a>
+							{% endif %}
 						</td>
 
 						<!-- Comprador -->
@@ -82,12 +85,7 @@
 
 						<!-- Fecha final -->
 						<td class="cuadro_num_azul_der">
-							{{ subasta.fecha_final }}
-						</td>
-
-						<!-- Tiempo restante -->
-						<td class="cuadro_num_azul_der">
-							{{ subasta.tiempoRestante }}
+							{{ subasta.fecha_fin }}
 						</td>
 					</tr>
 				{% endfor %}

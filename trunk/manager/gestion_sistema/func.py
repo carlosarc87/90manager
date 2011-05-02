@@ -21,8 +21,11 @@ Copyright 2011 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+from django.db import transaction
+
 ########################################################################
 
+@transaction.commit_on_success
 def calcularCambios(request):
 	""" Calcula los cambios realizados en una liga """
 	liga = request.session['liga_actual']
@@ -51,6 +54,12 @@ def calcularCambios(request):
 		#partidos_iniciados = liga.partido_set.filter(jugado = False, fecha_inicio__lt = liga.getFecha())
 		# Iniciar partidos
 		# bla bla bla
+		# Comprobar subastas
+		print "Analizando subastas"
+		subastas = liga.subasta_set.filter(fecha_fin__lt = liga.getFecha())
+		for subasta in subastas:
+			subasta.finalizar()
+			subasta.delete()
 		return True
 	else:
 		return False

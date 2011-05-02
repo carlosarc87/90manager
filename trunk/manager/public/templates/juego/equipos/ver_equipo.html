@@ -21,8 +21,10 @@
 
 	<div id="dinero_actual"><b>Dinero actual: </b><span>{{ equipo.dinero }} €</span></div>
 
-	<div id="jugadores_subastados"><a href="/mercado/subastas/ver/equipo/">Ver jugadores en subasta</a></div>
-
+	{% if liga_actual.activada %}
+		<div id="jugadores_subastados"><a href="/mercado/subastas/ver/equipo/">Ver jugadores en subasta</a></div>
+	{% endif %}
+	
 	<!-- Tabla jugadores -->
 	<table class="tabla1" id="tabla_jugadores">
 		<caption>Jugadores</caption>

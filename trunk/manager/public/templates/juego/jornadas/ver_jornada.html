@@ -18,12 +18,6 @@
 
 	{% if jornada.jugada %}
 		<h4>FINALIZADA</h4>
-	{% else %}
-		{% if es_creador %}
-			{% if es_jornada_actual %}
-				<h4><a href="/ligas/avanzar/">FINALIZAR JORNADA</a></h4>
-			{% endif %}
-		{% endif %}
 	{% endif %}
 
 	<table class="tabla1" id="tabla_encuentros">

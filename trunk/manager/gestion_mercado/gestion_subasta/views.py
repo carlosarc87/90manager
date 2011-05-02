@@ -65,13 +65,13 @@ def crear_subasta(request):
 		if form.is_valid():
 			subasta = form.save(commit = False)
 
-			#comision = subasta.puja * (subasta.getTiempoRestante() / (duracion_liga * 1.0))
-			comision = 5
-
+			#comision = subasta.puja * (subasta.getTiempoRestante().days() / (duracion_liga * 1.0))
+			comision = 10
 			if comision > jugador.atributos.equipo.dinero:
 				return devolverMensaje(request, "No tienes suficiente dinero para pagar la comision", 0, "/mercado/subastas/crear/%d/" % jugador.id)
 
 			subasta.liga = jugador.atributos.equipo.liga
+			subasta.fecha_inicio = subasta.liga.getFecha()
 			subasta.estado = 0
 			subasta.vendedor = jugador.atributos.equipo
 			subasta.comprador = None
@@ -116,9 +116,9 @@ def ver_subasta_id(request, subasta_id):
 	if subastas.count() == 0:
 		return devolverMensaje(request, "Error, no existe una subasta con identificador %s" % subasta_id, 0)
 
-	request.session['subasta_actual'] = subasta[0]
+	request.session['subasta_actual'] = subastas[0]
 
-	return redireccion('/mercado/subastas/ver/')
+	return redireccionar('/mercado/subastas/ver/')
 
 ########################################################################
 
@@ -148,6 +148,7 @@ def ver_subasta(request):
 				cantidad = form.cleaned_data['cantidad']
 				subasta.pujar(equipo_usuario, cantidad)
 				subasta.save()
+				print cantidad, subasta.puja
 				return devolverMensaje(request, "Cantidad apostada correctamente", 1, "/mercado/subastas/ver/%d/" % subasta.id)
 		else:
 			form = PujarForm(subasta, equipo_usuario)
@@ -217,7 +218,7 @@ def comprar_subasta(request):
 	subasta.comprar(equipo)
 	subasta.save()
 
-	return devolverMensaje(request, "Ha comprado al jugador correctamente", 1, "/mercado/subastas/ver/%s/" % subasta_id)
+	return devolverMensaje(request, "Ha comprado al jugador correctamente", 1, "/mercado/subastas/ver/%s/" % subasta.id)
 
 ########################################################################
 

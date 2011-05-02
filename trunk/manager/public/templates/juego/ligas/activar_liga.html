@@ -9,12 +9,12 @@
 	<b>Lista de equipos apuntados: </b>
 	<ul>
 		{% for equipo in equipos %}
-			<li>{{ equipo.nombre }} de {{ equipo.creador }}</li>
+			<li>{{ equipo.nombre }} de {{ equipo.usuario }}</li>
 		{% empty %}
 			<li>No hay ningun equipo apuntado</li>
 		{% endfor %}
 	</ul>
-	
+
 	<form class="form1" id="form_activar_liga" action="/ligas/activar/" method="post">
 		{% csrf_token %}
 		<!-- Boton crear -->

@@ -204,6 +204,8 @@ def ver_partido(request):
 				elif t.posicion == JugadorPartido.DELANTERO:
 					equipo.num_dl += 1
 
+	sucesos = partido.suceso_set.filter(Q(tipo = Suceso.GOL) | Q(tipo = Suceso.FIN_PARTE) | Q(tipo = Suceso.TIEMPO_DESCUENTO) | Q(tipo = Suceso.COMENZAR))
+
 	d = {"jornada" : jornada,
 		 "equipo_local" : equipo_local,
 		 "equipo_visitante" : equipo_visitante,
@@ -215,6 +217,7 @@ def ver_partido(request):
 		 "tiene_equipo" : tiene_equipo,
 		 "es_jugable" : es_jugable,
 		 "editar" : editar,
+		 "sucesos" : sucesos,
 		}
 	return generarPagina(request, "juego/partidos/ver_partido.html", d)
 

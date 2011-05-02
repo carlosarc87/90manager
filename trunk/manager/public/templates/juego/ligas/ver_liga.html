@@ -50,7 +50,6 @@
 		{% if jornada_actual %}
 			<h4>Jornada actual: <a href="/jornadas/ver/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></h4>
 			{% if es_creador %}
-				<h4><a href="/ligas/avanzar/">Avanzar jornada</a></h4>
 				<!-- Esto es meramente para acelerar la presentacion del miercoles -->
 				<form class="form1" id="form_ver_liga" action="/ligas/ver/" method="post">
 					{{ form_fecha.as_p }}
@@ -63,8 +62,6 @@
 		{% else %}
 			<h4>FINALIZADA</h4>
 		{% endif %}
-
-		<div id="mercado_subastas"><a href="/mercado/subastas/ver/liga/">Ver Mercado de subastas</a></div>
 
 		{% if clasificacion %}
 			<!-- Tabla clasificacion -->
