@@ -54,7 +54,10 @@ class Jugador(models.Model):
 		return self.nombre
 
 	def setEquipo(self, equipo):
+		print self.atributos.equipo
 		self.atributos.equipo = equipo
+		print "CHANGEEEE"
+		print self.atributos.equipo
 
 	def getEdad(self):
 		from datetime import date

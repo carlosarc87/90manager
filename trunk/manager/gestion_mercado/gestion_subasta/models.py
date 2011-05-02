@@ -82,6 +82,7 @@ class Subasta(Evento):
 		if self.comprador:
 			notificar(self.comprador.usuario, Notificacion.SUBASTA_GANADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
 			self.atributos_jugador.jugador.setEquipo(self.comprador)
+			print "TRASPASE"
 		notificar(self.vendedor.usuario, Notificacion.SUBASTA_FINALIZADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
 		self.vendedor.pagar(self.puja)
 		self.atributos_jugador.save()

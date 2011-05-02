@@ -25,7 +25,7 @@ from django.db import transaction
 
 ########################################################################
 
-@transaction.commit_on_success
+@transaction.commit_manually()
 def calcularCambios(request):
 	""" Calcula los cambios realizados en una liga """
 	liga = request.session['liga_actual']
@@ -60,6 +60,7 @@ def calcularCambios(request):
 		for subasta in subastas:
 			subasta.finalizar()
 			subasta.delete()
+		transaction.commit()
 		return True
 	else:
 		return False

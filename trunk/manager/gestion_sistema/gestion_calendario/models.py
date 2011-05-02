@@ -39,12 +39,10 @@ class Evento(models.Model):
 		print "No implementada"
 
 	def __unicode__(self):
-		return self.tipo
+		return "Evento"
 
 	class Meta:
 		abstract = True
 
 
 ########################################################################
-
-
