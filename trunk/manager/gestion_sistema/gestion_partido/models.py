@@ -662,7 +662,7 @@ class Suceso(models.Model):
 		(TIEMPO_DESCUENTO, 'Tiempo de descuento'),
 		(FIN_PARTE, 'Fin de la parte'),
 		(GOL, 'Gol'),
-	)	
+	)
 	segundo_partido = models.PositiveIntegerField(null = True, blank = True)
 	tipo = models.PositiveIntegerField(choices = TIPO_SUCESOS)
 	# Valor adicional del suceso (minutos de descuento, que parte ha acabado)
@@ -678,14 +678,37 @@ class Suceso(models.Model):
 	def getSegundo(self):
 		""" Devuelve los segundos del suceso """
 		return self.segundo_partido % 60
-	
+
 	def getTexto(self):
 		""" Convierte el suceso en una cadena de caracteres """
 		cadena = self.get_tipo_display()
 		if self.valor != None:
-			cadena += " " + str(self.valor)
+			if self.tipo == Suceso.REGATE:
+				if self.valor == 0:
+					cadena += " fallado"
+				elif self.valor == 1:
+					cadena += " realizado"
+			elif self.tipo == Suceso.PASE:
+				if self.valor == 0:
+					cadena += " interceptado"
+				elif self.valor == 1:
+					cadena += " realizado"
+			elif self.tipo == Suceso.DISPARO:
+				if self.valor == 0:
+					cadena += " fuera"
+				elif self.valor == 1:
+					cadena += " parado"
+			elif self.tipo == Suceso.FIN_PARTE:
+				if self.valor == 0:
+					cadena = "Fin de la 1º parte"
+				elif self.valor == 1:
+					cadena = "Fin de la 2º parte"
+			elif self.tipo == Suceso.TIEMPO_DESCUENTO:
+				cadena += ": " + str(self.valor) + " minutos"
+			else:
+				cadena += " " + str(self.valor)
 		return cadena
-	
+
 	def getTiempo(self):
 		""" Devuelve el tiempo como una cadena formateada """
 		return "%02d:%02d" % (self.getMinuto(), self.getSegundo())

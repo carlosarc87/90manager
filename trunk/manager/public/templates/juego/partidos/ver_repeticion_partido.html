@@ -14,15 +14,17 @@
 				s = "0" + s;
 			return s;
 		}
-		
+
 		var velocidad = 10;
 
 		var array_sucesos = [];
 
 		var segundos = 0;
-		var pausa = false;
+		var pausa = true;
 		var fin_partido = true;
 		var goles = [];
+
+		var temporizador;
 
 		function inicializarArraySucesos() {
 			array_sucesos = [];
@@ -43,7 +45,7 @@
 			document.getElementById("contador_tiempo").innerHTML = str_tiempo;
 			annadirFila();
 		}
-		
+
 		function actualizarVelocidad() {
 			document.getElementById("velocidad_tiempo").innerHTML = "x" + (velocidad / 10);
 		}
@@ -51,7 +53,7 @@
 		function contadorTiempo() {
 			if (pausa == false && fin_partido == false)
 			{
-				setTimeout("contadorTiempo()", timeout);
+				temporizador = setTimeout("contadorTiempo()", timeout);
 				segundos += paso;
 				actualizarTiempo();
 			}
@@ -62,31 +64,37 @@
 
 		var timeout = 990;
 		var ultimaFilaAgregada = -1;
-		
+
 		// Aumentar la velocidad del tiempo de avance de los sucesos
 		function incrementarVelocidad() {
 			if (velocidad < 20) {
 				velocidad = velocidad + 1;
-			}
-			else if (velocidad < 100) {
+			} else if (velocidad < 100) {
 				velocidad = velocidad + 10;
+			} else if (velocidad < 1000) {
+				velocidad = velocidad + 100;
 			}
 			actualizarVelocidad();
-			
-			timeout = (1 / velocidad) * 1000;
+
+			timeout = (1 / (velocidad / 10)) * 1000;
+			clearTimeout(temporizador);
+			temporizador = setTimeout("contadorTiempo()", timeout);
 		}
-		
+
 		// Dcrementar la velocidad del tiempo de avance de los sucesos
 		function decrementarVelocidad() {
-			if (velocidad > 20) {
+			if (velocidad > 100) {
+				velocidad = velocidad - 100;
+			} else if (velocidad > 20) {
 				velocidad = velocidad - 10;
-			}
-			else if (velocidad > 1) {
+			} else if (velocidad > 1) {
 				velocidad = velocidad - 1;
 			}
 			actualizarVelocidad();
-			
-			timeout = (1 / velocidad) * 1000;
+
+			timeout = (1 / (velocidad / 10)) * 1000;
+			clearTimeout(temporizador);
+			temporizador = setTimeout("contadorTiempo()", timeout);
 		}
 
 		// Reiniciar sucesos
@@ -102,10 +110,6 @@
 			tabla = document.getElementById("tabla_sucesos");
 			while (tabla.rows.length > 0) {
 				tabla.deleteRow(0)
-			}
-			if (fin_partido) {
-				fin_partido = false;
-				contadorTiempo();
 			}
 			actualizarTiempo();
 		}
@@ -151,12 +155,25 @@
 
 		// Pausar / quitar pausa de la repeticion
 		function pausarContador() {
-			pausa = !pausa;
-			if (pausa == false) {
-				contadorTiempo();
+			if (fin_partido == true) {
+				reiniciarContador();
+				fin_partido = false;
+				pausa = false;
+				temporizador = setTimeout("contadorTiempo()", timeout);
+			} else {
+				pausa = !pausa;
+				if (pausa == false) {
+					contadorTiempo();
+				}
 			}
 		}
-		
+		function pararContador() {
+			pausa = false
+			fin_partido = true
+			reiniciarContador();
+			clearTimeout(temporizador);
+		}
+
 		/* Para el funcionamiento de tema css con jquery */
 		$(function() {
 			$( "#beginning" ).button({
@@ -165,7 +182,7 @@
 					primary: "ui-icon-seek-start"
 				}
 			});
-			
+
 			$( "#play" ).button({
 				text: false,
 				icons: {
@@ -191,7 +208,7 @@
 				}
 				$( this ).button( "option", options );
 			});
-			
+
 			$( "#stop" ).button({
 				text: false,
 				icons: {
@@ -206,21 +223,21 @@
 					}
 				});
 			});
-			
+
 			$( "#dec_vel" ).button({
 				text: false,
 				icons: {
 					primary: "ui-icon-minus"
 				}
 			});
-			
+
 			$( "#inc_vel" ).button({
 				text: false,
 				icons: {
 					primary: "ui-icon-plus"
 				}
 			});
-			
+
 			$( "#end" ).button({
 				text: false,
 				icons: {
@@ -234,18 +251,18 @@
 {% block contenido %}
 	<!-- Barra extra prueba -->
 	<div id="barra_repeticion" class="ui-widget-header ui-corner-all">
-		<button id="beginning" onclick="pausarContador();">Ir al inicio</button>
-		<button id="play" onclick="reiniciarContador();">Iniciar</button>
-		<button id="stop" onclick="pausarContador();">Parar</button>
-		<button id="end" onclick="pausarContador();">Ir al final</button>
-		
+		<button id="beginning" onclick="reiniciarContador();">Ir al inicio</button>
+		<button id="play" onclick="pausarContador();">Iniciar</button>
+		<button id="stop" onclick="pararContador();">Parar</button>
+		<button id="end" onclick="reiniciarContador();">Ir al final</button>
+
 		<div id="contador_tiempo">00:00</div>
 		<div id="velocidad_tiempo">x1</div>
-		
+
 		<button id="dec_vel" onclick="decrementarVelocidad();">Decrementar velocidad</button>
 		<button id="inc_vel" onclick="incrementarVelocidad();">Aumentar velocidad</button>
 	</div>
-	
+
 	<table class="tabla1" id="tabla_resultado">
 		<caption>Resultado</caption>
 
@@ -257,7 +274,7 @@
 			</tr>
 		</tbody>
 	</table>
-	
+
 	<!-- Sucesos -->
 	<table class="tabla1" id="tabla_sucesos">
 		<caption>Sucesos</caption>
