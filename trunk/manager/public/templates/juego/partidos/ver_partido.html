@@ -24,9 +24,9 @@
 				<!-- Equipo local -->
 				<td class="col_local">
 					{% if user == equipo_local.usuario %}
-						<b><a href="/equipos/ver/{{ equipo_local.id }}/">{{ equipo_local }}</a></b>
+						<b><a href="/equipos/ver/{{ equipo_local.id }}/">{{ equipo_local }} ({{ equipo_local.siglas }})</a></b>
 					{% else %}
-						<a href="/equipos/ver/{{ equipo_local.id }}/">{{ equipo_local }}</a>
+						<a href="/equipos/ver/{{ equipo_local.id }}/">{{ equipo_local }} ({{ equipo_local.siglas }})</a>
 					{% endif %}
 				</td>
 
@@ -52,9 +52,9 @@
 				<!-- Equipo visitante -->
 				<td class="col_visitante">
 					{% if user == equipo_visitante.usuario %}
-						<b><a href="/equipos/ver/{{ equipo_visitante.id }}/">{{ equipo_visitante }}</a></b>
+						<b><a href="/equipos/ver/{{ equipo_visitante.id }}/">({{ equipo_visitante.siglas }}) {{ equipo_visitante }}</a></b>
 					{% else %}
-						<a href="/equipos/ver/{{ equipo_visitante.id }}/">{{ equipo_visitante }}</a>
+						<a href="/equipos/ver/{{ equipo_visitante.id }}/">({{ equipo_visitante.siglas }}) {{ equipo_visitante }}</a>
 					{% endif %}
 				</td>
 			</tr>
@@ -111,7 +111,7 @@
 			<caption>RESUMEN DEL PARTIDO</caption>
 			<thead>
 				<tr>
-					<td></td>
+					<th></th>
 					<th>{{ equipo_local }}</th>
 					<th>{{ equipo_visitante }}</th>
 				</tr>
@@ -119,44 +119,44 @@
 			<tbody>
 				<!-- Posesion -->
 				<tr>
-					<td>Posesión</td>
-					<td class="cuadro_num_azul_der">{{ equipo_local.porc_posesion }} %</td>
-					<td class="cuadro_num_azul_der">{{ equipo_visitante.porc_posesion }} %</td>
+					<th>Posesión</th>
+					<td class="num1">{{ equipo_local.porc_posesion }} %</td>
+					<td class="num1">{{ equipo_visitante.porc_posesion }} %</td>
 				</tr>
 
 				<!-- Balones perdidos -->
 				<tr>
-					<td>Balones perdidos</td>
-					<td class="cuadro_num_azul_der">{{ equipo_local.balones_perdidos }}</td>
-					<td class="cuadro_num_azul_der">{{ equipo_visitante.balones_perdidos }}</td>
+					<th>Balones perdidos</th>
+					<td class="num1">{{ equipo_local.balones_perdidos }}</td>
+					<td class="num1">{{ equipo_visitante.balones_perdidos }}</td>
 				</tr>
 
 				<!-- Balones recuperados -->
 				<tr>
-					<td>Balones recuperados</td>
-					<td class="cuadro_num_azul_der">{{ equipo_local.balones_recuperados }}</td>
-					<td class="cuadro_num_azul_der">{{ equipo_visitante.balones_recuperados }}</td>
+					<th>Balones recuperados</th>
+					<td class="num1">{{ equipo_local.balones_recuperados }}</td>
+					<td class="num1">{{ equipo_visitante.balones_recuperados }}</td>
 				</tr>
 
 				<!-- Regates con exito -->
 				<tr>
-					<td>Regates</td>
-					<td class="cuadro_num_azul_der">{{ equipo_local.regates_realizados }} / {{ equipo_local.regates_totales }} ({{ equipo_local.porc_regates_exito }} %)</td>
-					<td class="cuadro_num_azul_der">{{ equipo_visitante.regates_realizados }} / {{ equipo_visitante.regates_totales }} ({{ equipo_visitante.porc_regates_exito }} %)</td>
+					<th>Regates</th>
+					<td class="num1">{{ equipo_local.regates_realizados }} / {{ equipo_local.regates_totales }} ({{ equipo_local.porc_regates_exito }} %)</td>
+					<td class="num1">{{ equipo_visitante.regates_realizados }} / {{ equipo_visitante.regates_totales }} ({{ equipo_visitante.porc_regates_exito }} %)</td>
 				</tr>
 
 				<!-- Pases con exito -->
 				<tr>
-					<td>Pases</td>
-					<td class="cuadro_num_azul_der">{{ equipo_local.pases_realizados }} / {{ equipo_local.pases_totales }} ({{ equipo_local.porc_pases_exito }} %)</td>
-					<td class="cuadro_num_azul_der">{{ equipo_visitante.pases_realizados }} / {{ equipo_visitante.pases_totales }} ({{ equipo_visitante.porc_pases_exito }} %)</td>
+					<th>Pases</th>
+					<td class="num1">{{ equipo_local.pases_realizados }} / {{ equipo_local.pases_totales }} ({{ equipo_local.porc_pases_exito }} %)</td>
+					<td class="num1">{{ equipo_visitante.pases_realizados }} / {{ equipo_visitante.pases_totales }} ({{ equipo_visitante.porc_pases_exito }} %)</td>
 				</tr>
 
 				<!-- Remates a puerta -->
 				<tr>
-					<td>Remates a puerta</td>
-					<td class="cuadro_num_azul_der">{{ equipo_local.remates_puerta }}</td>
-					<td class="cuadro_num_azul_der">{{ equipo_visitante.remates_puerta }}</td>
+					<th>Remates a puerta</th>
+					<td class="num1">{{ equipo_local.remates_puerta }}</td>
+					<td class="num1">{{ equipo_visitante.remates_puerta }}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -179,16 +179,16 @@
 						<td></td>
 						<td>{{ equipo_local.num_df }}-{{ equipo_local.num_cc }}-{{ equipo_local.num_dl }}</td>
 						<td>Valor total</td>
-						<td class="cuadro_num_azul_der">{{ equipo_local.valor_titulares }}</td>
+						<td class="num1">{{ equipo_local.valor_titulares }}</td>
 					</tr>
 				</tfoot>
 				<tbody>
 					{% for titular in equipo_local.titulares %}
 						<tr>
-							<td class="cuadro_num_azul_der">{{ titular.atributos.numero }}</td>
+							<td class="num1">{{ titular.atributos.numero }}</td>
 							<td>{{ titular.posicion }}</td>
 							<td><a href="/jugadores/ver/{{ titular.atributos.jugador.id }}/">{{ titular.atributos.jugador.nombre }}</a></td>
-							<td class="cuadro_num_azul_der">{{ titular.atributos.valorMercado }}</td>
+							<td class="num1">{{ titular.atributos.valorMercado }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -210,16 +210,16 @@
 						<td></td>
 						<td>{{ equipo_visitante.num_df }}-{{ equipo_visitante.num_cc }}-{{ equipo_visitante.num_dl }}</td>
 						<td>Valor total</td>
-						<td class="cuadro_num_azul_der">{{ equipo_visitante.valor_titulares }}</td>
+						<td class="num1">{{ equipo_visitante.valor_titulares }}</td>
 					</tr>
 				</tfoot>
 				<tbody>
 					{% for titular in equipo_visitante.titulares %}
 						<tr>
-							<td class="cuadro_num_azul_der">{{ titular.atributos.numero }}</td>
+							<td class="num1">{{ titular.atributos.numero }}</td>
 							<td>{{ titular.posicion }}</td>
 							<td><a href="/jugadores/ver/{{ titular.atributos.jugador.id }}/">{{ titular.atributos.jugador.nombre }}</a></td>
-							<td class="cuadro_num_azul_der">{{ titular.atributos.valorMercado }}</td>
+							<td class="num1">{{ titular.atributos.valorMercado }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -254,7 +254,7 @@
 
 							{% endif %}
 						</td>
-						<td class="cuadro_num_azul_der">{{ suceso.getTiempo }}</td>
+						<td class="num1">{{ suceso.getTiempo }}</td>
 						<td>{{ suceso.equipo.siglas }}</td>
 						<td>{{ suceso.getTexto }}</td>
 					</tr>

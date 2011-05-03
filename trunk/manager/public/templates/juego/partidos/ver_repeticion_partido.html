@@ -15,7 +15,7 @@
 			return s;
 		}
 		
-		var velocidad = 0;
+		var velocidad = 10;
 
 		var array_sucesos = [];
 
@@ -28,10 +28,10 @@
 			array_sucesos = [];
 			{% for suceso in sucesos %}
 				datos_suceso = [];
-				datos_suceso.push({{ suceso.segundo_partido }});
+				datos_suceso.push("{{ suceso.segundo_partido }}");
 				datos_suceso.push(calcularTiempo({{ suceso.segundo_partido }}, 60, 999) + ":" + calcularTiempo({{ suceso.segundo_partido }}, 1, 60));
 				datos_suceso.push("{{ suceso.equipo.siglas }}");
-				datos_suceso.push("{{ suceso.tipo }}");
+				datos_suceso.push("{{ suceso.getTexto }}");
 				array_sucesos.push(datos_suceso);
 			{% endfor %}
 		}
@@ -40,8 +40,7 @@
 		function actualizarTiempo() {
 			str_tiempo = formato_tiempo.replace(/%%M%%/g, calcularTiempo(segundos, 60, 400));
 			str_tiempo = str_tiempo.replace(/%%S%%/g, calcularTiempo(segundos, 1, 60));
-			document.getElementById("contador_tiempo").innerHTML = "Tiempo: " + str_tiempo;
-			document.getElementById("contador_tiempo2").innerHTML = str_tiempo;
+			document.getElementById("contador_tiempo").innerHTML = str_tiempo;
 			annadirFila();
 		}
 		
@@ -64,6 +63,7 @@
 		var timeout = 990;
 		var ultimaFilaAgregada = -1;
 		
+		// Aumentar la velocidad del tiempo de avance de los sucesos
 		function incrementarVelocidad() {
 			if (velocidad < 20) {
 				velocidad = velocidad + 1;
@@ -76,6 +76,7 @@
 			timeout = (1 / velocidad) * 1000;
 		}
 		
+		// Dcrementar la velocidad del tiempo de avance de los sucesos
 		function decrementarVelocidad() {
 			if (velocidad > 20) {
 				velocidad = velocidad - 10;
@@ -87,19 +88,9 @@
 			
 			timeout = (1 / velocidad) * 1000;
 		}
-		
-		function cambiarVelocidad(elem) {
-			vel = document.getElementById("valor_velocidad").value;
-			timeout = vel * 990;
-		}
 
-		function cambiarMultiplicador(elem) {
-			paso = document.getElementById("valor_multiplicador").value;
-			paso = Math.ceil(paso); // Filtrico
-		}
-
-		function reiniciarContador(elem) {
-			elem.value = "Reiniciar";
+		// Reiniciar sucesos
+		function reiniciarContador() {
 			segundos = 0;
 			goles = [];
 			goles.push(0);
@@ -158,13 +149,11 @@
 			}
 		}
 
-		function pausarContador(elem) {
+		// Pausar / quitar pausa de la repeticion
+		function pausarContador() {
 			pausa = !pausa;
 			if (pausa == false) {
 				contadorTiempo();
-				elem.value = "Pausar";
-			} else {
-				elem.value = "Continuar";
 			}
 		}
 		
@@ -176,12 +165,7 @@
 					primary: "ui-icon-seek-start"
 				}
 			});
-			$( "#rewind" ).button({
-				text: false,
-				icons: {
-					primary: "ui-icon-seek-prev"
-				}
-			});
+			
 			$( "#play" ).button({
 				text: false,
 				icons: {
@@ -207,6 +191,7 @@
 				}
 				$( this ).button( "option", options );
 			});
+			
 			$( "#stop" ).button({
 				text: false,
 				icons: {
@@ -221,91 +206,62 @@
 					}
 				});
 			});
-			$( "#forward" ).button({
+			
+			$( "#dec_vel" ).button({
 				text: false,
 				icons: {
-					primary: "ui-icon-seek-next"
+					primary: "ui-icon-minus"
 				}
 			});
+			
+			$( "#inc_vel" ).button({
+				text: false,
+				icons: {
+					primary: "ui-icon-plus"
+				}
+			});
+			
 			$( "#end" ).button({
 				text: false,
 				icons: {
 					primary: "ui-icon-seek-end"
 				}
 			});
-			$( "#shuffle" ).button();
-			$( "#repeat" ).buttonset();
 		});
 	</script>
 {% endblock %}
 
 {% block contenido %}
-	<div id="contenido">
-		<div id="contenido_opciones">
-			<!-- Multiplicador -->
-			<div id="caja_multiplicador">
-				<label for="valor_multiplicador">Multiplicador de segundos:</label>
-				<input id="valor_multiplicador" type="text" name="multiplicador" />
-				<input id="boton_multiplicador" type="button" value="Cambiar" onclick="cambiarMultiplicador();" />
-			</div>
-
-			<!-- Velocidad -->
-			<div id="caja_velocidad">
-				<label for="valor_velocidad">Velocidad:</label>
-				<input id="valor_velocidad" type="text" name="velocidad" />
-				<input id="boton_velocidad" type="button" value="Cambiar" onclick="cambiarVelocidad();" />
-			</div>
-
-			<!-- Botones -->
-			<div id="caja_botones">
-				<input type="button" id="boton_reinicio" name="buttonReinicio" value="Iniciar/Reiniciar" onclick="reiniciarContador(this);" />
-				<input type="button" id="boton_pausa" name="buttonPausa" value="Pausar/Continuar" onclick="pausarContador(this);" />
-			</div>
-		</div>
+	<!-- Barra extra prueba -->
+	<div id="barra_repeticion" class="ui-widget-header ui-corner-all">
+		<button id="beginning" onclick="pausarContador();">Ir al inicio</button>
+		<button id="play" onclick="reiniciarContador();">Iniciar</button>
+		<button id="stop" onclick="pausarContador();">Parar</button>
+		<button id="end" onclick="pausarContador();">Ir al final</button>
 		
-		<!-- Barra extra prueba -->
-		<div id="barra_repeticion" class="ui-widget-header ui-corner-all">
-			<button id="beginning" onclick="reiniciarContador(this);">go to beginning</button>
-			<button id="rewind" onclick="decrementarVelocidad();">rewind</button>
-			<button id="play" onclick="pausarContador(this);">play</button>
-			<button id="stop" onclick="reiniciarContador(this);">stop</button>
-			<button id="forward" onclick="incrementarVelocidad();">fast forward</button>
-			<button id="end">go to end</button>
-			
-			<span id="contador_tiempo2">0:00</span>
-			
-			<span id="velocidad_tiempo">x0</span>
-			
-			<input type="checkbox" id="shuffle" /><label for="shuffle">Shuffle</label>
-			
-			<span id="repeat">
-				<input type="radio" id="repeat0" name="repeat" checked="checked" /><label for="repeat0">No Repeat</label>
-				<input type="radio" id="repeat1" name="repeat" /><label for="repeat1">Once</label>
-				<input type="radio" id="repeatall" name="repeat" /><label for="repeatall">All</label>
-			</span>
-		</div>
-
-		<div id="contenido_contador_tiempo">
-			<span id="contador_tiempo">Pulse el botón para iniciar el partido</span>
-		</div>
-
-		<table class="tabla1" id="tabla_resultado">
-			<caption>Resultado</caption>
-
-			<tbody>
-				<tr>
-					<td id="col_local">{{ siglas_local }}</td>
-					<td id="col_resultado"><span id="goles_local">0</span> - <span id="goles_visitante">0</span></td>
-					<td id="col_visitante">{{ siglas_visitante }}</td>
-				</tr>
-			</tbody>
-		</table>
-
-		<!-- Sucesos -->
-		<table class="tabla1" id="tabla_sucesos">
-			<caption>Sucesos</caption>
-			<tbody>
-			</tbody>
-		</table>
+		<div id="contador_tiempo">00:00</div>
+		<div id="velocidad_tiempo">x1</div>
+		
+		<button id="dec_vel" onclick="decrementarVelocidad();">Decrementar velocidad</button>
+		<button id="inc_vel" onclick="incrementarVelocidad();">Aumentar velocidad</button>
 	</div>
+	
+	<table class="tabla1" id="tabla_resultado">
+		<caption>Resultado</caption>
+
+		<tbody>
+			<tr>
+				<td id="col_local">{{ siglas_local }}</td>
+				<td id="col_resultado"><span id="goles_local">0</span> - <span id="goles_visitante">0</span></td>
+				<td id="col_visitante">{{ siglas_visitante }}</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<!-- Sucesos -->
+	<table class="tabla1" id="tabla_sucesos">
+		<caption>Sucesos</caption>
+		<tbody>
+		</tbody>
+	</table>
 {% endblock %}

@@ -21,8 +21,12 @@
 	width: 600px;
 }
 
-#tabla_resumen th{
+#tabla_resumen tbody th{
 	text-align: left;
+}
+
+#tabla_resumen tbody td{
+	text-align: right;
 }
 
 #tabla_sucesos{
@@ -67,4 +71,9 @@
 	color: #ff5555;
 	font-size: 1.2em;
 	width: 40%;
+}
+
+.num1{
+	color: #aaaaff;
+	text-align: right;
 }

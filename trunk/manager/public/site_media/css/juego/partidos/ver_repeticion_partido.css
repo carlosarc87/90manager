@@ -1,67 +1,29 @@
+/* Barra repeticion */
+
 #barra_repeticion{
-	margin: 0px auto;
+	margin: 10px auto;
 	padding: 10px 5px;
 	width: 400px;
 }
 
-#barra_repeticion #contador_tiempo2{
+#barra_repeticion #contador_tiempo{
 	background: #222;
 	border: solid 1px #ccc;
 	color: #cccc00;
+	display: inline-block;
+	margin-left: 40px;
 	padding: 5px;
+	text-align: right;
+	width: 40px;
 }
 
 #barra_repeticion #velocidad_tiempo{
 	color: #0000cc;
+	display: inline-block;
 	font-weight: bold;
 	padding: 5px;
-}
-
-#caja_botones{
-	margin: 10px 0px;
-	text-align: center;
-}
-
-#caja_multiplicador{
-	clear: both;
-	height: 20px;
-	padding: 5px 0px;
-}
-
-#caja_multiplicador label{
-	float: left;
-	width: 200px;
-}
-
-#caja_multiplicador #valor_multiplicador{
-	float: left;
 	text-align: right;
-	width: 100px;
-}
-
-#caja_multiplicador #boton_multiplicador{
-	float: right;
-}
-
-#caja_velocidad{
-	clear: both;
-	height: 20px;
-	padding: 5px 0px;
-}
-
-#caja_velocidad label{
-	float: left;
-	width: 200px;
-}
-
-#caja_velocidad #valor_velocidad{
-	float: left;
-	text-align: right;
-	width: 100px;
-}
-
-#caja_velocidad #boton_velocidad{
-	float: right;
+	width: 40px;
 }
 
 #contenido_contador_tiempo{
@@ -73,14 +35,6 @@
 #contenido_goles{
 	margin: 10px auto;
 	width: 500px;
-}
-
-#contenido_opciones{
-	background: #fff;
-	border: solid 1px #555;
-	padding: 10px;
-	margin: 10px auto;
-	width: 478px;
 }
 
 /* Tabla resultado */
