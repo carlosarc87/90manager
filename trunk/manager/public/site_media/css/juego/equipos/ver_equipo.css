@@ -8,8 +8,9 @@
 	width: 400px;
 }
 
-#jugadores_subastados{
+#contenido_boton_jugadores_subasta{
 	margin: 10px auto;
+	text-align: center;
 	width: 400px;
 }
 
@@ -25,9 +26,26 @@
 	text-align: right;
 }
 
+#tabla_datos_equipo{
+	margin: 20px auto;
+	width: 400px;
+}
+
+#tabla_datos_equipo tbody th{
+	text-align: left;
+}
+
+#tabla_datos_equipo tbody td{
+	text-align: right;
+}
+
 #tabla_jugadores{
 	margin: 20px auto;
-	width: 500px;
+	width: 600px;
+}
+
+.col_edad_jug{
+	text-align: right;
 }
 
 .col_mejorPosicion_jug{}
@@ -55,4 +73,4 @@
 	width: 500px;
 }
 
-/* Fin tabla cuentas */¡
+/* Fin tabla cuentas */

@@ -2,22 +2,49 @@
 
 {% block css_extra %}
 	<link rel="stylesheet" href="/media/css/formularios.css" type="text/css" />
+	<link rel="stylesheet" href="/media/css/tablas.css" type="text/css" />
     <link rel="stylesheet" href="/media/css/juego/ligas/activar_liga.css" type="text/css" media="screen" />
 {% endblock %}
 
+{% block js_extra %}
+	<script type="text/javascript">
+		/* Para el funcionamiento de tema css con jquery */
+		$(function() {
+			$("#boton_activar").button();
+		});
+	</script>
+{% endblock %}
+
 {% block contenido %}
-	<b>Lista de equipos apuntados: </b>
-	<ul>
-		{% for equipo in equipos %}
-			<li>{{ equipo.nombre }} de {{ equipo.usuario }}</li>
-		{% empty %}
-			<li>No hay ningun equipo apuntado</li>
-		{% endfor %}
-	</ul>
 
 	<form class="form1" id="form_activar_liga" action="/ligas/activar/" method="post">
+		<!-- Tabla de equipos registrados -->
+		<table class="tabla1" id="tabla_equipos_registrados">
+			<caption>Equipos registrados en la liga</caption>
+			{% if equipos %}
+			<thead>
+				<tr>
+					<td>Equipo</td>
+					<td>Usuario</td>
+				</tr>
+			</thead>
+			{% endif %}
+			<tbody>
+				{% for equipo in equipos %}
+					<tr>
+						<td>{{ equipo.nombre }}</td>
+						<td>{{ equipo.usuario }}</td>
+					</tr>
+				{% empty %}
+					<tr>
+						<td>No hay ningún equipo registrado</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		
 		{% csrf_token %}
-		<!-- Boton crear -->
-		<div id="contenido_boton_activar"><input type="submit" value="Activar" /></div>
+		<!-- Boton activar -->
+		<div id="contenido_boton_activar"><input id="boton_activar" type="submit" value="Activar" /></div>
 	</form>
 {% endblock %}

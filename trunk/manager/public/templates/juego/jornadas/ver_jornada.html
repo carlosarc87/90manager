@@ -5,16 +5,41 @@
     <link rel="stylesheet" href="/media/css/juego/jornadas/ver_jornada.css" type="text/css" media="screen" />
 {% endblock %}
 
+{% block js_extra %}
+	<script type="text/javascript">
+		$(function() {
+			$("#boton_jornada_anterior").button({
+				icons: {
+					primary: "ui-icon-circle-triangle-w"
+				}
+			});
+			
+			$("#boton_jornada_siguiente").button({
+				icons: {
+					primary: "ui-icon-circle-triangle-e"
+				}
+			});
+		});
+	</script>
+{% endblock %}
+
 {% block contenido %}
 
-	{% if jornada_anterior %}
-		<h4><a href="/jornadas/ver/{{ jornada_anterior.id }}/">Ver Jornada {{ jornada_anterior.numero }}</a></h4>
-	{% endif %}
-	{% if jornada_siguiente %}
-		<h4><a href="/jornadas/ver/{{ jornada_siguiente.id }}/">Ver Jornada {{ jornada_siguiente.numero }}</a></h4>
-	{% endif %}
-
-	<h2>Datos de la jornada {{ jornada.numero }}</h2>
+	<h2>
+		{% if jornada_anterior %}
+			<button id="boton_jornada_anterior" onclick="location.href='/jornadas/ver/{{ jornada_anterior.id }}/'">
+				<span>Ver Jornada {{ jornada_anterior.numero }}</span>
+			</button>
+		{% endif %}
+		
+		Datos de la jornada {{ jornada.numero }}
+	
+		{% if jornada_siguiente %}
+			<button id="boton_jornada_siguiente" onclick="location.href='/jornadas/ver/{{ jornada_siguiente.id }}/'">
+				<span>Ver Jornada {{ jornada_siguiente.numero }}</span>
+			</button>
+		{% endif %}
+	</h2>
 
 	{% if jornada.jugada %}
 		<h4>FINALIZADA</h4>
@@ -120,6 +145,6 @@
 			</tbody>
 		</table>
 	{% else %}
-		No hay clasificacion disponible aun
+		<h4>No hay clasificación disponible aún</h4>
 	{% endif %}
 {% endblock %}

@@ -63,6 +63,9 @@ def ver_equipo(request):
 	usuario = request.user
 
 	equipo = request.session['equipo_actual']
+	
+	if not 'liga_actual' in request.session:
+		request.session['liga_actual'] = equipo.liga
 
 	# Obtenemos los jugadores
 	jugadores = equipo.getJugadores()
@@ -75,11 +78,11 @@ def ver_equipo(request):
 		valor_equipo += jugador.valorMercado()
 
 		# Edad del equipo
-		anios, dias = jugador.getEdad()
-		suma_edad = suma_edad + anios
+		jugador.anios, jugador.dias = jugador.getEdad()
+		suma_edad = suma_edad + jugador.anios + (jugador.dias / 365.0)
 
 	if len(jugadores) > 0:
-		edad_media_equipo = (suma_edad * 1.0) / len(jugadores)
+		edad_media_equipo = "%.2f" % ((suma_edad * 1.0) / len(jugadores))
 	else:
 		edad_media_equipo = 0
 

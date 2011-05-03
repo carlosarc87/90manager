@@ -114,16 +114,17 @@
 
 #tabla_habilidades_juego{
 	margin: 10px auto;
-	width: 300px;
+	width: 400px;
 }
 
 #tabla_habilidades_mentales{
 	margin: 10px auto;
-	width: 300px;
+	width: 400px;
 }
 
 .barra_progreso{
 	border: solid 1px #79b7e7;
+	float: left;
 	height: 20px;
 	margin: 5px;
 	text-align: center;
@@ -133,6 +134,16 @@
 .barra_progreso div{
 	background-color: #4444aa;
 	height: 100%;
+}
+
+.col_valor_habilidad{
+	width: 280px;
+}
+
+.texto_valor_habilidad{
+	font-weight: bold;
+	float: right;
+	margin-top: 10px;
 }
 
 .fila_mejor_posicion{

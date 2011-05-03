@@ -15,7 +15,8 @@
 	<link rel="stylesheet" href="/media/css/jquery-ui-timepicker-addon.css" type="text/css" media="screen" />
 	{% block css_extra %}{% endblock %}
 </head>
-{% if liga_actual %}
+
+{% if liga_actual.activada %}
 <body onload="lanzarReloj()">
 {% else %}
 <body>
@@ -63,7 +64,7 @@
 								</ul>
 							</li>
 
-							<li id="calendario" onclick="location.href='/'" title="Calendario">
+							<li id="calendario" onclick="location.href='/ligas/ver/'" title="Calendario de liga">
 								<strong>Liga "{{ liga_actual.nombre }}": </strong><span id="fecha_liga">00/00/00</span> | <span id="tiempo_liga">00:00:00</span>
 							</li>
 							<!-- Notificaciones -->
@@ -214,14 +215,15 @@
 		*/
 	</script>
 
-	{% if liga_actual %}
+	{% if liga_actual.activada %}
 		<script type="text/javascript">
 			var tiempo_actual;
-
+			
 			function lanzarReloj() {
 				tiempo_actual = new Date("{{ fecha_hora_liga.isoformat }}");
-				setInterval("actualizarReloj()", 1000 / {{ factor_tiempo }});
+				setInterval("actualizarReloj()", 1000 / {{ liga_actual.factor_tiempo }});
 			}
+			
 			function actualizarReloj()
 			{
 				tiempo_actual = new Date(tiempo_actual.getTime() + 1000);
@@ -230,6 +232,7 @@
 			}
 		</script>
 	{% endif %}
+	
 	{% block js_extra %}{% endblock %}
 </body>
 </html>

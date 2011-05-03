@@ -5,11 +5,20 @@
     <link rel="stylesheet" href="/media/css/juego/partidos/ver_partido.css" type="text/css" media="screen" />
 {% endblock %}
 
+{% block js_extra %}
+	<script type="text/javascript">
+		/* Para el funcionamiento de tema css con jquery */
+		$(function() {
+			$("button", "#ver_repeticion").button();
+		});
+	</script>
+{% endblock %}
+
 {% block contenido %}
 	<!-- Resultado del partido -->
 	<table class="tabla1" id="tabla_resultado">
 		<caption>Partido</caption>
-		<div id="ver_repeticion"><a href="/partidos/repeticion/">Ver repetición</a></div>
+		
 		<tbody>
 			<tr>
 				<!-- Equipo local -->
@@ -92,6 +101,10 @@
 			{% endif %}
 		</tbody>
 	</table>
+	
+	<div id="ver_repeticion">
+		<button onclick="location.href='/partidos/repeticion/'">Ver repetición</button>
+	</div>
 
 	{% if finalizado %}
 		<!-- Resumen -->

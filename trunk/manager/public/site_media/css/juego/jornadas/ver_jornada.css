@@ -1,11 +1,22 @@
-h2, h4{
-	margin: 10px;
-	text-align: center;
+h2{
+	height: 40px;
+}
+
+h2 button span{
+	font-size: 0.8em;
+}
+
+#boton_jornada_anterior{
+	float: left;
+}
+
+#boton_jornada_siguiente{
+	float: right;
 }
 
 #tabla_encuentros{
 	margin: 10px auto;
-	width: 600px;
+	width: 800px;
 }
 
 #tabla_clasificacion_anterior{

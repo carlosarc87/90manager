@@ -10,14 +10,18 @@
 
 	<table class="tabla1" id="tabla_notificaciones">
 		<caption>Notificaciones</caption>
-		<a href="/cuentas/notificaciones/listar_tablon/">Ver todas</a>
-		<thead>
-		{% for notificacion in ultimas_notificaciones %}
-			<tr><td><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></td></tr>
-		{% empty %}
-			<tr><td><a href="#">No hay notificaciones nuevas</a></td></tr>
-		{% endfor %}
-		</thead>
+		{% if ultimas_notificaciones %}
+			<tfoot>
+				<tr><th><a href="/cuentas/notificaciones/listar_tablon/">Ver todas</a></th></tr>
+			</tfoot>
+		{% endif %}
+		<tbody>
+			{% for notificacion in ultimas_notificaciones %}
+				<tr><td><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></td></tr>
+			{% empty %}
+				<tr><th>No hay notificaciones nuevas</th></tr>
+			{% endfor %}
+		</tbody>
 	</table>
 
 	<table class="tabla1" id="tabla_ligas_creadas">

@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
+	<link rel="stylesheet" href="/media/css/formularios.css" type="text/css" />
 	<link rel="stylesheet" href="/media/css/tablas.css" type="text/css" />
 	<link rel="stylesheet" href="/media/css/juego/ligas/ver_liga.css" type="text/css" />
-	<link rel="stylesheet" href="/media/css/tablesorter_green/style.css" type="text/css" />
 {% endblock %}
 
 {% block js_extra %}
+	<!--
 	<script src="/media/js/tablesorter/jquery.tablesorter.min.js" type="text/javascript"></script>
 	<script src="/media/js/tablesorter/jquery.tablesorter.pager.js" type="text/javascript"></script>
-
+	-->
 	<script type="text/javascript">
 		jQuery(function($){
 			$.datepicker.regional['es'] = {
@@ -32,6 +33,7 @@
 				yearSuffix: ''};
 			$.datepicker.setDefaults($.datepicker.regional['es']);
 		});
+		/*
 		$(document).ready(
 			function() {
 				$("#tabla_clasificacion")
@@ -40,18 +42,22 @@
 				$("#id_fecha_nueva").datetimepicker();
 			}
 		);
+		*/
 	</script>
 {% endblock %}
 
 {% block contenido %}
-	<h2>Liga: {{ liga.nombre }}</h2>
+	<h2>Liga "{{ liga.nombre }}"</h2>
 
 	{% if activada %}
 		{% if jornada_actual %}
 			<h4>Jornada actual: <a href="/jornadas/ver/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></h4>
+			
 			{% if es_creador %}
 				<!-- Esto es meramente para acelerar la presentacion del miercoles -->
 				<form class="form1" id="form_ver_liga" action="/ligas/ver/" method="post">
+					<h4>Avanzar tiempo</h4>
+					
 					{{ form_fecha.as_p }}
 					<!-- Boton crear -->
 					<div id="contenido_boton_crear">
@@ -65,7 +71,7 @@
 
 		{% if clasificacion %}
 			<!-- Tabla clasificacion -->
-			<table class="tabla1 + tablesorter" id="tabla_clasificacion">
+			<table class="tabla1" id="tabla_clasificacion">
 				{% if liga_acabada %}
 					<caption>Clasificación final</caption>
 				{% else %}
@@ -88,56 +94,49 @@
 				</thead>
 				<tbody>
 					{% for dato_clasificacion in clasificacion %}
-						{% if dato_clasificacion.posicion_ascenso %}
-							{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
-								<tr class="linea_equipo_propio + linea_clasificacion_ascenso">
-							{% else %}
-								<tr class="linea_clasificacion_ascenso">
-							{% endif %}
+						{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+							<tr class="linea_equipo_propio">
 						{% else %}
-							{% if dato_clasificacion.posicion_descenso %}
-								{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
-									<tr class="linea_equipo_propio + linea_clasificacion_descenso">
-								{% else %}
-									<tr class="linea_clasificacion_descenso">
-								{% endif %}
-							{% else %}
-								{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
-									<tr class="linea_equipo_propio">
-								{% else %}
-									<tr>
-								{% endif %}
-							{% endif %}
+							<tr>
 						{% endif %}
-
-							<td class="cuadro_num_azul_der">
+							<!-- Posicion -->
+							<td class="num1">
 								{{ dato_clasificacion.posicion }}
 							</td>
+							<!-- Equipo -->
 							<td>
 								<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/">{{ dato_clasificacion.equipo.nombre }}</a>
 							</td>
-							<td class="cuadro_num_azul_der">
+							<!-- Partidos jugados -->
+							<td class="num1">
 								{{ dato_clasificacion.partidos_jugados }}
 							</td>
-							<td class="cuadro_num_azul_der">
+							<!-- Partidos ganados -->
+							<td class="num1">
 								{{ dato_clasificacion.partidos_ganados }}
 							</td>
-							<td class="cuadro_num_azul_der">
+							<!-- Partidos empatados -->
+							<td class="num1">
 								{{ dato_clasificacion.partidos_empatados }}
 							</td>
-							<td class="cuadro_num_azul_der">
+							<!-- Partidos perdidos -->
+							<td class="num1">
 								{{ dato_clasificacion.partidos_perdidos }}
 							</td>
-							<td class="cuadro_num_azul_der">
+							<!-- Goles a favor -->
+							<td class="num1">
 								{{ dato_clasificacion.goles_favor }}
 							</td>
-							<td class="cuadro_num_azul_der">
+							<!-- Goles en contra -->
+							<td class="num1">
 								{{ dato_clasificacion.goles_contra }}
 							</td>
-							<td class="cuadro_num_azul_der">
+							<!-- Goles de diferencia -->
+							<td class="num1">
 								{{ dato_clasificacion.goles_diferencia }}
 							</td>
-							<td class="cuadro_num_azul_der">
+							<!-- Puntos -->
+							<td class="num1">
 								{{ dato_clasificacion.puntos }}
 							</td>
 						</tr>
@@ -200,9 +199,9 @@
 		</table>
 	{% else %}
 		<div id="activar_liga">
-			<span>La liga no está activada aún</span>
+			<span>La liga no está activada aún:</span>
 			{% if es_creador %}
-				: <a href="/ligas/activar/">ACTIVAR</a>
+				<a href="/ligas/activar/">ACTIVAR</a>
 			{% endif %}
 		</div>
 
@@ -210,7 +209,7 @@
 			{% if equipo_propio %}
 				Equipo propio: <a href="/equipos/ver/{{ equipo_propio.id }}/">{{ equipo_propio.nombre }}</a>
 			{% else %}
-				<b>{{ user.username }} aún puede </b><a href="/equipos/crear/">crear un equipo</a><b> en esta liga.</b>
+				<b>{{ user.username }}</b> aún puede <a href="/equipos/crear/">crear un equipo</a> en esta liga.
 			{% endif %}
 		</div>
 	{% endif %}

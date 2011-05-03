@@ -6,6 +6,12 @@
 {% endblock %}
 
 {% block js_extra %}
+	<script type="text/javascript">
+		/* Para el funcionamiento de tema css con jquery */
+		$(function() {
+			$("button", "#subasta").button();
+		});
+	</script>
 {% endblock %}
 
 {% block contenido %}
@@ -14,9 +20,9 @@
 
 	<div id="subasta">
 		{% if subasta %}
-			<a href="/mercado/subastas/ver/{{ subasta.id }}/">Ver Subasta</a>
+			<button onclick="location.href='/mercado/subastas/ver/{{ subasta.id }}/'">Ver Subasta</button>
 		{% else %}
-			<a href="/mercado/subastas/crear/">Subastar</a>
+			<button onclick="location.href='/mercado/subastas/crear/'">Subastar</button>
 		{% endif %}
 	</div>
 
@@ -137,7 +143,7 @@
 		<thead>
 			<tr>
 				<th>Habilidad</th>
-				<th>Valor</th>
+				<th class="col_valor_habilidad">Valor</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -145,10 +151,11 @@
 			<tr>
 				<td>Ataque</td>
 				<td>
-					<div class="barra_progreso" title="{{ jugador.atributos.ataque }}">
-						<div style="width: {{ jugador.atributos.ataque }}px;">
+					<div class="barra_progreso">
+						<div style="width: {{ jugador.atributos.ataque }}%;">
 						</div>
 					</div>
+					<span class="texto_valor_habilidad">{{ jugador.atributos.ataque }} / 100</span>
 				</td>
 			</tr>
 
@@ -156,10 +163,11 @@
 			<tr>
 				<td>Defensa</td>
 				<td>
-					<div class="barra_progreso" title="{{ jugador.atributos.defensa }}">
-						<div style="width: {{ jugador.atributos.defensa }}px;">
+					<div class="barra_progreso">
+						<div style="width: {{ jugador.atributos.defensa }}%;">
 						</div>
 					</div>
+					<span class="texto_valor_habilidad">{{ jugador.atributos.defensa }} / 100</span>
 				</td>
 			</tr>
 
@@ -167,10 +175,11 @@
 			<tr>
 				<td>Velocidad</td>
 				<td>
-					<div class="barra_progreso" title="{{ jugador.atributos.velocidad }}">
-						<div style="width: {{ jugador.atributos.velocidad }}px;">
+					<div class="barra_progreso">
+						<div style="width: {{ jugador.atributos.velocidad }}%;">
 						</div>
 					</div>
+					<span class="texto_valor_habilidad">{{ jugador.atributos.velocidad }} / 100</span>
 				</td>
 			</tr>
 
@@ -178,10 +187,11 @@
 			<tr>
 				<td>Pases</td>
 				<td>
-					<div class="barra_progreso" title="{{ jugador.atributos.pases }}">
-						<div style="width: {{ jugador.atributos.pases }}px;">
+					<div class="barra_progreso">
+						<div style="width: {{ jugador.atributos.pases }}%;">
 						</div>
 					</div>
+					<span class="texto_valor_habilidad">{{ jugador.atributos.pases }} / 100</span>
 				</td>
 			</tr>
 
@@ -189,10 +199,11 @@
 			<tr>
 				<td>Anotaci&oacute;n</td>
 				<td>
-					<div class="barra_progreso" title="{{ jugador.atributos.anotacion }}">
-						<div style="width: {{ jugador.atributos.anotacion }}px;">
+					<div class="barra_progreso">
+						<div style="width: {{ jugador.atributos.anotacion }}%;">
 						</div>
 					</div>
+					<span class="texto_valor_habilidad">{{ jugador.atributos.anotacion }} / 100</span>
 				</td>
 			</tr>
 
@@ -200,10 +211,11 @@
 			<tr>
 				<td>Portero</td>
 				<td>
-					<div class="barra_progreso" title="{{ jugador.atributos.portero }}">
-						<div style="width: {{ jugador.atributos.portero }}px;">
+					<div class="barra_progreso">
+						<div style="width: {{ jugador.atributos.portero }}%;">
 						</div>
 					</div>
+					<span class="texto_valor_habilidad">{{ jugador.atributos.portero }} / 100</span>
 				</td>
 			</tr>
 		</tbody>
@@ -215,7 +227,7 @@
 		<thead>
 			<tr>
 				<th>Habilidad</th>
-				<th>Valor</th>
+				<th class="col_valor_habilidad">Valor</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -223,10 +235,11 @@
 			<tr>
 				<td>Agresividad</td>
 				<td>
-					<div class="barra_progreso" title="{{ jugador.atributos.agresividad }}">
-						<div style="width: {{ jugador.atributos.agresividad }}px;">
+					<div class="barra_progreso">
+						<div style="width: {{ jugador.atributos.agresividad }}%;">
 						</div>
 					</div>
+					<span class="texto_valor_habilidad">{{ jugador.atributos.agresividad }} / 100</span>
 				</td>
 			</tr>
 
@@ -234,10 +247,11 @@
 			<tr>
 				<td>Concentración</td>
 				<td>
-					<div class="barra_progreso" title="{{ jugador.atributos.concentracion }}">
-						<div style="width: {{ jugador.atributos.concentracion }}px;">
+					<div class="barra_progreso">
+						<div style="width: {{ jugador.atributos.concentracion }}%;">
 						</div>
 					</div>
+					<span class="texto_valor_habilidad">{{ jugador.atributos.concentracion }} / 100</span>
 				</td>
 			</tr>
 
@@ -245,10 +259,11 @@
 			<tr>
 				<td>Estabilidad</td>
 				<td>
-					<div class="barra_progreso" title="{{ jugador.atributos.estabilidad }}">
-						<div style="width: {{ jugador.atributos.estabilidad }}px;">
+					<div class="barra_progreso">
+						<div style="width: {{ jugador.atributos.estabilidad }}%;">
 						</div>
 					</div>
+					<span class="texto_valor_habilidad">{{ jugador.atributos.estabilidad }} / 100</span>
 				</td>
 			</tr>
 
@@ -256,10 +271,11 @@
 			<tr>
 				<td>Moral</td>
 				<td>
-					<div class="barra_progreso" title="{{ jugador.atributos.moral }}">
-						<div style="width: {{ jugador.atributos.moral }}px;">
+					<div class="barra_progreso">
+						<div style="width: {{ jugador.atributos.moral }}%;">
 						</div>
 					</div>
+					<span class="texto_valor_habilidad">{{ jugador.atributos.moral }} / 100</span>
 				</td>
 			</tr>
 		</tbody>

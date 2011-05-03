@@ -5,6 +5,15 @@
     <link rel="stylesheet" href="/media/css/juego/equipos/ver_equipo.css" type="text/css" media="screen" />
 {% endblock %}
 
+{% block js_extra %}
+	<script type="text/javascript">
+		/* Para el funcionamiento de tema css con jquery */
+		$(function() {
+			$("button", "#contenido_boton_jugadores_subasta").button();
+		});
+	</script>
+{% endblock %}
+
 {% block situacion %}
 	<ul id="menu_superior_situacion">
 		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
@@ -15,15 +24,28 @@
 {% block contenido %}
 	<h2>{{ equipo.nombre }}</h2>
 
-	{% if jugadores.count %}
-		<div id="edad_equipo"><b>Edad media del equipo: </b><span>{{ edad_media_equipo }} años</span></div>
-	{% endif %}
-
-	<div id="dinero_actual"><b>Dinero actual: </b><span>{{ equipo.dinero }} €</span></div>
-
 	{% if liga_actual.activada %}
-		<div id="jugadores_subastados"><a href="/mercado/subastas/ver/equipo/">Ver jugadores en subasta</a></div>
+		<div id="contenido_boton_jugadores_subasta">
+			<button onclick="location.href='/mercado/subastas/ver/equipo/'">Ver jugadores en subasta</button>
+		</div>
 	{% endif %}
+
+	<table class="tabla1" id="tabla_datos_equipo">
+		<caption>Datos del equipo</caption>
+		<tbody>
+			{% if jugadores %}
+				<tr>
+					<th>Edad media del equipo</td>
+					<td>{{ edad_media_equipo }} años</td>
+				</tr>
+			{% endif %}
+			
+			<tr>
+				<th>Dinero actual</td>
+				<td>{{ equipo.dinero }} &euro;</td>
+			</tr>
+		</tbody>
+	</table>
 	
 	<!-- Tabla jugadores -->
 	<table class="tabla1" id="tabla_jugadores">
@@ -34,21 +56,23 @@
 					<td>Num.</td>
 					<td>Mejor posici&oacute;n</td>
 					<td>Nombre</td>
+					<td>Edad</td>
 					<td>Valor (&euro;)</td>
 				</tr>
 			</thead>
 			<tfoot>
 				<tr>
-					<td colspan="3"  id="col_texto_valor_equipo">Valor total del equipo</td>
+					<td colspan="4" id="col_texto_valor_equipo">Valor total del equipo</td>
 					<td id="col_valor_equipo">{{ valor_equipo }}</td>
 				</tr>
 			</tfoot>
 			<tbody>
 				{% for jugador in jugadores %}
 					<tr>
-						<td class="col_numero_jug">{{ jugador.numero }}</td>
+						<td class="col_numero_jug">{{ jugador.atributos.numero }}</td>
 						<td class="col_mejorPosicion_jug">{{ jugador.mejorPosicion }}</td>
 						<td class="col_nombre_jug"><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></td>
+						<td class="col_edad_jug">{{ jugador.anios }} años y {{ jugador.dias }} días</td>
 						<td class="col_valorMercado_jug">{{ jugador.valorMercado }}</td>
 					</tr>
 				{% endfor %}

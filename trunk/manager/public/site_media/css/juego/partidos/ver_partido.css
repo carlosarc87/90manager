@@ -13,24 +13,30 @@
 
 #tabla_resultado{
 	margin: 20px auto;
-	width: 500px;
+	width: 600px;
 }
 
 #tabla_resumen{
 	margin: 20px auto;
+	width: 600px;
+}
+
+#tabla_resumen th{
+	text-align: left;
 }
 
 #tabla_sucesos{
 	margin: 20px auto;
+	width: 600px;
 }
 
 #tabla_titulares_local{
-	background-color: #5555ff;
+	background-color: #ccccff;
 	float: left;
 }
 
 #tabla_titulares_visitante{
-	background-color: #ff5555;
+	background-color: #ffcccc;
 	float: right;
 }
 

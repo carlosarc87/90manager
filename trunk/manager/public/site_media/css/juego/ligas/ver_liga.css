@@ -1,8 +1,3 @@
-h2, h4{
-	margin: 10px;
-	text-align: center;
-}
-
 #activar_liga{
 	margin: 10px auto;
 	width: 400px;
@@ -13,14 +8,13 @@ h2, h4{
 	width: 400px;
 }
 
-#mercado_subastas{
-	text-align: center;
+#form_ver_liga{
+	margin: 10px auto;
+	width: 400px;
 }
 
-#pager{
-	clear: both;
-	margin: 10px auto;
-	width: 600px;
+#mercado_subastas{
+	text-align: center;
 }
 
 #tabla_clasificacion{
@@ -45,14 +39,6 @@ h2, h4{
 .jornada_no_jugada{
 	color: #aa0000;
 	font-weight: bold;
-}
-
-.linea_clasificacion_ascenso{
-	background-color: #88ff88;
-}
-
-.linea_clasificacion_descenso{
-	background-color: #ff8888;
 }
 
 .linea_equipo_propio{
