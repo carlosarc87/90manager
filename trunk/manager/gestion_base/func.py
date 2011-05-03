@@ -54,7 +54,7 @@ def devolverMensaje(request, mensaje, tipo = 0, url_salida = None):
 		tipo       -- tipo de mensaje (0 - error, 1 - advertencia)
 		url_salida -- url hacia la que redireccionar
 	"""
-	return renderizar(request, "mensaje.html", { "mensaje" : mensaje, "url_salida" : url_salida, "tipo" : tipo })
+	return generarPagina(request, "mensaje.html", { "mensaje" : mensaje, "url_salida" : url_salida, "tipo" : tipo })
 
 ########################################################################
 
