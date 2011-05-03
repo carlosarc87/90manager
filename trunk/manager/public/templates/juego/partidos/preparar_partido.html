@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
+    <link rel="stylesheet" href="/media/css/formularios.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/media/css/juego/partidos/preparar_partido.css" type="text/css" media="screen" />
 {% endblock %}
 
@@ -318,29 +319,20 @@
 	</script>
 {% endblock %}
 
-{% block situacion %}
-	<ul id="menu_superior_situacion">
-		<li><a href="/ligas/ver/{{ partido.jornada.liga_id }}/">{{ partido.jornada.liga.nombre }}</a></li>
-		<li><a href="/jornadas/ver/{{ partido.jornada.id }}/">Jornada {{ partido.jornada.numero }}</a></li>
-		<li><a href="/partidos/ver/{{ partido.id }}/">Partido {{ partido.id }}</a></li>
-		<li>{{ equipo.nombre }}</li>
-	</ul>
-{% endblock %}
-
 {% block contenido %}
-	{% if editar %}
-		<h2>Editar alineación para el partido</h2>
-	{% else %}
-		<h2>Preparar alineación para el partido</h2>
-	{% endif %}
+	<h2>{{ partido.equipo_local.nombre }} ({{ partido.equipo_local.siglas }}) VS ({{ partido.equipo_visitante.siglas }}) {{ partido.equipo_visitante.nombre }}</h2>
 
-	<form id="form_alineacion" action="/partidos/preparar/" method="post">
-
+	<form class="form1" id="form_alineacion" action="/partidos/preparar/" method="post">
 		{% if form.errors %}
 			<div>{{ form.non_field_errors }}</div>
 		{% endif %}
+		
 		<fieldset>
-			<legend>Alineación</legend>
+			{% if editar %}
+				<legend>Editar alineación para el partido</legend>
+			{% else %}
+				<legend>Preparar alineación para el partido</legend>
+			{% endif %}
 
 			<div id="caja_num_jugadores_alineacion">Número de jugadores en la alineación: <span id="num_jugadores_alineacion">0</span></div>
 			<div id="caja_num_jugadores_suplentes">Número de jugadores suplentes: <span id="num_jugadores_suplentes">0</span></div>

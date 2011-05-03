@@ -63,6 +63,9 @@
 			<!-- Foto -->
 			{% if jugador.sexo == 'M' %}
 				<div id="foto_m">
+					<!-- Ojos -->
+					<img src="/media/img/jugadores/ojos_{{ jugador.color_ojos }}.png" id="ojos" alt="" />
+					
 					<!-- Pelo -->
 					<img src="/media/img/jugadores/hombres/pelo_{{ jugador.color_pelo }}.png" id="pelo" alt="" />
 
@@ -70,15 +73,16 @@
 					<img src="/media/img/jugadores/hombres/piel_{{ jugador.color_piel }}.png" id="piel" alt="" />
 			{% else %}
 				<div id="foto_f">
-					<!-- Pelo -->
+					<!-- Ojos 
+					<img src="/media/img/jugadores/ojos_{{ jugador.color_ojos }}.png" id="ojos" alt="" />
+					-->
+					<!-- Pelo 
 					<img src="/media/img/jugadores/mujeres/pelo_{{ jugador.color_pelo }}.png" id="pelo" alt="" />
-
-					<!-- Piel -->
+					-->
+					<!-- Piel 
 					<img src="/media/img/jugadores/mujeres/piel_{{ jugador.color_piel }}.png" id="piel" alt="" />
+					-->
 			{% endif %}
-
-				<!-- Ojos -->
-				<img src="/media/img/jugadores/ojos_{{ jugador.color_ojos }}.png" id="ojos" alt="" />
 			</div>
 		</div>
 	</div>

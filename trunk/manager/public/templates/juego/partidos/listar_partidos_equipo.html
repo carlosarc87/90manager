@@ -1,31 +1,123 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
+    <link rel="stylesheet" href="/media/css/tablas.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/juego/partidos/listar_partidos_equipo.css" type="text/css" media="screen" />
+{% endblock %}
+
+{% block js_extra %}
+	<script type="text/javascript">
+		$(function() {
+			$(".boton_ver_partido").button({
+				icons: {
+					primary: "ui-icon-search"
+				}
+			});
+		});
+	</script>
 {% endblock %}
 
 {% block contenido %}
-	Próximo partido:
-	{% if partido_actual %}
-		<a href="/partidos/ver/{{ partido_actual.id }}/">{{ partido_actual }}</a>
-	{% else %}
-		No hay mas partidos
-	{% endif %}
-	<br>
-	Partidos no jugados:
-	<ul>
-		{% for partido in partidos_no_jugados %}
-			<li><a href="/partidos/ver/{{ partido.id }}/">{{ partido }}</a></li>
-		{% empty %}
-			<li>No hay</li>
-		{% endfor %}
-	</ul>
-
-	Partidos jugados:
-	<ul>
-		{% for partido in partidos_jugados %}
-			<li><a href="/partidos/ver/{{ partido.id }}/">{{ partido }}</a></li>
-		{% empty %}
-			<li>No hay</li>
-		{% endfor %}
-	</ul>
+	<h2>Partidos de "{{ equipo_propio.nombre }}"</h2>
+	
+	<!-- Tabla de proximo partido -->
+	<table class="tabla1" id="tabla_proximo_partido">
+		<caption>Próximo partido</caption>
+		<thead>
+			<tr>
+				<th>Jornada</th>
+				<th>Equipo local</th>
+				<th>Fecha</th>
+				<th>Equipo visitante</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% if partido_actual %}
+				<tr>
+					<td class="col_jornada">{{ partido_actual.jornada.numero }}</td>
+					<td class="col_local">{{ partido_actual.equipo_local.nombre }}</td>
+					<td class="col_fecha">{{ partido_actual.fecha_inicio }}</td>
+					<td class="col_visitante">{{ partido_actual.equipo_visitante.nombre }}</td>
+					<td class="col_ver">
+						<button class="boton_ver_partido" onclick="location.href='/partidos/ver/{{ partido_actual.id }}/'">
+							Ver
+						</button>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<th>No hay más partidos</th>
+				</tr>
+			{% endif %}
+		</tbody>
+	</table>
+	
+	<!-- Tabla de partidos no jugados -->
+	<table class="tabla1" id="tabla_partidos_no_jugados">
+		<caption>Partidos no jugados</caption>
+		<thead>
+			<tr>
+				<th>Jornada</th>
+				<th>Equipo local</th>
+				<th>Fecha</th>
+				<th>Equipo visitante</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for partido in partidos_no_jugados %}
+				<tr>
+					<td class="col_jornada">{{ partido.jornada.numero }}</td>
+					<td class="col_local">{{ partido.equipo_local.nombre }}</td>
+					<td class="col_fecha">{{ partido.fecha_inicio }}</td>
+					<td class="col_visitante">{{ partido.equipo_visitante.nombre }}</td>
+					<td class="col_ver">
+						<button class="boton_ver_partido" onclick="location.href='/partidos/ver/{{ partido.id }}/'">
+							Ver
+						</button>
+					</td>
+				</tr>
+			{% empty %}
+				<tr>
+					<th>No hay partidos sin jugar</th>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	
+	<!-- Tabla de partidos no jugados -->
+	<table class="tabla1" id="tabla_partidos_no_jugados">
+		<caption>Partidos jugados</caption>
+		<thead>
+			<tr>
+				<th>Jornada</th>
+				<th>Equipo local</th>
+				<th>Fecha</th>
+				<th>Equipo visitante</th>
+				<th>Resultado</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for partido in partidos_jugados %}
+				<tr>
+					<td class="col_jornada">{{ partido.jornada.numero }}</td>
+					<td class="col_local">{{ partido.equipo_local.nombre }}</td>
+					<td class="col_fecha">{{ partido.fecha_inicio }}</td>
+					<td class="col_visitante">{{ partido.equipo_visitante.nombre }}</td>
+					<td class="col_resultado">{{ partido.goles_local }} - {{ partido.goles_visitante }}</td>
+					<td class="col_ver">
+						<button class="boton_ver_partido" onclick="location.href='/partidos/ver/{{ partido.id }}/'">
+							Ver
+						</button>
+					</td>
+				</tr>
+			{% empty %}
+				<tr>
+					<th>No hay partidos sin jugar</th>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 {% endblock %}

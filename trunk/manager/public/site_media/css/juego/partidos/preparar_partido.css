@@ -1,8 +1,3 @@
-h2{
-	margin: 10px;
-	text-align: center;
-}
-
 .cuadro_jugador{
 	background: url('/media/img/circulo.png') no-repeat;
 	background-position: center top;
@@ -97,6 +92,16 @@ h2{
 	background: rgb(0, 200, 0);
 	height: 100%;
 	width: 100%;
+}
+
+#form_alineacion{
+	margin: 20px 0px;
+	padding: 20px;
+	width: 900px;
+}
+
+#form_alineacion fieldset{
+	margin: 0px;
 }
 
 #form_oculto{

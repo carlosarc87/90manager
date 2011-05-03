@@ -63,15 +63,6 @@
 	</script>
 {% endblock %}
 
-{% block situacion %}
-	<ul id="menu_superior_situacion">
-		<li><a href="/ligas/ver/{{ jugador.atributos.equipo.liga.id }}/">{{ jugador.atributos.equipo.liga.nombre }}</a></li>
-		<li><a href="/equipos/ver/{{ jugador.atributos.equipo.id }}/">{{ jugador.atributos.equipo.nombre }}</a></li>
-		<li><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></li>
-		<li><span>Subastar</span></li>
-	</ul>
-{% endblock %}
-
 {% block contenido %}
 	<h2>Subastando a {{ jugador.nombre }}</h2>
 

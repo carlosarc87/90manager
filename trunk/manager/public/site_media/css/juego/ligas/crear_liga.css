@@ -54,18 +54,26 @@ fieldset{
 	width: 200px;
 }
 
+#contenido_num_equipos{ padding: 5px 0px; }
+#contenido_num_equipos label{
+	float: left;
+	font-weight: bold;
+	width: 200px;
+}
+#id_num_equipos{ text-align: right; width: 40px; }
+
 #contenido_fecha_real_inicio{ padding: 5px 0px; }
 #contenido_fecha_real_inicio label{
 	float: left;
 	font-weight: bold;
-	width: 150px;
+	width: 200px;
 }
 
 #contenido_fecha_ficticia_inicio{ padding: 5px 0px; }
 #contenido_fecha_ficticia_inicio label{
 	float: left;
 	font-weight: bold;
-	width: 150px;
+	width: 200px;
 }
 
 #contenido_factor_tiempo{ padding: 5px 0px; }
