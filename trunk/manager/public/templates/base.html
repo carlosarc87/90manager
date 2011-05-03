@@ -21,13 +21,14 @@
 {% else %}
 <body>
 {% endif %}
-	{% if user.is_authenticated %}
-		<div id="barra_header">
-			<div id="header">
-				<ul id="menu">
-					<!-- Logo -->
-					<li id="logo" onclick="location.href='/'"></li>
 
+	<div id="barra_header">
+		<div id="header">
+			<ul id="menu">
+				<!-- Logo -->
+				<li id="logo" onclick="location.href='/'"></li>
+
+				{% if user.is_authenticated %}
 					{% if liga_actual %}
 						{% if liga_actual.activada %}
 							<!-- Liga -->
@@ -117,10 +118,10 @@
 							<li><a href="/cuentas/logout/">Salir</a></li>
 						</ul>
 					</li>
-				</ul>
-			</div>
+				{% endif %}
+			</ul>
 		</div>
-	{% endif %}
+	</div>
 
 	<div id="wrap">
 		<div id="wrap-content">

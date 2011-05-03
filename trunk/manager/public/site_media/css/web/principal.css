@@ -1,3 +1,7 @@
+#barra_header{
+	display: none;
+}
+
 #caja_mensajico{
 	clear: both;
 	height: 40px;

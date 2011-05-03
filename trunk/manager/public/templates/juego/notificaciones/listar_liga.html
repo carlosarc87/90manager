@@ -1,23 +1,58 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
+    <link rel="stylesheet" href="/media/css/tablas.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/media/css/juego/notificaciones/listar_liga.css" type="text/css" media="screen" />
+{% endblock %}
+
+{% block js_extra %}
+	<script type="text/javascript">
+		$(function() {
+			$(".boton_borrar").button({
+				icons: {
+					primary: "ui-icon-trash"
+				}
+			});
+			
+			$(".boton_ver").button({
+				icons: {
+					primary: "ui-icon-trash"
+				}
+			});
+		});
+	</script>
 {% endblock %}
 
 {% block contenido %}
 
-	<h2>Notificaciones de la liga: {{ liga.nombre }}</h2>
+	<h2>Notificaciones de la liga "{{ liga_actual.nombre }}"</h2>
 
-	<ul id="notificaciones">
-		{% for notificacion in notificaciones %}
-			<li {% if not notificacion.leida %}
-					class="no_leida"
-				{% endif %}>
-				<a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a>		<input type="button" value="Borrar" onclick="location.href='/cuentas/notificaciones/borrar/{{ notificacion.id }}/'" />
-			</li>
-		{% empty %}
-			<li>No tienes notificaciones</li>
-		{% endfor %}
-	</ul>
+	<table id="tabla_notificaciones">
+		<tbody>
+			{% for notificacion in notificaciones %}
+				{% if not notificacion.leida %}
+					<tr class="no_leida">
+				{% else %}
+					<tr>
+				{% endif %}
+					<td>{{ notificacion.getMensaje }}</td>
+					
+					<td class="col_botones">
+						<button class="boton_ver" onclick="location.href='/cuentas/notificaciones/ver/{{ notificacion.id }}/'">
+							Ver
+						</button>
+						
+						<button class="boton_borrar" onclick="location.href='/cuentas/notificaciones/borrar/{{ notificacion.id }}/'">
+							Borrar
+						</button>
+					</td>
+				</tr>
+			{% empty %}
+				</tr>
+					<th>No tienes notificaciones</th>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
 {% endblock %}

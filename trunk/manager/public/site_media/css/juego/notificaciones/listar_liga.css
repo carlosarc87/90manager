@@ -1,34 +1,13 @@
-h2{
-	margin: 10px;
-	text-align: center;
-}
-
-#notificaciones{
+#tabla_notificaciones{
 	background: #fff;
 	border: solid 1px #555;
+	border-spacing: 1px;
 	margin: 10px auto;
-	padding: 0px;
 	width: 500px;
 }
 
-#notificaciones li{
-	list-style: none;
-}
-
-#notificaciones li + li{
-	border-top: solid 1px #555;
-}
-
-#notificaciones a{
-	color: #000;
-	cursor: pointer;
-	display: block;
-	padding: 10px;
-	text-decoration: none;
-}
-
-#notificaciones a:hover{
-	background: #ccc;
+.col_botones{
+	width: 170px;
 }
 
 .no_leida{
