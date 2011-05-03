@@ -79,12 +79,11 @@ class Subasta(Evento):
 	def finalizar(self):
 		''' Finaliza y realiza los trámites oportunos de la subasta '''
 		self.atributos_jugador.ofertado = False
-		if self.comprador:
+		if self.tieneComprador():
 			notificar(self.comprador.usuario, Notificacion.SUBASTA_GANADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
 			self.atributos_jugador.jugador.setEquipo(self.comprador)
-			print "TRASPASE"
+			self.vendedor.pagar(self.puja)
 		notificar(self.vendedor.usuario, Notificacion.SUBASTA_FINALIZADA, identificador = self.atributos_jugador.jugador.id, liga = self.liga)
-		self.vendedor.pagar(self.puja)
 		self.atributos_jugador.save()
 
 	def getTiempoRestante(self):

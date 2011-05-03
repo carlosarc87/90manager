@@ -337,7 +337,7 @@
 	<form id="form_alineacion" action="/partidos/preparar/" method="post">
 
 		{% if form.errors %}
-			<div>{{ form.errors }}</div>
+			<div>{{ form.non_field_errors }}</div>
 		{% endif %}
 		<fieldset>
 			<legend>Alineación</legend>

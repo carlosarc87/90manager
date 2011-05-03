@@ -36,7 +36,7 @@
 					{% else %}
 						<img src="/media/img/icons/a/genero_fem.png" alt="F" title="Femenino" height="16" width="16" />
 					{% endif %}
-							
+
 					<!-- Nombre -->
 					<span id="nombre">
 						{{ jugador.nombre }}
@@ -46,43 +46,43 @@
 				<!-- Fecha de nacimiento -->
 				<div>
 					<strong>Fecha de nacimiento</strong><br />
-					
+
 					<span id="fecha_nacimiento">{{ jugador.fecha_nacimiento }}</span>
 				</div>
-				
+
 				<!-- Equipo -->
 				<div>
 					<strong>Equipo</strong><br />
-					
+
 					<span id="equipo">
 						{{ equipo.nombre }}
 					</span>
 				</div>
 			</div>
-			
+
 			<!-- Foto -->
 			{% if jugador.sexo == 'M' %}
 				<div id="foto_m">
 					<!-- Pelo -->
 					<img src="/media/img/jugadores/hombres/pelo_{{ jugador.color_pelo }}.png" id="pelo" alt="" />
-					
+
 					<!-- Piel -->
 					<img src="/media/img/jugadores/hombres/piel_{{ jugador.color_piel }}.png" id="piel" alt="" />
 			{% else %}
 				<div id="foto_f">
 					<!-- Pelo -->
 					<img src="/media/img/jugadores/mujeres/pelo_{{ jugador.color_pelo }}.png" id="pelo" alt="" />
-					
+
 					<!-- Piel -->
 					<img src="/media/img/jugadores/mujeres/piel_{{ jugador.color_piel }}.png" id="piel" alt="" />
 			{% endif %}
-			
+
 				<!-- Ojos -->
 				<img src="/media/img/jugadores/ojos_{{ jugador.color_ojos }}.png" id="ojos" alt="" />
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- Datos -->
 	<table class="tabla1" id="tabla_datos">
 		<caption>Datos</caption>
@@ -92,7 +92,7 @@
 				<td>Edad</td>
 				<td>{{ anios }} años y {{ dias }} días</td>
 			</tr>
-			
+
 			<!-- Altura -->
 			<tr>
 				<td>Altura</td>
@@ -104,7 +104,7 @@
 				<td>Peso</td>
 				<td>{{ jugador.atributos.peso }} kg.</td>
 			</tr>
-			
+
 			<!-- Estado -->
 			<tr>
 				<td>Estado</td>
@@ -302,7 +302,7 @@
 					<td class="valor_mercado">{{ valorMercado_PO }} &euro;</td>
 					<td class="rendimiento">{{ rendimiento_PO }} %</td>
 				</tr>
-			
+
 			<!-- Defensa -->
 			{% if jugador.mejorPosicion = "DEFENSA" %}
 				<tr class="fila_mejor_posicion">
@@ -313,7 +313,7 @@
 					<td class="valor_mercado">{{ valorMercado_DF }} &euro;</td>
 					<td class="rendimiento">{{ rendimiento_DF }} %</td>
 				</tr>
-			
+
 			<!-- Centrocampista -->
 			{% if jugador.mejorPosicion = "CENTROCAMPISTA" %}
 				<tr class="fila_mejor_posicion">
@@ -324,7 +324,7 @@
 					<td class="valor_mercado">{{ valorMercado_CC }} &euro;</td>
 					<td class="rendimiento">{{ rendimiento_CC }} %</td>
 				</tr>
-			
+
 			<!-- Delantero -->
 			{% if jugador.mejorPosicion = "DELANTERO" %}
 				<tr class="fila_mejor_posicion">

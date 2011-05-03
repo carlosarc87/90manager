@@ -18,7 +18,7 @@
 	<!-- Resultado del partido -->
 	<table class="tabla1" id="tabla_resultado">
 		<caption>Partido</caption>
-		
+
 		<tbody>
 			<tr>
 				<!-- Equipo local -->
@@ -101,12 +101,11 @@
 			{% endif %}
 		</tbody>
 	</table>
-	
-	<div id="ver_repeticion">
-		<button onclick="location.href='/partidos/repeticion/'">Ver repetición</button>
-	</div>
 
 	{% if finalizado %}
+		<div id="ver_repeticion">
+			<button onclick="location.href='/partidos/repeticion/'">Ver repetición</button>
+		</div>
 		<!-- Resumen -->
 		<table class="tabla1" id="tabla_resumen">
 			<caption>RESUMEN DEL PARTIDO</caption>

@@ -33,16 +33,16 @@
 				yearSuffix: ''};
 			$.datepicker.setDefaults($.datepicker.regional['es']);
 		});
-		/*
+
 		$(document).ready(
 			function() {
-				$("#tabla_clasificacion")
+				/*$("#tabla_clasificacion")
 				.tablesorter({widthFixed: true, widgets: ['zebra']})
-				.tablesorterPager({container: $("#pager")});
+				.tablesorterPager({container: $("#pager")});*/
 				$("#id_fecha_nueva").datetimepicker();
 			}
 		);
-		*/
+
 	</script>
 {% endblock %}
 
@@ -52,12 +52,12 @@
 	{% if activada %}
 		{% if jornada_actual %}
 			<h4>Jornada actual: <a href="/jornadas/ver/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></h4>
-			
+
 			{% if es_creador %}
 				<!-- Esto es meramente para acelerar la presentacion del miercoles -->
 				<form class="form1" id="form_ver_liga" action="/ligas/ver/" method="post">
 					<h4>Avanzar tiempo</h4>
-					
+
 					{{ form_fecha.as_p }}
 					<!-- Boton crear -->
 					<div id="contenido_boton_crear">
