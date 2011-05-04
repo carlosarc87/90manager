@@ -1,0 +1,38 @@
+table{
+	margin: 20px auto;
+	width: 800px;
+}
+
+.col_fecha{
+	color: #666;
+	text-align: center;
+	width: 220px;
+}
+
+.col_jornada{
+	text-align: right;
+	width: 60px;
+}
+
+.col_jornada a{
+	color: #008800;
+}
+
+.col_local{
+	color: #000088;
+	width: 250px;
+}
+
+.col_resultado{
+	color: #666;
+	text-align: center;
+	width: 60px;
+}
+
+.col_visitante{
+	width: 250px;
+}
+
+.col_visitante a{
+	color: #880000;
+}
