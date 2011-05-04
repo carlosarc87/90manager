@@ -1,0 +1,17 @@
+#tabla_equipos_registrados{
+	width: 100%;
+}
+
+/* Formulario activar liga */
+
+#contenido_boton_activar{
+	margin-top: 20px;
+	text-align: center;
+}
+
+#form_activar_liga{
+	margin: 30px auto;
+	width: 500px;
+}
+
+/* Fin formulario activar liga */
