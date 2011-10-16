@@ -7,6 +7,15 @@
 
 {% block js_extra %}
 	<script type="text/javascript">
+		var velocidad = 10;
+
+		var array_sucesos = [];
+		var segundos = 0;
+		var pausa = true;
+		var fin_partido = true;
+		var goles = [];
+		var temporizador;
+		
 		// Calcula el tiempo dependiendo de num1 y num2
 		function calcularTiempo(segundos, num1, num2) {
 			s = ((Math.floor(segundos / num1)) % num2).toString();
@@ -15,17 +24,7 @@
 			return s;
 		}
 
-		var velocidad = 10;
-
-		var array_sucesos = [];
-
-		var segundos = 0;
-		var pausa = true;
-		var fin_partido = true;
-		var goles = [];
-
-		var temporizador;
-
+		// Inicializa el array de sucesos del partido
 		function inicializarArraySucesos() {
 			array_sucesos = [];
 			{% for suceso in sucesos %}
@@ -115,7 +114,7 @@
 		}
 
 		function analizar(suceso) {
-			if (suceso[3] == 666) { // Gol
+			if (suceso[3] == "Gol") { // Gol
 				if (suceso[2] == "{{ siglas_local }}") {
 					goles[0] += 1;
 					document.getElementById("goles_local").innerHTML = goles[0];
@@ -176,6 +175,7 @@
 
 		/* Para el funcionamiento de tema css con jquery */
 		$(function() {
+			// Botón ir al inicio
 			$( "#beginning" ).button({
 				text: false,
 				icons: {
@@ -183,8 +183,10 @@
 				}
 			});
 
+			// Botón iniciar / parar
 			$( "#play" ).button({
 				text: false,
+				label: "play",
 				icons: {
 					primary: "ui-icon-play"
 				}
@@ -209,6 +211,7 @@
 				$( this ).button( "option", options );
 			});
 
+			// Botón parar y reiniciar
 			$( "#stop" ).button({
 				text: false,
 				icons: {
@@ -224,6 +227,7 @@
 				});
 			});
 
+			// Botón decrementar velocidad
 			$( "#dec_vel" ).button({
 				text: false,
 				icons: {
@@ -231,6 +235,7 @@
 				}
 			});
 
+			// Botón incrementar velocidad
 			$( "#inc_vel" ).button({
 				text: false,
 				icons: {
@@ -238,6 +243,7 @@
 				}
 			});
 
+			// Botón ir al final
 			$( "#end" ).button({
 				text: false,
 				icons: {

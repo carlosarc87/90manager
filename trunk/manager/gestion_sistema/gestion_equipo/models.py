@@ -175,19 +175,24 @@ class Equipo(models.Model):
 				lista_nombres = lista_nombres_mujeres
 				sexo = 'F'
 
+			#---------------------------------------------
 			# Establecer variables del jugador
+			#---------------------------------------------
 			nombre_aleatorio, apodo_aux = nombreJugadorAleatorio(lista_nombres, lista_apellidos)
-			fecha_nacimiento = date.today() - timedelta(randint(edad_min, edad_max) * 365) + timedelta(randint(0, 364))
 
-			# Reducir un poco el nivel máximo dependiendo de la edad
-			hoy = self.liga.fecha_ficticia_inicio.date()
-			edad = hoy - fecha_nacimiento
+			# Calcular datos de la edad del jugador
+			fecha_ficticia_inicio = self.liga.fecha_ficticia_inicio.date()
+			fecha_nacimiento = fecha_ficticia_inicio - timedelta(randint(edad_min, edad_max) * 365) + timedelta(randint(0, 364))
+			edad = fecha_ficticia_inicio - fecha_nacimiento
 			anios = (int)(edad.days / 365)
 
 			# Cada 2 años de diferencia con 28 se resta un punto al nivel máximo
 			max_nivel_jug = max_nivel - (int)(abs(28 - anios) / 2)
+			#---------------------------------------------
 
+			#---------------------------------------------
 			# Asignar variables al jugador
+			#---------------------------------------------
 			jugador = Jugador(nombre = nombre_aleatorio, apodo = apodo_aux, fecha_nacimiento = fecha_nacimiento, sexo = sexo)
 			jugador.save()
 			atributos = jugador.generarAtributos(self, dorsal, posicion, max_nivel_jug)
@@ -200,6 +205,7 @@ class Equipo(models.Model):
 
 			# Añadir jugador al equipo
 			self.agregarJugador(jugador)
+			#---------------------------------------------
 
 	def __unicode__(self):
 		return self.nombre
