@@ -1,4 +1,5 @@
 # Masculinos
+Circulares
 Cónicos
 Cuadrados
 Cúbicos
@@ -6,11 +7,16 @@ Deformes
 Elípticos
 Escalenos
 Esféricos
+Hexagonales
 Irregulares
+Lineales
+Pentagonales
 Piramidales
+Rallados
 Rectangulares
 #
 # Femeninos
+Circulares
 Cónicas
 Cuadradas
 Cúbicas
@@ -18,6 +24,10 @@ Deformes
 Elípticas
 Escalenas
 Esféricas
+Hexagonales
 Irregulares
+Lineales
+Pentagonales
 Piramidales
+Ralladas
 Rectangulares

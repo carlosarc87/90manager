@@ -1,22 +1,39 @@
 # Masculinos
 Alienígenas
+Ángeles
+Brujos
+Demonios
+Dragones
 Elfos
 Enanos
 Ents
+Espíritus
+Fantasmas
 Gigantes
+Hechiceros
 Hobbits
+Hombres lobo
+Huargos
 Humanos
 Licántropos
 Orcos
 Trolls
+Unicornios
 Vampiros
 #
 # Femeninos
 Alienígenas
+Ángeles
+Brujas
+Demonias
+Dragonas
 Elfas
 Enanas
 Ents
+Espíritus
+Fantasmas
 Gigantes
+Hechiceras
 Hobbits
 Humanas
 Licántropos

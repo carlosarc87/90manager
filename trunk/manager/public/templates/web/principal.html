@@ -7,6 +7,21 @@
 
 {% block js_extra %}
 	<script type="text/javascript">
+		var login = document.getElementById('login');
+		var recordar_clave = document.getElementById('recordar_clave');
+		var registro = document.getElementById('registro');
+
+		fechaUltimaActualizacion = "19/10/2011 21:00";
+		formato_tiempo = "%%D%% días, %%H%% horas, %%M%% minutos y %%S%% segundos.";
+		paso = +1;
+		paso = Math.ceil(paso); // Filtrico
+
+		var timeout = (Math.abs(paso) - 1) * 1000 + 990;
+		var antes = new Date(fechaUltimaActualizacion);
+		var ahora = new Date();
+		dif = new Date(ahora - antes);
+		gsegs = Math.floor(dif.valueOf() / 1000);
+		
 		// Calcula el tiempo dependiendo de num1 y num2
 		function calcularTiempo(segundos, num1, num2) {
 			s = ((Math.floor(segundos / num1)) % num2).toString();
@@ -31,17 +46,6 @@
 			setTimeout("contadorDesactualizado(" + (segundos + paso) + ")", timeout);
 		}
 
-		fechaUltimaActualizacion = "04/03/2011 17:16";
-		formato_tiempo = "%%D%% días, %%H%% horas, %%M%% minutos y %%S%% segundos.";
-		paso = +1;
-		paso = Math.ceil(paso); // Filtrico
-
-		var timeout = (Math.abs(paso) - 1) * 1000 + 990;
-		var antes = new Date(fechaUltimaActualizacion);
-		var ahora = new Date();
-		dif = new Date(ahora - antes);
-		gsegs = Math.floor(dif.valueOf() / 1000);;
-
 		function aleatorio(inferior, superior){
 			numPosibilidades = superior - inferior
 			aleat = Math.random() * numPosibilidades
@@ -54,14 +58,11 @@
 		r_text.push("404 - Gracia not found.");
 		r_text.push("Ahora con más lechuga.");
 		r_text.push("Alt + F4 no activa los trucos.");
-		//r_text.push("Aunque un roedor pudiera roer robles, no tendría por qué roer robles si pudiera roer robles, asi que un roedor no roería robles porque pudiera roer una cantidad de robles.");
 		r_text.push("Chuck no está entre los nombres de jugadores.");
 		r_text.push("¡Con efectos especiales!");
 		r_text.push("¡Con jugadores tan famosos como Eufemio Teunuco Malvérez de la Fuente!");
-		r_text.push("Con más fallos que Aula-BD.");
 		r_text.push("¿Documentación? ¿Qué es eso?");
 		r_text.push("El 90 de 90manager es un secreto.");
-		//r_text.push("El 99% de la diversión de la página consiste en clickar aquí");
 		r_text.push("El único proyecto de un juego de fútbol que puede aburrir a las masas en sus presentaciones.");
 		r_text.push("En 90manager todo es posible.");
 		r_text.push("En Abril, errores mil.");
@@ -73,31 +74,19 @@
 		r_text.push("¿Galletillas saladas?");
 		r_text.push("¡GOOOOOL!");
 		r_text.push("Hay webs que presumen que no van en Internet Explorer 6. En la nuestra ni hemos probado.");
-		//r_text.push("Hola, soy Edu. Feliz navidad.");
 		r_text.push("Hoy hace buen día para jugar a 90manager");
 		r_text.push("¡HTML 5 POWER!");
-		//r_text.push("IDDQD Forever.");
-		//r_text.push("In Soviet Russia 90manager plays you!");
 		r_text.push("¡Instalable con diskettes de 3'5!");
-		r_text.push("JJ se nos frustró por las cervezas del hackathón.");
 		r_text.push("Juanmi se aburre mucho y crea estos mensajicos.");
-		r_text.push("La OSL-UGR nos prometió mujeres por meternos en el concurso. ¿Para cuándo?");
-		r_text.push("Las tostadas de tomate de la cafetería de la ETSIIT son lo mejor.");
-		//r_text.push("Limones, limones everywhere.");
 		r_text.push("Logro desbloqueado: Ver este mensaje.");
-		r_text.push("No tendremos al gato cebolla, al pollo, o a las barbacoas, pero tenemos al Juanmi que como mascota vale.");
 		r_text.push("No tenemos los derechos de Crisóstomo Amaranto, pero tampoco hay derecho de que alguien se llame así.");
-		//r_text.push("Patrocinado por Hostelería Silma, que nos hace tartas porque es el único rato que estamos callados.");
-		r_text.push("¡Pino, resucita!");
 		r_text.push("Programado a mano.");
 		r_text.push("Pulse [aquí] para recibir su fortuna.");
 		r_text.push("¡Qué ganas de que llegue el verano!");
-		//r_text.push("Sacaremos gorricos para el Team Fortress 2.");
 		r_text.push("Si ves algo sin validar correctamente, Carlos lo sabrá.");
 		r_text.push("Sí, nosotros también nos entretenemos clickando en esto.");
 		r_text.push("Tan sencillo como comerse un bocadillo.");
 		r_text.push("Tiene nombres mil... tiene nombres mil...");
-		//r_text.push("Un día de estos nos dá por implementar el recordar contraseña...");
 
 		var num_mensajicos = r_text.length;
 
@@ -121,36 +110,32 @@
 
 		// Al terminar de cargar la pagina cargar un mensajico
 		$(document).ready(function(){
-		   cargarMensajico(document.getElementById("mensajico"));
-		   contadorDesactualizado(gsegs);
-		   {% if form_reg.errors %}
-			var login = document.getElementById('login');
-			var registro = document.getElementById('registro');
-
-			$(login).fadeToggle(0, function(){
-				$(registro).fadeToggle(0, "linear");
-			})
-		   {% endif %}
+			cargarMensajico(document.getElementById("mensajico"));
+			contadorDesactualizado(gsegs);
+			{% if form_reg.errors %}
+				mostrarRegistro();
+			{% endif %}
 		});
 
-		/* Oculta la caja del login y muestra el registro */
-		function mostrarRegistro(){
-			var login = document.getElementById('login');
-			var registro = document.getElementById('registro');
-
-			$(login).fadeToggle(300, function(){
-				$(registro).fadeToggle(300, "linear");
-			})
+		/* Muestra la caja de login */
+		function mostrarLogin(){
+			$(recordar_clave).hide();
+			$(registro).hide();
+			$(login).fadeIn(300, "linear");
 		}
 
-		/* Oculta la caja del registro y muestra el login */
-		function mostrarLogin(){
-			var login = document.getElementById('login');
-			var registro = document.getElementById('registro');
+		/* Muestra la caja de recordar clave */
+		function mostrarRecordarClave(){
+			$(login).hide();
+			$(registro).hide();
+			$(recordar_clave).fadeIn(300, "linear");
+		}
 
-			$(registro).fadeToggle(300, function(){
-				$(login).fadeToggle(300, "linear");
-			})
+		/* Muestra la caja de registro */
+		function mostrarRegistro(){
+			$(login).hide();
+			$(recordar_clave).hide();
+			$(registro).fadeIn(300, "linear");
 		}
 
 		/* Para el funcionamiento de tema css con jquery */
@@ -192,7 +177,7 @@
 					<li id="caja_clave">
 						<label for="login_password">Contraseña</label>
 						<input id="login_password" type="password" name="login_password" value="" maxlength="50" tabindex="2" />
-						<a href="/cuentas/password/recordar/" tabindex="5">Recordar contraseña</a>
+						<a href="#" onclick="mostrarRecordarClave();" tabindex="5">Recordar contraseña</a>
 					</li>
 
 					<!-- Boton entrar -->
@@ -257,6 +242,33 @@
 				<div id="caja_boton_registro">
 					<input type="submit" name="registrar_usuario" value="Registrar" tabindex="4" />
 				</div>
+			</form>
+		</div>
+		
+		<div id="recordar_clave">
+			<!-- Login -->
+			<p id="volver_login"><a href="#" onclick="mostrarLogin();">Volver a Login</a></p>
+			
+			{% if recordar_clave_error %}
+				<p class="texto_error">{{ recordar_clave_error }}</p>
+			{% endif %}
+
+			<form class="form1" action="/" method="post">
+				{% csrf_token %}
+				<ul>
+					<!-- E-mail -->
+					<li id="contenido_email">
+						<label for="id_email">E-Mail:</label>
+						<div id="caja_email">
+							<input id="id_email" type="text" name="email" value="" maxlength="100" tabindex="1" />
+						</div>
+					</li>
+
+					<!-- Boton entrar -->
+					<li id="caja_enviar_clave">
+						<input id="boton_enviar_clave" type="submit" name="enviar_clave" value="Aceptar" tabindex="2" />
+					</li>
+				</ul>
 			</form>
 		</div>
 	</div>

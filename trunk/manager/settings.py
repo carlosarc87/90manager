@@ -8,9 +8,6 @@ try:
 	import personales
 except: # No hay personales, cargar config por defecto
 	vper = None
-	for i in range(20):
-		print "POLLOS"
-	print "Ahora vas y te quejas carliños"
 else: # Hay personales, cargar configuracion de allí
 	vper = personales.datos_personales
 

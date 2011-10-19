@@ -262,7 +262,7 @@ class AlineacionEquipo(models.Model):
 			if(posicion == "DF"):
 				valor += (ataque * 0.25)
 			elif(posicion == "CC"):
-				valor += (ataque * 0.75)
+				valor += (ataque * 0.5)
 			elif(posicion == "DL"):
 				valor += ataque
 
@@ -280,7 +280,7 @@ class AlineacionEquipo(models.Model):
 			if(posicion == "DF"):
 				valor += defensa
 			elif(posicion == "CC"):
-				valor += (defensa * 0.75)
+				valor += (defensa * 0.5)
 			elif(posicion == "DL"):
 				valor += (defensa * 0.25)
 
@@ -311,10 +311,11 @@ class AlineacionEquipo(models.Model):
 		for t in titulares:
 			posicion = t.posicion
 			velocidad = t.atributos.velocidad
+			
 			if(posicion == "DF"):
 				valor += (velocidad * 0.5)
 			elif(posicion == "CC"):
-				valor += velocidad
+				valor += (velocidad * 0.5)
 			elif(posicion == "DL"):
 				valor += (velocidad * 0.5)
 
@@ -329,11 +330,11 @@ class AlineacionEquipo(models.Model):
 			posicion = t.posicion
 			anotacion = t.atributos.anotacion
 			if(posicion == "DF"):
-				valor += (int)(anotacion * 0.25)
+				valor += (anotacion * 0.25)
 			elif(posicion == "CC"):
-				valor += (int)(anotacion * 0.75)
+				valor += (anotacion * 0.5)
 			elif(posicion == "DL"):
-				valor += anotacion
+				valor += (anotacion * 0.5)
 
 		if len(titulares) == 0:
 			return 0

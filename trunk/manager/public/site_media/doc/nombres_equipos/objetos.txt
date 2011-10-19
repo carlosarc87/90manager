@@ -1,4 +1,5 @@
 # Masculinos
+Altavoces
 Aviones
 Ceniceros
 Cepillos
@@ -8,6 +9,7 @@ Imanes
 Lápices
 Látigos
 Monitores
+Palos
 Pantalones
 Peines
 Relojes
@@ -15,6 +17,7 @@ Tanques
 Teclados
 Teléfonos
 Tenedores
+Visturíes
 #
 # Femeninos
 Bombillas
@@ -41,6 +44,7 @@ Papeleras
 Pistolas
 Porras
 Pulseras
+Raquetas
 Sombrillas
 Zapatillas
 Zapatos

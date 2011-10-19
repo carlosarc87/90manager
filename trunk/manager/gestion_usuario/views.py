@@ -48,7 +48,8 @@ def principal(request):
 	form_reg = ""
 	login_error = None
 	if request.method == 'POST':
-		if "login_username" in request.POST:
+		# Formulario de acceso
+		if "login" in request.POST:
 			username = request.POST['login_username']
 			password = request.POST['login_password']
 			user = authenticate(username=username, password=password)
@@ -60,7 +61,12 @@ def principal(request):
 					login_error = "El usuario no ha sido activado aun"
 			else:
 				login_error = "Datos de loggeo inválidos"
-
+				
+		# Formulario de recordar clave
+		elif "enviar_clave" in request.POST:
+			email = request.POST['email']
+		
+		# Formulario de registro
 		else:
 			form_reg = UsuarioForm(request.POST)
 			if form_reg.is_valid():
@@ -95,7 +101,6 @@ def principal(request):
 					mensaje += 'Para activar la cuenta, haz click en el siguiente link: '
 					mensaje += URL_PROPIA + 'cuentas/confirmar/' + clave + '/' +'\n'
 					mensaje += 'La clave expirará en 48 horas.\n'
-					mensaje += 'Muchas gracias de huevo, digo nuevo.\n'
 
 					send_mail(asunto, mensaje, 'noreply@90manager.com', [usuario.email])
 

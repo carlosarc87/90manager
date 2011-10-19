@@ -107,7 +107,8 @@ def nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2):
 def generarSiglasNombre(nombre_equipo):
 	""" Devuelve unas siglas para el nombre dado """
 	# Separar el nombre del equipo en partes a partir de los espacios
-	nombre_equipo = quitar_caracteres_raros(nombre_equipo.upper())
+	nombre_equipo = quitar_caracteres_raros(nombre_equipo)
+	nombre_equipo = nombre_equipo.upper()
 	partes = nombre_equipo.split(" ")
 	num_partes = len(partes)
 	

@@ -1,3 +1,8 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+
 a{
 	color: #000055;
 	text-decoration: none;
@@ -24,9 +29,29 @@ body{
 h1, h2, h3, h4{
 	background: #fff url('../css/custom-theme-redmond/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png') 0% 50% repeat-x;
 	border: solid 1px #4297d7;
-	margin: 0px 0px 10px 0px;
+	margin-bottom: 10px;
 	padding: 5px 0px;
 	text-align: center;
+}
+
+h1{
+	font-size: 2.4em;
+}
+
+h2{
+	font-size: 2.0em;
+}
+
+h3{
+	font-size: 1.6em;
+}
+
+h4{
+	font-size: 1.2em;
+}
+
+ul{
+	padding-left: 15px;
 }
 
 /* footer */
