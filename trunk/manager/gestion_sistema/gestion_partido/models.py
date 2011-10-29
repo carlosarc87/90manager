@@ -178,6 +178,8 @@ class AlineacionEquipo(models.Model):
 
 	def setAleatoria(self):
 		jugadores_equipo = self.equipo.atributosvariablesjugador_set.all()
+		
+		# Ordenar jugadores por valor de mercado de mayor a menor
 		jugadores_equipo = sorted(jugadores_equipo, key = lambda atributosvariablesjugador : atributosvariablesjugador.valorMercado(), reverse = True)
 
 		# Listas para guardar jugadores por posición y poder obtener luego los mejores
@@ -197,57 +199,70 @@ class AlineacionEquipo(models.Model):
 				lista_DL.append(jug)
 
 		# Comprobar qué formación es con la que el equipo tiene mejor valor
-		# 1 PO, 3-5 DF, 2-5 CC, 1-5 DL
-		#max_DF = 5
-		#max_CC = 5
-		#max_DL = 5
+		# --------------------------------------------------------------
+		# Formaciones posibles
+		# 3-4-3
+		# 3-5-2
+		# 4-3-3
+		# 4-4-2
+		# 4-5-1
+		# 5-3-2
+		# 5-4-1
+		
+		lista_formaciones = [[3, 4, 3], [3, 5, 2], [4, 3, 3], [4, 4, 2], [4, 5, 1], [5, 3, 2], [5, 4, 1]];
+		# --------------------------------------------------------------
+		
+		# Algoritmo a seguir:
+		# 1. Obtener datos de la siguiente formación de la lista.
+		# 2. Calcular valores de la formación con los mejores jugadores.
+		# 3. Si el valor total de la formación es mejor al de la mejor ya encontrada, sustituirla.
+		
+		mejor_formacion = lista_formaciones[0];
+		valor_mejor_formacion = 0;
+		num_formaciones = len(lista_formaciones);
+		
+		# Calcular mejor formación a partir de los valores de los jugadores en cada una.
+		for formacion in lista_formaciones:
+			valor_formacion = 0;
+			
+			for i in range(0, formacion[0]):
+				valor_formacion += lista_DF[i].valorMercado("DEFENSA");
+				
+			for i in range(0, formacion[1]):
+				valor_formacion += lista_CC[i].valorMercado("CENTROCAMPISTA");
+				
+			for i in range(0, formacion[2]):
+				valor_formacion += lista_DL[i].valorMercado("DELANTERO");
+				
+			if valor_formacion > valor_mejor_formacion:
+				mejor_formacion = formacion;
+				valor_mejor_formacion = valor_formacion;
 
-		#mejor = []
-
-		# De momento poner una 4-4-2 con los jugadores que haya
+		# Establecer formación
 		if len(lista_PO) > 0:
 			jugador = JugadorPartido(atributos = lista_PO.pop(0), posicion = JugadorPartido.PORTERO)
 			jugador.save()
 			self.jugadores.add(jugador)
 
-		for i in range(0, 4):
+		for i in range(0, mejor_formacion[0]):
 			if len(lista_DF) > 0:
 				jugador = JugadorPartido(atributos = lista_DF.pop(0), posicion = JugadorPartido.DEFENSA)
 				jugador.save()
 				self.jugadores.add(jugador)
 
-		for i in range(0, 4):
+		for i in range(0, mejor_formacion[1]):
 			if len(lista_CC) > 0:
 				jugador = JugadorPartido(atributos = lista_CC.pop(0), posicion = JugadorPartido.CENTROCAMPISTA)
 				jugador.save()
 				self.jugadores.add(jugador)
 
-		for i in range(0, 2):
+		for i in range(0, mejor_formacion[2]):
 			if len(lista_DL) > 0:
 				jugador = JugadorPartido(atributos = lista_DL.pop(0), posicion = JugadorPartido.DELANTERO)
 				jugador.save()
 				self.jugadores.add(jugador)
-
-		# Colocar DF
-		#for DF in range(3, max_DF + 1):
-			#alineacion = []
-			#for i in range(0, DF):
-				#mejor.append(defensas)
-
-			#num_jug_colocados = 1 + DF
-
-			## Colocar CC
-			#for CC in range(2, max_CC + 1):
-				#num_jug_colocados += CC
-
-				## Calcular máximo de DL que se pueden colocar
-				#DL = 11 - num_jug_colocados
-
-				## Colocar DL
-				#print DF + '-' + CC + '-' + DL + ' = ' + valor_alineacion
-
-					# Calcular valor de la alineación
-
+				
+	# FIN setAleatoria
 
 	def estaPreparada(self):
 		return len(self.jugadores.all()) > 0
@@ -421,7 +436,7 @@ class Partido(Evento):
 		# Inicializar variables para el partido
 		# --------------------------------------
 		# Se incrementa un 10% la moral de los locales
-		moral = [(1 + ((alineacion[0].getValorMoral() - 50) / 500.0))  * 1.1, 1 + ((alineacion[1].getValorMoral() - 50) / 500.0)]
+		moral = [(1 + ((alineacion[0].getValorMoral() - 50) / 500.0)) * 1.1, 1 + ((alineacion[1].getValorMoral() - 50) / 500.0)]
 
 		ataque = [(int) (alineacion[0].getValorAtaque() * moral[0]), (int) (alineacion[1].getValorAtaque() * moral[1])]
 		defensa = [(int) (alineacion[0].getValorDefensa() * moral[0]), (int) (alineacion[1].getValorDefensa() * moral[1])]
@@ -432,10 +447,11 @@ class Partido(Evento):
 
 		# --------------------------------------
 
-		los_gatos_nos_dominaran = True
-		if not los_gatos_nos_dominaran:
+		mostrar_datos = True
+		if not mostrar_datos:
 			print "-------------------------------------------"
 			print alineacion[0].equipo.nombre
+			print "Moral: " + str(moral[0])
 			print "Ataque: " + str(ataque[0])
 			print "Defensa: " + str(defensa[0])
 			print "Pases: " + str(pases[0])
@@ -444,6 +460,7 @@ class Partido(Evento):
 			print "Portero: " + str(portero[0])
 			print "-------------------------------------------"
 			print alineacion[1].equipo.nombre
+			print "Moral: " + str(moral[1])
 			print "Ataque: " + str(ataque[1])
 			print "Defensa: " + str(defensa[1])
 			print "Pases: " + str(pases[1])
@@ -491,9 +508,9 @@ class Partido(Evento):
 
 				# Crear jugada
 				num_acciones = (randint(2, 18) + randint(2, 18) + randint(2, 18)) / 3
-				seg_accion = 2 + (int)((100.0 - velocidad[id_equipo_atacante]) / 10) + randint(0, 2)
+				seg_accion = 1 + (int)((100.0 - velocidad[id_equipo_atacante]) / 10) + randint(0, 2)
 
-				if num_acciones <= 4:
+				if num_acciones <= 5:
 					suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.CONTRAATAQUE, equipo = equipo_suceso)
 					suceso.save()
 
@@ -624,6 +641,7 @@ class Partido(Evento):
 			clasificacion_local.puntos += 1
 			clasificacion_visitante.puntos += 1
 
+		# Crear notificación
 		if self.equipo_local.usuario:
 			notificar(self.equipo_local.usuario, tipo = Notificacion.PARTIDO_FINALIZADO, identificador = self.id, liga = self.equipo_local.liga)
 

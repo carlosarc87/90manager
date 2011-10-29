@@ -67,10 +67,22 @@ class Jornada(Evento):
 				clasificacion_visitante.save()
 
 	def jugarPartidosRestantes(self):
+		import time
 		''' Juega todos los partidos de la jornada que no se han finalizado '''
 		partidos = self.partido_set.filter(jugado = False)
+		num_partidos = len(partidos)
+		suma_tiempo = 0
 		for partido in partidos:
+			ini = time.time()
 			partido.jugar()
+			fin = time.time()
+			total = fin - ini
+			suma_tiempo += total
+			print 'Tiempo en jugar el partido: ' + str(total)
+		
+		if num_partidos > 0:
+			print 'Promedio tiempo jornada: ' + str(suma_tiempo / num_partidos)
+		
 		self.jugada = True
 		self.save()
 
