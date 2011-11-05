@@ -109,7 +109,7 @@
 
 #tabla_otros_datos{
 	margin: 10px auto;
-	width: 300px;
+	width: 400px;
 }
 
 #tabla_habilidades_juego{
@@ -148,6 +148,11 @@
 
 .fila_mejor_posicion{
 	font-weight: bold;
+}
+
+.nivel{
+	color: #aa5500;
+	text-align: right;
 }
 
 .rendimiento{

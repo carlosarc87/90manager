@@ -22,7 +22,9 @@
 		{% if subasta %}
 			<button onclick="location.href='/mercado/subastas/ver/{{ subasta.id }}/'">Ver Subasta</button>
 		{% else %}
-			<button onclick="location.href='/mercado/subastas/crear/'">Subastar</button>
+			{% if equipo.usuario == usuario %}
+				<button onclick="location.href='/mercado/subastas/crear/'">Subastar</button>
+			{% endif %}
 		{% endif %}
 	</div>
 
@@ -291,6 +293,7 @@
 		<thead>
 			<tr>
 				<th>Posición</td>
+				<th>Nivel</td>
 				<th>Valor</td>
 				<th>Rendimiento</td>
 			</tr>
@@ -303,6 +306,7 @@
 				<tr>
 			{% endif %}
 					<td>Portero</td>
+					<td class="nivel">{{ nivel_PO }}</td>
 					<td class="valor_mercado">{{ valorMercado_PO }} &euro;</td>
 					<td class="rendimiento">{{ rendimiento_PO }} %</td>
 				</tr>
@@ -314,6 +318,7 @@
 				<tr>
 			{% endif %}
 					<td>Defensa</td>
+					<td class="nivel">{{ nivel_DF }}</td>
 					<td class="valor_mercado">{{ valorMercado_DF }} &euro;</td>
 					<td class="rendimiento">{{ rendimiento_DF }} %</td>
 				</tr>
@@ -325,6 +330,7 @@
 				<tr>
 			{% endif %}
 					<td>Centrocampista</td>
+					<td class="nivel">{{ nivel_CC }}</td>
 					<td class="valor_mercado">{{ valorMercado_CC }} &euro;</td>
 					<td class="rendimiento">{{ rendimiento_CC }} %</td>
 				</tr>
@@ -336,6 +342,7 @@
 				<tr>
 			{% endif %}
 					<td>Delantero</td>
+					<td class="nivel">{{ nivel_DL }}</td>
 					<td class="valor_mercado">{{ valorMercado_DL }} &euro;</td>
 					<td class="rendimiento">{{ rendimiento_DL }} %</td>
 				</tr>

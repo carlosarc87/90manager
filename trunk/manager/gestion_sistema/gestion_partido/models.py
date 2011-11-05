@@ -210,7 +210,6 @@ class AlineacionEquipo(models.Model):
 		# 5-4-1
 		
 		lista_formaciones = [[3, 4, 3], [3, 5, 2], [4, 3, 3], [4, 4, 2], [4, 5, 1], [5, 3, 2], [5, 4, 1]];
-		# --------------------------------------------------------------
 		
 		# Algoritmo a seguir:
 		# 1. Obtener datos de la siguiente formación de la lista.
@@ -237,6 +236,7 @@ class AlineacionEquipo(models.Model):
 			if valor_formacion > valor_mejor_formacion:
 				mejor_formacion = formacion;
 				valor_mejor_formacion = valor_formacion;
+		# --------------------------------------------------------------
 
 		# Establecer formación
 		if len(lista_PO) > 0:
@@ -410,8 +410,12 @@ class Partido(Evento):
 
 	@transaction.commit_on_success
 	def jugar(self):
+		import time
+		
+		ini = time.time()
 		''' Juega el partido '''
 		num_goles = [0, 0]
+		lista_sucesos = []
 
 		if not self.alineacion_local.estaPreparada():
 			self.alineacion_local.setAleatoria()
@@ -448,7 +452,7 @@ class Partido(Evento):
 		# --------------------------------------
 
 		mostrar_datos = True
-		if not mostrar_datos:
+		if mostrar_datos:
 			print "-------------------------------------------"
 			print alineacion[0].equipo.nombre
 			print "Moral: " + str(moral[0])
@@ -469,6 +473,10 @@ class Partido(Evento):
 			print "Portero: " + str(portero[1])
 			print "-------------------------------------------"
 
+		fin = time.time()
+		print 'Tiempo en cargar datos del partido: ' + str(fin - ini)
+		
+		ini = time.time()
 		# Continuar jugando mientras no se hayan acabado las 2 partes del partido
 		while(num_parte <= 2):
 			# Establecer equipo que comienza a jugar la parte
@@ -487,8 +495,7 @@ class Partido(Evento):
 			else:
 				equipo_suceso = self.equipo_visitante
 
-			suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.COMENZAR, equipo = equipo_suceso)
-			suceso.save()
+			lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.COMENZAR, equipo = equipo_suceso))
 
 			# Iniciar variables
 			seg_restantes = 45 * 60
@@ -511,8 +518,7 @@ class Partido(Evento):
 				seg_accion = 1 + (int)((100.0 - velocidad[id_equipo_atacante]) / 10) + randint(0, 2)
 
 				if num_acciones <= 5:
-					suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.CONTRAATAQUE, equipo = equipo_suceso)
-					suceso.save()
+					lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.CONTRAATAQUE, equipo = equipo_suceso))
 
 				#print "\t" + "num_acciones: " + str(num_acciones) + " (" + str(seg_accion) + " seg / accion)"
 				formula = ataque[id_equipo_atacante] / (10.0 * pases[id_equipo_atacante])
@@ -534,11 +540,9 @@ class Partido(Evento):
 							if(randint(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
 
-								suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.REGATE, valor = 0, equipo = equipo_suceso)
-								suceso.save()
+								lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.REGATE, valor = 0, equipo = equipo_suceso))
 							else:
-								suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.REGATE, valor = 1, equipo = equipo_suceso)
-								suceso.save()
+								lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.REGATE, valor = 1, equipo = equipo_suceso))
 						# Pase
 						elif p <= 100:
 							formula = (pases[id_equipo_atacante] * 2.0) / (defensa[id_equipo_defensor] + velocidad[id_equipo_defensor])
@@ -547,15 +551,12 @@ class Partido(Evento):
 							if(randint(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
 
-								suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.PASE, valor = 0, equipo = equipo_suceso)
-								suceso.save()
+								lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.PASE, valor = 0, equipo = equipo_suceso))
 							else:
-								suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.PASE, valor = 1, equipo = equipo_suceso)
-								suceso.save()
+								lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.PASE, valor = 1, equipo = equipo_suceso))
 						# Moverse con el balón
 						else:
-							suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.MOVIMIENTO_BALON, equipo = equipo_suceso)
-							suceso.save()
+							lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.MOVIMIENTO_BALON, equipo = equipo_suceso))
 
 
 					# Disparo a puerta
@@ -574,15 +575,13 @@ class Partido(Evento):
 							#print "Disparo a puerta (" + str(prob_exito) + "%) "
 							if(randint(1, 100) > prob_exito):
 								# Disparo parado
-								suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.DISPARO, valor = 1, equipo = equipo_suceso)
-								suceso.save()
+								lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.DISPARO, valor = 1, equipo = equipo_suceso))
 							# Marcar gol
 							else:
 								num_goles[id_equipo_atacante] += 1
 
 								# Gol
-								suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.GOL, equipo = equipo_suceso)
-								suceso.save()
+								lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.GOL, equipo = equipo_suceso))
 
 								# Tiempo perdido en la celebración del gol
 								seg_restantes -= 30
@@ -591,8 +590,7 @@ class Partido(Evento):
 						# Fuera
 						else:
 							# Disparo fuera
-							suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.DISPARO, valor = 0, equipo = equipo_suceso)
-							suceso.save()
+							lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.DISPARO, valor = 0, equipo = equipo_suceso))
 
 							seg_descuento += 10
 
@@ -610,36 +608,19 @@ class Partido(Evento):
 						min_descuento = 1 + (seg_descuento / 60)
 						seg_restantes += ((min_descuento * 60) + randint(0, 30))
 
-						suceso = Suceso(partido = self, segundo_partido = segundos_jugados - (segundos_jugados % 60), tipo = Suceso.TIEMPO_DESCUENTO, valor = min_descuento, equipo = equipo_suceso)
-						suceso.save()
+						lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados - (segundos_jugados % 60), tipo = Suceso.TIEMPO_DESCUENTO, valor = min_descuento, equipo = equipo_suceso))
 					else:
-						suceso = Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.FIN_PARTE, valor = num_parte, equipo = equipo_suceso)
-						suceso.save()
+						lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.FIN_PARTE, valor = num_parte, equipo = equipo_suceso))
 
 			num_parte += 1
 
+		fin = time.time()
+		print 'Tiempo en simular el partido: ' + str(fin - ini)
+		
+		ini = time.time()
 		self.goles_local = num_goles[0]
 		self.goles_visitante = num_goles[1]
 		self.jugado = True
-
-		# Actualizar datos de la clasificacion dependiendo del ganador
-		clasificacion_local = self.jornada.getClasificacionEquipo(self.equipo_local)
-		clasificacion_visitante = self.jornada.getClasificacionEquipo(self.equipo_visitante)
-
-		# Actualizar los goles
-		clasificacion_local.goles_favor += self.goles_local
-		clasificacion_local.goles_contra += self.goles_visitante
-		clasificacion_visitante.goles_favor += self.goles_visitante
-		clasificacion_visitante.goles_contra += self.goles_local
-
-		# Actualizar las puntuaciones
-		if (self.goles_local > self.goles_visitante):
-			clasificacion_local.puntos += 3
-		elif (self.goles_local < self.goles_visitante):
-			clasificacion_visitante.puntos += 3
-		else:
-			clasificacion_local.puntos += 1
-			clasificacion_visitante.puntos += 1
 
 		# Crear notificación
 		if self.equipo_local.usuario:
@@ -649,9 +630,12 @@ class Partido(Evento):
 			notificar(self.equipo_visitante.usuario, tipo = Notificacion.PARTIDO_FINALIZADO, identificador = self.id, liga = self.equipo_local.liga)
 
 		# Guardar los cambios
-		clasificacion_local.save()
-		clasificacion_visitante.save()
 		self.save()
+		
+		fin = time.time()
+		print 'Tiempo en guardar datos del partido: ' + str(fin - ini)
+		
+		return lista_sucesos
 
 	def __unicode__(self):
 		''' Devuelve una cadena de texto que representa la clase '''
@@ -662,24 +646,24 @@ class Partido(Evento):
 class Suceso(models.Model):
 	''' Representa un suceso de un partido (gol, falta, etc) '''
 	COMENZAR = 100
+	FIN_PARTE = 101
+	TIEMPO_DESCUENTO = 102
 	MOVIMIENTO_BALON = 200
 	CONTRAATAQUE = 201
 	REGATE = 300
 	PASE = 301
 	DISPARO = 400
 	GOL = 666
-	TIEMPO_DESCUENTO = 102
-	FIN_PARTE = 101
 
 	TIPO_SUCESOS = (
 		(COMENZAR, 'Comienza equipo'),
+		(FIN_PARTE, 'Fin de la parte'),
+		(TIEMPO_DESCUENTO, 'Tiempo de descuento'),
 		(MOVIMIENTO_BALON, 'Movimiento del balon'),
 		(CONTRAATAQUE, 'Contrataque'),
 		(REGATE, 'Regate'),
 		(PASE, 'Pase'),
 		(DISPARO, 'Disparo'),
-		(TIEMPO_DESCUENTO, 'Tiempo de descuento'),
-		(FIN_PARTE, 'Fin de la parte'),
 		(GOL, 'Gol'),
 	)
 	segundo_partido = models.PositiveIntegerField(null = True, blank = True)

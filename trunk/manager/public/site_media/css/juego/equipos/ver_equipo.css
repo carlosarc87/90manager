@@ -41,7 +41,7 @@
 
 #tabla_jugadores{
 	margin: 20px auto;
-	width: 600px;
+	width: 700px;
 }
 
 .col_edad_jug{
@@ -51,6 +51,11 @@
 .col_mejorPosicion_jug{}
 
 .col_nombre_jug{}
+
+.col_nivel_jug{
+	color: #aa5500;
+	text-align: right;
+}
 
 .col_numero_jug{
 	color: #5555aa;

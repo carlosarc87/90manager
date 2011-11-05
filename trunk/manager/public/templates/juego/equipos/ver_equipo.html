@@ -34,12 +34,24 @@
 		<caption>Datos del equipo</caption>
 		<tbody>
 			{% if jugadores %}
+				<!-- Edad media del equipo -->
 				<tr>
 					<th>Edad media del equipo</td>
 					<td>{{ edad_media_equipo }} años</td>
 				</tr>
+				<!-- Nivel medio del equipo -->
+				<tr>
+					<th>Nivel medio del equipo</td>
+					<td>{{ nivel_medio_equipo }}</td>
+				</tr>
 			{% endif %}
 			
+			<!-- Valor del equipo -->
+			<tr>
+				<th>Valor del equipo</td>
+				<td>{{ valor_equipo }} &euro;</td>
+			</tr>
+			<!-- Dinero actual -->
 			<tr>
 				<th>Dinero actual</td>
 				<td>{{ equipo.dinero }} &euro;</td>
@@ -58,14 +70,9 @@
 					<td>Nombre</td>
 					<td>Edad</td>
 					<td>Valor (&euro;)</td>
+					<td>Nivel</td>
 				</tr>
 			</thead>
-			<tfoot>
-				<tr>
-					<td colspan="4" id="col_texto_valor_equipo">Valor total del equipo</td>
-					<td id="col_valor_equipo">{{ valor_equipo }}</td>
-				</tr>
-			</tfoot>
 			<tbody>
 				{% for jugador in jugadores %}
 					<tr>
@@ -74,6 +81,7 @@
 						<td class="col_nombre_jug"><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></td>
 						<td class="col_edad_jug">{{ jugador.anios }} años y {{ jugador.dias }} días</td>
 						<td class="col_valorMercado_jug">{{ jugador.valorMercado }}</td>
+						<td class="col_nivel_jug">{{ jugador.nivel }}</td>
 					</tr>
 				{% endfor %}
 			</tbody>

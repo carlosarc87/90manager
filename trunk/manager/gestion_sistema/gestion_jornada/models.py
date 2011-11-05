@@ -46,6 +46,7 @@ class Jornada(Evento):
 	def generarClasificacion(self):
 		''' Genera la clasificacion vacia de la jornada '''
 		from gestion_sistema.gestion_clasificacion.models import ClasificacionEquipoJornada
+		
 		partidos = self.partido_set.all()
 		if self.numero == 1: # Jornada 1
 			for partido in partidos:
@@ -68,17 +69,56 @@ class Jornada(Evento):
 
 	def jugarPartidosRestantes(self):
 		import time
+		
 		''' Juega todos los partidos de la jornada que no se han finalizado '''
 		partidos = self.partido_set.filter(jugado = False)
 		num_partidos = len(partidos)
 		suma_tiempo = 0
+		lista_sucesos = []
 		for partido in partidos:
 			ini = time.time()
-			partido.jugar()
+			# Jugar partido
+			lista_sucesos = partido.jugar()
+			
+			fin = time.time()
+			total = fin - ini
+			print 'Tiempo en jugar el partido: ' + str(total)
+			
+			# Guardar clasificacion
+			# ----------------------------------------------------------
+			# Actualizar datos de la clasificacion dependiendo del ganador
+			clasificacion_local = partido.jornada.getClasificacionEquipo(partido.equipo_local)
+			clasificacion_visitante = partido.jornada.getClasificacionEquipo(partido.equipo_visitante)
+
+			# Actualizar los goles
+			clasificacion_local.goles_favor += partido.goles_local
+			clasificacion_local.goles_contra += partido.goles_visitante
+			clasificacion_visitante.goles_favor += partido.goles_visitante
+			clasificacion_visitante.goles_contra += partido.goles_local
+
+			# Actualizar las puntuaciones
+			if (partido.goles_local > partido.goles_visitante):
+				clasificacion_local.puntos += 3
+			elif (partido.goles_local < partido.goles_visitante):
+				clasificacion_visitante.puntos += 3
+			else:
+				clasificacion_local.puntos += 1
+				clasificacion_visitante.puntos += 1
+			
+			# Guardar los cambios
+			clasificacion_local.save()
+			clasificacion_visitante.save()
+			# ----------------------------------------------------------
+			
+			# Guardar sucesos
+			for suceso in lista_sucesos:
+				suceso.save()
+			
 			fin = time.time()
 			total = fin - ini
 			suma_tiempo += total
-			print 'Tiempo en jugar el partido: ' + str(total)
+			print 'Tiempo en completar guardado del partido: ' + str(total)
+		
 		
 		if num_partidos > 0:
 			print 'Promedio tiempo jornada: ' + str(suma_tiempo / num_partidos)

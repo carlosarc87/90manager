@@ -72,6 +72,7 @@ def ver_equipo(request):
 
 	# Obtener datos de los jugadores
 	suma_edad = 0
+	suma_nivel = 0
 	valor_equipo = 0
 	for jugador in jugadores:
 		# Valor total del equipo
@@ -79,12 +80,16 @@ def ver_equipo(request):
 
 		# Edad del equipo
 		jugador.anios, jugador.dias = jugador.getEdad()
+		jugador.nivel = jugador.getNivel()
+		suma_nivel = suma_nivel + jugador.nivel
 		suma_edad = suma_edad + jugador.anios + (jugador.dias / 365.0)
 
 	if len(jugadores) > 0:
 		edad_media_equipo = "%.2f" % ((suma_edad * 1.0) / len(jugadores))
+		nivel_medio_equipo = "%.2f" % ((suma_nivel * 1.0) / len(jugadores))
 	else:
 		edad_media_equipo = 0
+		nivel_medio_equipo = 0
 
 	# Obtenemos la liga
 	liga = equipo.liga
@@ -94,7 +99,8 @@ def ver_equipo(request):
 		 "equipo" : equipo,
 		 "jugadores" : jugadores,
 		 "valor_equipo" : valor_equipo,
-		 "edad_media_equipo" : edad_media_equipo
+		 "edad_media_equipo" : edad_media_equipo,
+		 "nivel_medio_equipo" : nivel_medio_equipo
 		}
 	return generarPagina(request, "juego/equipos/ver_equipo.html", d)
 
@@ -115,30 +121,36 @@ def ver_equipo_propio(request):
 
 	# Obtener datos de los jugadores
 	suma_edad = 0
+	suma_nivel = 0
 	valor_equipo = 0
 	for jugador in jugadores:
 		# Valor total del equipo
 		valor_equipo += jugador.valorMercado()
 
 		# Edad del equipo
-		anios, dias = jugador.getEdad()
-		suma_edad = suma_edad + anios
+		jugador.anios, jugador.dias = jugador.getEdad()
+		jugador.nivel = jugador.getNivel()
+		suma_nivel = suma_nivel + jugador.nivel
+		suma_edad = suma_edad + jugador.anios + (jugador.dias / 365.0)
 
 	if len(jugadores) > 0:
-		edad_media_equipo = (suma_edad * 1.0) / len(jugadores)
+		edad_media_equipo = "%.2f" % ((suma_edad * 1.0) / len(jugadores))
+		nivel_medio_equipo = "%.2f" % ((suma_nivel * 1.0) / len(jugadores))
 	else:
 		edad_media_equipo = 0
+		nivel_medio_equipo = 0
 
 	# Obtenemos la liga
 	liga = equipo.liga
 
 	d = {"usuario" : usuario,
-				 "liga" : liga,
-				 "equipo" : equipo,
-				 "jugadores" : jugadores,
-				 "valor_equipo" : valor_equipo,
-				 "edad_media_equipo" : edad_media_equipo
-				}
+		 "liga" : liga,
+		 "equipo" : equipo,
+		 "jugadores" : jugadores,
+		 "valor_equipo" : valor_equipo,
+		 "edad_media_equipo" : edad_media_equipo,
+		 "nivel_medio_equipo" : nivel_medio_equipo
+		}
 	return generarPagina(request, "juego/equipos/ver_equipo.html", d)
 
 ########################################################################

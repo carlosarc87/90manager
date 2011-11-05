@@ -136,6 +136,9 @@ class Jugador(models.Model):
 	def setNumero(self, numero):
 		self.atributos.setNumero(numero)
 
+	def getNivel(self, posicion = None):
+		return self.atributos.getNivel(posicion)
+
 	def valorMercado(self, posicion = None):
 		return self.atributos.valorMercado(posicion)
 
@@ -263,6 +266,37 @@ class AtributosVariablesJugador(models.Model):
 	def setNumero(self, numero):
 		self.numero = numero
 
+	def getNivel(self, posicion = None):
+		if not posicion:
+			posicion = self.mejorPosicion()
+
+		if (posicion == "PORTERO"):
+			media_hab_principales = self.portero
+			media_hab_secundarias = self.pases
+			media_hab_poco_importantes = (self.ataque + self.defensa + self.velocidad + self.anotacion) / 4.0
+
+		elif (posicion == "DEFENSA"):
+			media_hab_principales = self.defensa
+			media_hab_secundarias = (self.velocidad + self.pases) / 2.0
+			media_hab_poco_importantes = (self.ataque + self.anotacion + self.portero) / 3.0
+
+		elif (posicion == "CENTROCAMPISTA"):
+			media_hab_principales = self.pases
+			media_hab_secundarias = (self.ataque + self.defensa + self.velocidad + self.anotacion) / 4.0
+			media_hab_poco_importantes = self.portero
+
+		elif (posicion == "DELANTERO"):
+			media_hab_principales = self.ataque
+			media_hab_secundarias = (self.velocidad + self.pases + self.anotacion) / 3.0
+			media_hab_poco_importantes = (self.defensa + self.portero) / 2.0
+
+		else:
+			media_hab_principales = 0
+			media_hab_secundarias = 0
+			media_hab_poco_importantes = 0
+
+		return (int)((0.8 * media_hab_principales) + (0.15 * media_hab_secundarias) + (0.05 * media_hab_poco_importantes))
+	
 	def valorMercado(self, posicion = None):
 		if not posicion:
 			posicion = self.mejorPosicion()

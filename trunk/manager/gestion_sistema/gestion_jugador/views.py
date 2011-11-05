@@ -68,12 +68,19 @@ def ver_jugador(request):
 	valorMercado_DF = jugador.valorMercado("DEFENSA")
 	valorMercado_CC = jugador.valorMercado("CENTROCAMPISTA")
 	valorMercado_DL = jugador.valorMercado("DELANTERO")
+	
+	# Nivel
+	nivel_mejor = jugador.getNivel()
+	nivel_PO = jugador.getNivel("PORTERO")
+	nivel_DF = jugador.getNivel("DEFENSA")
+	nivel_CC = jugador.getNivel("CENTROCAMPISTA")
+	nivel_DL = jugador.getNivel("DELANTERO")
 
 	# Obtener rendimiento por posición
-	rendimiento_PO = (int)((valorMercado_PO * 100) / valorMercado_mejor)
-	rendimiento_DF = (int)((valorMercado_DF * 100) / valorMercado_mejor)
-	rendimiento_CC = (int)((valorMercado_CC * 100) / valorMercado_mejor)
-	rendimiento_DL = (int)((valorMercado_DL * 100) / valorMercado_mejor)
+	rendimiento_PO = (int)((nivel_PO * 100) / nivel_mejor)
+	rendimiento_DF = (int)((nivel_DF * 100) / nivel_mejor)
+	rendimiento_CC = (int)((nivel_CC * 100) / nivel_mejor)
+	rendimiento_DL = (int)((nivel_DL * 100) / nivel_mejor)
 
 	# Obtener edad
 	anios, dias = jugador.getEdad()
@@ -92,6 +99,10 @@ def ver_jugador(request):
 				 "subasta" : subasta,
 				 "anios" : anios,
 				 "dias" : dias,
+				 "nivel_PO" : nivel_PO,
+				 "nivel_DF" : nivel_DF,
+				 "nivel_CC" : nivel_CC,
+				 "nivel_DL" : nivel_DL,
 				 "rendimiento_PO" : rendimiento_PO,
 				 "rendimiento_DF" : rendimiento_DF,
 				 "rendimiento_CC" : rendimiento_CC,

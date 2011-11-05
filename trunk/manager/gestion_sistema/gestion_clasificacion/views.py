@@ -42,8 +42,6 @@ def ver_clasificacion(request):
 
 	clasificacion = None
 
-	liga_acabada = False
-
 	# Comprobamos si la liga ha acabado
 	jornada_actual = liga.getJornadaActual()
 	jornada_anterior = None
@@ -52,18 +50,19 @@ def ver_clasificacion(request):
 	if not jornada_actual:
 		liga_acabada = True
 	else:
+		liga_acabada = False
+		
 		if jornada_actual.numero >= 2:
 			jornada_anterior = liga.getJornadas().get(numero = jornada_actual.numero)
 			clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
-			clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
+			clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: (-dato.puntos, -(dato.goles_favor-dato.goles_contra), -dato.goles_favor))
 		elif jornada_actual.numero == 1: # Generar clasificacion vacía
-			clasificacion_sin_ordenar = jornada_actual.clasificacionequipojornada_set.all()
-			clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
+			clasificacion = jornada_actual.clasificacionequipojornada_set.all()
 
 	if liga_acabada:
 		jornada_anterior = liga.getJornadas()[liga.getNumJornadas() - 1]
 		clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
-		clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: dato.puntos, reverse = True)
+		clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: (-dato.puntos, -(dato.goles_favor-dato.goles_contra), -dato.goles_favor))
 
 	if clasificacion is not None:
 		# Calcular variables extra para la clasificación
