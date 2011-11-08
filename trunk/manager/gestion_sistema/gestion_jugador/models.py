@@ -236,19 +236,19 @@ class AtributosVariablesJugador(models.Model):
 		posiciones = []
 		
 		# PORTERO
-		portero = ["PORTERO", self.valorMercado("PORTERO")]
+		portero = ["PORTERO", self.getNivel("PORTERO")]
 		posiciones.append(portero)
 
 		# DEFENSA
-		defensa = ["DEFENSA", self.valorMercado("DEFENSA")]
+		defensa = ["DEFENSA", self.getNivel("DEFENSA")]
 		posiciones.append(defensa)
 
 		# CENTROCAMPISTA
-		centrocampista = ["CENTROCAMPISTA", self.valorMercado("CENTROCAMPISTA")]
+		centrocampista = ["CENTROCAMPISTA", self.getNivel("CENTROCAMPISTA")]
 		posiciones.append(centrocampista)
 		
 		# DELANTERO
-		delantero = ["DELANTERO", self.valorMercado("DELANTERO")]
+		delantero = ["DELANTERO", self.getNivel("DELANTERO")]
 		posiciones.append(delantero)
 
 		num_posiciones = len(posiciones)
@@ -301,32 +301,19 @@ class AtributosVariablesJugador(models.Model):
 		if not posicion:
 			posicion = self.mejorPosicion()
 
-		if (posicion == "PORTERO"):
-			media_hab_principales = self.portero
-			media_hab_secundarias = self.pases
-			media_hab_poco_importantes = (self.ataque + self.defensa + self.velocidad + self.anotacion) / 4.0
-
-		elif (posicion == "DEFENSA"):
-			media_hab_principales = self.defensa
-			media_hab_secundarias = (self.velocidad + self.pases) / 2.0
-			media_hab_poco_importantes = (self.ataque + self.anotacion + self.portero) / 3.0
-
-		elif (posicion == "CENTROCAMPISTA"):
-			media_hab_principales = self.pases
-			media_hab_secundarias = (self.ataque + self.defensa + self.velocidad + self.anotacion) / 4.0
-			media_hab_poco_importantes = self.portero
-
-		elif (posicion == "DELANTERO"):
-			media_hab_principales = self.ataque
-			media_hab_secundarias = (self.velocidad + self.pases + self.anotacion) / 3.0
-			media_hab_poco_importantes = (self.defensa + self.portero) / 2.0
-
+		nivel = self.getNivel(posicion)
+		
+		# Cuanto más joven con el mismo nivel, más valor
+		anios, dias = self.jugador.getEdad()
+		if anios > 45:
+			valor_edad = 5
 		else:
-			media_hab_principales = 0
-			media_hab_secundarias = 0
-			media_hab_poco_importantes = 0
-
-		return (int)((1.15 ** media_hab_principales) + (1.1 ** media_hab_secundarias) + (1.05 ** media_hab_poco_importantes))
+			valor_edad = (50 - anios)
+		
+		# Calcular valor de mercado
+		valor_mercado = (int)(valor_edad ** (1 + (nivel * 0.05)))
+		
+		return valor_mercado
 
 	def clone(self):
 		''' Devuelve una copia de si mismo '''

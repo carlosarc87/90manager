@@ -1,7 +1,3 @@
-#tabla_equipos_registrados{
-	width: 100%;
-}
-
 /* Formulario activar liga */
 
 #contenido_boton_activar{
@@ -15,3 +11,7 @@
 }
 
 /* Fin formulario activar liga */
+
+#tabla_equipos_registrados{
+	width: 100%;
+}

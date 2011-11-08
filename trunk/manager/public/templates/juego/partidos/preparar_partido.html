@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
-    <link rel="stylesheet" href="/media/css/formularios.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="/media/css/juego/partidos/preparar_partido.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/formularios.css" />
+    <link rel="stylesheet" href="/media/css/juego/partidos/preparar_partido.css" />
 {% endblock %}
 
 {% block js_extra %}
@@ -10,6 +10,10 @@
 		window.onload = establecerDatos;
 
 		var jugador_pillado; // Jugador que se ha cogido
+		var po_situados = 0; // Numero de porteros situados en el campo
+		var df_situados = 0; // Numero de defensas situados en el campo
+		var cc_situados = 0; // Numero de centrocampistas situados en el campo
+		var dl_situados = 0; // Numero de delanteros situados en el campo
 		var jugadores_situados = 0; // Numero de jugadores situados en el campo
 		var jugadores_suplentes = 0; // Numero de jugadores situados en el banquillo
 
@@ -17,6 +21,7 @@
 		function actualizarNumeros() {
 			document.getElementById("num_jugadores_alineacion").innerHTML = jugadores_situados;
 			document.getElementById("num_jugadores_suplentes").innerHTML = jugadores_suplentes;
+			document.getElementById("formacion_actual").innerHTML = df_situados + "-" + cc_situados + "-" + dl_situados;
 		}
 
 		function getDatoLista(jugador, lista) {
@@ -117,6 +122,12 @@
 				// Jugador cogido de los titulares
 				else if (jugador_pillado.parentNode.id != "jugadores") {
 					jugadores_situados--;
+					if (jugador_pillado.parentNode.id == "fila_defensas")
+						df_situados--;
+					if (jugador_pillado.parentNode.id == "fila_centrocampistas")
+						cc_situados--;
+					if (jugador_pillado.parentNode.id == "fila_delanteros")
+						dl_situados--;
 				}
 
 				// Jugador colocado en suplentes
@@ -126,11 +137,17 @@
 				// Jugador colocado en titulares
 				else if (objeto.id != "jugadores") {
 					jugadores_situados++;
+					if (objeto.id == "fila_defensas")
+						df_situados++;
+					if (objeto.id == "fila_centrocampistas")
+						cc_situados++;
+					if (objeto.id == "fila_delanteros")
+						dl_situados++;
 				}
 
 				if (jugadores_situados > 11) {
 					jugadores_situados--;
-					alert("Mucha peña estas metiendo tu ahí, eh");
+					alert("Ya están situados los 11 jugadores máximos.\nSi quieres agregar a otro jugador, quita a alguno primero.");
 				} else {
 					var origen = jugador_pillado.parentNode;
 					var destino = objeto
@@ -155,7 +172,7 @@
 					} else if (origen.id == "fila_suplentes") {
 						lista_origen = document.getElementById("id_suplentes");
 					} else {
-						alert("OTIA")
+						alert("Has realizado un movimiento inválido")
 					}
 
 					if (destino.id == "jugadores") {
@@ -171,7 +188,7 @@
 					} else if (destino.id == "fila_suplentes") {
 						lista_destino = document.getElementById("id_suplentes");
 					} else {
-						alert("OTIAss")
+						alert("Has realizado un movimiento inválido")
 					}
 					deseleccionar(jugador_pillado, lista_origen);
 					seleccionar(jugador_pillado, lista_destino);
@@ -257,6 +274,7 @@
 				lista = document.getElementById("id_delanteros");
 				{% for j in delanteros %}
 					jugadores_situados++;
+					dl_situados++;
 					// Cogemos la caja
 					jugador = document.getElementById("jug{{ j.atributos.jugador.id }}");
 					jugador.parentNode.removeChild(jugador);
@@ -268,6 +286,7 @@
 				destino = document.getElementById("fila_portero");
 				lista = document.getElementById("id_portero");
 				jugadores_situados++;
+				po_situados++;
 				// Cogemos la caja
 				jugador = document.getElementById("jug{{ portero.atributos.jugador.id }}");
 				jugador.parentNode.removeChild(jugador);
@@ -280,6 +299,7 @@
 				lista = document.getElementById("id_centrocampistas");
 				{% for j in centrocampistas %}
 					jugadores_situados++;
+					cc_situados++;
 					// Cogemos la caja
 					jugador = document.getElementById("jug{{ j.atributos.jugador.id }}");
 					jugador.parentNode.removeChild(jugador);
@@ -293,6 +313,7 @@
 				lista = document.getElementById("id_defensas");
 				{% for j in defensas %}
 					jugadores_situados++;
+					df_situados++;
 					// Cogemos la caja
 					jugador = document.getElementById("jug{{ j.atributos.jugador.id }}");
 					jugador.parentNode.removeChild(jugador);
@@ -313,6 +334,7 @@
 					seleccionar(jugador, lista);
 				{% endfor %}
 			{% endif %}
+			
 			actualizarNumeros();
 		}
 		//--><!]]>
@@ -336,6 +358,7 @@
 
 			<div id="caja_num_jugadores_alineacion">Número de jugadores en la alineación: <span id="num_jugadores_alineacion">0</span></div>
 			<div id="caja_num_jugadores_suplentes">Número de jugadores suplentes: <span id="num_jugadores_suplentes">0</span></div>
+			<div id="caja_formacion_Actual">Formación actual: <span id="formacion_actual">0-0-0</span></div>
 
 			<div id="caja_alineacion">
 				<div id="campo_titulares">
@@ -374,9 +397,9 @@
 			</div>
 
 			<div id="jugadores"
-					ondragenter="return dragEnter(this, event)"
-					ondrop="return dragDrop(this, event)"
-					ondragover="return dragOver(this, event)">
+				ondragenter="return dragEnter(this, event)"
+				ondrop="return dragDrop(this, event)"
+				ondragover="return dragOver(this, event)">
 
 				{% for jugador in jugadores %}
 					<div class="cuadro_jugador" id="jug{{ jugador.id }}"
@@ -385,7 +408,7 @@
 							ondragend="return dragEnd(this, event)">
 						<div class="mejor_posicion_jugador">{{ jugador.siglasPosicion }}</div>
 						<div class="apodo_jugador">{{ jugador.apodo }}</div>
-						<div class="valor_jugador">{{ jugador.valorMercado }}</div>
+						<div class="valor_jugador">{{ jugador.getNivel }}</div>
 					</div>
 				{% endfor %}
 			</div>

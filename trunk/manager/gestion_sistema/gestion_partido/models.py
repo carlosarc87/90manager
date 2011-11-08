@@ -161,13 +161,6 @@ class AlineacionEquipo(models.Model):
 			return lista[0]
 		return None
 
-	#def getSuplentes(self):
-		#''' Devuelve los suplentes del equipo '''
-		#lista = self.jugadores.filter(posicion = JugadorPartido.BANQUILLO)
-		#if len(lista) > 0:
-			#return lista
-		#return None
-
 	def getDatosTitulares(self):
 		''' Devuelve los datos de los titulares '''
 		return self.jugadores.all().exclude(posicion = JugadorPartido.BANQUILLO)
@@ -217,25 +210,25 @@ class AlineacionEquipo(models.Model):
 		# 3. Si el valor total de la formación es mejor al de la mejor ya encontrada, sustituirla.
 		
 		mejor_formacion = lista_formaciones[0];
-		valor_mejor_formacion = 0;
+		nivel_mejor_formacion = 0;
 		num_formaciones = len(lista_formaciones);
 		
-		# Calcular mejor formación a partir de los valores de los jugadores en cada una.
+		# Calcular mejor formación a partir de los niveles de los jugadores en cada una.
 		for formacion in lista_formaciones:
-			valor_formacion = 0;
+			nivel_formacion = 0;
 			
 			for i in range(0, formacion[0]):
-				valor_formacion += lista_DF[i].valorMercado("DEFENSA");
+				nivel_formacion += lista_DF[i].getNivel("DEFENSA");
 				
 			for i in range(0, formacion[1]):
-				valor_formacion += lista_CC[i].valorMercado("CENTROCAMPISTA");
+				nivel_formacion += lista_CC[i].getNivel("CENTROCAMPISTA");
 				
 			for i in range(0, formacion[2]):
-				valor_formacion += lista_DL[i].valorMercado("DELANTERO");
+				nivel_formacion += lista_DL[i].getNivel("DELANTERO");
 				
-			if valor_formacion > valor_mejor_formacion:
+			if nivel_formacion > nivel_mejor_formacion:
 				mejor_formacion = formacion;
-				valor_mejor_formacion = valor_formacion;
+				nivel_mejor_formacion = nivel_formacion;
 		# --------------------------------------------------------------
 
 		# Establecer formación
@@ -423,17 +416,17 @@ class Partido(Evento):
 		if not self.alineacion_visitante.estaPreparada():
 			self.alineacion_visitante.setAleatoria()
 
-		# Obtener alineaciones de los 2 equipos
-		alineacion_local = self.alineacion_local
-		alineacion_visitante = self.alineacion_visitante
-
 		# Obtener jugadores titulares y suplentes de los 2 equipos
 		titulares_local = self.alineacion_local.getDatosTitulares()
 		suplentes_local = self.alineacion_local.getDatosSuplentes()
 		titulares_visitante = self.alineacion_visitante.getDatosTitulares()
 		suplentes_visitante = self.alineacion_visitante.getDatosSuplentes()
+		
+		# Establecer variables de partido para los jugadores
+		#for jugador in (titulares_local, suplentes_local, titulares_visitante, suplentes_visitante):
+		#	jugador.atributos_partido = jugador.atributos
 
-		alineacion = [alineacion_local, alineacion_visitante]
+		alineacion = [self.alineacion_local, self.alineacion_visitante]
 
 		num_parte = 1 # Parte de partido que se está jugando
 
@@ -488,17 +481,18 @@ class Partido(Evento):
 			else:
 				if(equipo_comienza == 0): id_equipo_atacante = 1
 				else: id_equipo_atacante = 0
-				segundos_jugados = 45 * 60
+				segundos_jugados = 2700 # 45min * 60seg/min
 
 			if id_equipo_atacante == 0:
 				equipo_suceso = self.equipo_local
 			else:
 				equipo_suceso = self.equipo_visitante
 
+			# Suceso de comienzo de parte
 			lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.COMENZAR, equipo = equipo_suceso))
 
 			# Iniciar variables
-			seg_restantes = 45 * 60
+			seg_restantes = 2700 # 45min * 60seg/min
 			seg_descuento = 0
 			tiempo_descuento = False
 
@@ -514,9 +508,11 @@ class Partido(Evento):
 					equipo_suceso = self.equipo_visitante
 
 				# Crear jugada
-				num_acciones = (randint(2, 18) + randint(2, 18) + randint(2, 18)) / 3
+				# Las jugadas tendrán entre 2 y 16 acciones, la mayoría será un valor central.
+				num_acciones = (randint(2, 16) + randint(2, 16) + randint(2, 16)) / 3
 				seg_accion = 1 + (int)((100.0 - velocidad[id_equipo_atacante]) / 10) + randint(0, 2)
 
+				# Suceso de contraataque
 				if num_acciones <= 5:
 					lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.CONTRAATAQUE, equipo = equipo_suceso))
 
@@ -529,6 +525,10 @@ class Partido(Evento):
 					#print "\t" + str(accion) + ".- "
 
 					# Realizar una de las acciones de la jugada completa
+					# Acciones posibles:
+					# - Movimiento con balón
+					# - Pase
+					# - Regate
 					if accion != num_acciones:
 						# Calcular probabilidad de que la acción sea moverse con el balón, un pase o un regate
 						p = randint(1, 120)
@@ -537,10 +537,12 @@ class Partido(Evento):
 							formula = (1.0 * ataque[id_equipo_atacante] / defensa[id_equipo_defensor])
 							prob_exito = probabilidadExito(formula)
 							#print "Regate (" + str(prob_exito) + "%) "
+							# Regate fallado
 							if(randint(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
 
 								lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.REGATE, valor = 0, equipo = equipo_suceso))
+							# Regate realizado
 							else:
 								lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.REGATE, valor = 1, equipo = equipo_suceso))
 						# Pase
@@ -548,14 +550,17 @@ class Partido(Evento):
 							formula = (pases[id_equipo_atacante] * 2.0) / (defensa[id_equipo_defensor] + velocidad[id_equipo_defensor])
 							prob_exito = probabilidadExito(formula)
 							#print "Pase (" + str(prob_exito) + "%) "
+							# Pase fallado
 							if(randint(1, 100) > prob_exito):
 								id_equipo_atacante = id_equipo_defensor
 
 								lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.PASE, valor = 0, equipo = equipo_suceso))
+							# Pase realizado
 							else:
 								lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.PASE, valor = 1, equipo = equipo_suceso))
 						# Moverse con el balón
 						else:
+							# Movimiento realizado
 							lista_sucesos.append(Suceso(partido = self, segundo_partido = segundos_jugados, tipo = Suceso.MOVIMIENTO_BALON, equipo = equipo_suceso))
 
 
@@ -672,6 +677,7 @@ class Suceso(models.Model):
 	valor = models.PositiveIntegerField(default = None, null = True, blank = True)
 
 	equipo = models.ForeignKey(Equipo)
+	#jugador = models.ForeignKey(Jugador)
 	partido = models.ForeignKey(Partido)
 
 	def getMinuto(self):
@@ -693,7 +699,7 @@ class Suceso(models.Model):
 					cadena += " realizado"
 			elif self.tipo == Suceso.PASE:
 				if self.valor == 0:
-					cadena += " interceptado"
+					cadena += " fallado"
 				elif self.valor == 1:
 					cadena += " realizado"
 			elif self.tipo == Suceso.DISPARO:

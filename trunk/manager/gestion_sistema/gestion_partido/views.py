@@ -169,8 +169,9 @@ def ver_partido(request):
 			equipo.disparos_parados = sucesos.filter(tipo = Suceso.DISPARO, valor = 1).count()
 			equipo.disparos_fuera = sucesos.filter(tipo = Suceso.DISPARO, valor = 0).count()
 			equipo.goles = sucesos.filter(tipo = Suceso.GOL).count()
+			equipo.disparos_a_puerta = equipo.goles + equipo.disparos_parados
+			equipo.disparos_totales = equipo.disparos_a_puerta + equipo.disparos_fuera
 
-			equipo.remates_puerta = equipo.goles + equipo.disparos_parados + equipo.disparos_fuera
 			equipo.balones_perdidos = equipo.regates_fallados + equipo.pases_fallados + equipo.disparos_parados + equipo.disparos_fuera
 
 		equipo_local.balones_recuperados = equipo_visitante.regates_fallados + equipo_visitante.pases_fallados + equipo_visitante.disparos_parados
@@ -183,18 +184,19 @@ def ver_partido(request):
 			equipo.porc_posesion = round((100.0 * equipo.num_acciones) / num_acciones_total, 1)
 			equipo.porc_regates_exito = round((100.0 * equipo.regates_realizados) / equipo.regates_totales, 1)
 			equipo.porc_pases_exito = round((100.0 * equipo.pases_realizados) / equipo.pases_totales, 1)
+			equipo.porc_disparos_exito = round((100.0 * equipo.disparos_a_puerta) / equipo.disparos_totales, 1)
 
 		for equipo, alineacion in ((equipo_local, partido.alineacion_local), (equipo_visitante, partido.alineacion_visitante)):
 			# Obtener datos de los titulares del equipo
 			equipo.titulares = alineacion.getDatosTitulares()
 
-			equipo.valor_titulares = 0
+			equipo.suma_nivel_titulares = 0
 			equipo.num_df = 0
 			equipo.num_cc = 0
 			equipo.num_dl = 0
 			for t in equipo.titulares:
 				# Valor total del equipo
-				equipo.valor_titulares += t.atributos.valorMercado()
+				equipo.suma_nivel_titulares += t.atributos.getNivel()
 
 				# Número de jugadores por posición
 				if t.posicion == JugadorPartido.DEFENSA:
@@ -203,8 +205,10 @@ def ver_partido(request):
 					equipo.num_cc += 1
 				elif t.posicion == JugadorPartido.DELANTERO:
 					equipo.num_dl += 1
+					
+			equipo.nivel_medio_titulares = "%.2f" % (1.0 * equipo.suma_nivel_titulares / 11)
 
-	sucesos = partido.suceso_set.filter(Q(tipo = Suceso.GOL) | Q(tipo = Suceso.FIN_PARTE) | Q(tipo = Suceso.TIEMPO_DESCUENTO) | Q(tipo = Suceso.COMENZAR))
+	sucesos = partido.suceso_set.filter(Q(tipo = Suceso.GOL) | Q(tipo = Suceso.DISPARO) | Q(tipo = Suceso.FIN_PARTE) | Q(tipo = Suceso.TIEMPO_DESCUENTO) | Q(tipo = Suceso.COMENZAR))
 
 	d = {"jornada" : jornada,
 		 "equipo_local" : equipo_local,

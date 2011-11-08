@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
-	<link rel="stylesheet" href="/media/css/formularios.css" type="text/css" />
-	<link rel="stylesheet" href="/media/css/tablas.css" type="text/css" />
-	<link rel="stylesheet" href="/media/css/juego/ligas/ver_liga.css" type="text/css" />
+	<link rel="stylesheet" href="/media/css/formularios.css" />
+	<link rel="stylesheet" href="/media/css/tablas.css" />
+	<link rel="stylesheet" href="/media/css/juego/ligas/ver_liga.css" />
 {% endblock %}
 
 {% block js_extra %}
@@ -42,6 +42,11 @@
 				$("#id_fecha_nueva").datetimepicker();
 			}
 		);
+		
+		/* Para el funcionamiento de tema css con jquery */
+		$(function() {
+			$("#boton_activar").button();
+		});
 
 	</script>
 {% endblock %}
@@ -68,6 +73,31 @@
 		{% else %}
 			<h4>FINALIZADA</h4>
 		{% endif %}
+		
+		<!-- Tabla de equipos -->
+		<table class="tabla1" id="tabla_equipos">
+			<caption>Equipos</caption>
+			{% if equipos %}
+				<tbody>
+					<tr>
+						{% for equipo in equipos %}
+							{% if equipo.terminar_fila %}
+								</tr><tr>
+							{% endif %}
+							<td {% if equipo_propio.nombre == equipo.nombre %}
+									class="linea_equipo_propio"
+								{% endif %}>
+								<a href="/equipos/ver/{{ equipo.id }}/" title="{{ equipo.nombre }}">{{ equipo.siglas }}</a>
+							</td>
+						{% endfor %}
+					</tr>
+				</tbody>
+			{% else %}
+				<tr>
+					<th>Aún no se ha añadido ningún equipo a la liga</th>
+				</tr>
+			{% endif %}
+		</table>
 
 		{% if clasificacion %}
 			<!-- Tabla clasificacion -->
@@ -199,55 +229,18 @@
 		</table>
 	{% else %}
 		<div id="activar_liga">
-			<span>La liga no está activada aún:</span>
+			<strong>La liga no está activada aún:</strong>
 			{% if es_creador %}
-				<a href="/ligas/activar/">ACTIVAR</a>
+				<button id="boton_activar" onclick="location.href='/ligas/activar/'">ACTIVAR</button>
 			{% endif %}
 		</div>
 
 		<div id="equipo_propio">
 			{% if equipo_propio %}
-				Equipo propio: <a href="/equipos/ver/{{ equipo_propio.id }}/">{{ equipo_propio.nombre }}</a>
+				<strong>Equipo propio:</strong> <a href="/equipos/ver/{{ equipo_propio.id }}/">{{ equipo_propio.nombre }}</a>
 			{% else %}
 				<b>{{ user.username }}</b> aún puede <a href="/equipos/crear/">crear un equipo</a> en esta liga.
 			{% endif %}
 		</div>
 	{% endif %}
-
-	<!-- Tabla de equipos -->
-	<table class="tabla1" id="tabla_equipos">
-		<caption>Listado de equipos</caption>
-		{% if equipos %}
-			<thead>
-				<tr>
-					<th>Nombre</th>
-					<th>Entrenador</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for equipo in equipos %}
-					<tr {% if equipo_propio.nombre == equipo.nombre %}
-							class="linea_equipo_propio"
-						{% endif %}>
-
-						<td>
-							<a href="/equipos/ver/{{ equipo.id }}/">{{ equipo.nombre }}</a>
-						</td>
-						<td>
-							{% if equipo.usuario %}
-								{{ equipo.usuario }}
-							{% else %}
-								Usuario Artificial
-							{% endif %}
-						</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		{% else %}
-			<tr>
-				<th>Aún no se ha añadido ningún equipo a la liga</th>
-			</tr>
-		{% endif %}
-	</table>
-
 {% endblock %}

@@ -43,8 +43,16 @@ from gestion_sistema.gestion_liga.models import Liga
 
 def principal(request):
 	''' Página principal del sistema '''
+	# Si el usuario está logeado
 	if request.user.is_authenticated():
 		return redireccionar("/tablon/");
+	
+	# Obtener número de usuarios registrados
+	from django.contrib.auth.models import User, UserManager
+	usuarios = Usuario.objects.all()
+	usuarios_registrados = usuarios.count
+		
+	# Formulario de registro
 	form_reg = ""
 	login_error = None
 	if request.method == 'POST':
@@ -108,7 +116,11 @@ def principal(request):
 	else:
 		form_reg = UsuarioForm()
 
-	return renderizar(request, "web/principal.html", { "form_reg" : form_reg, "login_error" : login_error })
+	return renderizar(request, "web/principal.html", {
+		"form_reg" : form_reg, 
+		"usuarios_registrados" : usuarios_registrados, 
+		"login_error" : login_error 
+	})
 
 ########################################################################
 

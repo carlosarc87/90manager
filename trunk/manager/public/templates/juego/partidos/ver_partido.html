@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
-	<link rel="stylesheet" href="/media/css/tablas.css" type="text/css" />
-    <link rel="stylesheet" href="/media/css/juego/partidos/ver_partido.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/tablas.css" />
+    <link rel="stylesheet" href="/media/css/juego/partidos/ver_partido.css" />
 {% endblock %}
 
 {% block js_extra %}
@@ -155,8 +155,15 @@
 				<!-- Remates a puerta -->
 				<tr>
 					<th>Remates a puerta</th>
-					<td class="num1">{{ equipo_local.remates_puerta }}</td>
-					<td class="num1">{{ equipo_visitante.remates_puerta }}</td>
+					<td class="num1">{{ equipo_local.disparos_a_puerta }} / {{ equipo_local.disparos_totales }} ({{ equipo_local.porc_disparos_exito }} %)</td>
+					<td class="num1">{{ equipo_visitante.disparos_a_puerta }} / {{ equipo_visitante.disparos_totales }} ({{ equipo_visitante.porc_disparos_exito }} %)</td>
+				</tr>
+
+				<!-- Paradas del portero -->
+				<tr>
+					<th>Paradas del portero</th>
+					<td class="num1">{{ equipo_local.disparos_parados }}</td>
+					<td class="num1">{{ equipo_visitante.disparos_parados }}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -171,15 +178,15 @@
 						<td>Num.</td>
 						<td>Posici&oacute;n</td>
 						<td>Nombre</td>
-						<td>Valor</td>
+						<td>Nivel</td>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
 						<td></td>
 						<td>{{ equipo_local.num_df }}-{{ equipo_local.num_cc }}-{{ equipo_local.num_dl }}</td>
-						<td>Valor total</td>
-						<td class="num1">{{ equipo_local.valor_titulares }}</td>
+						<td>Nivel medio</td>
+						<td class="num1">{{ equipo_local.nivel_medio_titulares }}</td>
 					</tr>
 				</tfoot>
 				<tbody>
@@ -188,7 +195,7 @@
 							<td class="num1">{{ titular.atributos.numero }}</td>
 							<td>{{ titular.posicion }}</td>
 							<td><a href="/jugadores/ver/{{ titular.atributos.jugador.id }}/">{{ titular.atributos.jugador.nombre }}</a></td>
-							<td class="num1">{{ titular.atributos.valorMercado }}</td>
+							<td class="num1">{{ titular.atributos.getNivel }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -202,15 +209,15 @@
 						<td>Num.</td>
 						<td>Posici&oacute;n</td>
 						<td>Nombre</td>
-						<td>Valor</td>
+						<td>Nivel</td>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
 						<td></td>
 						<td>{{ equipo_visitante.num_df }}-{{ equipo_visitante.num_cc }}-{{ equipo_visitante.num_dl }}</td>
-						<td>Valor total</td>
-						<td class="num1">{{ equipo_visitante.valor_titulares }}</td>
+						<td>Nivel medio</td>
+						<td class="num1">{{ equipo_visitante.nivel_medio_titulares }}</td>
 					</tr>
 				</tfoot>
 				<tbody>
@@ -219,7 +226,7 @@
 							<td class="num1">{{ titular.atributos.numero }}</td>
 							<td>{{ titular.posicion }}</td>
 							<td><a href="/jugadores/ver/{{ titular.atributos.jugador.id }}/">{{ titular.atributos.jugador.nombre }}</a></td>
-							<td class="num1">{{ titular.atributos.valorMercado }}</td>
+							<td class="num1">{{ titular.atributos.getNivel }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>

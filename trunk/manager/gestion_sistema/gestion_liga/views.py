@@ -69,6 +69,7 @@ def ver_liga(request):
 
 	# Obtenemos los equipos que juegan en la liga
 	equipos = liga.equipo_set.all()
+	equipos = sorted(equipos, key = lambda dato: dato.siglas)
 
 	# Obtenemos las jornadas
 	jornadas = liga.getJornadas()
@@ -105,7 +106,20 @@ def ver_liga(request):
 		equipo_propio = None
 
 	request.session['equipo_propio'] = equipo_propio
+	
+	# Para la colocación de los equipos horizontalmente
+	num_equipos = equipos.count
+	max_equipos_fila = 20
+		
+	n = 0
+	for equipo in equipos:
+		if (n % max_equipos_fila == 0) and (n != num_equipos):
+			equipo.terminar_fila = True
+		else:
+			equipo.terminar_fila = False
+		n += 1
 
+	# Si la liga está activada
 	if activada:
 		# Comprobamos si la liga ha acabado
 		jornada_actual = liga.getJornadaActual()

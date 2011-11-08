@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
-	<link rel="stylesheet" href="/media/js/tablesorter/themes/blue/style.css" type="text/css" />
-	<link rel="stylesheet" href="/media/css/juego/equipos/listar_liga.css" type="text/css" />
+	<link rel="stylesheet" href="/media/js/tablesorter/themes/blue/style.css" />
+	<link rel="stylesheet" href="/media/css/juego/equipos/listar_liga.css" />
+    <link rel="stylesheet" href="/media/css/tablas.css" />
 {% endblock %}
 
 {% block contenido %}
 	<!-- Tabla de equipos -->
-	<table class="tablesorter" id="tabla_equipos">
+	<table class="tabla1" id="tabla_equipos">
 		<caption>Listado de equipos</caption>
 		{% if equipos %}
 			<thead>

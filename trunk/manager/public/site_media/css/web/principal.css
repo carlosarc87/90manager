@@ -146,6 +146,13 @@
 	text-align: center;
 }
 
+#usuarios_registrados{
+	clear: both;
+	color: #228822;
+	padding: 5px 0px;
+	text-align: center;
+}
+
 /* fin registro */
 
 #wrap{

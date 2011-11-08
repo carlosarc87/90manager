@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
-	<link rel="stylesheet" href="/media/css/formularios.css" type="text/css" />
-	<link rel="stylesheet" href="/media/css/tablas.css" type="text/css" />
-    <link rel="stylesheet" href="/media/css/juego/ligas/activar_liga.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/formularios.css" />
+	<link rel="stylesheet" href="/media/css/tablas.css" />
+    <link rel="stylesheet" href="/media/css/juego/ligas/activar_liga.css" />
 {% endblock %}
 
 {% block js_extra %}
@@ -11,6 +11,7 @@
 		/* Para el funcionamiento de tema css con jquery */
 		$(function() {
 			$("#boton_activar").button();
+			$("#boton_eliminar").button();
 		});
 	</script>
 {% endblock %}
@@ -26,6 +27,7 @@
 				<tr>
 					<td>Equipo</td>
 					<td>Usuario</td>
+					<th><input type="checkbox" name="marcar_todos" /></th>
 				</tr>
 			</thead>
 			{% endif %}
@@ -34,6 +36,7 @@
 					<tr>
 						<td>{{ equipo.nombre }}</td>
 						<td>{{ equipo.usuario }}</td>
+						<th><input type="checkbox" name="borrar[]" /></th>
 					</tr>
 				{% empty %}
 					<tr>
@@ -45,6 +48,9 @@
 		
 		{% csrf_token %}
 		<!-- Boton activar -->
-		<div id="contenido_boton_activar"><input id="boton_activar" type="submit" value="Activar" /></div>
+		<div id="contenido_boton_activar">
+			<input id="boton_activar" type="submit" value="Activar" />
+			<input id="boton_eliminar" type="submit" value="Expulsar equipos marcados" />
+		</div>
 	</form>
 {% endblock %}

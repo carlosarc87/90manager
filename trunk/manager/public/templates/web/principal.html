@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
-    <link rel="stylesheet" href="/media/css/formularios.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="/media/css/web/principal.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/formularios.css" />
+    <link rel="stylesheet" href="/media/css/web/principal.css" />
 {% endblock %}
 
 {% block js_extra %}
@@ -156,6 +156,9 @@
 	<div id="descripcion">
 		Juego multijugador donde puedes ser entrenador y presidente de un equipo de fútbol.
 	</div>
+
+	<!-- Usuarios registrados -->
+	<div id="usuarios_registrados">{{ usuarios_registrados }} usuarios registrados</div>
 
 	<div id="div_acceso">
 		<div id="login">
