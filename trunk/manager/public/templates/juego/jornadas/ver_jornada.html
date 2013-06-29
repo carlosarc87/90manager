@@ -24,25 +24,24 @@
 {% endblock %}
 
 {% block contenido %}
+	<h2>Jornada {{ jornada.numero }}</h2>
 
-	<h2>
+	<p id="botones_jornada">
 		{% if jornada_anterior %}
 			<button id="boton_jornada_anterior" onclick="location.href='/jornadas/ver/{{ jornada_anterior.id }}/'">
 				<span>Ver Jornada {{ jornada_anterior.numero }}</span>
 			</button>
 		{% endif %}
-		
-		Datos de la jornada {{ jornada.numero }}
 	
 		{% if jornada_siguiente %}
 			<button id="boton_jornada_siguiente" onclick="location.href='/jornadas/ver/{{ jornada_siguiente.id }}/'">
 				<span>Ver Jornada {{ jornada_siguiente.numero }}</span>
 			</button>
 		{% endif %}
-	</h2>
+	</p>
 
 	{% if jornada.jugada %}
-		<h4>FINALIZADA</h4>
+		<p id="estado_jornada"><strong>FINALIZADA</strong></p>
 	{% endif %}
 
 	<table class="tabla1" id="tabla_encuentros">
@@ -113,7 +112,6 @@
 		</table>
 	{% endif %}
 
-
 	{% if clasificacion %}
 		<table class="tabla1" id="tabla_clasificacion">
 			<caption>Clasificación de la jornada</caption>
@@ -145,6 +143,6 @@
 			</tbody>
 		</table>
 	{% else %}
-		<h4>No hay clasificación disponible aún</h4>
+		<p>No hay clasificación disponible aún</p>
 	{% endif %}
 {% endblock %}

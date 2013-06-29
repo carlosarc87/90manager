@@ -1,15 +1,14 @@
 #tabla_ligas_creadas{
-	margin: 20px auto;
+	margin: 2em auto;
 	width: 500px;
 }
 
 #tabla_ligas_participando{
-	margin: 20px auto;
-	width: 700px;
+	margin: 2em auto;
 }
 
 #tabla_notificaciones{
-	margin: 20px auto;
+	margin: 2em auto;
 	width: 500px;
 }
 
@@ -24,21 +23,21 @@
 .col_nombre_liga{}
 
 .col_num_equipos{
-	color: #5555aa;
+	color: #55a;
 	text-align: right;
 }
 
 .liga_abierta{
-	color: #55aa55;
+	color: #5a5;
 	font-weight: bold;
 }
 
 .liga_comenzada{
-	color: #5555aa;
+	color: #55a;
 	font-weight: bold;
 }
 
 .liga_finalizada{
-	color: #aa5555;
+	color: #a55;
 	font-weight: bold;
 }

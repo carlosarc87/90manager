@@ -1,15 +1,15 @@
 #activar_liga{
-	margin: 10px auto;
+	margin: 2em auto;
 	width: 400px;
 }
 
 #equipo_propio{
-	margin: 10px auto;
+	margin: 2em auto;
 	width: 400px;
 }
 
 #form_ver_liga{
-	margin: 10px auto;
+	margin: 2em auto;
 	width: 400px;
 }
 
@@ -18,12 +18,12 @@
 }
 
 #tabla_clasificacion{
-	margin: 10px auto;
-	width: 600px;
+	margin: 2em auto;
+	width: 700px;
 }
 
 #tabla_equipos{
-	margin: 10px auto;
+	margin: 2em auto;
 	width: 400px;
 }
 
@@ -32,8 +32,14 @@
 }
 
 #tabla_jornadas{
-	margin: 10px auto;
-	width: 400px;
+	margin: 2em auto;
+	width: 600px;
+}
+
+#tabla_jornadas tbody td:nth-child(1),
+#tabla_jornadas tbody td:nth-child(2),
+#tabla_jornadas tbody td:nth-child(3){
+	text-align: right;
 }
 
 .jornada_jugada{

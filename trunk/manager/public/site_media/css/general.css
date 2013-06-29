@@ -54,7 +54,7 @@ ul{
 
 header{
 	margin: 0 auto;
-	width: 1000px;
+	min-width: 600px;
 }
 
 #barra_menu{
@@ -180,7 +180,7 @@ header{
 #wrap{
 	margin: 0 auto;
 	min-height: 300px;
-	width: 1000px;
+	min-width: 600px;
 }
 
 /* footer */
@@ -190,6 +190,7 @@ footer{
 	border-top: solid 1px #555;
 	clear: both;
 	font-size: .8em;
+	min-width: 600px;
 	padding: 1em;
 	text-align: center;
 }
@@ -220,3 +221,7 @@ footer{
 }
 
 /* Fin footer */
+
+.clear{
+	clear: both;
+}

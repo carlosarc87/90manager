@@ -1,30 +1,26 @@
-h2{
-	height: 40px;
-}
-
-h2 button span{
-	font-size: 0.8em;
+#botones_jornada{
+	margin: 1em;
+	text-align: center;
 }
 
 #boton_jornada_anterior{
-	float: left;
+	margin-right: 50px;
 }
 
-#boton_jornada_siguiente{
-	float: right;
+#estado_jornada{
+	text-align: center;
 }
 
 #tabla_encuentros{
-	margin: 10px auto;
-	width: 800px;
+	margin: 2em auto;
 }
 
 #tabla_clasificacion_anterior{
-	margin: 10px auto;
+	margin: 2em auto;
 	width: 500px;
 }
 
 #tabla_clasificacion{
-	margin: 10px auto;
+	margin: 2em auto;
 	width: 500px;
 }

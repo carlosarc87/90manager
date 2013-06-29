@@ -1,7 +1,7 @@
 /* Ligas publicas */
 
 #tabla_ligas_publicas{
-	margin: 20px auto;
+	margin: 2em auto;
 	width: 500px;
 }
 
@@ -9,7 +9,7 @@
 }
 
 .col_inscritos{
-	color: #5555aa;
+	color: #55a;
 	text-align: right;
 }
 

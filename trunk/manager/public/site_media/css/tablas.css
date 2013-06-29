@@ -2,9 +2,12 @@
 	background: #fff;
 	border-spacing: 1px;
 	border: solid 1px #9cf;
+	box-shadow: 0 0 5px #000;
 	color: #222;
 	font-size: .8em;
-	margin: 1em;
+	margin: 5em;
+	max-width: 100%;
+	width: 100%;
 }
 
 .tabla1 a{
@@ -14,6 +17,7 @@
 .tabla1 caption{
 	background: linear-gradient(#bbf, #ddf, #bbf);
 	border: solid 1px #99f;
+	box-shadow: 0 0 5px #000;
 	font-size: 1.5em;
 	font-weight: bold;
 	padding: .2em 0;

@@ -38,68 +38,60 @@
 	text-align: left;
 }
 
-#login ul{
-	height: 70px;
+#datos_login{
 	list-style: none;
-	margin: 0;
 	padding: 0;
 }
 
-#login li{
-	float: left;
-	padding: 5px;
+#datos_login li{
+	margin: .5em 0;
 }
 
-#login #caja_clave{
-	width: 170px;
+#datos_login .col1{
+	display: inline-block;
+	width: 150px;
 }
 
-#login #caja_clave input{
-	width: 160px;
+#nombre_usuario_login,
+#clave_login{
+	width: 200px;
 }
 
-#login #caja_entrar{
-	width: 80px;
-}
-
-#entrar{
-	margin-top: 15px;
-}
-
-#login #caja_usuario{
-	width: 170px;
-}
-
-#login #caja_usuario input{
-	width: 160px;
+#entrar_login{
+	margin-bottom: 1em;
 }
 
 /* fin login */
 
-
-/* registro */
+/* recordar clave */
 
 #recordar_clave{
 	display: none;
-	list-style: none;
 	margin: 20px auto;
 	width: 400px;
 }
 
-#recordar_clave input[type=text]{
+#recordar_clave ul{
+	list-style: none;
+	padding: 0;
+}
+
+#recordar_clave li{
+	clear: both;
+	height: 20px;
+	padding: .5em 0;
+}
+
+#recordar_clave input{
 	float: right;
-	width: 250px;
 }
 
 #recordar_clave label{
 	float: left;
-	width: 50px;
 }
 
-#recordar_clave ul{
-	list-style: none;
-	margin: 0 0 20px;
-	padding: 0;
+#email_recordar_clave{
+	width: 250px;
 }
 
 /* registro */
@@ -107,10 +99,10 @@
 #registro{
 	display: none;
 	margin: 20px auto;
-	width: 400px;
+	text-align: left;
 }
 
-#registro input[type=text], #registro input[type=password]{
+#registro input{
 	float: right;
 }
 
@@ -119,18 +111,24 @@
 	width: 150px;
 }
 
-#registro #caja_boton_registro{
-	text-align: right;
-}
-
-#registro #datos_registro{
+#datos_registro{
 	list-style: none;
-	margin: 0 0 20px;
+	margin-bottom: 2em;
 	padding: 0;
 }
 
-#registro #datos_registro li{
+#datos_registro li{
 	clear: both;
 	height: 20px;
-	padding: 5px 0;
+	padding: .5em 0;
+}
+
+#boton_registro{
+	margin-top: 1em;
+}
+
+/*************************/
+
+.volver_login{
+	text-align: center;
 }

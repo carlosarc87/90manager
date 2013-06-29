@@ -167,24 +167,24 @@
 
 			<form class="form1" action="/" method="post">
 				{% csrf_token %}
-				<ul>
-					<!-- Usuario -->
-					<li id="caja_usuario">
-						<label for="login_username">Usuario</label>
-						<input id="login_username" type="text" name="login_username" value="" maxlength="50" tabindex="1" />
-						<a href="#" onclick="mostrarRegistro();" tabindex="4">Registro</a>
+				<ul id="datos_login">
+					<li>
+						<label for="nombre_usuario_login" class="col1">Usuario</label>
+						<input type="text" name="login_username" id="nombre_usuario_login" value="" maxlength="50" tabindex="1" required />
 					</li>
-
-					<!-- Clave -->
-					<li id="caja_clave">
-						<label for="login_password">Contraseña</label>
-						<input id="login_password" type="password" name="login_password" value="" maxlength="50" tabindex="2" />
-						<a href="#" onclick="mostrarRecordarClave();" tabindex="5">Recordar contraseña</a>
+					<li>
+						<label for="clave_login" class="col1">Contraseña</label>
+						<input type="password" name="login_password" id="clave_login" value="" maxlength="50" tabindex="2" required />
 					</li>
-
-					<!-- Boton entrar -->
-					<li id="caja_entrar">
-						<input id="entrar" type="submit" name="login" value="Entrar" tabindex="3" />
+					<li>
+						<div class="col1"></div>
+						<input type="submit" name="login" id="entrar_login" value="Entrar" tabindex="3" />
+					</li>
+					<li>
+						<div class="col1">
+							<a href="#" id="enlace_login_registro" onclick="mostrarRegistro();" tabindex="4">Registro</a>
+						</div>
+						<a href="#" id="enlace_login_recordar_clave" onclick="mostrarRecordarClave();" tabindex="5">Recordar contraseña</a>
 					</li>
 				</ul>
 			</form>
@@ -192,7 +192,7 @@
 
 		<div id="registro">
 			<!-- Login -->
-			<p id="volver_login">
+			<p class="volver_login">
 				<a href="#" onclick="mostrarLogin();">Volver a Login</a>
 			</p>
 
@@ -205,10 +205,10 @@
 					{% endif %}
 
 					<!-- Usuario -->
-					<li id="contenido_usuario_reg">
-						<label for="id_username">Nombre de usuario:</label>
+					<li>
+						<label for="nombre_usuario_registro">Nombre de usuario:</label>
 						<div id="caja_usuario_reg">
-							<input id="id_username" type="text" name="username" value="" maxlength="50" tabindex="1" />
+							<input type="text" name="username" id="nombre_usuario_registro" value="" maxlength="50" tabindex="1" required autocomplete="off" />
 						</div>
 					</li>
 
@@ -217,10 +217,10 @@
 					{% endif %}
 
 					<!-- Contrasena -->
-					<li id="contenido_password">
-						<label for="id_password">Contraseña:</label>
-						<div id="caja_password">
-							<input id="id_password" type="password" name="password" value="" maxlength="50" tabindex="2" />
+					<li>
+						<label for="clave_registro">Contraseña:</label>
+						<div id="caja_clave_registro">
+							<input type="password" name="password" id="clave_registro" value="" maxlength="50" tabindex="2" required autocomplete="off" />
 						</div>
 					</li>
 
@@ -229,12 +229,14 @@
 					{% endif %}
 
 					<!-- E-mail -->
-					<li id="contenido_email">
-						<label for="id_email">E-Mail:</label>
-						<div id="caja_email">
-							<input id="id_email" type="text" name="email" value="" maxlength="100" tabindex="3" />
+					<li>
+						<label for="email_registro">E-Mail:</label>
+						<div id="caja_email_registro">
+							<input type="email" name="email" id="email_registro" value="" maxlength="100" tabindex="3" required autocomplete="off" />
 						</div>
 					</li>
+					
+					
 				</ul>
 
 				<p>Todos los campos son obligatorios</p>
@@ -243,15 +245,19 @@
 				<p>Registrándome acepto las <a href="/condiciones/" onclick="this.target='_blank'">condiciones de uso</a>.</p>
 
 				<!-- Boton registrar -->
-				<div id="caja_boton_registro">
-					<input type="submit" name="registrar_usuario" value="Registrar" tabindex="4" />
+				<div>
+					<input type="submit" name="registrar_usuario" id="boton_registro" value="Registrar" tabindex="4" />
 				</div>
+				
+				<div class="clear"></div>
 			</form>
 		</div>
 		
 		<div id="recordar_clave">
 			<!-- Login -->
-			<p id="volver_login"><a href="#" onclick="mostrarLogin();">Volver a Login</a></p>
+			<p class="volver_login">
+				<a href="#" onclick="mostrarLogin();">Volver a Login</a>
+			</p>
 			
 			{% if recordar_clave_error %}
 				<p class="texto_error">{{ recordar_clave_error }}</p>
@@ -259,20 +265,22 @@
 
 			<form class="form1" action="/" method="post">
 				{% csrf_token %}
-				<ul>
+				<ul id="datos_recordar_clave">
 					<!-- E-mail -->
-					<li id="contenido_email">
-						<label for="id_email">E-Mail:</label>
-						<div id="caja_email">
-							<input id="id_email" type="text" name="email" value="" maxlength="100" tabindex="1" />
+					<li>
+						<label for="email_recordar_clave">E-Mail:</label>
+						<div id="caja_email_recordar_clave">
+							<input type="email" name="email" id="email_recordar_clave" value="" maxlength="100" tabindex="1" required autocomplete="off" />
 						</div>
 					</li>
 
 					<!-- Boton entrar -->
-					<li id="caja_enviar_clave">
-						<input id="boton_enviar_clave" type="submit" name="enviar_clave" value="Aceptar" tabindex="2" />
+					<li>
+						<input type="submit" name="enviar_clave" id="boton_enviar_clave" value="Aceptar" tabindex="2" />
 					</li>
 				</ul>
+				
+				<div class="clear"></div>
 			</form>
 		</div>
 	</div>
