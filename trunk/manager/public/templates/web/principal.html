@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block js_extra %}
-	<script type="text/javascript">
+	<script>
 		var login = document.getElementById('login');
 		var recordar_clave = document.getElementById('recordar_clave');
 		var registro = document.getElementById('registro');
@@ -36,7 +36,7 @@
 				document.getElementById("contador_desactualizado").innerHTML = "¡Actualizado!";
 				return;
 			}
-			str_tiempo = formato_tiempo.replace(/%%D%%/g, calcularTiempo(segundos, 86400, 100000));
+			str_tiempo = formato_tiempo.replace(/%%D%%/g, calcularTiempo(segundos, 86400, 8640000));
 			str_tiempo = str_tiempo.replace(/%%H%%/g, calcularTiempo(segundos, 3600, 24));
 			str_tiempo = str_tiempo.replace(/%%M%%/g, calcularTiempo(segundos, 60, 60));
 			str_tiempo = str_tiempo.replace(/%%S%%/g, calcularTiempo(segundos, 1, 60));
@@ -150,15 +150,14 @@
 
 {% block contenido %}
 	<!-- Logo -->
-	<div id="div_logo" onclick="location.href='/'"></div>
+	<a href="/" id="enlace_logo_90manager">
+		<img src="/media/img/logoAlter.png" id="logo_90manager" alt="90manager" title="Ir a la página principal" height="175" width="387" />
+	</a>
 
 	<!-- Descripcion -->
-	<div id="descripcion">
-		Juego multijugador donde puedes ser entrenador y presidente de un equipo de fútbol.
-	</div>
-
-	<!-- Usuarios registrados -->
-	<div id="usuarios_registrados">{{ usuarios_registrados }} usuarios registrados</div>
+	<p id="descripcion">
+		Juego multijugador donde puedes ser entrenador y presidente de un equipo de fútbol
+	</p>
 
 	<div id="div_acceso">
 		<div id="login">
@@ -193,7 +192,9 @@
 
 		<div id="registro">
 			<!-- Login -->
-			<p id="volver_login"><a href="#" onclick="mostrarLogin();">Volver a Login</a></p>
+			<p id="volver_login">
+				<a href="#" onclick="mostrarLogin();">Volver a Login</a>
+			</p>
 
 			<form class="form1" action="/" method="post">
 				{% csrf_token %}
@@ -276,7 +277,11 @@
 		</div>
 	</div>
 
-	<div id="caja_mensajico">
+	<!-- Usuarios registrados -->
+	<p id="usuarios_registrados">{{ usuarios_registrados }} usuarios registrados</p>
+
+	<!-- Mensajitos -->
+	<p id="caja_mensajico">
 		<span id="mensajico" onclick="cargarMensajico(this)"></span>
-	</div>
+	</p>
 {% endblock %}

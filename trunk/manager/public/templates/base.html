@@ -1,18 +1,29 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<html lang="es">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="description" content="90manager" />
 	<meta name="keywords" content="entrenador futbol, juego online, juego web multijugador, ligas mixtas, ligas personalizadas, manager futbol, presidente futbol" />
 	<meta name="robots" content="NOINDEX, NOFOLLOW, NOARCHIVE" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 	<title>{% block title %}90manager{% endblock %}</title>
+	
+	{% block favicon %}
+		<!-- Icono para navegadores que no sean IE -->
+		<!--[if !IE]>--><link rel="icon" type="image/png" href="/media/img/icons/favicon.png" /><!--<![endif]-->
+		
+		<!-- Icono para IE -->
+		<!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="/media/img/icons/favicon.ico" /><![endif]-->
+		
+		<!-- Icono para iPhone/iPad -->
+		<link rel="apple-touch-icon-precomposed" href="/media/img/icons/favicon.png" />
+	{% endblock %}
 
-	{% block favicon %}<link rel="icon" href="/media/img/icons/favicon.ico" />{% endblock %}
-
-	<link rel="stylesheet" href="/media/css/general.css" />
-	<link rel="stylesheet" href="/media/css/custom-theme-redmond/jquery-ui-1.8.12.custom.css" />
-	<link rel="stylesheet" href="/media/css/jquery-ui-timepicker-addon.css" />
+	<link rel="stylesheet" href="/media/css/reset.css" media="all" />
+	<link rel="stylesheet" href="/media/css/general.css" media="all" />
+	<link rel="stylesheet" href="/media/css/custom-theme-redmond/jquery-ui-1.8.12.custom.css" media="all" />
+	<link rel="stylesheet" href="/media/css/jquery-ui-timepicker-addon.css" media="all" />
 	{% block css_extra %}{% endblock %}
 </head>
 
@@ -22,9 +33,9 @@
 <body>
 {% endif %}
 
-	<div id="barra_header">
-		<div id="header">
-			<ul id="menu">
+	<header>
+		<nav id="barra_menu">
+			<ul>
 				<!-- Logo -->
 				<li id="logo" onclick="location.href='/'"></li>
 
@@ -65,9 +76,11 @@
 								</ul>
 							</li>
 
+							<!-- Calendario -->
 							<li id="calendario" onclick="location.href='/ligas/ver/'" title="Calendario de liga">
 								<strong>Liga "{{ liga_actual.nombre }}": </strong><span id="fecha_liga">00/00/00</span> | <span id="tiempo_liga">00:00:00</span>
 							</li>
+							
 							<!-- Notificaciones -->
 							<li id="notificaciones" onclick="mostrarMenu(this)" title="Notificaciones">
 								<ul class="desplegable">
@@ -113,15 +126,13 @@
 						<span>{{ user.username }}</span>
 						<ul class="desplegable">
 							<li><a href="/tablon/">Tablón</a></li>
-							<!--<li><a href="/cuentas/preferencias/">Preferencias</a></li>
-							<li><a href="/ayuda/">Ayuda</a></li>-->
 							<li><a href="/cuentas/logout/">Salir</a></li>
 						</ul>
 					</li>
 				{% endif %}
 			</ul>
-		</div>
-	</div>
+		</nav>
+	</header>
 
 	<div id="wrap">
 		<div id="wrap-content">
@@ -132,7 +143,7 @@
 	</div>
 
 	<!-- Pie de pagina -->
-	<div id="footer">
+	<footer>
 		{% block pie_pagina %}
 			{% block enlaces_pie_pagina_internos %}
 				<div id="enlaces_internos">
@@ -177,13 +188,13 @@
 				</div>
 			{% endif %}
 		{% endblock %}
-	</div>
+	</footer>
 
-	<script src="/media/js/jquery-1.7.min.js" type="text/javascript"></script>
-	<script src="/media/js/jquery-ui-1.8.12.custom.min.js" type="text/javascript"></script>
-	<script src="/media/js/jquery-ui-timepicker-addon.js" type="text/javascript"></script>
+	<script src="/media/js/jquery.min.js"></script>
+	<script src="/media/js/jquery-ui-1.8.12.custom.min.js"></script>
+	<script src="/media/js/jquery-ui-timepicker-addon.js"></script>
 
-	<script type="text/javascript">
+	<script>
 		var sabajao = null;
 		function mostrarMenu(m) {
 			// Muestra y oculta los menus
@@ -199,25 +210,10 @@
 				$(m).find('ul').slideDown();
 			}
 		}
-		/*
-		$(document).ready(function() {
-		   // Muestra y oculta los menús
-		   $('ul li:has(ul)').hover(
-			  function(e)
-			  {
-				 $(this).find('ul').css({display: "block"});
-			  },
-			  function(e)
-			  {
-				 $(this).find('ul').css({display: "none"});
-			  }
-		   );
-		});
-		*/
 	</script>
 
 	{% if liga_actual.activada %}
-		<script type="text/javascript">
+		<script>
 			var tiempo_actual;
 			
 			function lanzarReloj() {
@@ -225,8 +221,7 @@
 				setInterval("actualizarReloj()", 1000 / {{ liga_actual.factor_tiempo }});
 			}
 			
-			function actualizarReloj()
-			{
+			function actualizarReloj() {
 				tiempo_actual = new Date(tiempo_actual.getTime() + 1000);
 				document.getElementById("fecha_liga").firstChild.nodeValue = ('0' + tiempo_actual.getDate()).slice(-2) + '/' + ('0' + (tiempo_actual.getMonth()+1)).slice(-2) + '/' + tiempo_actual.getFullYear();
 				document.getElementById("tiempo_liga").firstChild.nodeValue = ('0' + tiempo_actual.getHours()).slice(-2) + ':' + ('0' + (tiempo_actual.getMinutes()+1)).slice(-2) + ':' + ('0' + (tiempo_actual.getSeconds()+1)).slice(-2);
