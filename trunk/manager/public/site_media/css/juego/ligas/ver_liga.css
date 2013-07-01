@@ -22,13 +22,24 @@
 	width: 700px;
 }
 
-#tabla_equipos{
+#cuadro_equipos{
+	background: #fff;
+	border: solid 1px #000;
+	border-radius: 5px;
+	box-shadow: 0 0 5px #000;
 	margin: 2em auto;
+	padding: 1em;
+	text-align: center;
 	width: 400px;
 }
 
-#tabla_equipos td{
+#cuadro_equipos p{
+	text-align: center;
+}
+
+#cuadro_equipos .equipo{
 	display: inline-block;
+	margin: .5em;
 }
 
 #tabla_jornadas{
@@ -52,6 +63,5 @@
 }
 
 .linea_equipo_propio{
-	font-size: 1.1em;
 	font-weight: bold;
 }

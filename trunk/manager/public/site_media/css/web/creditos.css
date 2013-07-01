@@ -1,25 +1,27 @@
-ul{
-	padding: 0px 0px 0px 25px;
-}
-
 #contenido{
-	display: table;
-	padding: 10px;
-	width: 930px;
+	list-style: none;
+	padding: 0;
 }
 
-#creditos{
-	display: table-cell;
-	padding-left: 50px;
+#contenido > li{
+	border: solid 1px #333;
+	float: left;
+	margin: 1em;
+	vertical-align: top;
+	width: 420px;
 }
 
-#info{
-	display: table-cell;
-	width: 500px;
+#contenido > li ul{
+	list-style: none;
+	padding: 0;
+}
+
+#contenido > li ul li{
+	padding: .5em;
 }
 
 #wrap{
 	background: #fff;
-	border: solid 1px #555;
-	margin: 30px auto;
+	border: solid 1px #333;
+	margin: 20px auto;
 }

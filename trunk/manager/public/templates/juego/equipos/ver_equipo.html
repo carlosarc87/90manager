@@ -5,15 +5,6 @@
     <link rel="stylesheet" href="/media/css/juego/equipos/ver_equipo.css" />
 {% endblock %}
 
-{% block js_extra %}
-	<script>
-		/* Para el funcionamiento de tema css con jquery */
-		$(function() {
-			$("button", "#contenido_boton_jugadores_subasta").button();
-		});
-	</script>
-{% endblock %}
-
 {% block situacion %}
 	<ul id="menu_superior_situacion">
 		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>

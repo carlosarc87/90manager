@@ -12,7 +12,7 @@
 	<div id="mensaje">{% autoescape off %}{{ notificacion.mensaje }}{% endautoescape %}</div>
 
 	<div id="contenido_boton_borrar">
-		<input type="button" value="Borrar" onclick="location.href='/cuentas/notificaciones/borrar/'" />
+		<button onclick="location.href='/cuentas/notificaciones/borrar/'">Borrar</button>
 	</div>
 
 {% endblock %}

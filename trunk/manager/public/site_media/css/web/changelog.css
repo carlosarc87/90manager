@@ -1,25 +1,28 @@
-h4{
-	border: solid 1px #4297d7;
-	padding: 5px 0px;
-	margin: 20px 0px 0px 0px;
-	text-align: center;
-}
-
-.lista_cambios{
-	background: #fff;
-	border-right: solid 1px #4297d7;
-	border-bottom: solid 1px #4297d7;
-	border-left: solid 1px #4297d7;
-	margin: 0px;
-	padding: 10px 10px 10px 30px;
-}
-
 #changelog{
-	margin: 0px auto;
-	padding: 10px;
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
 	width: 500px;
 }
 
-#wrap{
-	margin: 20px auto;
+#changelog h3{
+	margin: 0;
+}
+
+#changelog > li{
+	background: #fff;
+	margin-bottom: 2em;
+}
+
+#changelog > li ul{
+	border-right: solid 1px #4297d7;
+	border-bottom: solid 1px #4297d7;
+	border-left: solid 1px #4297d7;
+	font-size: .9em;
+	list-style: inside;
+	padding: .5em;
+}
+
+#changelog > li ul li{
+	padding: .5em;
 }

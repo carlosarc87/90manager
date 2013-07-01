@@ -1,9 +1,26 @@
+#condiciones_uso{
+	list-style: none;
+	padding: 0;
+}
+
+h2 + p{
+	margin: 1em;
+}
+
+#condiciones_uso > li{
+	display: inline-block;
+	list-style: none;
+	margin: 1em;
+	vertical-align: top;
+	width: 400px;
+}
+
+#condiciones_uso > li ul li{
+	padding: .5em 0;
+}
+
 #wrap{
 	background: #fff;
 	border: solid 1px #555;
 	margin: 30px auto;
-}
-
-#wrap-content{
-	padding: 10px;
 }

@@ -97,17 +97,25 @@
 					{% endif %}
 				</div>
 			{% else %}
-				<h4>No puedes pujar por esta subasta</h4>
+				<p class="info">
+					<span>No puedes pujar por esta subasta</span>
+				</p>
 			{% endif %}
 		{% endif %}
 	{% else %}
 		{% if subasta.estado == 1 %}
-			<h4>La subasta ya acabó</h4>
+			<p class="info">
+				<span>La subasta ya acabó</span>
+			</p>
 		{% else %}
 			{% if subasta.estado == 2 %}
-				<h4>Subasta comprada por {{ subasta.comprador }}</h4>
+				<p class="info">
+					<span>Subasta comprada por {{ subasta.comprador }}</span>
+				</p>
 			{% else %}
-				<h4>Error de estado de la subasta</h4>
+				<p class="error">
+					<span>Error de estado de la subasta</span>
+				</p>
 			{% endif %}
 		{% endif %}
 	{% endif %}

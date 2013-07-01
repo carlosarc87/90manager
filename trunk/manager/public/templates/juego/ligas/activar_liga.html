@@ -6,16 +6,6 @@
     <link rel="stylesheet" href="/media/css/juego/ligas/activar_liga.css" />
 {% endblock %}
 
-{% block js_extra %}
-	<script>
-		/* Para el funcionamiento de tema css con jquery */
-		$(function() {
-			$("#boton_activar").button();
-			$("#boton_eliminar").button();
-		});
-	</script>
-{% endblock %}
-
 {% block contenido %}
 
 	<form class="form1" id="form_activar_liga" action="/ligas/activar/" method="post">
@@ -27,7 +17,7 @@
 				<tr>
 					<td>Equipo</td>
 					<td>Usuario</td>
-					<th><input type="checkbox" name="marcar_todos" /></th>
+					<th></th>
 				</tr>
 			</thead>
 			{% endif %}
@@ -48,7 +38,7 @@
 		
 		{% csrf_token %}
 		<!-- Boton activar -->
-		<div id="contenido_boton_activar">
+		<div id="contenedor_botones_activar">
 			<input id="boton_activar" type="submit" value="Activar" />
 			<input id="boton_eliminar" type="submit" value="Expulsar equipos marcados" />
 		</div>

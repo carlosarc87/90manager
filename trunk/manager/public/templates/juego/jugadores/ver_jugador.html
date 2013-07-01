@@ -5,15 +5,6 @@
     <link rel="stylesheet" href="/media/css/juego/jugadores/ver_jugador.css" />
 {% endblock %}
 
-{% block js_extra %}
-	<script>
-		/* Para el funcionamiento de tema css con jquery */
-		$(function() {
-			$("button", "#subasta").button();
-		});
-	</script>
-{% endblock %}
-
 {% block contenido %}
 
 	<h2>Datos de "{{ jugador.nombre }}"</h2>
@@ -40,7 +31,7 @@
 					{% endif %}
 
 					<!-- Nombre -->
-					<span id="nombre">
+					<span id="nombre_datos_personales">
 						{{ jugador.nombre }}
 					</span>
 				</div>
@@ -49,14 +40,14 @@
 				<div>
 					<strong>Fecha de nacimiento</strong><br />
 
-					<span id="fecha_nacimiento">{{ jugador.fecha_nacimiento }}</span>
+					<span id="fecha_nacimiento_datos_personales">{{ jugador.fecha_nacimiento }}</span>
 				</div>
 
 				<!-- Equipo -->
 				<div>
 					<strong>Equipo</strong><br />
 
-					<span id="equipo">
+					<span id="equipo_datos_personales">
 						{{ equipo.nombre }}
 					</span>
 				</div>
@@ -146,18 +137,20 @@
 	<!-- Habilidades de juego -->
 	<table class="tabla1" id="tabla_habilidades_juego">
 		<caption>Habilidades de juego</caption>
-		<thead>
-			<tr>
-				<th>Habilidad</th>
-				<th class="col_valor_habilidad">Valor</th>
-			</tr>
-		</thead>
 		<tbody>
 			<!-- Ataque -->
 			<tr>
 				<td>Ataque</td>
 				<td>
-					<div class="barra_progreso">
+					{% if jugador.atributos.ataque > 70 %}
+						<div class="barra_progreso barra_progreso_verde">
+					{% else %}
+						{% if jugador.atributos.ataque > 30 %}
+							<div class="barra_progreso barra_progreso_amarillo">
+						{% else %}
+							<div class="barra_progreso barra_progreso_rojo">
+						{% endif %}
+					{% endif %}
 						<div style="width: {{ jugador.atributos.ataque }}%;">
 						</div>
 					</div>
@@ -169,7 +162,15 @@
 			<tr>
 				<td>Defensa</td>
 				<td>
-					<div class="barra_progreso">
+					{% if jugador.atributos.defensa > 70 %}
+						<div class="barra_progreso barra_progreso_verde">
+					{% else %}
+						{% if jugador.atributos.defensa > 30 %}
+							<div class="barra_progreso barra_progreso_amarillo">
+						{% else %}
+							<div class="barra_progreso barra_progreso_rojo">
+						{% endif %}
+					{% endif %}
 						<div style="width: {{ jugador.atributos.defensa }}%;">
 						</div>
 					</div>
@@ -181,7 +182,15 @@
 			<tr>
 				<td>Velocidad</td>
 				<td>
-					<div class="barra_progreso">
+					{% if jugador.atributos.velocidad > 70 %}
+						<div class="barra_progreso barra_progreso_verde">
+					{% else %}
+						{% if jugador.atributos.velocidad > 30 %}
+							<div class="barra_progreso barra_progreso_amarillo">
+						{% else %}
+							<div class="barra_progreso barra_progreso_rojo">
+						{% endif %}
+					{% endif %}
 						<div style="width: {{ jugador.atributos.velocidad }}%;">
 						</div>
 					</div>
@@ -193,7 +202,15 @@
 			<tr>
 				<td>Pases</td>
 				<td>
-					<div class="barra_progreso">
+					{% if jugador.atributos.pases > 70 %}
+						<div class="barra_progreso barra_progreso_verde">
+					{% else %}
+						{% if jugador.atributos.pases > 30 %}
+							<div class="barra_progreso barra_progreso_amarillo">
+						{% else %}
+							<div class="barra_progreso barra_progreso_rojo">
+						{% endif %}
+					{% endif %}
 						<div style="width: {{ jugador.atributos.pases }}%;">
 						</div>
 					</div>
@@ -203,9 +220,17 @@
 
 			<!-- Anotacion -->
 			<tr>
-				<td>Anotaci&oacute;n</td>
+				<td>Anotación</td>
 				<td>
-					<div class="barra_progreso">
+					{% if jugador.atributos.anotacion > 70 %}
+						<div class="barra_progreso barra_progreso_verde">
+					{% else %}
+						{% if jugador.atributos.anotacion > 30 %}
+							<div class="barra_progreso barra_progreso_amarillo">
+						{% else %}
+							<div class="barra_progreso barra_progreso_rojo">
+						{% endif %}
+					{% endif %}
 						<div style="width: {{ jugador.atributos.anotacion }}%;">
 						</div>
 					</div>
@@ -217,7 +242,15 @@
 			<tr>
 				<td>Portero</td>
 				<td>
-					<div class="barra_progreso">
+					{% if jugador.atributos.portero > 70 %}
+						<div class="barra_progreso barra_progreso_verde">
+					{% else %}
+						{% if jugador.atributos.portero > 30 %}
+							<div class="barra_progreso barra_progreso_amarillo">
+						{% else %}
+							<div class="barra_progreso barra_progreso_rojo">
+						{% endif %}
+					{% endif %}
 						<div style="width: {{ jugador.atributos.portero }}%;">
 						</div>
 					</div>
@@ -230,18 +263,20 @@
 	<!-- Habilidades mentales -->
 	<table class="tabla1" id="tabla_habilidades_mentales">
 		<caption>Habilidades mentales</caption>
-		<thead>
-			<tr>
-				<th>Habilidad</th>
-				<th class="col_valor_habilidad">Valor</th>
-			</tr>
-		</thead>
 		<tbody>
 			<!-- Agresividad -->
 			<tr>
 				<td>Agresividad</td>
 				<td>
-					<div class="barra_progreso">
+					{% if jugador.atributos.agresividad > 70 %}
+						<div class="barra_progreso barra_progreso_verde">
+					{% else %}
+						{% if jugador.atributos.agresividad > 30 %}
+							<div class="barra_progreso barra_progreso_amarillo">
+						{% else %}
+							<div class="barra_progreso barra_progreso_rojo">
+						{% endif %}
+					{% endif %}
 						<div style="width: {{ jugador.atributos.agresividad }}%;">
 						</div>
 					</div>
@@ -253,7 +288,15 @@
 			<tr>
 				<td>Concentración</td>
 				<td>
-					<div class="barra_progreso">
+					{% if jugador.atributos.concentracion > 70 %}
+						<div class="barra_progreso barra_progreso_verde">
+					{% else %}
+						{% if jugador.atributos.concentracion > 30 %}
+							<div class="barra_progreso barra_progreso_amarillo">
+						{% else %}
+							<div class="barra_progreso barra_progreso_rojo">
+						{% endif %}
+					{% endif %}
 						<div style="width: {{ jugador.atributos.concentracion }}%;">
 						</div>
 					</div>
@@ -265,7 +308,15 @@
 			<tr>
 				<td>Estabilidad</td>
 				<td>
-					<div class="barra_progreso">
+					{% if jugador.atributos.estabilidad > 70 %}
+						<div class="barra_progreso barra_progreso_verde">
+					{% else %}
+						{% if jugador.atributos.estabilidad > 30 %}
+							<div class="barra_progreso barra_progreso_amarillo">
+						{% else %}
+							<div class="barra_progreso barra_progreso_rojo">
+						{% endif %}
+					{% endif %}
 						<div style="width: {{ jugador.atributos.estabilidad }}%;">
 						</div>
 					</div>
@@ -277,7 +328,15 @@
 			<tr>
 				<td>Moral</td>
 				<td>
-					<div class="barra_progreso">
+					{% if jugador.atributos.moral > 70 %}
+						<div class="barra_progreso barra_progreso_verde">
+					{% else %}
+						{% if jugador.atributos.moral > 30 %}
+							<div class="barra_progreso barra_progreso_amarillo">
+						{% else %}
+							<div class="barra_progreso barra_progreso_rojo">
+						{% endif %}
+					{% endif %}
 						<div style="width: {{ jugador.atributos.moral }}%;">
 						</div>
 					</div>
@@ -292,10 +351,10 @@
 		<caption>Valor en el campo</caption>
 		<thead>
 			<tr>
-				<th>Posición</td>
-				<th>Nivel</td>
-				<th>Valor</td>
-				<th>Rendimiento</td>
+				<th>Posición</th>
+				<th>Nivel</th>
+				<th>Valor</th>
+				<th>Rendimiento</th>
 			</tr>
 		</thead>
 		<tbody>

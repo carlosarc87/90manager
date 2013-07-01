@@ -2,16 +2,7 @@
 
 {% block css_extra %}
     <link rel="stylesheet" href="/media/css/web/mensaje.css" />
-    <link rel="stylesheet" href="/media/js/jquery-ui-1.8.11.custom/css/custom-theme/jquery-ui-1.8.11.custom.css" />
-{% endblock %}
-
-{% block js_extra %}
-	<script>
-		/* Para el funcionamiento de tema css con jquery */
-		$(function() {
-			$( "#boton_volver" ).button();
-		});
-	</script>
+    <link rel="stylesheet" href="/media/css/redmond/jquery-ui.custom.min.css" />
 {% endblock %}
 
 {% block contenido %}
@@ -37,7 +28,7 @@
 
 	{% if url_salida %}
 		<div id="caja_boton">
-			<input id="boton_volver" type="button" name="mensaje_salir" value="Volver" onclick="location.href='{{ url_salida }}'" />
+			<button onclick="location.href='{{ url_salida }}'">Volver</button>
 		</div>
 	{% endif %}
 {% endblock %}

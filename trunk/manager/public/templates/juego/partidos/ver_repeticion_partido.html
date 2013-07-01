@@ -199,23 +199,8 @@
 
 		/* Para el funcionamiento de tema css con jquery */
 		$(function() {
-			// Botón ir al inicio
-			$( "#beginning" ).button({
-				text: false,
-				icons: {
-					primary: "ui-icon-seek-start"
-				}
-			});
-
 			// Botón iniciar / parar
-			$( "#play" ).button({
-				text: false,
-				label: "play",
-				icons: {
-					primary: "ui-icon-play"
-				}
-			})
-			.click(function() {
+			$( "#play" ).click(function() {
 				var options;
 				if ( $( this ).text() === "play" ) {
 					options = {
@@ -233,46 +218,6 @@
 					};
 				}
 				$( this ).button( "option", options );
-			});
-
-			// Botón parar y reiniciar
-			$( "#stop" ).button({
-				text: false,
-				icons: {
-					primary: "ui-icon-stop"
-				}
-			})
-			.click(function() {
-				$( "#play" ).button( "option", {
-					label: "play",
-					icons: {
-						primary: "ui-icon-play"
-					}
-				});
-			});
-
-			// Botón decrementar velocidad
-			$( "#dec_vel" ).button({
-				text: false,
-				icons: {
-					primary: "ui-icon-minus"
-				}
-			});
-
-			// Botón incrementar velocidad
-			$( "#inc_vel" ).button({
-				text: false,
-				icons: {
-					primary: "ui-icon-plus"
-				}
-			});
-
-			// Botón ir al final
-			$( "#end" ).button({
-				text: false,
-				icons: {
-					primary: "ui-icon-seek-end"
-				}
 			});
 		});
 	</script>

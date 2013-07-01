@@ -7,7 +7,7 @@ h2{
 	background: #fff;
 	border: solid 1px #555;
 	margin: 10px auto;
-	padding: 0px;
+	padding: 0;
 	width: 500px;
 }
 
@@ -32,5 +32,5 @@ h2{
 }
 
 .no_leida{
-	background: #dddd55;
+	background: #dd5;
 }

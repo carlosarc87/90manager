@@ -9,7 +9,7 @@
 #barra_repeticion #contador_tiempo{
 	background: #222;
 	border: solid 1px #ccc;
-	color: #cccc00;
+	color: #cc0;
 	display: inline-block;
 	margin-left: 40px;
 	padding: 5px;
@@ -18,7 +18,7 @@
 }
 
 #barra_repeticion #velocidad_tiempo{
-	color: #0000cc;
+	color: #00c;
 	display: inline-block;
 	font-weight: bold;
 	padding: 5px;

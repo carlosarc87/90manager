@@ -5,24 +5,6 @@
     <link rel="stylesheet" href="/media/css/juego/notificaciones/listar_liga.css" />
 {% endblock %}
 
-{% block js_extra %}
-	<script>
-		$(function() {
-			$(".boton_borrar").button({
-				icons: {
-					primary: "ui-icon-trash"
-				}
-			});
-			
-			$(".boton_ver").button({
-				icons: {
-					primary: "ui-icon-trash"
-				}
-			});
-		});
-	</script>
-{% endblock %}
-
 {% block contenido %}
 
 	<h2>Notificaciones de la liga "{{ liga_actual.nombre }}"</h2>

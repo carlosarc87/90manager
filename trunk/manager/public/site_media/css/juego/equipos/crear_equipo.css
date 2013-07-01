@@ -25,14 +25,14 @@ h2{
 	
 }
 
-#contenido_nombre{ padding: 5px 0px; }
+#contenido_nombre{ padding: 5px 0; }
 #contenido_nombre label{
 	float: left;
 	font-weight: bold;
 	width: 150px;
 }
 
-#contenido_siglas{ padding: 5px 0px; }
+#contenido_siglas{ padding: 5px 0; }
 #contenido_siglas label{
 	float: left;
 	font-weight: bold;

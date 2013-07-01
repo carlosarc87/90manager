@@ -1,26 +1,8 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
-	<!--<link rel="stylesheet" href="/media/js/tablesorter/themes/blue/style.css" />-->
     <link rel="stylesheet" href="/media/css/tablas.css" />
     <link rel="stylesheet" href="/media/css/juego/clasificaciones/ver_liga.css" />
-{% endblock %}
-
-{% block js_extra %}
-	<!--
-	<script src="/media/js/tablesorter/jquery.tablesorter.min.js"></script>
-	<script src="/media/js/tablesorter/jquery.tablesorter.pager.js"></script>
-	
-	<script>
-		$(document).ready(
-			function() {
-				$("#tabla_clasificacion")
-				.tablesorter({widthFixed: true, widgets: ['zebra']})
-				.tablesorterPager({container: $("#pager")});
-			}
-		);
-	</script>
-	-->
 {% endblock %}
 
 {% block contenido %}
@@ -37,15 +19,15 @@
 
 			<thead>
 				<tr>
-					<th title="Posici&oacute;n">Pos.</th>
+					<th title="Posici&oacute;n">Pos</th>
 					<th>Equipo</th>
-					<th title="Partidos jugados">P.J.</th>
-					<th title="Partidos ganados">P.G.</th>
-					<th title="Partidos empatados">P.E.</th>
-					<th title="Partidos perdidos">P.P.</th>
-					<th title="Goles a favor">G.F.</th>
-					<th title="Goles en contra">G.C.</th>
-					<th title="Goles de diferencia">G.D.</th>
+					<th title="Partidos jugados">PJ</th>
+					<th title="Partidos ganados">PG</th>
+					<th title="Partidos empatados">PE</th>
+					<th title="Partidos perdidos">PP</th>
+					<th title="Goles a favor">GF</th>
+					<th title="Goles en contra">GC</th>
+					<th title="Goles de diferencia">GD</th>
 					<th>Puntos</th>
 				</tr>
 			</thead>
@@ -101,6 +83,6 @@
 			</tbody>
 		</table>
 	{% else %}
-		<h4>Aún no se ha generado una clasificación para la liga</h4>
+		<p class="info">Aún no se ha generado una clasificación para la liga</p>
 	{% endif %}
 {% endblock %}

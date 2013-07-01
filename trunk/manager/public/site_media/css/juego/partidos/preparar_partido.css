@@ -14,13 +14,13 @@
 .cuadro_jugador:hover{
 	background: url('/media/img/circulo_hover.png') no-repeat;
 	background-position: center top;
-	color: #000066;
+	color: #006;
 }
 
 .cuadro_jugador .mejor_posicion_jugador{
 	font-weight: bold;
 	float: left;
-	margin: 10px 0px 12px;
+	margin: 10px 0 12px;
 	width: 100%;
 }
 
@@ -40,11 +40,11 @@
 }
 
 #caja_boton_aceptar{
-	padding: 5px 0px;
+	padding: 5px 0;
 }
 
 #caja_boton_limpiar{
-	padding: 5px 0px;
+	padding: 5px 0;
 }
 
 #campo_titulares{
@@ -67,25 +67,25 @@
 	background: rgb(0, 200, 0);
 	background: rgba(0, 200, 0, 0.4);
 	height: 80px;
-	margin: 23px 20px 0px 20px;
+	margin: 23px 20px 0;
 }
 
 #fila_centrocampistas{
 	height: 80px;
-	margin: 0px 20px;
+	margin: 0 20px;
 }
 
 #fila_defensas{
 	background: rgb(0, 200, 0);
 	background: rgba(0, 200, 0, 0.4);
 	height: 80px;
-	margin: 0px 20px;
+	margin: 0 20px;
 }
 
 #fila_portero{
 	height: 75px;
 	margin: 0 auto;
-	margin: 0px 20px;
+	margin: 0 20px;
 }
 
 #fila_suplentes{
@@ -95,13 +95,13 @@
 }
 
 #form_alineacion{
-	margin: 20px 0px;
+	margin: 20px 0;
 	padding: 20px;
 	width: 900px;
 }
 
 #form_alineacion fieldset{
-	margin: 0px;
+	margin: 0;
 }
 
 #form_oculto{
@@ -116,10 +116,10 @@
 }
 
 #caja_num_jugadores_alineacion, #caja_num_jugadores_suplentes{
-	padding: 5px 0px;
+	padding: 5px 0;
 }
 
 #num_jugadores_alineacion, #num_jugadores_suplentes{
-	color: #5555aa;
+	color: #55a;
 	font-weight: bold;
 }

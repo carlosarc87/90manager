@@ -67,9 +67,6 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
-# No se si es necesario (Carlos)
-#MEDIA_PREFIX = '/media/'
-
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = RUTA + "public/site_media"
@@ -149,6 +146,6 @@ INSTALLED_APPS = (
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 #DECIMAL_PLACES = 2
-NUMBER_GROUPING = 3
-THOUSAND_SEPARATOR = '.'
+#NUMBER_GROUPING = 3
+#THOUSAND_SEPARATOR = '.'
 #USE_THOUSAND_SEPARATOR = True

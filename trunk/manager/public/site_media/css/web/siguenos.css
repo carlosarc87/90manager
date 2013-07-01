@@ -6,24 +6,17 @@ th{
 	text-align: right;
 }
 
-#fila_identi_ca{
-}
-
-#fila_tuenti{
-}
-
 #fila_twitter img{
-	border: 0px;
+	border: 0;
 }
 
 #tabla_enlaces_siguenos{
-	margin: 0px auto;
-	margin-bottom: 20px;
+	margin: 0 auto;
 	width: 300px;
 }
 
 #wrap{
 	background: #fff;
 	border: solid 1px #555;
-	margin: 30px auto;
+	margin: 20px auto;
 }

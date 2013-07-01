@@ -5,18 +5,6 @@
     <link rel="stylesheet" href="/media/css/juego/partidos/listar_partidos_equipo.css" />
 {% endblock %}
 
-{% block js_extra %}
-	<script>
-		$(function() {
-			$(".boton_ver_partido").button({
-				icons: {
-					primary: "ui-icon-search"
-				}
-			});
-		});
-	</script>
-{% endblock %}
-
 {% block contenido %}
 	<h2>Partidos de "{{ equipo_propio.nombre }}"</h2>
 	

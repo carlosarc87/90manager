@@ -7,10 +7,6 @@
 {% endblock %}
 
 {% block js_extra %}
-	<!--
-	<script src="/media/js/tablesorter/jquery.tablesorter.min.js"></script>
-	<script src="/media/js/tablesorter/jquery.tablesorter.pager.js"></script>
-	-->
 	<script>
 		jQuery(function($){
 			$.datepicker.regional['es'] = {
@@ -39,12 +35,6 @@
 				$("#id_fecha_nueva").datetimepicker();
 			}
 		);
-		
-		/* Para el funcionamiento de tema css con jquery */
-		$(function() {
-			$("#boton_activar").button();
-		});
-
 	</script>
 {% endblock %}
 
@@ -53,12 +43,12 @@
 
 	{% if activada %}
 		{% if jornada_actual %}
-			<h4>Jornada actual: <a href="/jornadas/ver/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></h4>
+			<h3>Jornada actual: <a href="/jornadas/ver/{{ jornada_actual.id }}/">{{ jornada_actual.numero }}</a></h3>
 
 			{% if es_creador %}
 				<!-- Esto es meramente para acelerar la presentacion del miercoles -->
 				<form class="form1" id="form_ver_liga" action="/ligas/ver/" method="post">
-					<h4>Avanzar tiempo</h4>
+					<p>Avanzar tiempo (Esto es temporal para realizar pruebas)</p>
 
 					{{ form_fecha.as_p }}
 					<!-- Boton crear -->
@@ -68,30 +58,27 @@
 				</form>
 			{% endif %}
 		{% else %}
-			<h4>FINALIZADA</h4>
+			<p class="info">
+				<span>FINALIZADA</span>
+			</p>
 		{% endif %}
 		
-		<!-- Tabla de equipos -->
-		<table class="tabla1" id="tabla_equipos">
-			<caption>Equipos</caption>
+		<!-- Cuadro de equipos -->
+		<div id="cuadro_equipos">
+			<p><strong>Equipos</strong></p>
 			{% if equipos %}
-				<tbody>
-					<tr>
-						{% for equipo in equipos %}
-							<td {% if equipo_propio.nombre == equipo.nombre %}
-									class="linea_equipo_propio"
-								{% endif %}>
-								<a href="/equipos/ver/{{ equipo.id }}/" title="{{ equipo.nombre }}">{{ equipo.siglas }}</a>
-							</td>
-						{% endfor %}
-					</tr>
-				</tbody>
+				{% for equipo in equipos %}
+					<a href="/equipos/ver/{{ equipo.id }}/" 
+						{% if equipo_propio.nombre == equipo.nombre %}
+							class="equipo linea_equipo_propio"
+						{% else %}
+							class="equipo"
+						{% endif %} title="{{ equipo.nombre }}">{{ equipo.siglas }}</a>
+				{% endfor %}
 			{% else %}
-				<tr>
-					<th>Aún no se ha añadido ningún equipo a la liga</th>
-				</tr>
+				<p><span class="info">Aún no se ha añadido ningún equipo a la liga</span></p>
 			{% endif %}
-		</table>
+		</div>
 
 		{% if clasificacion %}
 			<!-- Tabla clasificacion -->
@@ -104,15 +91,15 @@
 
 				<thead>
 					<tr>
-						<th title="Posici&oacute;n">Pos.</th>
+						<th title="Posici&oacute;n">Pos</th>
 						<th>Equipo</th>
-						<th title="Partidos jugados">P.J.</th>
-						<th title="Partidos ganados">P.G.</th>
-						<th title="Partidos empatados">P.E.</th>
-						<th title="Partidos perdidos">P.P.</th>
-						<th title="Goles a favor">G.F.</th>
-						<th title="Goles en contra">G.C.</th>
-						<th title="Goles de diferencia">G.D.</th>
+						<th title="Partidos jugados">PJ</th>
+						<th title="Partidos ganados">PG</th>
+						<th title="Partidos empatados">PE</th>
+						<th title="Partidos perdidos">PP</th>
+						<th title="Goles a favor">GF</th>
+						<th title="Goles en contra">GC</th>
+						<th title="Goles de diferencia">GD</th>
 						<th>Puntos</th>
 					</tr>
 				</thead>
@@ -167,24 +154,6 @@
 					{% endfor %}
 				</tbody>
 			</table>
-
-			<!-- Paginacion
-			<div id="pager" class="pager">
-				<form>
-					<img src="../addons/pager/icons/first.png" class="first"/>
-					<img src="../addons/pager/icons/prev.png" class="prev"/>
-					<input type="text" class="pagedisplay"/>
-					<img src="../addons/pager/icons/next.png" class="next"/>
-					<img src="../addons/pager/icons/last.png" class="last"/>
-					<select class="pagesize">
-						<option selected="selected"  value="10">10</option>
-
-						<option value="20">20</option>
-						<option value="30">30</option>
-						<option  value="40">40</option>
-					</select>
-				</form>
-			</div>-->
 		{% endif %}
 
 		<!-- Tabla jornadas -->

@@ -5,43 +5,25 @@
     <link rel="stylesheet" href="/media/css/juego/jornadas/ver_jornada.css" />
 {% endblock %}
 
-{% block js_extra %}
-	<script>
-		$(function() {
-			$("#boton_jornada_anterior").button({
-				icons: {
-					primary: "ui-icon-circle-triangle-w"
-				}
-			});
-			
-			$("#boton_jornada_siguiente").button({
-				icons: {
-					primary: "ui-icon-circle-triangle-e"
-				}
-			});
-		});
-	</script>
-{% endblock %}
-
 {% block contenido %}
 	<h2>Jornada {{ jornada.numero }}</h2>
 
 	<p id="botones_jornada">
 		{% if jornada_anterior %}
 			<button id="boton_jornada_anterior" onclick="location.href='/jornadas/ver/{{ jornada_anterior.id }}/'">
-				<span>Ver Jornada {{ jornada_anterior.numero }}</span>
+				Ver Jornada {{ jornada_anterior.numero }}
 			</button>
 		{% endif %}
 	
 		{% if jornada_siguiente %}
 			<button id="boton_jornada_siguiente" onclick="location.href='/jornadas/ver/{{ jornada_siguiente.id }}/'">
-				<span>Ver Jornada {{ jornada_siguiente.numero }}</span>
+				Ver Jornada {{ jornada_siguiente.numero }}
 			</button>
 		{% endif %}
 	</p>
 
 	{% if jornada.jugada %}
-		<p id="estado_jornada"><strong>FINALIZADA</strong></p>
+		<p><span class="info">FINALIZADA</span></p>
 	{% endif %}
 
 	<table class="tabla1" id="tabla_encuentros">
@@ -143,6 +125,6 @@
 			</tbody>
 		</table>
 	{% else %}
-		<p>No hay clasificación disponible aún</p>
+		<p><span class="info">No hay clasificación disponible aún</span></p>
 	{% endif %}
 {% endblock %}

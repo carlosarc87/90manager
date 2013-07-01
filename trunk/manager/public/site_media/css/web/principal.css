@@ -13,17 +13,21 @@
 }
 
 #descripcion{
-	padding: 1em 0;
+	margin: 1em auto;
+	text-align: center;
+	width: 400px;
 }
 
 #usuarios_registrados{
 	color: #282;
-	padding: 1em 0;
+	margin: 1em 0;
+	text-align: center;
 }
 
 #caja_mensajico{
 	font-size: .8em;
-	padding: 1em 0;
+	margin: 2em 0 1em 0;
+	text-align: center;
 }
 
 #mensajico{

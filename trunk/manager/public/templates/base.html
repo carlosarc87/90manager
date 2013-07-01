@@ -22,8 +22,7 @@
 
 	<link rel="stylesheet" href="/media/css/reset.css" media="all" />
 	<link rel="stylesheet" href="/media/css/general.css" media="all" />
-	<link rel="stylesheet" href="/media/css/custom-theme-redmond/jquery-ui-1.8.12.custom.css" media="all" />
-	<link rel="stylesheet" href="/media/css/jquery-ui-timepicker-addon.css" media="all" />
+	<link rel="stylesheet" href="/media/css/redmond/jquery-ui.custom.min.css" media="all" />
 	{% block css_extra %}{% endblock %}
 </head>
 
@@ -58,7 +57,7 @@
 								<ul class="desplegable">
 									{% if equipo_propio %}
 										<li><a href="/equipos/mi_equipo/">Información</a></li>
-										<li><a href="#">Entrenamientos</a></li>
+										<!--<li><a href="#">Entrenamientos</a></li>-->
 										<li><a href="/partidos/mis_partidos/">Partidos</a></li>
 										<li><a href="/partidos/proximo/">Próximo partido</a></li>
 									{% else %}
@@ -78,7 +77,8 @@
 
 							<!-- Calendario -->
 							<li id="calendario" onclick="location.href='/ligas/ver/'" title="Calendario de liga">
-								<strong>Liga "{{ liga_actual.nombre }}": </strong><span id="fecha_liga">00/00/00</span> | <span id="tiempo_liga">00:00:00</span>
+								<strong>Liga "{{ liga_actual.nombre }}": </strong>
+								<span id="fecha_liga">00/00/00</span> | <span id="tiempo_liga">00:00:00</span>
 							</li>
 							
 							<!-- Notificaciones -->
@@ -87,7 +87,7 @@
 									{% for notificacion in ultimas_notificaciones %}
 										<li><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></li>
 									{% empty %}
-										<li><a href="#">No hay novedades</a></li>
+										<li>No hay novedades</li>
 									{% endfor %}
 									<li><a href="/cuentas/notificaciones/listar_liga/">Ver todas</a></li>
 								</ul>
@@ -188,8 +188,8 @@
 	</footer>
 
 	<script src="/media/js/jquery.min.js"></script>
-	<script src="/media/js/jquery-ui-1.8.12.custom.min.js"></script>
-	<script src="/media/js/jquery-ui-timepicker-addon.js"></script>
+	<script src="/media/js/jquery-ui.custom.min.js"></script>
+	<script src="/media/js/jquery-ui-timepicker-addon.min.js"></script>
 
 	<script>
 		var sabajao = null;
