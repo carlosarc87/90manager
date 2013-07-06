@@ -196,46 +196,25 @@
 			reiniciarContador();
 			clearTimeout(temporizador);
 		}
-
-		/* Para el funcionamiento de tema css con jquery */
-		$(function() {
-			// Botón iniciar / parar
-			$( "#play" ).click(function() {
-				var options;
-				if ( $( this ).text() === "play" ) {
-					options = {
-						label: "pause",
-						icons: {
-							primary: "ui-icon-pause"
-						}
-					};
-				} else {
-					options = {
-						label: "play",
-						icons: {
-							primary: "ui-icon-play"
-						}
-					};
-				}
-				$( this ).button( "option", options );
-			});
-		});
 	</script>
 {% endblock %}
 
 {% block contenido %}
 	<!-- Barra extra prueba -->
 	<div id="barra_repeticion" class="ui-widget-header ui-corner-all">
-		<button id="beginning" onclick="reiniciarContador();">Ir al inicio</button>
-		<button id="play" onclick="pausarContador();">Iniciar</button>
-		<button id="stop" onclick="pararContador();">Parar</button>
+		<a id="beginning" alt="Ir al inicio" onclick="reiniciarContador();"></a>
+		<span></span>
+		<a id="play" alt="Iniciar" onclick="pausarContador();"></a>
+		<span></span>
+		<a id="stop" alt="Parar" onclick="pararContador();"></a>
 		<!--<button id="end" onclick="avanzarFinal();">Ir al final</button>-->
 
 		<div id="contador_tiempo">00:00</div>
 		<div id="velocidad_tiempo">x1</div>
 
-		<button id="dec_vel" onclick="decrementarVelocidad();">Decrementar velocidad</button>
-		<button id="inc_vel" onclick="incrementarVelocidad();">Aumentar velocidad</button>
+		<a id="dec_vel" alt="Decrementar velocidad" onclick="decrementarVelocidad();"></a>
+		<span></span>
+		<a id="inc_vel" alt="Aumentar velocidad" onclick="incrementarVelocidad();"></a>
 	</div>
 
 	<table class="tabla1" id="tabla_resultado">

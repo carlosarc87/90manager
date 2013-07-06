@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2011 by
+Copyright 2013 by
 	* Juan Miguel Lechuga Pérez
 	* Jose Luis López Pino
 	* Carlos Antonio Rivera Cabello
@@ -68,7 +68,7 @@ def principal(request):
 				else:
 					login_error = "El usuario no ha sido activado aun"
 			else:
-				login_error = "Datos de loggeo inválidos"
+				login_error = "Usuario o contraseña incorrectos"
 				
 		# Formulario de recordar clave
 		elif "enviar_clave" in request.POST:
@@ -150,15 +150,17 @@ def tablon(request):
 def activar_usuario(request, clave):
 	if request.user.is_authenticated():
 		return devolverMensaje(request, "Ya estás activado en el sistema", "/")
+	
 	if ClaveRegistroUsuario.objects.filter(clave = clave).count() == 0:
-		return devolverMensaje(request, "Error, no existe tal clave de activación", "/")
+		return devolverMensaje(request, "Error: no existe la clave de activación dada", "/")
+	
 	cru = ClaveRegistroUsuario.objects.get(clave = clave)
 	usuario = cru.usuario
 
 	if cru.expira < datetime.datetime.today():
 		usuario.delete()
 		cru.delete()
-		return devolverMensaje(request, "Error, la clave ya caducó, regístrese de nuevo", "/cuentas/registrar/")
+		return devolverMensaje(request, "Error: la clave ya caducó, regístrate de nuevo", "/cuentas/registrar/")
 
 	# Activamos al usuario
 	usuario.is_active = True
@@ -166,6 +168,7 @@ def activar_usuario(request, clave):
 
 	# Eliminamos la clave
 	cru.delete()
+	
 	return devolverMensaje(request, "Se activó al usuario correctamente", "/")
 
 ########################################################################

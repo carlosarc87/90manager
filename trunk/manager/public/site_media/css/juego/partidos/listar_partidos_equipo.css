@@ -15,11 +15,11 @@ table{
 }
 
 .col_jornada a{
-	color: #008800;
+	color: #080;
 }
 
 .col_local{
-	color: #000088;
+	color: #008;
 	width: 250px;
 }
 
@@ -34,5 +34,5 @@ table{
 }
 
 .col_visitante a{
-	color: #880000;
+	color: #800;
 }

@@ -21,7 +21,7 @@
 }
 
 #col_valor_equipo{
-	color: #5555aa;
+	color: #55a;
 	font-weight: bold;
 	text-align: right;
 }
@@ -53,17 +53,17 @@
 .col_nombre_jug{}
 
 .col_nivel_jug{
-	color: #aa5500;
+	color: #a50;
 	text-align: right;
 }
 
 .col_numero_jug{
-	color: #5555aa;
+	color: #55a;
 	text-align: right;
 }
 
 .col_valorMercado_jug{
-	color: #5555aa;
+	color: #55a;
 	text-align: right;
 }
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 """
-Copyright 2011 by
+Copyright 2013 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello

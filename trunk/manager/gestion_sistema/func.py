@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2011 by
+Copyright 2013 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -27,6 +27,13 @@ from django.db import transaction
 
 def calcularCambios(request):
 	""" Calcula los cambios realizados en una liga """
+	
+	# Esto es necesario para cuando se consulta un equipo y aún no se ha entrado a una liga
+	if not 'liga_actual' in request.session:
+		if 'equipo_actual' in request.session:
+			equipo = request.session['equipo_actual']
+			request.session['liga_actual'] = equipo.liga
+	
 	liga = request.session['liga_actual']
 	if liga.activada():
 		fecha = liga.getFecha()

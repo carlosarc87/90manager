@@ -26,6 +26,52 @@
 	width: 40px;
 }
 
+#barra_repeticion a{
+	display: inline-block;
+	height: 16px;
+	width: 16px;
+}
+
+#beginning{
+	background: url(../../redmond/images/ui-icons_d8e7f3_256x240.png) no-repeat -80px -160px;
+}
+
+#beginning:hover{
+	background: url(../../redmond/images/ui-icons_f9bd01_256x240.png) no-repeat -80px -160px;
+}
+
+#play{
+	background: url(../../redmond/images/ui-icons_d8e7f3_256x240.png) no-repeat 0 -160px;
+}
+
+#play:hover{
+	background: url(../../redmond/images/ui-icons_f9bd01_256x240.png) no-repeat 0 -160px;
+}
+
+#stop{
+	background: url(../../redmond/images/ui-icons_d8e7f3_256x240.png) no-repeat -96px -160px;
+}
+
+#stop:hover{
+	background: url(../../redmond/images/ui-icons_f9bd01_256x240.png) no-repeat -96px -160px;
+}
+
+#dec_vel{
+	background: url(../../redmond/images/ui-icons_d8e7f3_256x240.png) no-repeat -48px -160px;
+}
+
+#dec_vel:hover{
+	background: url(../../redmond/images/ui-icons_f9bd01_256x240.png) no-repeat -48px -160px;
+}
+
+#inc_vel{
+	background: url(../../redmond/images/ui-icons_d8e7f3_256x240.png) no-repeat -32px -160px;
+}
+
+#inc_vel:hover{
+	background: url(../../redmond/images/ui-icons_f9bd01_256x240.png) no-repeat -32px -160px;
+}
+
 #contenido_contador_tiempo{
 	margin: 10px auto;
 	text-align: center;

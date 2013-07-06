@@ -2,7 +2,7 @@
 # Formularios del sistema. Los que deriven de una clase son rápidos de
 # crear.
 """
-Copyright 2011 by
+Copyright 2013 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -50,7 +50,7 @@ class LigaForm(forms.ModelForm):
 		''' Comprueba que haya un numero de equipos positivo y par y en caso afirmativo los devuelve '''
 		valor = self.cleaned_data['num_equipos']
 		if valor % 2 != 0:
-			raise forms.ValidationError("Debe de introducir un valor par para los equipos")
+			raise forms.ValidationError("El número de equipos debe ser par")
 		if valor <= 0:
 			raise forms.ValidationError("Debe haber al menos 2 equipos")
 		if valor > 30:
@@ -79,7 +79,7 @@ class ActivarLigaForm(forms.ModelForm):
 		''' Comprueba que haya un numero de equipos positivo y par y en caso afirmativo los devuelve '''
 		valor = self.cleaned_data['num_equipos'] + len(self.instance.equipo_set.all())
 		if valor % 2 != 0:
-			raise forms.ValidationError("Debe de introducir un valor para que el número de equipos sea par")
+			raise forms.ValidationError("El número de equipos debe ser par")
 		if valor <= 0:
 			raise forms.ValidationError("Debe haber al menos 2 equipos")
 		return valor

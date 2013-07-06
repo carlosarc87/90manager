@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2011 by
+Copyright 2013 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -64,7 +64,8 @@ def contacto(request):
 
 			# Mandar correo
 			mail_admins('[CONTACTO]: ' + asunto, mensaje)
-			return devolverMensaje(request, "Se nos ha enviado el mensaje, ¡Gracias! (O no, si nos has insultado xD).", 1, "/")
+			
+			return devolverMensaje(request, "El mensaje ha sido enviado", 1, "/")
 	else:
 		form = ContactoForm()
 
