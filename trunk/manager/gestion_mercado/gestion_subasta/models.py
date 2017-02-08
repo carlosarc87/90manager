@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -22,6 +22,7 @@ Copyright 2013 by
 
 """
 from django.db import models
+from django.core.validators import MaxValueValidator
 
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_liga.models import Liga
@@ -33,7 +34,7 @@ from gestion_usuario.gestion_notificacion.func import notificar, Notificacion
 ########################################################################
 
 # Opciones disponibles
-(ACTIVA, FINALIZADA, COMPRADA) = range(3)
+(ACTIVA, FINALIZADA, COMPRADA) = list(range(3))
 
 # Subasta
 class Subasta(Evento):
@@ -41,7 +42,7 @@ class Subasta(Evento):
 	# Datos principales
 	puja = models.PositiveIntegerField(default = 1)
 	precio_compra = models.PositiveIntegerField(null = True, blank = True)
-	estado = models.PositiveIntegerField(max_length = 1, default = 0)
+	estado = models.PositiveIntegerField(validators=[MaxValueValidator(2)], default = 0)
 
 	vendedor = models.ForeignKey(Equipo, related_name = 'subastas_como_vendedor')
 	comprador = models.ForeignKey(Equipo, related_name = 'subastas_como_comprador', null = True, blank = True)

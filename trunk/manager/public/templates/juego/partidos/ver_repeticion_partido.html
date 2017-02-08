@@ -111,11 +111,11 @@
 		}
 		
 		function avanzarFinal(){
-			if(segundos == 0){
+			if (segundos == 0){
 				reiniciarContador();
 			}
 			
-			if(ultimaFilaAgregada + 1 < array_sucesos.length){
+			if (ultimaFilaAgregada + 1 < array_sucesos.length){
 				fin_partido = false;
 				pausa = false;
 				
@@ -188,6 +188,15 @@
 					contadorTiempo();
 				}
 			}
+			
+			if (pausa) {
+				document.getElementById("pause").setAttribute("title", "Continuar");
+				document.getElementById("pause").setAttribute("id", "play");
+			}
+			else {
+				document.getElementById("play").setAttribute("title", "Parar");
+				document.getElementById("play").setAttribute("id", "pause");
+			}
 		}
 		
 		function pararContador() {
@@ -200,39 +209,59 @@
 {% endblock %}
 
 {% block contenido %}
-	<!-- Barra extra prueba -->
-	<div id="barra_repeticion" class="ui-widget-header ui-corner-all">
-		<a id="beginning" alt="Ir al inicio" onclick="reiniciarContador();"></a>
-		<span></span>
-		<a id="play" alt="Iniciar" onclick="pausarContador();"></a>
-		<span></span>
-		<a id="stop" alt="Parar" onclick="pararContador();"></a>
-		<!--<button id="end" onclick="avanzarFinal();">Ir al final</button>-->
+	<article>
+		<!-- Barra repetición -->
+		<nav id="barra_repeticion">
+			<ul>
+				<li>
+					<a id="beginning" alt="Ir al inicio" title="Ir al inicio" onclick="reiniciarContador();"></a>
+				</li>
+				
+				<li>
+					<a id="play" alt="Iniciar" title="Iniciar" onclick="pausarContador();"></a>
+				</li>
+				
+				<li>
+					<a id="stop" alt="Parar" title="Parar" onclick="pararContador();"></a>
+				</li>
+				
+				<li>
+					<!--<button id="end" onclick="avanzarFinal();">Ir al final</button>-->
+					<div id="contador_tiempo">00:00</div>
+				</li>
+				
+				<li>
+					<a id="dec_vel" alt="Decrementar velocidad" title="Decrementar velocidad" onclick="decrementarVelocidad();"></a>
+				</li>
+				
+				<li>
+					<a id="inc_vel" alt="Aumentar velocidad" title="Aumentar velocidad" onclick="incrementarVelocidad();"></a>
+				</li>
+				
+				<li>
+					<div id="velocidad_tiempo"><span title="Velocidad">x1</span></div>
+				</li>
+			</ul>
+		</nav>
 
-		<div id="contador_tiempo">00:00</div>
-		<div id="velocidad_tiempo">x1</div>
+		<!-- Resultado -->
+		<table class="tabla1" id="tabla_resultado">
+			<caption>Resultado</caption>
 
-		<a id="dec_vel" alt="Decrementar velocidad" onclick="decrementarVelocidad();"></a>
-		<span></span>
-		<a id="inc_vel" alt="Aumentar velocidad" onclick="incrementarVelocidad();"></a>
-	</div>
+			<tbody>
+				<tr>
+					<td id="col_local">{{ siglas_local }}</td>
+					<td id="col_resultado"><span id="goles_local">0</span> - <span id="goles_visitante">0</span></td>
+					<td id="col_visitante">{{ siglas_visitante }}</td>
+				</tr>
+			</tbody>
+		</table>
 
-	<table class="tabla1" id="tabla_resultado">
-		<caption>Resultado</caption>
-
-		<tbody>
-			<tr>
-				<td id="col_local">{{ siglas_local }}</td>
-				<td id="col_resultado"><span id="goles_local">0</span> - <span id="goles_visitante">0</span></td>
-				<td id="col_visitante">{{ siglas_visitante }}</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<!-- Sucesos -->
-	<table class="tabla1" id="tabla_sucesos">
-		<caption>Sucesos</caption>
-		<tbody>
-		</tbody>
-	</table>
+		<!-- Sucesos -->
+		<table class="tabla1" id="tabla_sucesos">
+			<caption>Sucesos</caption>
+			<tbody>
+			</tbody>
+		</table>
+	</article>
 {% endblock %}

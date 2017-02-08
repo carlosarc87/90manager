@@ -1,0 +1,39 @@
+#tabla_ligas{
+	margin: 2em auto;
+	width: 600px;
+}
+
+#tabla_notificaciones{
+	margin: 2em auto;
+	width: 400px;
+}
+
+.col_creador{}
+
+.col_estado{
+	text-align: right;
+}
+
+.col_nombre_equipo{}
+
+.col_nombre_liga{}
+
+.col_num_equipos{
+	color: #339;
+	text-align: right;
+}
+
+.liga_abierta{
+	color: #393;
+	font-weight: bold;
+}
+
+.liga_comenzada{
+	color: #339;
+	font-weight: bold;
+}
+
+.liga_finalizada{
+	color: #933;
+	font-weight: bold;
+}

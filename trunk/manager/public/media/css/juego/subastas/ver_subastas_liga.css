@@ -1,0 +1,10 @@
+#tabla_mercado{
+	margin: 20px auto;
+	width: 1000px;
+}
+
+.precio_subasta,
+.precio_compra,
+.valor_mercado{
+	text-align: right;
+}

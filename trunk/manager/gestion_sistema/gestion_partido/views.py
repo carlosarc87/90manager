@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -28,8 +28,8 @@ from django.db.models import Q
 
 from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 
-from models import Partido, JugadorPartido, Suceso
-from forms import PrepararEquipoForm
+from .models import Partido, JugadorPartido, Suceso
+from .forms import PrepararEquipoForm
 
 from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
@@ -117,6 +117,7 @@ def ver_partido(request):
 	# Comprobar si tiene equipo en el partido y se puede editar la alineación
 	editar = False
 	tiene_equipo = False
+	
 	if equipo_local.usuario == usuario:
 		tiene_equipo = True
 		if partido.alineacion_local.estaPreparada():
@@ -125,6 +126,7 @@ def ver_partido(request):
 		tiene_equipo = True
 		if partido.alineacion_visitante.estaPreparada():
 			editar = True
+			
 	es_creador = liga.creador == usuario
 
 	# Comprobamos si el partido ha acabado
@@ -180,33 +182,35 @@ def ver_partido(request):
 
 		# Porcentajes
 		num_acciones_total = equipo_local.num_acciones + equipo_visitante.num_acciones
-		for equipo in (equipo_local, equipo_visitante):
-			equipo.porc_posesion = round((100.0 * equipo.num_acciones) / num_acciones_total, 1)
-			equipo.porc_regates_exito = round((100.0 * equipo.regates_realizados) / equipo.regates_totales, 1)
-			equipo.porc_pases_exito = round((100.0 * equipo.pases_realizados) / equipo.pases_totales, 1)
-			equipo.porc_disparos_exito = round((100.0 * equipo.disparos_a_puerta) / equipo.disparos_totales, 1)
+		
+		if num_acciones_total > 0:
+			for equipo in (equipo_local, equipo_visitante):
+				equipo.porc_posesion = round((100.0 * equipo.num_acciones) / num_acciones_total, 1)
+				equipo.porc_regates_exito = round((100.0 * equipo.regates_realizados) / equipo.regates_totales, 1)
+				equipo.porc_pases_exito = round((100.0 * equipo.pases_realizados) / equipo.pases_totales, 1)
+				equipo.porc_disparos_exito = round((100.0 * equipo.disparos_a_puerta) / equipo.disparos_totales, 1)
 
-		for equipo, alineacion in ((equipo_local, partido.alineacion_local), (equipo_visitante, partido.alineacion_visitante)):
-			# Obtener datos de los titulares del equipo
-			equipo.titulares = alineacion.getDatosTitulares()
+			for equipo, alineacion in ((equipo_local, partido.alineacion_local), (equipo_visitante, partido.alineacion_visitante)):
+				# Obtener datos de los titulares del equipo
+				equipo.titulares = alineacion.getDatosTitulares()
 
-			equipo.suma_nivel_titulares = 0
-			equipo.num_df = 0
-			equipo.num_cc = 0
-			equipo.num_dl = 0
-			for t in equipo.titulares:
-				# Valor total del equipo
-				equipo.suma_nivel_titulares += t.atributos.getNivel()
+				equipo.suma_nivel_titulares = 0
+				equipo.num_df = 0
+				equipo.num_cc = 0
+				equipo.num_dl = 0
+				for t in equipo.titulares:
+					# Valor total del equipo
+					equipo.suma_nivel_titulares += t.atributos.getNivel()
 
-				# Número de jugadores por posición
-				if t.posicion == JugadorPartido.DEFENSA:
-					equipo.num_df += 1
-				elif t.posicion == JugadorPartido.CENTROCAMPISTA:
-					equipo.num_cc += 1
-				elif t.posicion == JugadorPartido.DELANTERO:
-					equipo.num_dl += 1
-					
-			equipo.nivel_medio_titulares = "%.2f" % (1.0 * equipo.suma_nivel_titulares / 11)
+					# Número de jugadores por posición
+					if t.posicion == JugadorPartido.DEFENSA:
+						equipo.num_df += 1
+					elif t.posicion == JugadorPartido.CENTROCAMPISTA:
+						equipo.num_cc += 1
+					elif t.posicion == JugadorPartido.DELANTERO:
+						equipo.num_dl += 1
+						
+				equipo.nivel_medio_titulares = "%.2f" % (1.0 * equipo.suma_nivel_titulares / 11)
 
 	sucesos = partido.suceso_set.filter(Q(tipo = Suceso.GOL) | Q(tipo = Suceso.DISPARO) | Q(tipo = Suceso.FIN_PARTE) | Q(tipo = Suceso.TIEMPO_DESCUENTO) | Q(tipo = Suceso.COMENZAR))
 
@@ -350,17 +354,19 @@ def ver_partidos_propios(request):
 
 	partidos = liga.partido_set.filter(Q(equipo_local = equipo) | Q(equipo_visitante = equipo))
 
-	partidos_jugados = partidos.filter(jugado = True)
+	# Obtener partido actual
 	partidos_no_jugados = partidos.filter(jugado = False)
+	
 	if partidos_no_jugados.count() > 0:
 		partido_actual = partidos_no_jugados[0]
 	else:
 		partido_actual = None
 
-	d = {"partidos_jugados" : partidos_jugados,
-		 "partidos_no_jugados" : partidos_no_jugados,
-		 "partido_actual" : partido_actual,
-		 }
+	# Generar página
+	d = {
+		"partido_actual" : partido_actual,
+		"partidos" : partidos,
+	}
 
 	return generarPagina(request, "juego/partidos/listar_partidos_equipo.html", d)
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -25,7 +25,8 @@ Copyright 2013 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 
-from models import Jugador
+from .models import Jugador
+from settings import MEDIA_URL
 
 from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 
@@ -61,26 +62,28 @@ def ver_jugador(request):
 
 	jugador = request.session['jugador_actual']
 	
-	valorMercado_mejor = jugador.valorMercado()
-
-	# Obtener valores por posición
-	valorMercado_PO = jugador.valorMercado("PORTERO")
-	valorMercado_DF = jugador.valorMercado("DEFENSA")
-	valorMercado_CC = jugador.valorMercado("CENTROCAMPISTA")
-	valorMercado_DL = jugador.valorMercado("DELANTERO")
+	# Rutas de imágenes de foto
+	ruta_imagenes = MEDIA_URL + 'img/jugadores/'
+	
+	if jugador.sexo == 'F':
+		ruta_imagenes = MEDIA_URL + 'img/jugadores/mujeres/'
+		ruta_imagen_foto = ruta_imagenes + 'mujer.png'
+	else:
+		ruta_imagenes = MEDIA_URL + 'img/jugadores/hombres/'
+		ruta_imagen_foto = ruta_imagenes + 'hombre.png'
+		
+	ruta_imagen_ojos = ruta_imagenes + 'ojos_' + jugador.color_ojos + '.png'
+	ruta_imagen_pelo = ruta_imagenes + 'pelo_' + jugador.color_pelo + '.png'
+	ruta_imagen_piel = ruta_imagenes + 'piel_' + jugador.color_piel + '.png'
+	
+	# Valor de mercado
+	mejor_posicion = jugador.mejorPosicion()
 	
 	# Nivel
-	nivel_mejor = jugador.getNivel()
-	nivel_PO = jugador.getNivel("PORTERO")
-	nivel_DF = jugador.getNivel("DEFENSA")
-	nivel_CC = jugador.getNivel("CENTROCAMPISTA")
-	nivel_DL = jugador.getNivel("DELANTERO")
-
-	# Obtener rendimiento por posición
-	rendimiento_PO = (int)((nivel_PO * 100) / nivel_mejor)
-	rendimiento_DF = (int)((nivel_DF * 100) / nivel_mejor)
-	rendimiento_CC = (int)((nivel_CC * 100) / nivel_mejor)
-	rendimiento_DL = (int)((nivel_DL * 100) / nivel_mejor)
+	nivel = jugador.getNivel()
+	
+	# Valor de mercado
+	valor_mercado = jugador.valorMercado()
 
 	# Obtener edad
 	anios, dias = jugador.getEdad()
@@ -94,24 +97,20 @@ def ver_jugador(request):
 		subasta = jugador.atributos.subasta
 
 	d = {"equipo" : equipo,
-				 "usuario" : usuario,
-				 "jugador" : jugador,
-				 "subasta" : subasta,
-				 "anios" : anios,
-				 "dias" : dias,
-				 "nivel_PO" : nivel_PO,
-				 "nivel_DF" : nivel_DF,
-				 "nivel_CC" : nivel_CC,
-				 "nivel_DL" : nivel_DL,
-				 "rendimiento_PO" : rendimiento_PO,
-				 "rendimiento_DF" : rendimiento_DF,
-				 "rendimiento_CC" : rendimiento_CC,
-				 "rendimiento_DL" : rendimiento_DL,
-				 "valorMercado_PO" : valorMercado_PO,
-				 "valorMercado_DF" : valorMercado_DF,
-				 "valorMercado_CC" : valorMercado_CC,
-				 "valorMercado_DL" : valorMercado_DL,
-				}
+		 "usuario" : usuario,
+		 "jugador" : jugador,
+		 "subasta" : subasta,
+		 "anios" : anios,
+		 "dias" : dias,
+		 "ruta_imagen_foto" : ruta_imagen_foto,
+		 "ruta_imagen_ojos" : ruta_imagen_ojos,
+		 "ruta_imagen_pelo" : ruta_imagen_pelo,
+		 "ruta_imagen_piel" : ruta_imagen_piel,
+		 "mejor_posicion" : mejor_posicion,
+		 "nivel" : nivel,
+		 "valor_mercado" : valor_mercado,
+		}
+	
 	return generarPagina(request, "juego/jugadores/ver_jugador.html", d)
 
 ########################################################################

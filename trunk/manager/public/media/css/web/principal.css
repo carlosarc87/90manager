@@ -1,0 +1,143 @@
+#wrap{
+	text-align: center;
+	width: 500px;
+}
+
+#barra_menu{
+	display: none;
+}
+
+#logo_90manager{
+	cursor: pointer;
+	margin: 20px auto;
+}
+
+#descripcion{
+	color: #fff;
+	font-weight: bold;
+	margin: 20px auto;
+	text-align: center;
+}
+
+#usuarios_registrados{
+	color: #9f9;
+	margin: 20px 0;
+	text-align: center;
+}
+
+#caja_mensajico{
+	height: 3em;
+	margin: 20px 0;
+	text-align: center;
+}
+
+#mensajico{
+	background: #fff;
+	border-radius: 5px;
+	box-shadow: 0 0 5px #fff;
+	cursor: pointer;
+	display: inline-block;
+	font-size: .8em;
+	font-style: italic;
+	padding: .5em;
+}
+
+/* login */
+
+#login{
+	margin: 20px auto;
+	text-align: left;
+}
+
+#datos_login{
+	list-style: none;
+	padding: 0;
+}
+
+#datos_login li{
+	margin: .5em 0;
+}
+
+#datos_login .col1{
+	display: inline-block;
+	width: 150px;
+}
+
+#entrar_login{
+	margin-bottom: 1em;
+}
+
+/* fin login */
+
+/* recordar clave */
+
+#recordar_clave{
+	display: none;
+	margin: 20px auto;
+	width: 400px;
+}
+
+#recordar_clave ul{
+	list-style: none;
+	padding: 0;
+}
+
+#recordar_clave li{
+	clear: both;
+	height: 20px;
+	padding: .5em 0;
+}
+
+#recordar_clave input{
+	float: right;
+}
+
+#recordar_clave label{
+	float: left;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"]{
+	width: 250px;
+}
+
+/* registro */
+
+#registro{
+	display: none;
+	margin: 20px auto;
+	text-align: left;
+}
+
+#registro input{
+	float: right;
+}
+
+#registro label{
+	float: left;
+	width: 150px;
+}
+
+#datos_registro{
+	list-style: none;
+	margin-bottom: 2em;
+	padding: 0;
+}
+
+#datos_registro li{
+	clear: both;
+	height: 20px;
+	padding: .5em 0;
+}
+
+#boton_registro{
+	margin-top: 1em;
+}
+
+/*************************/
+
+.volver_login{
+	margin-top: 20px;
+	text-align: center;
+}

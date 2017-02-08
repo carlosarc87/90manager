@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -22,7 +22,7 @@ Copyright 2013 by
 
 """
 
-from settings import RUTA
+from settings import MEDIA_ROOT
 
 ########################################################################
 
@@ -33,25 +33,26 @@ def listaNombres(nombre_fichero):
 	lista_nombres_fem = []
 	
 	femeninos = False
-	fich = open(RUTA + "public/site_media/doc/" + nombre_fichero, "r")
-	while(True):
-		linea = fich.readline()
-		
-		if linea:
-			linea = linea[:-1] # Quitar '\n' del final
+	
+	with open(MEDIA_ROOT + "/doc/" + nombre_fichero, "r", encoding="utf-8") as fich:
+		while(True):
+			linea = fich.readline()
 			
-			if linea == "# Femeninos":
-				femeninos = True
-			
-			if not linea[0] == '#':
-				if femeninos:
-					lista_nombres_fem.append(linea)
-				else:
-					lista_nombres_masc.append(linea)
-		else:
-			break
+			if linea:
+				linea = linea[:-1] # Quitar '\n' del final
+				
+				if linea == "# Femeninos":
+					femeninos = True
+				
+				if not linea[0] == '#':
+					if femeninos:
+						lista_nombres_fem.append(linea)
+					else:
+						lista_nombres_masc.append(linea)
+			else:
+				break
 
-	fich.close()
+		fich.close()
 	
 	return lista_nombres_masc, lista_nombres_fem
 
@@ -74,37 +75,44 @@ def quitar_caracteres_raros(cadena):
 
 ########################################################################
 
-def nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2):
+def nombreEquipoAleatorio(liga, lista_nombres_tipo_club, lista_parte1, lista_parte2, sexo_permitido):
 	from random import randint
 	
-	# Establecer formato del nombre del equipo
-	# 1.- [parte 1] + [parte 2]
-	# 2.- [tipo_club] + [parte 1] + [parte 2]
-	a = randint(1, 2)
-	
-	# Elegir genero al azar
-	g = randint(1, 2)
+	# Establecer genero
+	if sexo_permitido == 2: # Equipo mixto
+		genero_nombre_equipo = randint(1, 2)
+	else: # Equipo de un solo genero
+		genero_nombre_equipo = sexo_permitido + 1
 	
 	# Obtener nombres dependiendo del genero
-	if g == 1: # Masculino
+	if genero_nombre_equipo == 1: # Masculino
 		parte1 = lista_parte1[0][randint(0, len(lista_parte1[0]) - 1)]
 		parte2 = lista_parte2[0][randint(0, len(lista_parte2[0]) - 1)]
 	else: # Femenino
 		parte1 = lista_parte1[1][randint(0, len(lista_parte1[1]) - 1)]
 		parte2 = lista_parte2[1][randint(0, len(lista_parte2[1]) - 1)]
 	
-	if a == 1:
+	# Establecer formato del nombre del equipo
+	# 1.- [parte 1] + [parte 2]
+	# 2.- [tipo_club] + [parte 1] + [parte 2]
+	formato_nombre_equipo = randint(1, 2)
+	
+	if formato_nombre_equipo == 1:
 		nombre_equipo = parte1 + ' ' + parte2
 	else:
 		tipo_club = lista_nombres_tipo_club[0][randint(0, len(lista_nombres_tipo_club) - 1)]
 		nombre_equipo = tipo_club + ' ' + parte1 + ' ' + parte2
+
+	# Comprobar que el nombre no se repita
+	while liga.equipo_set.filter(nombre = nombre_equipo).count() > 0:
+		nombre_equipo = nombreEquipoAleatorio(liga, lista_nombres_tipo_club, lista_parte1, lista_parte2, sexo_permitido)
 
 	# Devolver nombre_completo
 	return nombre_equipo
 
 ########################################################################
 
-def generarSiglasNombre(nombre_equipo):
+def generarSiglasNombre(liga, nombre_equipo):
 	""" Devuelve unas siglas para el nombre dado """
 	# Separar el nombre del equipo en partes a partir de los espacios
 	nombre_equipo = quitar_caracteres_raros(nombre_equipo)
@@ -113,9 +121,17 @@ def generarSiglasNombre(nombre_equipo):
 	num_partes = len(partes)
 	
 	if num_partes >= 3:
-		return partes[0][0] + partes[num_partes - 2][0] + partes[num_partes - 1][0]
+		siglas_equipo = partes[0][0] + partes[num_partes - 2][0] + partes[num_partes - 1][0]
+	else:
+		siglas_equipo = partes[0][0] + partes[1][0] + partes[1][1]
 	
-	return partes[0][0] + partes[1][0] + partes[1][1]
+	# Comprobar que las siglas no se repitan
+	c = 1
+	while liga.equipo_set.filter(siglas = siglas_equipo).count() > 0:
+		siglas_equipo = siglas_equipo[:-1] + str(c)
+		c += 1
+	
+	return siglas_equipo
 
 ########################################################################
 
@@ -132,55 +148,69 @@ def ObtenerNombreYSiglasAleatorio(liga):
 	lista_parte1 = [[], []]
 
 	# Animales
-	lista_nombres_animales = listaNombres('nombres_equipos/animales.txt')
-	lista_parte1[0] += lista_nombres_animales[0]
-	lista_parte1[1] += lista_nombres_animales[1]
+	lista_nombres = listaNombres('nombres_equipos/animales.txt')
+	lista_parte1[0] += lista_nombres[0]
+	lista_parte1[1] += lista_nombres[1]
 
 	# Comidas
-	lista_nombres_comidas = listaNombres('nombres_equipos/comidas.txt')
-	lista_parte1[0] += lista_nombres_comidas[0]
-	lista_parte1[1] += lista_nombres_comidas[1]
+	lista_nombres = listaNombres('nombres_equipos/comidas.txt')
+	lista_parte1[0] += lista_nombres[0]
+	lista_parte1[1] += lista_nombres[1]
 
 	# Profesiones
-	lista_nombres_profesiones = listaNombres('nombres_equipos/profesiones.txt')
-	lista_parte1[0] += lista_nombres_profesiones[0]
-	lista_parte1[1] += lista_nombres_profesiones[1]
+	lista_nombres = listaNombres('nombres_equipos/profesiones.txt')
+	lista_parte1[0] += lista_nombres[0]
+	lista_parte1[1] += lista_nombres[1]
 
 	# Razas
-	lista_nombres_razas = listaNombres('nombres_equipos/razas.txt')
-	lista_parte1[0] += lista_nombres_razas[0]
-	lista_parte1[1] += lista_nombres_razas[1]
+	lista_nombres = listaNombres('nombres_equipos/razas.txt')
+	lista_parte1[0] += lista_nombres[0]
+	lista_parte1[1] += lista_nombres[1]
 
 	# Objetos
-	lista_nombres_objetos = listaNombres('nombres_equipos/objetos.txt')
-	lista_parte1[0] += lista_nombres_objetos[0]
-	lista_parte1[1] += lista_nombres_objetos[1]
+	lista_nombres = listaNombres('nombres_equipos/objetos.txt')
+	lista_parte1[0] += lista_nombres[0]
+	lista_parte1[1] += lista_nombres[1]
 
 	# Parte 2
 	lista_parte2 = [[], []]
 
+	# Apariencias
+	lista_nombres = listaNombres('nombres_equipos/apariencias.txt')
+	lista_parte2[0] += lista_nombres[0]
+	lista_parte2[1] += lista_nombres[1]
+
+	# Atributos
+	lista_nombres = listaNombres('nombres_equipos/atributos.txt')
+	lista_parte2[0] += lista_nombres[0]
+	lista_parte2[1] += lista_nombres[1]
+
+	# Caracteres
+	lista_nombres = listaNombres('nombres_equipos/caracteres.txt')
+	lista_parte2[0] += lista_nombres[0]
+	lista_parte2[1] += lista_nombres[1]
+
 	# Colores
-	lista_nombres_colores = listaNombres('nombres_equipos/colores.txt')
-	lista_parte2[0] += lista_nombres_colores[0]
-	lista_parte2[1] += lista_nombres_colores[1]
+	lista_nombres = listaNombres('nombres_equipos/colores.txt')
+	lista_parte2[0] += lista_nombres[0]
+	lista_parte2[1] += lista_nombres[1]
+
+	# Estados
+	lista_nombres = listaNombres('nombres_equipos/estados.txt')
+	lista_parte2[0] += lista_nombres[0]
+	lista_parte2[1] += lista_nombres[1]
 
 	# Formas
-	lista_nombres_formas = listaNombres('nombres_equipos/formas.txt')
-	lista_parte2[0] += lista_nombres_formas[0]
-	lista_parte2[1] += lista_nombres_formas[1]
+	lista_nombres = listaNombres('nombres_equipos/formas.txt')
+	lista_parte2[0] += lista_nombres[0]
+	lista_parte2[1] += lista_nombres[1]
 	# -------------------------------------------------
 
 	nombre_aleatorio = ''
 	siglas = ''
 	for i in range(liga.equipo_set.count(), liga.num_equipos):
-		nombre_eq = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
-		siglas_eq = generarSiglasNombre(nombre_eq)
-
-		# Comprobar que las siglas no se repitan
-		c = 1
-		while liga.equipo_set.filter(siglas = siglas_eq).count() > 0:
-			siglas_eq = siglas_eq[:-1] + str(c)
-			c += 1
+		nombre_eq = nombreEquipoAleatorio(liga, lista_nombres_tipo_club, lista_parte1, lista_parte2, liga.sexo_permitido)
+		siglas_eq = generarSiglasNombre(liga, nombre_eq)
 
 		nombre_aleatorio = nombre_eq
 		siglas = siglas_eq

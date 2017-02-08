@@ -1,0 +1,42 @@
+#tabla_proximo_partido,
+#tabla_partidos{
+	margin: 20px auto;
+	width: 1000px;
+}
+
+.col_fecha{
+	color: #666;
+	text-align: right;
+	width: 220px;
+}
+
+.col_jornada{
+	text-align: right;
+	width: 60px;
+}
+
+.col_local{
+	width: 250px;
+}
+
+.col_local a{
+	color: #33c;
+}
+
+.col_resultado{
+	color: #666;
+	text-align: center;
+	width: 60px;
+}
+
+.col_visitante{
+	width: 250px;
+}
+
+.col_visitante a{
+	color: #c33;
+}
+
+.col_ver{
+	text-align: right;
+}

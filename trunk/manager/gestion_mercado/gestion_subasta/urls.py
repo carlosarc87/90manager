@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -22,16 +22,17 @@ Copyright 2013 by
 
 """
 
-from django.conf.urls.defaults import *
+from django.conf.urls import  url
+from gestion_mercado.gestion_subasta import views
 
-urlpatterns = patterns('',
+urlpatterns = [
    	# Modulo de subastas
-   	(r'^ver/liga/$', 'gestion_mercado.gestion_subasta.views.ver_subastas_liga'),
-   	(r'^ver/equipo/$', 'gestion_mercado.gestion_subasta.views.ver_subastas_equipo'),
-   	(r'^ver/(?P<subasta_id>\d+)/$', 'gestion_mercado.gestion_subasta.views.ver_subasta_id'),
-   	(r'^ver/$', 'gestion_mercado.gestion_subasta.views.ver_subasta'),
-   	(r'^comprar/$', 'gestion_mercado.gestion_subasta.views.comprar_subasta'),
-   	(r'^crear/$', 'gestion_mercado.gestion_subasta.views.crear_subasta'),
-   	(r'^propias/$', 'gestion_mercado.gestion_subasta.views.mis_subastas'),
-   	(r'^pujas/$', 'gestion_mercado.gestion_subasta.views.mis_pujas'),
-)
+   	url(r'^ver/liga/$', views.ver_subastas_liga),
+   	url(r'^ver/equipo/$', views.ver_subastas_equipo),
+   	url(r'^ver/(?P<subasta_id>\d+)/$', views.ver_subasta_id),
+   	url(r'^ver/$', views.ver_subasta),
+   	url(r'^comprar/$', views.comprar_subasta),
+   	url(r'^crear/$', views.crear_subasta),
+   	url(r'^propias/$', views.mis_subastas),
+   	url(r'^pujas/$', views.mis_pujas),
+]

@@ -9,10 +9,14 @@
 	<script>
 		// Indica confirmacion y envia el mensaje si confirma el usuario
 		function compraDirecta() {
-			var respuesta = confirm("¿Está seguro de querer comprar directamente por {{ subasta.precio_compra }}?")
+			var respuesta = confirm("¿Estás seguro de querer comprar directamente por {{ subasta.precio_compra }}?")
+			
 			if (respuesta) {
 				location.href = '/mercado/subastas/comprar/';
+				return true;
 			}
+			
+			return false;
 		}
 	</script>
 {% endblock %}
@@ -26,19 +30,19 @@
 				{% if subasta.comprador %}
 					<tr>
 						<td>Puja actual:</td>
-						<td>{{ subasta.puja }} por {{ subasta.comprador }}</td>
+						<td>{{ subasta.puja }} € por {{ subasta.comprador.nombre }}</td>
 					</tr>
 				{% else %}
 					<tr>
 						<td>Puja actual:</td>
-						<td>{{ subasta.puja }}</td>
+						<td>{{ subasta.puja }} €</td>
 					</tr>
 				{% endif %}
 
 				{% if subasta.precio_compra %}
 					<tr>
 						<td>Precio de compra directa:</td>
-						<td>{{ subasta.precio_compra }}</td>
+						<td>{{ subasta.precio_compra }} €</td>
 					</tr>
 				{% endif %}
 
@@ -64,37 +68,41 @@
 
 				<tr>
 					<td>Equipo vendedor:</td>
-					<td>{{ subasta.vendedor }}</td>
+					<td>
+						<a href="/equipos/ver/{{ subasta.vendedor.id }}/">{{ subasta.vendedor.nombre }}</a>
+					</td>
 				</tr>
 			</tbody>
 		</table>
 
 		{% if equipo_usuario %}
 			{% if form %}
-				<div id="contenido_form_oferta">
+				<div id="contenedor_form_oferta">
+					<!-- Formulario de oferta -->
 					<form id="form_oferta" action="/mercado/subastas/ver/" method="post">
 						{% csrf_token %}
-						<!-- Oferta -->
-						<div id="contenido_oferta">
-							{% if form.cantidad.errors %}
-								{{ form.cantidad.errors }}
-							{% endif %}
+						
+						{% if form.cantidad.errors %}
+							{{ form.cantidad.errors }}
+						{% endif %}
 
+						<section>
 							<label for="id_cantidad">Oferta:</label>
+							<div id="caja_cantidad">{{ form.cantidad }} <span>€</span></div>
+						</section>
 
-							<div id="caja_cantidad">{{ form.cantidad }}</div>
-
+						<section>
 							<div id="caja_oferta">
 								<input type="submit" value="Realizar oferta" />
 							</div>
-						</div>
-					</form>
 
-					{% if subasta.precio_compra %}
-						<div id="boton_compra_directa">
-							<input type="submit" name="boton_compra_directa" value="Compra directa" onclick="compraDirecta()" />
-						</div>
-					{% endif %}
+							{% if subasta.precio_compra %}
+								<div id="boton_compra_directa">
+									<input type="submit" name="boton_compra_directa" value="Compra directa" onclick="return compraDirecta()" />
+								</div>
+							{% endif %}
+						</section>
+					</form>
 				</div>
 			{% else %}
 				<p class="info">
@@ -119,6 +127,4 @@
 			{% endif %}
 		{% endif %}
 	{% endif %}
-
-
 {% endblock %}

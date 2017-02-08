@@ -1,0 +1,27 @@
+#lista_notificaciones{
+	background: #fff;
+	border: solid 1px #000;
+	list-style: none;
+	margin: 20px auto;
+	width: 500px;
+}
+
+#lista_notificaciones li{
+	align-items: center;
+	border: solid 1px #090;
+	display: flex;
+	padding: .5em;
+	justify-content: space-between;
+}
+
+.bloque_botones{
+	text-align: right;
+}
+
+.boton_ver{
+	margin-right: 10px;
+}
+
+.no_leida{
+	background: #afa;
+}

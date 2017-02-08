@@ -1,0 +1,28 @@
+#tabla_enlaces_siguenos{
+	margin: 0 auto;
+	width: 300px;
+}
+
+#tabla_enlaces_siguenos th{
+	text-align: right;
+}
+
+#tabla_enlaces_siguenos *{
+	vertical-align: middle;
+}
+
+#wrap{
+	background: #fff;
+	border: solid 1px #000;
+	margin: 20px auto;
+}
+
+#wrap h2{
+	border-top: none;
+	border-right: none;
+	border-left: none;
+}
+
+#wrap p{
+	text-align: center;
+}

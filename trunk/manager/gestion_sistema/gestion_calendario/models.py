@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -33,10 +33,10 @@ class Evento(models.Model):
 	liga = models.ForeignKey(Liga)
 
 	def iniciar():
-		print "No implementada"
+		print("No implementada")
 
 	def finalizar():
-		print "No implementada"
+		print("No implementada")
 
 	def __unicode__(self):
 		return "Evento"

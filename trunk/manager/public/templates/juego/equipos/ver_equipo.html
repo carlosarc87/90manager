@@ -45,7 +45,7 @@
 			<!-- Dinero actual -->
 			<tr>
 				<th>Dinero actual</td>
-				<td>{{ equipo.dinero }} &euro;</td>
+				<td>{{ dinero_equipo }} &euro;</td>
 			</tr>
 		</tbody>
 	</table>
@@ -57,9 +57,9 @@
 			<thead>
 				<tr>
 					<td>Num.</td>
-					<td>Mejor posici&oacute;n</td>
+					<td>Mejor posición</td>
 					<td>Nombre</td>
-					<td>Edad</td>
+					<td>Edad (años)</td>
 					<td>Valor (&euro;)</td>
 					<td>Nivel</td>
 				</tr>
@@ -70,7 +70,7 @@
 						<td class="col_numero_jug">{{ jugador.atributos.numero }}</td>
 						<td class="col_mejorPosicion_jug">{{ jugador.mejorPosicion }}</td>
 						<td class="col_nombre_jug"><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></td>
-						<td class="col_edad_jug">{{ jugador.anios }} años y {{ jugador.dias }} días</td>
+						<td class="col_edad_jug">{{ jugador.anios }}</td>
 						<td class="col_valorMercado_jug">{{ jugador.valorMercado }}</td>
 						<td class="col_nivel_jug">{{ jugador.nivel }}</td>
 					</tr>
@@ -106,9 +106,11 @@
 				{% endfor %}
 			</tbody>
 		{% else %}
-			<tr>
-				<th>Aún no hay historial de cuentas</th>
-			</tr>
+			<tbody>
+				<tr>
+					<th>Aún no hay historial de cuentas</th>
+				</tr>
+			</tbody>
 		{% endif %}
 	</table>
 {% endblock %}

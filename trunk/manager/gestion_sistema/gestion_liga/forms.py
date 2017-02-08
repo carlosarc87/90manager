@@ -2,7 +2,7 @@
 # Formularios del sistema. Los que deriven de una clase son rápidos de
 # crear.
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -26,7 +26,7 @@ Copyright 2013 by
 
 from gestion_base.func import HorizRadioRenderer
 from django import forms
-from models import Liga
+from .models import Liga
 
 ########################################################################
 
@@ -42,19 +42,23 @@ class LigaForm(forms.ModelForm):
 	sexo_permitido = forms.ChoiceField(label = "Sexos permitidos", widget = forms.RadioSelect(renderer = HorizRadioRenderer), initial = 0, choices = TIPOS_SEXO)
 	#tipo_avance_jornadas = forms.ChoiceField(label = "Tipo de avance de jornadas", widget = forms.RadioSelect(renderer = HorizRadioRenderer), initial = 0, choices = TIPOS_AVANCE)
 
-	num_jugadores_inicial = forms.IntegerField(initial = 20, min_value = 7, max_value = 99)
+	num_jugadores_inicial = forms.IntegerField(initial = 20, min_value = 11, max_value = 99)
 	nivel_max_jugadores_inicio = forms.IntegerField(initial = 50, min_value = 10, max_value = 100)
 	fecha_ficticia_inicio = forms.DateField()
 
 	def clean_num_equipos(self):
 		''' Comprueba que haya un numero de equipos positivo y par y en caso afirmativo los devuelve '''
 		valor = self.cleaned_data['num_equipos']
-		if valor % 2 != 0:
-			raise forms.ValidationError("El número de equipos debe ser par")
-		if valor <= 0:
+			
+		if valor <= 1:
 			raise forms.ValidationError("Debe haber al menos 2 equipos")
+			
 		if valor > 30:
 			raise forms.ValidationError("No se permiten ligas con mas de 30 equipos")
+		
+		if valor % 2 != 0:
+			raise forms.ValidationError("El número de equipos debe ser par")
+			
 		return valor
 
 	class Meta:

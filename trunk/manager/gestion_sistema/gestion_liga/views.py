@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -25,6 +25,7 @@ Copyright 2013 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.shortcuts import render
 
 from datetime import datetime
 
@@ -33,10 +34,10 @@ from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_equipo.forms import EquipoForm
 
-from models import Liga
-from forms import LigaForm, ActivarLigaForm, CambiarFechaForm
+from .models import Liga
+from .forms import LigaForm, ActivarLigaForm, CambiarFechaForm
 
-from gestion_base.func import devolverMensaje, redireccionar, generarPagina, renderizar
+from gestion_base.func import devolverMensaje, redireccionar, generarPagina, quitarAcentos
 
 from gestion_usuario.models import Usuario
 from gestion_usuario.gestion_notificacion.func import notificar, Notificacion
@@ -53,13 +54,14 @@ def ver_ligas_publicas(request):
 		liga.inscritos = liga.equipo_set.all().count()
 
 	d = { "ligas" : ligas }
-	return renderizar(request, "juego/ligas/ver_ligas_publicas.html", d)
+	return render(request, "juego/ligas/ver_ligas_publicas.html", d)
 
 ########################################################################
 
 @login_required
 @actualizarLiga
 @comprobarSesion(['liga_actual'])
+@transaction.atomic
 def ver_liga(request):
 	''' Muestra los datos de una liga determinada '''
 	# Obtenemos el usuario
@@ -71,26 +73,23 @@ def ver_liga(request):
 	equipos = liga.equipo_set.all()
 	equipos = sorted(equipos, key = lambda dato: dato.siglas)
 
-	# Obtenemos las jornadas
-	jornadas = liga.getJornadas()
-
-	# Obtenemos las jornadas no jugadas
-	jornadas_restantes = jornadas.filter(jugada = False)
-
 	activada = liga.activada()
 	jornada_actual = None
+	jornada_anterior = None
 
 	clasificacion = None
+	partidos_jornada_actual = None
 
 	liga_acabada = False
 
-	es_creador = liga.creador == usuario
+	es_creador = (liga.creador == usuario)
 
 	form_fecha = None
 
 	if es_creador:
 		if request.method == 'POST':
 			form_fecha = CambiarFechaForm(request.POST)
+			
 			if form_fecha.is_valid():
 				fecha_nueva = form_fecha.cleaned_data['fecha_nueva']
 				liga.setFecha(fecha_nueva)
@@ -106,24 +105,11 @@ def ver_liga(request):
 		equipo_propio = None
 
 	request.session['equipo_propio'] = equipo_propio
-	
-	# Para la colocación de los equipos horizontalmente
-	num_equipos = equipos.count
-	max_equipos_fila = 20
-		
-	n = 0
-	for equipo in equipos:
-		if (n % max_equipos_fila == 0) and (n != num_equipos):
-			equipo.terminar_fila = True
-		else:
-			equipo.terminar_fila = False
-		n += 1
 
 	# Si la liga está activada
 	if activada:
 		# Comprobamos si la liga ha acabado
 		jornada_actual = liga.getJornadaActual()
-		jornada_anterior = None
 
 		# Si la liga ha acabado
 		if not jornada_actual:
@@ -140,6 +126,9 @@ def ver_liga(request):
 			jornada_anterior = liga.getJornadas()[liga.getNumJornadas() - 1]
 			clasificacion_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
 			clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: (-dato.puntos, -(dato.goles_favor-dato.goles_contra), -dato.goles_favor))
+			partidos_jornada_actual = jornada_anterior.partido_set.all()
+		else:
+			partidos_jornada_actual = jornada_actual.partido_set.all()
 
 		if clasificacion is not None:
 			# Calcular variables extra para la clasificación
@@ -167,11 +156,13 @@ def ver_liga(request):
 
 				if jornada_anterior is not None:
 					incluida = True
+					
 					if not liga_acabada:
 						jornada_a_comprobar = jornada_actual
 					else:
 						jornada_a_comprobar = jornada_anterior
 						incluida = True
+					
 					c.partidos_ganados = len(c.equipo.getPartidosGanados(jornada_a_comprobar, incluida))
 					c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_a_comprobar, incluida))
 					c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_a_comprobar, incluida))
@@ -184,13 +175,54 @@ def ver_liga(request):
 				c.partidos_jugados = c.partidos_ganados + c.partidos_empatados + c.partidos_perdidos
 
 				posicion += 1
+		else:
+			equipos_clasificacion = sorted(equipos, key = lambda dato: quitarAcentos(dato.nombre.lower()))
+			
+			clasificacion = []
+			posicion = 1
+			
+			ultima_posicion_ascenso = 1
+			primera_posicion_descenso = len(equipos_clasificacion)
+			
+			for equipo_clasificacion in equipos_clasificacion:
+				c = type('', (), {})()
+				c.posicion = posicion
+				
+				c.equipo = equipo_clasificacion
+
+				# Comprobar si es posición de ascenso
+				if c.posicion <= ultima_posicion_ascenso:
+					c.posicion_ascenso = True
+				else:
+					c.posicion_ascenso = False
+
+				# Comprobar si es posición de descenso
+				if c.posicion >= primera_posicion_descenso:
+					c.posicion_descenso = True
+				else:
+					c.posicion_descenso = False
+				
+				c.goles_diferencia = 0
+				c.goles_favor = 0
+				c.goles_contra = 0
+				
+				c.partidos_jugados = 0
+				c.partidos_ganados = 0
+				c.partidos_empatados = 0
+				c.partidos_perdidos = 0
+				
+				c.puntos = 0
+				
+				clasificacion.append(c)
+				
+				posicion += 1
 
 	# Cargamos la plantilla con los parametros y la devolvemos
 	d = {"liga" : liga,
 		 "equipos" : equipos,
-		 "jornadas" : jornadas,
 		 "jornada_actual" : jornada_actual,
-		 "jornadas_restantes" : jornadas_restantes,
+		 "jornada_anterior" : jornada_anterior,
+		 "partidos_jornada_actual" : partidos_jornada_actual,
 		 "activada" : activada,
 		 "equipo_propio" : equipo_propio,
 		 "clasificacion" : clasificacion,
@@ -210,6 +242,7 @@ def ver_liga_id(request, liga_id):
 	# Obtenemos la liga
 	liga = Liga.objects.get(id = liga_id)
 	request.session['liga_actual'] = liga
+	
 	return redireccionar("/ligas/ver/")
 
 ########################################################################
@@ -219,6 +252,7 @@ def ver_liga_id(request, liga_id):
 def avanzar_jornada_liga(request):
 	''' Avanza una liga de jornada actual '''
 	return devolverMensaje(request, "Desactualizado, pendiente de eliminar", 0)
+	
 	# Obtenemos el usuario
 	usuario = request.user
 
@@ -247,23 +281,26 @@ def crear_liga(request):
 
 	if request.method == 'POST':
 		form = LigaForm(request.POST)
+		
 		if form.is_valid():
 			liga = form.save(commit = False)
 			liga.creador = Usuario.objects.get(id = request.user.id)
 			liga.factor_tiempo = 24 / liga.factor_tiempo
 			liga.save()
+			
 			return devolverMensaje(request, "Se ha creado correctamente", 1, "/ligas/ver/%d/" % liga.id)
 	else:
 		form = LigaForm()
 
 	d = { "form" : form }
+	
 	return generarPagina(request, "juego/ligas/crear_liga.html", d, False)
 
 ########################################################################
 
 @login_required
-@transaction.commit_on_success
 @comprobarSesion(['liga_actual'])
+@transaction.atomic
 def activar_liga(request):
 	''' Formulario para activar una liga '''
 	usuario = request.user
@@ -297,6 +334,7 @@ def activar_liga(request):
 		return devolverMensaje(request, "Se ha generado la liga correctamente", 1, "/ligas/ver/%d/" % liga.id)
 
 	d = { "liga" : liga, "equipos" : equipos }
+	
 	return generarPagina(request, "juego/ligas/activar_liga.html", d)
 
 ########################################################################

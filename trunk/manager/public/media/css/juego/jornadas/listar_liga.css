@@ -1,0 +1,33 @@
+#lista_jornadas{
+	display: flex;
+	flex-wrap: wrap;
+	list-style: none;
+	padding: 0;
+	justify-content: space-around;
+}
+
+#lista_jornadas li{
+	margin-bottom: 20px;
+	width: 480px;
+}
+
+.tabla_jornada{
+	margin: 0;
+}
+
+.tabla_jornada *{
+	vertical-align: middle;
+}
+
+.tabla_jornada td:nth-child(1){
+	text-align: right;
+	width: 45%;
+}
+
+.tabla_jornada td:nth-child(2){
+	text-align: center;
+}
+
+.tabla_jornada td:nth-child(3){
+	width: 45%;
+}

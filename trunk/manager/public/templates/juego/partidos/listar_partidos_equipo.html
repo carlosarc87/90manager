@@ -11,15 +11,17 @@
 	<!-- Tabla de proximo partido -->
 	<table class="tabla1" id="tabla_proximo_partido">
 		<caption>Próximo partido</caption>
+		{% if partido_actual != None %}
 		<thead>
 			<tr>
 				<th>Jornada</th>
-				<th>Equipo local</th>
 				<th>Fecha</th>
+				<th>Equipo local</th>
 				<th>Equipo visitante</th>
 				<th></th>
 			</tr>
 		</thead>
+		{% endif %}
 		<tbody>
 			{% if partido_actual %}
 				<tr>
@@ -30,20 +32,28 @@
 						</a>
 					</td>
 					
+					<!-- Fecha -->
+					<td class="col_fecha">{{ partido_actual.fecha_inicio }}</td>
+					
 					<!-- Equipo local -->
 					<td class="col_local">
 						<a href="/equipos/ver/{{ partido_actual.equipo_local.id }}/">
-							{{ partido_actual.equipo_local.nombre }}
+							{% if equipo_propio.id == partido_actual.equipo_local.id %}
+								<strong>{{ partido_actual.equipo_local.nombre }}</strong>
+							{% else %}
+								{{ partido_actual.equipo_local.nombre }}
+							{% endif %}
 						</a>
 					</td>
-					
-					<!-- Fecha -->
-					<td class="col_fecha">{{ partido_actual.fecha_inicio }}</td>
 					
 					<!-- Equipo visitante -->
 					<td class="col_visitante">
 						<a href="/equipos/ver/{{ partido_actual.equipo_visitante.id }}/">
-							{{ partido_actual.equipo_visitante.nombre }}
+							{% if equipo_propio.id == partido_actual.equipo_visitante.id %}
+								<strong>{{ partido_actual.equipo_visitante.nombre }}</strong>
+							{% else %}
+								{{ partido_actual.equipo_visitante.nombre }}
+							{% endif %}
 						</a>
 					</td>
 					
@@ -56,26 +66,27 @@
 				</tr>
 			{% else %}
 				<tr>
-					<th>No hay más partidos</th>
+					<th colspan="5">No hay más partidos</th>
 				</tr>
 			{% endif %}
 		</tbody>
 	</table>
 	
-	<!-- Tabla de partidos no jugados -->
-	<table class="tabla1" id="tabla_partidos_no_jugados">
-		<caption>Partidos no jugados</caption>
+	<!-- Tabla de partidos -->
+	<table class="tabla1" id="tabla_partidos">
+		<caption>Partidos</caption>
 		<thead>
 			<tr>
 				<th>Jornada</th>
-				<th>Equipo local</th>
 				<th>Fecha</th>
+				<th>Equipo local</th>
+				<th>Resultado</th>
 				<th>Equipo visitante</th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody>
-			{% for partido in partidos_no_jugados %}
+			{% for partido in partidos %}
 				<tr>
 					<!-- Jornada -->
 					<td class="col_jornada">
@@ -84,76 +95,49 @@
 						</a>
 					</td>
 					
-					<!-- Equipo local -->
-					<td class="col_local">
-						<a href="/equipos/ver/{{ partido.equipo_local.id }}/">
-							{{ partido.equipo_local.nombre }}
-						</a>
-					</td>
-					
 					<!-- Fecha -->
 					<td class="col_fecha">{{ partido.fecha_inicio }}</td>
-					
-					<!-- Equipo visitante -->
-					<td class="col_visitante">
-						<a href="/equipos/ver/{{ partido.equipo_visitante.id }}/">
-							{{ partido.equipo_visitante.nombre }}
-						</a>
-					</td>
-					
-					<!-- Boton ver partido -->
-					<td class="col_ver">
-						<button class="boton_ver_partido" onclick="location.href='/partidos/ver/{{ partido.id }}/'">
-							Ver
-						</button>
-					</td>
-				</tr>
-			{% empty %}
-				<tr>
-					<th>No hay partidos sin jugar</th>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	
-	<!-- Tabla de partidos no jugados -->
-	<table class="tabla1" id="tabla_partidos_jugados">
-		<caption>Partidos jugados</caption>
-		<thead>
-			<tr>
-				<th>Jornada</th>
-				<th>Equipo local</th>
-				<th>Fecha</th>
-				<th>Equipo visitante</th>
-				<th>Resultado</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for partido in partidos_jugados %}
-				<tr>
-					<!-- Jornada -->
-					<td class="col_jornada">{{ partido.jornada.numero }}</td>
 					
 					<!-- Equipo local -->
 					<td class="col_local">
 						<a href="/equipos/ver/{{ partido.equipo_local.id }}/">
-							{{ partido.equipo_local.nombre }}
-						</a>
-					</td>
-					
-					<!-- Fecha -->
-					<td class="col_fecha">{{ partido.fecha_inicio }}</td>
-					
-					<!-- Equipo visitante -->
-					<td class="col_visitante">
-						<a href="/equipos/ver/{{ partido.equipo_visitante.id }}/">
-							{{ partido.equipo_visitante.nombre }}
+							{% if equipo_propio.id == partido.equipo_local.id %}
+								<strong>{{ partido.equipo_local.nombre }}</strong>
+							{% else %}
+								{{ partido.equipo_local.nombre }}
+							{% endif %}
 						</a>
 					</td>
 					
 					<!-- Resultado -->
-					<td class="col_resultado">{{ partido.goles_local }} - {{ partido.goles_visitante }}</td>
+					<td class="col_resultado">
+						{% if partido.finalizado %}
+							{% if partido.goles_local > partido.goles_visitante %}
+								<b>{{ partido.goles_local }}</b>
+							{% else %}
+								{{ partido.goles_local }}
+							{% endif %}
+							<span> - </span>
+							{% if partido.goles_visitante > partido.goles_local %}
+								<b>{{ partido.goles_visitante }}</b>
+							{% else %}
+								{{ partido.goles_visitante }}
+							{% endif %}
+						{% else %}
+							-
+						{% endif %}
+					</td>
+					
+					<!-- Equipo visitante -->
+					<td class="col_visitante">
+						<a href="/equipos/ver/{{ partido.equipo_visitante.id }}/">
+							{% if equipo_propio.id == partido.equipo_visitante.id %}
+								<strong>{{ partido.equipo_visitante.nombre }}</strong>
+							{% else %}
+								{{ partido.equipo_visitante.nombre }}
+							{% endif %}
+						</a>
+					</td>
 					
 					<!-- Boton ver partido -->
 					<td class="col_ver">
@@ -164,7 +148,7 @@
 				</tr>
 			{% empty %}
 				<tr>
-					<th>No hay partidos sin jugar</th>
+					<th colspan="6">No hay partidos que mostrar</th>
 				</tr>
 			{% endfor %}
 		</tbody>

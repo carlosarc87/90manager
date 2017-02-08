@@ -2,7 +2,7 @@
 # Formularios del sistema. Los que deriven de una clase son rápidos de
 # crear.
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -25,7 +25,7 @@ Copyright 2013 by
 """
 
 from django import forms
-from models import Partido
+from .models import Partido
 
 ########################################################################
 
@@ -105,7 +105,7 @@ class PrepararEquipoForm(forms.Form):
 					raise forms.ValidationError("Los jugadores no son amebas, no pueden dividirse y estar en 2 sitios a la vez.")
 
 		num_jugadores = len(lista)
-		if num_jugadores not in range(7, 12):
+		if num_jugadores not in list(range(7, 12)):
 			raise forms.ValidationError("Tienes que indicar entre 7 y 11 titulares.")
 
 		num_suplentes = 7

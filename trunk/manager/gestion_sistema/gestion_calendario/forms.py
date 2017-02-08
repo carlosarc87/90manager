@@ -2,7 +2,7 @@
 # Formularios del sistema. Los que deriven de una clase son rápidos de
 # crear.
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -25,5 +25,5 @@ Copyright 2013 by
 """
 
 from django import forms
-from models import Evento
+from .models import Evento
 

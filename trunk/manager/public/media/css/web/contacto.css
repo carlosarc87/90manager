@@ -1,0 +1,42 @@
+#formulario_contacto{
+	margin: 0 auto;
+	margin-bottom: 20px;
+	width: 400px;
+}
+
+#formulario_contacto label{
+	float: left;
+	width: 100px;
+}
+
+#formulario_contacto section{
+	clear: both;
+	margin: 5px 0;
+}
+
+#id_asunto,
+#id_emisor{
+	width: 290px;
+}
+
+#id_mensaje{
+	margin-bottom: 20px;
+	max-width: 290px;
+	width: 290px;
+}
+
+#wrap{
+	background: #fff;
+	border: solid 1px #000;
+	margin: 20px auto;
+}
+
+#wrap h2{
+	border-top: none;
+	border-right: none;
+	border-left: none;
+}
+
+#wrap p{
+	text-align: center;
+}

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -24,5 +24,5 @@ Copyright 2013 by
 
 import random
 
-from models import Liga
+from .models import Liga
 

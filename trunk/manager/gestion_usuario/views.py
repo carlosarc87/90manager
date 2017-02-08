@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
 	* Juan Miguel Lechuga Pérez
 	* Jose Luis López Pino
 	* Carlos Antonio Rivera Cabello
@@ -21,8 +21,7 @@ Copyright 2013 by
 	along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login, logout
@@ -32,10 +31,10 @@ import datetime, random, hashlib
 
 from settings import URL_PROPIA, vper
 
-from models import Usuario, ClaveRegistroUsuario
-from forms import UsuarioForm
+from .models import Usuario, ClaveRegistroUsuario
+from .forms import UsuarioForm
 
-from gestion_base.func import devolverMensaje, redireccionar, generarPagina, renderizar
+from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 from gestion_sistema.gestion_liga.models import Liga
 
@@ -46,12 +45,10 @@ def principal(request):
 	# Si el usuario está logeado
 	if request.user.is_authenticated():
 		return redireccionar("/tablon/");
-	
+
 	# Obtener número de usuarios registrados
-	from django.contrib.auth.models import User, UserManager
-	usuarios = Usuario.objects.all()
-	usuarios_registrados = usuarios.count
-		
+	usuarios_registrados = Usuario.objects.count()
+
 	# Formulario de registro
 	form_reg = ""
 	login_error = None
@@ -69,11 +66,11 @@ def principal(request):
 					login_error = "El usuario no ha sido activado aun"
 			else:
 				login_error = "Usuario o contraseña incorrectos"
-				
+
 		# Formulario de recordar clave
 		elif "enviar_clave" in request.POST:
 			email = request.POST['email']
-		
+
 		# Formulario de registro
 		else:
 			form_reg = UsuarioForm(request.POST)
@@ -115,11 +112,12 @@ def principal(request):
 				return devolverMensaje(request, "Se ha enviado un mensaje de confirmación a tu correo", "/")
 	else:
 		form_reg = UsuarioForm()
+		
 
-	return renderizar(request, "web/principal.html", {
-		"form_reg" : form_reg, 
-		"usuarios_registrados" : usuarios_registrados, 
-		"login_error" : login_error 
+	return render(request, "web/principal.html", {
+		"form_reg" : form_reg,
+		"usuarios_registrados" : usuarios_registrados,
+		"login_error" : login_error
 	})
 
 ########################################################################
@@ -127,20 +125,30 @@ def principal(request):
 @login_required
 def tablon(request):
 	''' Muestra el tablon del usuario logueado '''
-	usuario = request.user
-	# Obtenemos las ligas creadas por el usuario
-	ligas_creadas = Liga.objects.filter(creador = usuario)
-
 	if 'liga_actual' in request.session:
 		del request.session['liga_actual']
-
-	# Obtenemos los equipos
+	
+	usuario = request.user
+	
+	# Obtenemos las ligas creadas por el usuario
+	ligas_creadas = Liga.objects.filter(creador = usuario)
+	
+	# Obtenemos los equipos del usuario
 	equipos = usuario.equipo_set.all()
+	
+	# Creamos lista de ligas a las que tiene acceso el usuario
+	ligas_usuario = list(ligas_creadas)
+	
+	for equipo in equipos:
+		if ligas_usuario.count(equipo.liga) == 0:
+			ligas_usuario.append(equipo.liga)
+		
+		index_liga = ligas_usuario.index(equipo.liga)
+		ligas_usuario[index_liga].equipo_usuario = equipo
 
 	# Cargamos la plantilla con los parametros y la devolvemos
 	d = {"usuario" : usuario,
-		 "ligas_creadas" : ligas_creadas,
-		 "equipos" : equipos,
+		 "ligas_usuario" : ligas_usuario
 		}
 
 	return generarPagina(request, "juego/tablon.html", d)
@@ -150,10 +158,10 @@ def tablon(request):
 def activar_usuario(request, clave):
 	if request.user.is_authenticated():
 		return devolverMensaje(request, "Ya estás activado en el sistema", "/")
-	
+
 	if ClaveRegistroUsuario.objects.filter(clave = clave).count() == 0:
 		return devolverMensaje(request, "Error: no existe la clave de activación dada", "/")
-	
+
 	cru = ClaveRegistroUsuario.objects.get(clave = clave)
 	usuario = cru.usuario
 
@@ -168,7 +176,7 @@ def activar_usuario(request, clave):
 
 	# Eliminamos la clave
 	cru.delete()
-	
+
 	return devolverMensaje(request, "Se activó al usuario correctamente", "/")
 
 ########################################################################

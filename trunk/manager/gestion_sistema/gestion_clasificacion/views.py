@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -26,7 +26,7 @@ Copyright 2013 by
 from django.contrib.auth.decorators import login_required
 
 from gestion_sistema.decorators import comprobarSesion
-from gestion_base.func import generarPagina
+from gestion_base.func import generarPagina, quitarAcentos
 
 ########################################################################
 
@@ -58,6 +58,7 @@ def ver_clasificacion(request):
 			clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: (-dato.puntos, -(dato.goles_favor-dato.goles_contra), -dato.goles_favor))
 		elif jornada_actual.numero == 1: # Generar clasificacion vacía
 			clasificacion = jornada_actual.clasificacionequipojornada_set.all()
+			clasificacion = sorted(clasificacion, key = lambda dato: quitarAcentos(dato.equipo.nombre.lower()))
 
 	if liga_acabada:
 		jornada_anterior = liga.getJornadas()[liga.getNumJornadas() - 1]
@@ -109,10 +110,11 @@ def ver_clasificacion(request):
 			posicion += 1
 
 	# Cargamos la plantilla con los parametros y la devolvemos
-	d = {"liga" : liga,
-		 "clasificacion" : clasificacion,
-		 "jornada_actual" : jornada_actual,
-		}
+	d = {
+		"liga" : liga,
+		"clasificacion" : clasificacion,
+		"jornada_actual" : jornada_actual,
+	}
 	return generarPagina(request, "juego/clasificaciones/ver_liga.html", d)
 
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -22,10 +22,11 @@ Copyright 2013 by
 
 """
 
-from django.conf.urls.defaults import *
+from django.conf.urls import url
+from gestion_sistema.gestion_jugador import views
 
-urlpatterns = patterns('',
+urlpatterns = [
    	# Modulo de jugadores
-   	(r'^ver/$', 'gestion_sistema.gestion_jugador.views.ver_jugador'),
-   	(r'^ver/(?P<jugador_id>\d+)/$', 'gestion_sistema.gestion_jugador.views.ver_jugador_id'),
-)
+   	url(r'^ver/$', views.ver_jugador),
+   	url(r'^ver/(?P<jugador_id>\d+)/$', views.ver_jugador_id),
+]

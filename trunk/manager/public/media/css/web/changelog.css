@@ -1,0 +1,28 @@
+#changelog{
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+	width: 500px;
+}
+
+#changelog h3{
+	margin: 0;
+}
+
+#changelog > li{
+	background: #fff;
+	margin-bottom: 20px;
+}
+
+#changelog > li ul{
+	border-right: solid 1px #000;
+	border-bottom: solid 1px #000;
+	border-left: solid 1px #000;
+	font-size: .9em;
+	list-style: inside;
+	padding: .5em;
+}
+
+#changelog > li ul li{
+	padding: .5em;
+}

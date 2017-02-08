@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -22,12 +22,13 @@ Copyright 2013 by
 
 """
 
-from django.conf.urls.defaults import *
+from django.conf.urls import url
+from gestion_sistema.gestion_jornada import views
 
-urlpatterns = patterns('',
+urlpatterns = [
    	# Modulo de jornadas
-   	(r'^ver/(?P<jornada_id>\d+)/$', 'gestion_sistema.gestion_jornada.views.ver_jornada_id'),
-   	(r'^ver/$', 'gestion_sistema.gestion_jornada.views.ver_jornada'),
-   	(r'^listar/$', 'gestion_sistema.gestion_jornada.views.listar_jornadas'),
-   	(r'^actual/$', 'gestion_sistema.gestion_jornada.views.jornada_actual'),
-)
+   	url(r'^actual/$', views.ver_jornada_actual),
+   	url(r'^listar/$', views.listar_jornadas),
+   	url(r'^ver/(?P<jornada_id>\d+)/$', views.ver_jornada_id),
+   	url(r'^ver/$', views.ver_jornada),
+]

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -25,12 +25,12 @@ Copyright 2013 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 
-from models import Equipo
-from forms import EquipoForm
+from .models import Equipo
+from .forms import EquipoForm
 
 from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 
-from gestion_base.func import devolverMensaje, redireccionar, generarPagina
+from gestion_base.func import devolverMensaje, redireccionar, generarPagina, agregarSeparadoresMiles, quitarAcentos
 
 from gestion_sistema.gestion_liga.models import Liga
 from gestion_sistema.gestion_jugador.models import Jugador
@@ -93,11 +93,15 @@ def ver_equipo(request):
 
 	# Obtenemos la liga
 	liga = equipo.liga
+	
+	dinero_equipo = agregarSeparadoresMiles(equipo.dinero)
+	valor_equipo = agregarSeparadoresMiles(valor_equipo)
 
 	d = {"usuario" : usuario,
 		 "liga" : liga,
 		 "equipo" : equipo,
 		 "jugadores" : jugadores,
+		 "dinero_equipo" : dinero_equipo,
 		 "valor_equipo" : valor_equipo,
 		 "edad_media_equipo" : edad_media_equipo,
 		 "nivel_medio_equipo" : nivel_medio_equipo
@@ -208,7 +212,8 @@ def listar_equipos_liga(request):
 
 	# Obtenemos los equipos que juegan en la liga
 	equipos = liga.equipo_set.all()
-
+	equipos = sorted(equipos, key = lambda dato: quitarAcentos(dato.nombre.lower()))
+	
 	activada = liga.activada()
 
 	# Cargamos la plantilla con los parametros y la devolvemos

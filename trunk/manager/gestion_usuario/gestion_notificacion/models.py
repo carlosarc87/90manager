@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -31,8 +31,10 @@ from gestion_sistema.gestion_liga.models import Liga
 def getObjeto(conjunto, identificador):
 	obj = None
 	lista = conjunto.objects.filter(id = identificador)
+	
 	if lista.count() > 0:
 		obj = lista[0]
+		
 	return obj
 
 ########################################################################
@@ -62,14 +64,19 @@ class Notificacion(models.Model):
 
 	# Usuario notificado
 	usuario = models.ForeignKey(Usuario)
+	
 	# Liga (en su caso) desde la que se envia la notificacion
 	liga = models.ForeignKey(Liga, null = True, blank = True)
+	
 	# Tipo de notificacion
 	tipo = models.PositiveIntegerField(default = 0, choices = TIPO_NOTIFICACION)
+	
 	# Id a la que redirecciona (segun el tipo de notificacion sera de tipo partido o subasta, etc
 	identificador = models.PositiveIntegerField()
+	
 	# Indica que se ha leido la notificacion
 	leida = models.BooleanField(default = False)
+	
 	# Fecha real de emision de la notificacion
 	fecha_emision = models.DateTimeField()
 
@@ -96,6 +103,7 @@ class Notificacion(models.Model):
 
 		elif self.tipo == self.SUBASTA_SUPERADA:
 			obj = getObjeto(Subasta, self.identificador)
+			
 			if obj:
 				enlace = '/mercado/subastas/ver/%d/' % self.identificador
 			else:
@@ -136,6 +144,7 @@ class Notificacion(models.Model):
 
 		elif self.tipo == self.SUBASTA_SUPERADA:
 			obj = getObjeto(Subasta, self.identificador)
+			
 			if obj:
 				msj = "Han superado tu puja en la subasta de %s" % (obj.atributos_jugador.jugador.apodo)
 			else:

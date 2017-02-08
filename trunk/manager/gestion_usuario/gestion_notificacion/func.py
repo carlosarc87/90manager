@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -21,10 +21,12 @@ Copyright 2013 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from models import Notificacion
-import datetime
+
+from django.utils import timezone
+
+from .models import Notificacion
 
 def notificar(usuario, tipo, identificador, liga = None):
-	fecha = datetime.datetime.today()
+	fecha = timezone.now()
 	n = Notificacion.objects.create(usuario = usuario, tipo = tipo, identificador = identificador, liga = liga, fecha_emision = fecha)
 	n.save()

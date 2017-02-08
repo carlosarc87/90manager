@@ -1,0 +1,51 @@
+#botones_jornada{
+	margin: 20px;
+	text-align: center;
+}
+
+#boton_jornada_anterior{
+	margin-right: 40px;
+}
+
+#tabla_encuentros{
+	margin: 20px auto;
+	width: 700px;
+}
+
+#tabla_encuentros td:nth-child(3){
+	width: 60px;
+}
+
+#tabla_clasificacion_anterior{
+	margin: 20px auto;
+	width: 500px;
+}
+
+#tabla_clasificacion{
+	margin: 20px auto;
+	width: 500px;
+}
+
+.info{
+	margin: 20px;
+}
+
+.diferencia_posicion{
+	text-align: right;
+}
+
+.gana_posicion{
+	background: url("../../../img/icons/a/up.png") 0 50% no-repeat;
+	color: #3c3;
+	padding-left: 20px;
+}
+
+.pierde_posicion{
+	background: url("../../../img/icons/a/down.png") 0 50% no-repeat;
+	color: #c33;
+	padding-left: 20px;
+}
+
+.mantiene_posicion{
+	color: #999;
+}

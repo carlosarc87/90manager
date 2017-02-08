@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -21,13 +21,15 @@ Copyright 2013 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.conf.urls.defaults import *
 
-urlpatterns = patterns('',
+from django.conf.urls import url
+from gestion_sistema.gestion_equipo import views
+
+urlpatterns = [
 	# Modulo de equipos
-   	(r'^ver/$', 'gestion_sistema.gestion_equipo.views.ver_equipo'),
-   	(r'^mi_equipo/$', 'gestion_sistema.gestion_equipo.views.ver_equipo_propio'),
-   	(r'^ver/(?P<equipo_id>\d+)/$', 'gestion_sistema.gestion_equipo.views.ver_equipo_id'),
-   	(r'^crear/$', 'gestion_sistema.gestion_equipo.views.crear_equipo'),
-   	(r'^listar/$', 'gestion_sistema.gestion_equipo.views.listar_equipos_liga'),
-)
+   	url(r'^ver/$', views.ver_equipo),
+   	url(r'^mi_equipo/$', views.ver_equipo_propio),
+   	url(r'^ver/(?P<equipo_id>\d+)/$', views.ver_equipo_id),
+   	url(r'^crear/$', views.crear_equipo),
+   	url(r'^listar/$', views.listar_equipos_liga),
+]

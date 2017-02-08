@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -22,15 +22,16 @@ Copyright 2013 by
 
 """
 
-from django.conf.urls.defaults import *
+from django.conf.urls import url
+from gestion_sistema.gestion_partido import views
 
-urlpatterns = patterns('',
+urlpatterns = [
    	# Modulo de partidos
-   	(r'^ver/$', 'gestion_sistema.gestion_partido.views.ver_partido'),
-   	(r'^ver/(?P<partido_id>\d+)/$', 'gestion_sistema.gestion_partido.views.ver_partido_id'),
-   	(r'^mis_partidos/$', 'gestion_sistema.gestion_partido.views.ver_partidos_propios'),
-   	(r'^proximo/$', 'gestion_sistema.gestion_partido.views.proximo_partido'),
-   	(r'^repeticion/$', 'gestion_sistema.gestion_partido.views.ver_repeticion_partido'),
-   	(r'^preparar/$', 'gestion_sistema.gestion_partido.views.preparar_partido'),
-   	(r'^jugar/$', 'gestion_sistema.gestion_partido.views.jugar_partido'),
-)
+   	url(r'^ver/$', views.ver_partido),
+   	url(r'^ver/(?P<partido_id>\d+)/$', views.ver_partido_id),
+   	url(r'^mis_partidos/$', views.ver_partidos_propios),
+   	url(r'^proximo/$', views.proximo_partido),
+   	url(r'^repeticion/$', views.ver_repeticion_partido),
+   	url(r'^preparar/$', views.preparar_partido),
+   	url(r'^jugar/$', views.jugar_partido),
+]

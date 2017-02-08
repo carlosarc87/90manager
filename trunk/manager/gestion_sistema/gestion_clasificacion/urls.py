@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -21,10 +21,12 @@ Copyright 2013 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.conf.urls.defaults import *
 
-urlpatterns = patterns('',
+from django.conf.urls import url
+from gestion_sistema.gestion_clasificacion import views
+
+urlpatterns = [
 	# Modulo de equipos
-   	(r'^ver/$', 'gestion_sistema.gestion_clasificacion.views.ver_clasificacion'),
-)
+   	url(r'^ver/$', views.ver_clasificacion),
+]
 

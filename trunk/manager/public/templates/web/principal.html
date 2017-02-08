@@ -11,15 +11,14 @@
 		var recordar_clave = document.getElementById('recordar_clave');
 		var registro = document.getElementById('registro');
 
-		fechaUltimaActualizacion = "19/10/2011 21:00";
+		fechaUltimaActualizacion = new Date(2017, 1, 29, 20, 0);
 		formato_tiempo = "%%D%% días, %%H%% horas, %%M%% minutos y %%S%% segundos.";
 		paso = +1;
 		paso = Math.ceil(paso); // Filtrico
 
 		var timeout = (Math.abs(paso) - 1) * 1000 + 990;
-		var antes = new Date(fechaUltimaActualizacion);
 		var ahora = new Date();
-		dif = new Date(ahora - antes);
+		dif = new Date(ahora - fechaUltimaActualizacion);
 		gsegs = Math.floor(dif.valueOf() / 1000);
 		
 		// Calcula el tiempo dependiendo de num1 y num2
@@ -69,6 +68,7 @@
 		r_text.push("En donde nunca sale el sol.");
 		r_text.push("En el mercado de transferibles no hay sangre para Pino.");
 		r_text.push("En la forja rediris no hay metal.");
+		r_text.push("¡Entra ya, tus jugadores te están esperando!");
 		r_text.push("Esto es un erasmus, un programador de videojuegos y un tío que sabe php y van y hacen una web en django...");
 		r_text.push("Esto no tendría gracia sin la aleatoriedad.");
 		r_text.push("¿Galletillas saladas?");
@@ -112,6 +112,7 @@
 		$(document).ready(function(){
 			cargarMensajico(document.getElementById("mensajico"));
 			contadorDesactualizado(gsegs);
+			
 			{% if form_reg.errors %}
 				mostrarRegistro();
 			{% endif %}
@@ -145,8 +146,8 @@
 
 {% block contenido %}
 	<!-- Logo -->
-	<a href="/" id="enlace_logo_90manager">
-		<img src="/media/img/logoAlter.png" id="logo_90manager" alt="90manager" title="Ir a la página principal" height="175" width="387" />
+	<a href="/">
+		<img src="/media/img/logoAlter.png" id="logo_90manager" alt="90manager" title="Ir a la página principal" height="176" width="388" />
 	</a>
 
 	<!-- Descripcion -->
@@ -186,12 +187,9 @@
 		</div>
 
 		<div id="registro">
-			<!-- Login -->
-			<p class="volver_login">
-				<a href="#" onclick="mostrarLogin();">Volver a Login</a>
-			</p>
-
 			<form class="form1" action="/" method="post">
+				<p>Regístrate en 90 manager en unos segundos</p>
+				
 				{% csrf_token %}
 
 				<ul id="datos_registro">
@@ -246,26 +244,28 @@
 				
 				<div class="clear"></div>
 			</form>
+			
+			<!-- Login -->
+			<div class="volver_login">
+				<button onclick="mostrarLogin();">Volver a Login</button>
+			</div>
 		</div>
 		
 		<div id="recordar_clave">
-			<!-- Login -->
-			<p class="volver_login">
-				<a href="#" onclick="mostrarLogin();">Volver a Login</a>
-			</p>
-			
 			{% if recordar_clave_error %}
 				<p class="texto_error">{{ recordar_clave_error }}</p>
 			{% endif %}
 
 			<form class="form1" action="/" method="post">
+				<p>Introduce el e-mail al que enviar el correo de recuperación de contraseña</p>
+				
 				{% csrf_token %}
 				<ul id="datos_recordar_clave">
 					<!-- E-mail -->
 					<li>
 						<label for="email_recordar_clave">E-Mail:</label>
 						<div id="caja_email_recordar_clave">
-							<input type="email" name="email" id="email_recordar_clave" value="" maxlength="100" tabindex="1" required autocomplete="off" />
+							<input type="email" name="email" ="email_recordar_clave" value="" maxlength="100" tabindex="1" required autocomplete="off" />
 						</div>
 					</li>
 
@@ -277,6 +277,11 @@
 				
 				<div class="clear"></div>
 			</form>
+			
+			<!-- Login -->
+			<div class="volver_login">
+				<button onclick="mostrarLogin();">Volver a Login</button>
+			</div>
 		</div>
 	</div>
 

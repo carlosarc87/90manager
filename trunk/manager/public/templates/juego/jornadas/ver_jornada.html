@@ -6,7 +6,11 @@
 {% endblock %}
 
 {% block contenido %}
-	<h2>Jornada {{ jornada.numero }}</h2>
+	<h2>Jornada {{ jornada_actual.numero }}</h2>
+
+	{% if jornada_actual.jugada %}
+		<p class="info"><span>FINALIZADA</span></p>
+	{% endif %}
 
 	<p id="botones_jornada">
 		{% if jornada_anterior %}
@@ -22,102 +26,110 @@
 		{% endif %}
 	</p>
 
-	{% if jornada.jugada %}
-		<p><span class="info">FINALIZADA</span></p>
-	{% endif %}
-
 	<table class="tabla1" id="tabla_encuentros">
-		<caption>Listado de encuentros</caption>
+		<caption>Partidos</caption>
 		<thead>
 			<tr>
-				<th>Local</th>
-				<th>Visitante</th>
 				<th>Fecha</th>
+				<th>Local</th>
 				<th>Resultado</th>
+				<th>Visitante</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for emparejamiento in emparejamientos %}
 				<tr>
 					<td>
-						<a href="/equipos/ver/{{ emparejamiento.equipo_local.id }}/">{{ emparejamiento.equipo_local }}</a>
-					</td>
-					<td>
-						<a href="/equipos/ver/{{ emparejamiento.equipo_visitante.id }}/">{{ emparejamiento.equipo_visitante }}</a>
-					</td>
-					<td>
 						{{ emparejamiento.fecha_inicio }}
+					</td>
+					<td>
+						<a href="/equipos/ver/{{ emparejamiento.equipo_local.id }}/">{{ emparejamiento.equipo_local.nombre }}</a>
 					</td>
 					<th>
 						<a href="/partidos/ver/{{ emparejamiento.id }}/">
 							{% if emparejamiento.jugado %}
 								{{ emparejamiento.goles_local }} - {{ emparejamiento.goles_visitante }}
 							{% else %}
-								Aún no jugado.
+								-
 							{% endif %}
 						</a>
 					</th>
+					<td>
+						<a href="/equipos/ver/{{ emparejamiento.equipo_visitante.id }}/">{{ emparejamiento.equipo_visitante.nombre }}</a>
+					</td>
 				</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 
-	{% if clasificacion_anterior %}
-		<table class="tabla1" id="tabla_clasificacion_anterior">
-			<caption>Clasificación antes de la jornada</caption>
-			<thead>
-				<tr>
-					<th>Equipo</th>
-					<th>GF</th>
-					<th>GC</th>
-					<th>Puntos</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for dato_clasificacion in clasificacion_anterior %}
-					<tr>
-						<td>
-							<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/">{{ dato_clasificacion.equipo.nombre }}</a>
-						</td>
-						<td>
-							{{ dato_clasificacion.goles_favor }}
-						</td>
-						<td>
-							{{ dato_clasificacion.goles_contra }}
-						</td>
-						<td>
-							{{ dato_clasificacion.puntos }}
-						</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	{% endif %}
-
 	{% if clasificacion %}
 		<table class="tabla1" id="tabla_clasificacion">
-			<caption>Clasificación de la jornada</caption>
+			<caption>Clasificación</caption>
 			<thead>
 				<tr>
+					<th colspan="2" title="Posición">Pos</th>
 					<th>Equipo</th>
-					<th>GF</th>
-					<th>GC</th>
+					<th title="Partidos jugados">PJ</th>
+					<th title="Partidos ganados">PG</th>
+					<th title="Partidos empatados">PE</th>
+					<th title="Partidos perdidos">PP</th>
+					<th title="Goles a favor">GF</th>
+					<th title="Goles en contra">GC</th>
+					<th title="Goles de diferencia">GD</th>
 					<th>Puntos</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for dato_clasificacion in clasificacion %}
 					<tr>
+						<!-- Diferencia de posición -->
+						<td class="diferencia_posicion">
+							{% if dato_clasificacion.diferencia_posicion_jornada_anterior > 0 %}
+								<div class="gana_posicion">{{ dato_clasificacion.diferencia_posicion_jornada_anterior }}</div>
+							{% elif dato_clasificacion.diferencia_posicion_jornada_anterior < 0 %}
+								<div class="pierde_posicion"><span>{{ dato_clasificacion.diferencia_posicion_jornada_anterior }}</span></div>
+							{% else %}
+								<div class="mantiene_posicion">=</div>
+							{% endif %}
+						</td>
+						<!-- Posicion -->
+						<td class="num1">
+							{{ dato_clasificacion.posicion }}
+						</td>
+						<!-- Equipo -->
 						<td>
 							<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/">{{ dato_clasificacion.equipo.nombre }}</a>
 						</td>
-						<td>
+						<!-- Partidos jugados -->
+						<td class="num1">
+							{{ dato_clasificacion.partidos_jugados }}
+						</td>
+						<!-- Partidos ganados -->
+						<td class="num1">
+							{{ dato_clasificacion.partidos_ganados }}
+						</td>
+						<!-- Partidos empatados -->
+						<td class="num1">
+							{{ dato_clasificacion.partidos_empatados }}
+						</td>
+						<!-- Partidos perdidos -->
+						<td class="num1">
+							{{ dato_clasificacion.partidos_perdidos }}
+						</td>
+						<!-- Goles a favor -->
+						<td class="num1">
 							{{ dato_clasificacion.goles_favor }}
 						</td>
-						<td>
+						<!-- Goles en contra -->
+						<td class="num1">
 							{{ dato_clasificacion.goles_contra }}
 						</td>
-						<td>
+						<!-- Goles de diferencia -->
+						<td class="num1">
+							{{ dato_clasificacion.goles_diferencia }}
+						</td>
+						<!-- Puntos -->
+						<td class="num1">
 							{{ dato_clasificacion.puntos }}
 						</td>
 					</tr>
@@ -125,6 +137,6 @@
 			</tbody>
 		</table>
 	{% else %}
-		<p><span class="info">No hay clasificación disponible aún</span></p>
+		<p class="info"><span>No hay clasificación disponible aún</span></p>
 	{% endif %}
 {% endblock %}

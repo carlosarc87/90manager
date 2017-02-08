@@ -9,32 +9,33 @@
 
 	<h2>Notificaciones de la liga "{{ liga_actual.nombre }}"</h2>
 
-	<table id="tabla_notificaciones">
-		<tbody>
-			{% for notificacion in notificaciones %}
-				{% if not notificacion.leida %}
-					<tr class="no_leida">
-				{% else %}
-					<tr>
-				{% endif %}
-					<td>{{ notificacion.getMensaje }}</td>
-					
-					<td class="col_botones">
-						<button class="boton_ver" onclick="location.href='/cuentas/notificaciones/ver/{{ notificacion.id }}/'">
-							Ver
-						</button>
+	<article>
+		{% if notificaciones %}
+			<ol id="lista_notificaciones">
+				{% for notificacion in notificaciones %}
+					{% if not notificacion.leida %}
+						<li class="no_leida">
+					{% else %}
+						<li>
+					{% endif %}
+							<div class="bloque_mensaje">{{ notificacion.getMensaje }}</div>
 						
-						<button class="boton_borrar" onclick="location.href='/cuentas/notificaciones/borrar/{{ notificacion.id }}/'">
-							Borrar
-						</button>
-					</td>
-				</tr>
-			{% empty %}
-				</tr>
-					<th>No tienes notificaciones</th>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-
+							<div class="bloque_botones">
+								<button class="boton_ver" onclick="location.href='/cuentas/notificaciones/ver/{{ notificacion.id }}/'">
+									Ver
+								</button>
+								
+								<button class="boton_borrar" onclick="location.href='/cuentas/notificaciones/borrar/{{ notificacion.id }}/'">
+									Borrar
+								</button>
+							</div>
+						</li>
+				{% endfor %}
+			</ol>
+		{% else %}
+			</p class="info">
+				<span>No tienes notificaciones</span>
+			</p>
+		{% endif %}
+	</article>
 {% endblock %}

@@ -1,0 +1,31 @@
+# Masculinos
+Ambiciosos
+Débiles
+Expertos
+Feroces
+Flexibles
+Fuertes
+Jóvenes
+Lentos
+Materialistas
+Novatos
+Rápidos
+Resistentes
+Veloces
+Viejos
+#
+# Femeninos
+Ambiciosas
+Débiles
+Expertas
+Feroces
+Flexibles
+Fuertes
+Jóvenes
+Lentas
+Materialistas
+Novatas
+Rápidas
+Resistentes
+Veloces
+Viejas

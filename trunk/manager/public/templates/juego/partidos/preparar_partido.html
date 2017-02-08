@@ -53,8 +53,6 @@
 		function dragStart(objeto, ev) {
 			ev.dataTransfer.setData("Text", "jugador_cogido: " + objeto.innerHTML);
 			jugador_pillado = objeto;
-			//jugador_pillado.chetos = "2";
-			//jugador_pillado.classname = 'jugador_pillado';
 			return true;
 		}
 
@@ -261,7 +259,6 @@
 			jugadores_situados = 0;
 			jugadores_suplentes = 0;
 			actualizarNumeros();
-			// alert("To limpio")
 		}
 
 		function establecerDatos() {
@@ -345,6 +342,8 @@
 	<h2>{{ partido.equipo_local.nombre }} ({{ partido.equipo_local.siglas }}) VS ({{ partido.equipo_visitante.siglas }}) {{ partido.equipo_visitante.nombre }}</h2>
 
 	<form class="form1" id="form_alineacion" action="/partidos/preparar/" method="post">
+		{% csrf_token %}
+		
 		{% if form.errors %}
 			<div>{{ form.non_field_errors }}</div>
 		{% endif %}
@@ -355,10 +354,6 @@
 			{% else %}
 				<legend>Preparar alineación para el partido</legend>
 			{% endif %}
-
-			<div id="caja_num_jugadores_alineacion">Número de jugadores en la alineación: <span id="num_jugadores_alineacion">0</span></div>
-			<div id="caja_num_jugadores_suplentes">Número de jugadores suplentes: <span id="num_jugadores_suplentes">0</span></div>
-			<div id="caja_formacion_Actual">Formación actual: <span id="formacion_actual">0-0-0</span></div>
 
 			<div id="caja_alineacion">
 				<div id="campo_titulares">
@@ -396,21 +391,27 @@
 				</div>
 			</div>
 
-			<div id="jugadores"
-				ondragenter="return dragEnter(this, event)"
-				ondrop="return dragDrop(this, event)"
-				ondragover="return dragOver(this, event)">
+			<div id="caja_jugadores">
+				<div id="jugadores"
+					ondragenter="return dragEnter(this, event)"
+					ondrop="return dragDrop(this, event)"
+					ondragover="return dragOver(this, event)">
 
-				{% for jugador in jugadores %}
-					<div class="cuadro_jugador" id="jug{{ jugador.id }}"
-							draggable="true"
-							ondragstart="return dragStart(this, event)"
-							ondragend="return dragEnd(this, event)">
-						<div class="mejor_posicion_jugador">{{ jugador.siglasPosicion }}</div>
-						<div class="apodo_jugador">{{ jugador.apodo }}</div>
-						<div class="valor_jugador">{{ jugador.getNivel }}</div>
-					</div>
-				{% endfor %}
+					{% for jugador in jugadores %}
+						<div class="cuadro_jugador" id="jug{{ jugador.id }}"
+								draggable="true"
+								ondragstart="return dragStart(this, event)"
+								ondragend="return dragEnd(this, event)">
+							<div class="mejor_posicion_jugador">{{ jugador.siglasPosicion }}</div>
+							<div class="apodo_jugador">{{ jugador.apodo }}</div>
+							<div class="valor_jugador">{{ jugador.getNivel }}</div>
+						</div>
+					{% endfor %}
+				</div>
+				
+				<div id="caja_num_jugadores_alineacion">Número de jugadores en la alineación: <span id="num_jugadores_alineacion">0</span></div>
+				<div id="caja_num_jugadores_suplentes">Número de jugadores suplentes: <span id="num_jugadores_suplentes">0</span></div>
+				<div id="caja_formacion_actual">Formación actual: <span id="formacion_actual">0-0-0</span></div>
 			</div>
 		</fieldset>
 
@@ -418,11 +419,10 @@
 			{{ form.as_p }}
 		</div>
 
-		<!-- Boton Aceptar -->
-		<div id="caja_boton_aceptar">
-			<input type="submit" value="Aceptar" />
-		</div>
-		<div id="caja_boton_limpiar">
+		<!-- Botones -->
+		<div>
+			<input type="submit" name="submit" value="Aceptar" />
+			
 			<button onclick="limpiarDatos();">Limpiar</button>
 		</div>
 	</form>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -25,7 +25,7 @@ from django.contrib.auth.decorators import login_required
 
 from datetime import datetime
 
-from forms import ContactoForm
+from .forms import ContactoForm
 
 from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 

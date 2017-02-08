@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -27,8 +27,8 @@ from django.contrib.auth.decorators import login_required
 
 from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 
-from models import Subasta
-from forms import SubastaForm, PujarForm
+from .models import Subasta
+from .forms import SubastaForm, PujarForm
 from gestion_sistema.gestion_jugador.models import Jugador
 from gestion_sistema.gestion_liga.models import Liga
 from gestion_sistema.gestion_equipo.models import Equipo
@@ -148,7 +148,7 @@ def ver_subasta(request):
 				cantidad = form.cleaned_data['cantidad']
 				subasta.pujar(equipo_usuario, cantidad)
 				subasta.save()
-				print cantidad, subasta.puja
+				print(cantidad, subasta.puja)
 				return devolverMensaje(request, "Cantidad apostada correctamente", 1, "/mercado/subastas/ver/%d/" % subasta.id)
 		else:
 			form = PujarForm(subasta, equipo_usuario)

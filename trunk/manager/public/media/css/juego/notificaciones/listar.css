@@ -1,0 +1,20 @@
+#lista_notificaciones{
+	background: #fff;
+	border: solid 1px #000;
+	margin: 20px auto;
+	width: 500px;
+}
+
+#lista_notificaciones li{
+	border: solid 1px #090;
+	display: block;
+}
+
+#lista_notificaciones a{
+	display: block;
+	padding: .5em;
+}
+
+.no_leida{
+	background: #afa;
+}

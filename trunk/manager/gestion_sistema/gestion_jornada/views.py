@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -25,7 +25,7 @@ Copyright 2013 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 
-from models import Jornada
+from .models import Jornada
 
 from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 
@@ -48,68 +48,121 @@ def ver_jornada_id(request, jornada_id):
 ########################################################################
 
 @login_required
-@actualizarLiga
 @comprobarSesion(['jornada_actual'])
+@actualizarLiga
 def ver_jornada(request):
 	''' Muestra los datos de una jornada '''
 	# Obtenemos el usuario
 	usuario = request.user
 
 	# Obtenemos la jornada
-	jornada = request.session['jornada_actual']
+	jornada_actual = request.session['jornada_actual']
 
 	# Obtenemos la liga
-	liga = jornada.liga
+	liga = jornada_actual.liga
 	es_creador = liga.creador == usuario
+	
+	if jornada_actual.numero > 1:
+		jornada_anterior = liga.jornada_set.get(numero = jornada_actual.numero - 1)
+	else:
+		jornada_anterior = None
+	
+	# Si la liga ha acabado
+	if not liga.getJornadaActual():
+		liga_acabada = True
+	else:
+		liga_acabada = False
 
 	# Obtenemos los encuentros que hay
-	emparejamientos = jornada.partido_set.all()
+	emparejamientos = jornada_actual.partido_set.all()
+	
 	# Obtenemos la clasificacion
 	clasificacion = None
 	clasificacion_anterior = None
-#	if jornada.jugada:
-	clasificacion_sin_ordenar = jornada.clasificacionequipojornada_set.all()
-	# Funcion sorted devuelve una COPIA de la lista ordenada
+	
+	clasificacion_sin_ordenar = jornada_actual.clasificacionequipojornada_set.all()
 	clasificacion = sorted(clasificacion_sin_ordenar, key = lambda dato: (-dato.puntos, -(dato.goles_favor-dato.goles_contra), -dato.goles_favor))
+	
+	diccionario_equipos_clasificacion = dict()
+	
+	posicion = 1
+	for c in clasificacion:
+		diccionario_equipos_clasificacion[c.equipo] = c
+		diccionario_equipos_clasificacion[c.equipo].posicion = posicion
+		
+		c.goles_diferencia = c.goles_favor - c.goles_contra
 
-	if jornada.numero >= 2:
-		jornada_anterior = liga.jornada_set.get(numero = jornada.numero - 1)
-		if jornada_anterior.jugada:
-			clasificacion_anterior_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
-			clasificacion_anterior = sorted(clasificacion_anterior_sin_ordenar, key = lambda dato: (-dato.puntos, -(dato.goles_favor-dato.goles_contra), -dato.goles_favor))
+		if jornada_anterior != None:
+			incluida = True
+			
+			if not liga_acabada:
+				jornada_a_comprobar = jornada_actual
+			else:
+				jornada_a_comprobar = jornada_anterior
+				incluida = True
+				
+			c.partidos_ganados = len(c.equipo.getPartidosGanados(jornada_a_comprobar, incluida))
+			c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_a_comprobar, incluida))
+			c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_a_comprobar, incluida))
 
-	jornada_anterior = liga.jornada_set.filter(numero = jornada.numero - 1)
-	if jornada_anterior.count() > 0:
-		jornada_anterior = jornada_anterior[0]
-	else:
-		jornada_anterior = None
+		else:
+			c.partidos_ganados = len(c.equipo.getPartidosGanados(jornada_actual, True))
+			c.partidos_empatados = len(c.equipo.getPartidosEmpatados(jornada_actual, True))
+			c.partidos_perdidos = len(c.equipo.getPartidosPerdidos(jornada_actual, True))
 
-	jornada_siguiente = liga.jornada_set.filter(numero = jornada.numero + 1)
-	if jornada_siguiente.count() > 0:
-		jornada_siguiente = jornada_siguiente[0]
-	else:
-		jornada_siguiente = None
+		c.partidos_jugados = c.partidos_ganados + c.partidos_empatados + c.partidos_perdidos
+		
+		posicion += 1
 
-	# Es la jornada actual si se jugo la anterior pero no si misma
+	if jornada_anterior != None and jornada_anterior.jugada:
+		clasificacion_anterior_sin_ordenar = jornada_anterior.clasificacionequipojornada_set.all()
+		clasificacion_anterior = sorted(clasificacion_anterior_sin_ordenar, key = lambda dato: (-dato.puntos, -(dato.goles_favor-dato.goles_contra), -dato.goles_favor))
+		
+		posicion = 1
+		for c in clasificacion_anterior:
+			diccionario_equipos_clasificacion[c.equipo].diferencia_posicion_jornada_anterior = posicion - diccionario_equipos_clasificacion[c.equipo].posicion
+			posicion += 1
+
+	# Obtener jornada siguiente
+	jornada_siguiente = liga.jornada_set.get(numero = jornada_actual.numero + 1)
+
+	# Obtener si es la jornada actual
+	# Es la jornada actual si se no se ha jugado y se jugó la anterior
 	if jornada_anterior != None:
-		es_jornada_actual = jornada_anterior.jugada == True and jornada.jugada == False
-	elif jornada_anterior == None and jornada.jugada == False: # 1º jornada
+		es_jornada_actual = (jornada_anterior.jugada == True and jornada_actual.jugada == False)
+	elif jornada_anterior == None and jornada_actual.jugada == False: # 1º jornada
 		es_jornada_actual = True
 	else:
 		es_jornada_actual = False
 
-	d = {"jornada" : jornada,
-				 "emparejamientos" : emparejamientos,
-				 "liga" : liga,
-				 "usuario" : usuario,
-				 "jornada_anterior" : jornada_anterior,
-				 "jornada_siguiente" : jornada_siguiente,
-				 "clasificacion" : clasificacion,
-				 "clasificacion_anterior" : clasificacion_anterior,
-				 "es_creador" : es_creador,
-				 "es_jornada_actual" : es_jornada_actual,
-				}
+	d = {"jornada_actual" : jornada_actual,
+		 "emparejamientos" : emparejamientos,
+		 "liga" : liga,
+		 "usuario" : usuario,
+		 "jornada_anterior" : jornada_anterior,
+		 "jornada_siguiente" : jornada_siguiente,
+		 "clasificacion" : clasificacion,
+		 "es_creador" : es_creador,
+		 "es_jornada_actual" : es_jornada_actual,
+		 "diccionario_equipos_clasificacion" : diccionario_equipos_clasificacion
+		}
 	return generarPagina(request, "juego/jornadas/ver_jornada.html", d)
+
+########################################################################
+
+@login_required
+@actualizarLiga
+@comprobarSesion(['liga_actual'])
+def ver_jornada_actual(request):
+	""" Redirige a la jornada actual de la liga """
+	# Obtenemos la liga
+	liga = request.session['liga_actual']
+
+	jornada = liga.getJornadaActual()
+	if jornada is None:
+		return devolverMensaje(request, "Error, la liga ya ha finalizado", 0)
+
+	return redireccionar('/jornadas/ver/%s/' % (jornada.id))
 
 ########################################################################
 
@@ -121,24 +174,15 @@ def listar_jornadas(request):
 	# Obtenemos la liga
 	liga = request.session['liga_actual']
 	jornadas = liga.getJornadas()
+	
+	for jornada in jornadas:
+		jornada.partidos_jornada = jornada.partido_set.all()
 
-	d = { "jornadas" : jornadas }
+	d = {
+		"liga" : liga,
+		"jornadas" : jornadas
+	}
+	
 	return generarPagina(request, "juego/jornadas/listar_liga.html", d)
-
-########################################################################
-
-@login_required
-@actualizarLiga
-@comprobarSesion(['liga_actual'])
-def jornada_actual(request):
-	""" Redirige a la jornada actual de la liga """
-	# Obtenemos la liga
-	liga = request.session['liga_actual']
-
-	jornada = liga.getJornadaActual()
-	if jornada is None:
-		return devolverMensaje(request, "Error, la liga ya acabó", 0)
-
-	return redireccionar('/jornadas/ver/%s/' % (jornada.id))
 
 ########################################################################

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -21,7 +21,7 @@ Copyright 2013 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.db import models
+from django.db import models, transaction
 
 from gestion_sistema.gestion_calendario.models import Evento
 
@@ -35,6 +35,25 @@ class Jornada(Evento):
 	numero = models.PositiveIntegerField()
 	jugada = models.BooleanField(default = False)
 
+	def getFechaJornada(self):
+		''' Devuelve la fecha en que se juega toda la jornada '''
+		dia_ini = str(self.fecha_inicio.day)
+		dia_fin = str(self.fecha_fin.day)
+		mes_ini = str(self.fecha_inicio.month)
+		mes_fin = str(self.fecha_fin.month)
+		anio_ini = str(self.fecha_inicio.year)
+		anio_fin = str(self.fecha_fin.year)
+		
+		if anio_ini == anio_fin:
+			if mes_ini == mes_fin:
+				fecha_jornada = dia_ini + ' - ' + dia_fin + ' de ' + mes_ini + ' de ' + anio_ini
+			else:
+				fecha_jornada = dia_ini + '/' + mes_ini + ' - ' + dia_fin + '/' + mes_fin + ' de ' + anio_ini
+		else:
+			fecha_jornada = dia_ini + '/' + mes_ini + '/' + anio_ini + ' - ' + dia_fin + '/' + mes_fin + '/' + anio_fin
+		
+		return fecha_jornada
+
 	def getClasificacionEquipo(self, equipo):
 		''' Devuelve la posicion actual de un equipo en la jornada '''
 		return self.clasificacionequipojornada_set.get(equipo = equipo)
@@ -43,6 +62,7 @@ class Jornada(Evento):
 		''' Devuelve si quedan partidos por jugar '''
 		return self.partido_set.filter(jugado = False).count() > 0
 
+	@transaction.atomic
 	def generarClasificacion(self):
 		''' Genera la clasificacion vacia de la jornada '''
 		from gestion_sistema.gestion_clasificacion.models import ClasificacionEquipoJornada
@@ -67,6 +87,7 @@ class Jornada(Evento):
 				clasificacion_local.save()
 				clasificacion_visitante.save()
 
+	@transaction.atomic
 	def jugarPartidosRestantes(self):
 		import time
 		
@@ -75,6 +96,7 @@ class Jornada(Evento):
 		num_partidos = len(partidos)
 		suma_tiempo = 0
 		lista_sucesos = []
+		
 		for partido in partidos:
 			ini = time.time()
 			# Jugar partido
@@ -82,7 +104,7 @@ class Jornada(Evento):
 			
 			fin = time.time()
 			total = fin - ini
-			print 'Tiempo en jugar el partido: ' + str(total)
+			print('Tiempo en jugar el partido: ' + str("%.3f" % total))
 			
 			# Guardar clasificacion
 			# ----------------------------------------------------------
@@ -97,9 +119,9 @@ class Jornada(Evento):
 			clasificacion_visitante.goles_contra += partido.goles_local
 
 			# Actualizar las puntuaciones
-			if (partido.goles_local > partido.goles_visitante):
+			if partido.goles_local > partido.goles_visitante:
 				clasificacion_local.puntos += 3
-			elif (partido.goles_local < partido.goles_visitante):
+			elif partido.goles_local < partido.goles_visitante:
 				clasificacion_visitante.puntos += 3
 			else:
 				clasificacion_local.puntos += 1
@@ -117,24 +139,28 @@ class Jornada(Evento):
 			fin = time.time()
 			total = fin - ini
 			suma_tiempo += total
-			print 'Tiempo en completar guardado del partido: ' + str(total)
+			
+			print('Tiempo en completar guardado del partido: ' + str("%.3f" % total))
 		
 		
 		if num_partidos > 0:
-			print 'Promedio tiempo jornada: ' + str(suma_tiempo / num_partidos)
+			print('Promedio tiempo jornada: ' + str("%.3f" % (suma_tiempo / num_partidos)))
 		
 		self.jugada = True
 		self.save()
 
+	@transaction.atomic
 	def mantenerAlineaciones(self, jornada_anterior):
 		''' Mantiene las alineaciones de los jugadores para los partidos de esta jornada '''
 		# Cogemos los partidos que tengan algun equipo
 		partidos = self.partido_set.exclude(equipo_local__usuario = None, equipo_visitante__usuario = None)
+		
 		for partido in partidos:
 			if partido.equipo_local is not None:
 				equipo = partido.equipo_local
 				# Cogemos el partido que jugó la jornada anterior
 				qs = jornada_anterior.partido_set.filter(equipo_local = equipo)
+				
 				if qs.count() > 0:
 					partido_anterior = qs[0]
 					alineacion_anterior = partido_anterior.alineacion_local
@@ -145,10 +171,12 @@ class Jornada(Evento):
 
 				# Una vez que tenemos la alineacion, copiamos para esta
 				partido.alineacion_local.copiarAlineacion(alineacion_anterior)
+			
 			if partido.equipo_visitante is not None:
 				equipo = partido.equipo_visitante
 				# Cogemos el partido que jugó la jornada anterior
 				qs = jornada_anterior.partido_set.filter(equipo_local = equipo)
+				
 				if qs.count() > 0:
 					partido_anterior = qs[0]
 					alineacion_anterior = partido_anterior.alineacion_local
@@ -159,6 +187,7 @@ class Jornada(Evento):
 
 				# Una vez que tenemos la alineacion, copiamos para esta
 				partido.alineacion_visitante.copiarAlineacion(alineacion_anterior)
+			
 			partido.save()
 
 	def __unicode__(self):

@@ -1,47 +1,27 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
+	<link rel="stylesheet" href="/media/css/jquery.datetimepicker.min.css" />
 	<link rel="stylesheet" href="/media/css/formularios.css" />
     <link rel="stylesheet" href="/media/css/juego/subastas/crear_subasta.css" />
 {% endblock %}
 
 {% block js_extra %}
-	<script src="/media/js/timepicker/jquery-ui-timepicker-addon.min.js"></script>
+	<script src="/media/js/jquery.datetimepicker.full.min.js"></script>
 
 	<script>
-		jQuery(function($){
-			$.timepicker.regional['es'] = {
-				timeOnlyTitle: 'Hora',
-				timeText: 'Hora',
-				hourText: '',
-				minuteText: 'Minutos',
-				secondText: 'Segundos',
-				currentText: 'Ahora',
-				closeText: 'Cerrar',
-				ampm: false
-			};
-			$.timepicker.setDefaults($.timepicker.regional['es']);
-			$.datepicker.regional['es'] = {
-				closeText: 'Cerrar',
-				prevText: '&#x3c;Ant',
-				nextText: 'Sig&#x3e;',
-				currentText: 'Hoy',
-				monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-				'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-				monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
-				'Jul','Ago','Sep','Oct','Nov','Dic'],
-				dayNames: ['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'],
-				dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
-				dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
-				weekHeader: 'Sm',
-				dateFormat: 'dd/mm/yy',
-				firstDay: 1,
-				isRTL: false,
-				showMonthAfterYear: false,
-				yearSuffix: ''};
-			$.datepicker.setDefaults($.datepicker.regional['es']);
-
+		$(document).ready(function() {
+			$("#id_fecha_fin").datetimepicker({
+				lang: 'es',
+				format: 'd/m/Y H:i',
+				dayOfWeekStart: 1,
+				defaultDate: new Date("{{ fecha_hora_liga.isoformat }}"),
+				startDate: new Date("{{ fecha_hora_liga.isoformat }}"),
+			});
+			
+			$.datetimepicker.setLocale('es');
 		});
+		
 		function calcularComision(cantidad_inicial, duracion_subasta) {
 			return ceil(cantidad_inicial * (duracion_subasta / {{ duracion_liga }}))
 		}
@@ -50,54 +30,50 @@
 			dias = document.getElementById("id_expira").value
 			comision = calcularComision(cantidad, dias);
 			alert(jola);
-			return confirm("Te vamos a sablar " + comision + " de comision");
+			return confirm("Te vamos a sablar " + comision + " € de comision");
 		}
-		$(function() {
-			$("#id_fecha_fin").datetimepicker({ dateFormat: 'dd/mm/yy',
-				showMinute: false,
-				timeFormat: 'hh:mm',
-				hourGrid: 6,
-			});
-
-		});
 	</script>
 {% endblock %}
 
 {% block contenido %}
 	<h2>Subastando a {{ jugador.nombre }}</h2>
 
-	<form class="form1" id="form_subastar" action="/mercado/subastas/crear/" method="post">
+	<form class="form1" id="form_subasta" action="/mercado/subastas/crear/" method="post">
 		{% csrf_token %}
+		
 		<!-- Oferta inicial -->
-		<div id="contenido_puja">
-			{% if form.puja.errors %}
-				{{ form.puja.errors }}
-			{% endif %}
+		{% if form.puja.errors %}
+			{{ form.puja.errors }}
+		{% endif %}
+		
+		<section id="contenido_puja">
 			<label for="id_puja">Puja inicial:</label>
 			<div id="caja_puja">{{ form.puja }}</div>
-		</div>
+		</section>
 
 		<!-- Compra directa -->
-		<div id="contenido_precio_compra">
-			{% if form.precio_compra.errors %}
-				{{ form.precio_compra.errors }}
-			{% endif %}
+		{% if form.precio_compra.errors %}
+			{{ form.precio_compra.errors }}
+		{% endif %}
+		
+		<section id="contenido_precio_compra">
 			<label for="id_precio_compra">Precio de compra directa:</label>
 			<div id="caja_precio_compra">{{ form.precio_compra }}</div>
-		</div>
+		</section>
 
 		<!-- Fecha final de subasta -->
-		<div id="contenido_fecha_fin">
-			{% if form.fecha_fin.errors %}
-				{{ form.fecha_fin.errors }}
-			{% endif %}
+		{% if form.fecha_fin.errors %}
+			{{ form.fecha_fin.errors }}
+		{% endif %}
+		
+		<section id="contenido_fecha_fin">
 			<label for="id_fecha_fin">Fecha final de la subasta:</label>
 			<div id="caja_fecha_fin">{{ form.fecha_fin }}</div>
-		</div>
+		</section>
 
 		<!-- Boton crear -->
-		<div id="contenido_boton_crear">
+		<section id="contenido_boton_crear">
 			<input type="submit" value="Crear" name="Crear" onClick="return confirmar()" />
-		</div>
+		</section>
 	</form>
 {% endblock %}

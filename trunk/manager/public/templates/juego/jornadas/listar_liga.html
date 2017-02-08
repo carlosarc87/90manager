@@ -6,33 +6,65 @@
 {% endblock %}
 
 {% block contenido %}
-	<h2>Jornadas de la liga: {{ liga.nombre }}</h2>
+	<h2>Jornadas de la liga "{{ liga.nombre }}"</h2>
 	
-	<!-- Tabla jornadas -->
-	<table class="tabla1" id="tabla_jornadas">
-		<caption>Listado de jornadas</caption>
-		<thead>
-			<tr>
-				<th>Jornada</th>
-				<th>Jugada</th>
-			</tr>
-		</thead>
-		<tbody>
+	<article>
+		<ul id="lista_jornadas">
 			{% for jornada in jornadas %}
-				<tr>
-					<td class="cuadro_num_azul_der">
-						<a href="/jornadas/ver/{{ jornada.id }}/">{{ jornada.numero }}</a>
-					</td>
-					<td>
-						{% if jornada.jugada %}
-							<span class="jornada_jugada">SÍ</span>
-						{% else %}
-							<span class="jornada_no_jugada">NO</span>
-						{% endif %}
-					</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+				<li>
+					<!-- Tabla jornadas -->
+					<table class="tabla1 tabla_jornada">
+						<caption>
+							<div class="numero_jornada">Jornada {{ jornada.numero }}</div>
+							<div class="fecha_jornada">{{ jornada.getFechaJornada }}</div>
+						</caption>
+						<tbody>
+							{% for partido in jornada.partidos_jornada %}
+								<tr>
+									<!-- Equipo local -->
+									<td class="col_local">
+										{% if user == partido.equipo_local.usuario %}
+											<b><a href="/equipos/ver/{{ partido.equipo_local.id }}/">{{ partido.equipo_local.nombre }}</a></b>
+										{% else %}
+											<a href="/equipos/ver/{{ partido.equipo_local.id }}/">{{ partido.equipo_local.nombre }}</a>
+										{% endif %}
+									</td>
 
+									<!-- Resultado -->
+									<td class="col_resultado">
+										<a href="/partidos/ver/{{ partido.id }}/">
+											{% if partido.finalizado %}
+												{% if partido.goles_local > partido.goles_visitante %}
+													<b>{{ partido.goles_local }}</b>
+												{% else %}
+													<span>{{ partido.goles_local }}</span>
+												{% endif %}
+												<span> - </span>
+												{% if partido.goles_visitante > partido.goles_local %}
+													<b>{{ partido.goles_visitante }}</b>
+												{% else %}
+													<span>{{ partido.goles_visitante }}</span>
+												{% endif %}
+											{% else %}
+												<span>-</span>
+											{% endif %}
+										</a>
+									</td>
+
+									<!-- Equipo visitante -->
+									<td class="col_visitante">
+										{% if user == partido.equipo_visitante.usuario %}
+											<b><a href="/equipos/ver/{{ partido.equipo_visitante.id }}/">{{ partido.equipo_visitante.nombre }}</a></b>
+										{% else %}
+											<a href="/equipos/ver/{{ partido.equipo_visitante.id }}/">{{ partido.equipo_visitante.nombre }}</a>
+										{% endif %}
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</li>
+			{% endfor %}
+		</ul>
+	</article>
 {% endblock %}

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -84,7 +84,7 @@ def borrar_notificacion(request, notificacion_id):
 	# Borramos
 	notificacion.delete()
 
-	return devolverMensaje(request, "Notificacion borrada", "/cuentas/notificaciones/listar_liga/")
+	return devolverMensaje(request, "La notificación ha sido eliminada", "/cuentas/notificaciones/listar_liga/")
 
 ########################################################################
 

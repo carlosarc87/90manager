@@ -1,0 +1,45 @@
+#boton_compra_directa{
+	margin-left: 10px;
+}
+
+#contenedor_form_oferta{
+	background: #fff;
+	border: solid 1px #000;
+	border-radius: 5px;
+	margin: 20px auto;
+	padding: 20px;
+	width: 400px;
+}
+
+/* Formulario oferta */
+
+#form_oferta{
+	
+}
+
+#form_oferta section{
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
+
+#form_oferta section *{
+	vertical-align: middle;
+}
+
+#form_oferta section + section{
+	margin-top: 20px;
+}
+
+#caja_cantidad input{
+	margin-left: 1em;
+	text-align: right;
+	width: 150px;
+}
+
+/* Tabla subasta */
+
+#tabla_subasta{
+	margin: 20px auto;
+	width: 400px;
+}

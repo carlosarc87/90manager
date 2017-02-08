@@ -1,0 +1,113 @@
+/* Barra repeticion */
+
+#barra_repeticion{
+	background: #fff;
+	border: solid 1px #000;
+	border-radius: 5px;
+	margin: 20px auto;
+	padding: 10px;
+	width: 300px;
+}
+
+#barra_repeticion #contador_tiempo{
+	background: #030;
+	border: solid 1px #999;
+	color: #0c0;
+	display: inline-block;
+	font-size: 1.2em;
+	padding: .25em;
+	text-align: center;
+	width: 60px;
+}
+
+#barra_repeticion #velocidad_tiempo{
+	color: #00c;
+	display: inline-block;
+	font-weight: bold;
+	text-align: right;
+	width: 40px;
+}
+
+#barra_repeticion a{
+	display: inline-block;
+	height: 16px;
+	width: 16px;
+}
+
+#barra_repeticion ul{
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
+
+#barra_repeticion li + li{
+	margin-left: 10px;
+}
+
+#barra_repeticion li *{
+	vertical-align: middle;
+}
+
+#barra_repeticion li a:hover{
+	opacity: .6;
+}
+
+#beginning{
+	background-image: url(../../../img/icons/a/rewind-start.png);
+}
+
+#pause{
+	background-image: url(../../../img/icons/a/pause.png);
+}
+
+#play{
+	background-image: url(../../../img/icons/a/play.png);
+}
+
+#stop{
+	background-image: url(../../../img/icons/a/stop.png);
+}
+
+#dec_vel{
+	background-image: url(../../../img/icons/a/rewind.png);
+}
+
+#inc_vel{
+	background-image: url(../../../img/icons/a/forward.png);
+}
+
+/* Tabla resultado */
+
+#tabla_resultado{
+	margin: 20px auto;
+	width: 400px;
+}
+
+#col_local{
+	font-size: 1.2em;
+	text-align: right;
+	width: 40%;
+}
+
+#col_resultado{
+	font-size: 1.4em;
+	text-align: center;
+}
+
+#col_visitante{
+	font-size: 1.2em;
+	width: 40%;
+}
+
+/* Tabla sucesos */
+
+#tabla_sucesos{
+	margin: 20px auto;
+	width: 500px;
+}
+
+#tabla_sucesos td:nth-child(1),
+#tabla_sucesos td:nth-child(2){
+	text-align: center;
+	width: 15%;
+}

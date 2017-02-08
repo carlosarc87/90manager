@@ -1,0 +1,145 @@
+/* Resultado */
+
+#tabla_resultado{
+	margin: 20px auto;
+	width: 800px;
+}
+
+#tabla_resultado .col_local{
+	font-size: 1.2em;
+	text-align: right;
+	width: 45%;
+}
+
+#tabla_resultado .col_local a{
+	color: #99f;
+	display: block;
+}
+
+#tabla_resultado .col_resultado{
+	font-size: 1.5em;
+	text-align: center;
+}
+
+#tabla_resultado .col_visitante{
+	font-size: 1.2em;
+	width: 45%;
+}
+
+#tabla_resultado .col_visitante a{
+	color: #f55;
+	display: block;
+}
+
+#fila_jugar_partido th,
+#fila_mensaje_estado th{
+	padding: 1em 0;
+}
+
+/* Ver repetición */
+
+#ver_repeticion{
+	margin: 20px;
+	text-align: center;
+}
+
+/* Resumen */
+
+#tabla_resumen{
+	margin: 20px auto;
+	width: 500px;
+}
+
+#tabla_resumen tbody th{
+	text-align: left;
+}
+
+#tabla_resumen tbody td{
+	text-align: right;
+}
+
+#tabla_resumen td:nth-child(2),
+#tabla_resumen td:nth-child(3){
+	width: 30%;
+}
+
+/* Titulares */
+
+#seccion_titulares{
+	display: flex;
+	justify-content: center;
+}
+
+#seccion_titulares table{
+	margin: 0;
+	width: 450px;
+}
+
+#seccion_titulares table td:nth-child(1){
+	text-align: right;
+	width: 12%;
+}
+
+#seccion_titulares table td:nth-child(2){
+	width: 15%;
+}
+
+#seccion_titulares table td:nth-child(4){
+	text-align: right;
+	width: 12%;
+}
+
+#seccion_titulares table + table{
+	margin-left: 20px;
+}
+
+#tabla_titulares_local caption{
+	background-color: #ddf;
+}
+
+#tabla_titulares_visitante caption{
+	background-color: #fdd;
+}
+
+/* Sucesos */
+
+#tabla_sucesos{
+	margin: 20px auto;
+	width: 600px;
+}
+
+#tabla_sucesos td:nth-child(1){
+	text-align: center;
+	width: 10%;
+}
+
+#tabla_sucesos td:nth-child(2){
+	text-align: center;
+	width: 10%;
+}
+
+#tabla_sucesos td:nth-child(3){
+	text-align: center;
+	width: 20px;
+}
+
+#tabla_sucesos td{
+	padding: 5px;
+}
+
+#tabla_sucesos td span{
+	align-items: center;
+	display: inline-flex;
+	height: 20px;
+}
+
+#tabla_sucesos td *{
+	vertical-align: middle;
+}
+
+/* General */
+
+.num1{
+	color: #99f;
+	text-align: right;
+}

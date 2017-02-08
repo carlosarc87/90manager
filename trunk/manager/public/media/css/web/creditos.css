@@ -1,0 +1,50 @@
+#wrap{
+	background: #fff;
+	border: solid 1px #333;
+	margin: 20px auto;
+}
+
+#wrap h2{
+	border-top: none;
+	border-right: none;
+	border-left: none;
+}
+
+#wrap article{
+	display: flex;
+	margin: 20px;
+}
+
+#wrap article > section{
+	display: flex;
+	flex-basis: 50%;
+	flex-direction: column;
+}
+
+#wrap article > section + section{
+	margin-left: 20px;
+}
+
+#wrap article section section + section{
+	margin-top: 20px;
+}
+
+#wrap section ul{
+	list-style: none;
+	margin: 20px;
+	padding: 0;
+}
+
+#wrap section ul li{
+	padding: .5em 0;
+}
+
+.bloque_seccion{
+	border: solid 1px #333;
+}
+
+.bloque_seccion h3{
+	border-top: none;
+	border-right: none;
+	border-left: none;
+}

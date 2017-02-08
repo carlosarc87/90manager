@@ -9,6 +9,8 @@
 {% block contenido %}
 
 	<form class="form1" id="form_activar_liga" action="/ligas/activar/" method="post">
+		{% csrf_token %}
+		
 		<!-- Tabla de equipos registrados -->
 		<table class="tabla1" id="tabla_equipos_registrados">
 			<caption>Equipos registrados en la liga</caption>
@@ -36,7 +38,6 @@
 			</tbody>
 		</table>
 		
-		{% csrf_token %}
 		<!-- Boton activar -->
 		<div id="contenedor_botones_activar">
 			<input id="boton_activar" type="submit" value="Activar" />

@@ -1,0 +1,94 @@
+#activar_liga,
+#equipo_propio,
+#form_ver_liga{
+	margin: 20px auto;
+	width: 400px;
+}
+
+/* Avanzar tiempo */
+#seccion_avanzar_tiempo{
+	margin: 20px;
+}
+
+/* Equipos */
+
+#seccion_equipos{
+	background: #fff;
+	border: solid 1px #000;
+	border-radius: 5px;
+	box-shadow: 0 0 5px #000;
+	margin: 20px;
+	padding: 1em;
+}
+
+#seccion_equipos p{
+	text-align: center;
+}
+
+#cuadro_equipos{
+	align-content: center;
+	display: flex;
+	flex-wrap: wrap;
+	list-style: none;
+	justify-content: center;
+	padding: 0;
+}
+
+#cuadro_equipos .equipo{
+	background: #f9f9f9;
+	border: solid 1px #ccc;
+	display: inline-block;
+	margin: 5px;
+	padding: .5em;
+}
+
+/* Clasificacion y resultados */
+
+#seccion_clasificacion_y_resultados{
+	display: flex;
+	margin: 0 20px;
+}
+
+#seccion_clasificacion_y_resultados table{
+	margin: 0 0 20px;
+}
+
+#seccion_clasificacion{
+	flex-basis: 50%;
+	margin-left: 20px;
+}
+
+#seccion_partidos_jornada_actual{
+	flex-basis: 50%;
+}
+
+#tabla_partidos_jornada_actual td{
+	width: 33.3%;
+}
+
+#tabla_partidos_jornada_actual td:nth-child(1){
+	text-align: right;
+}
+
+#tabla_partidos_jornada_actual td:nth-child(2){
+	text-align: center;
+	width: 10%;
+}
+
+/* wrap */
+
+#wrap{
+	background: #fff;
+	border: solid 1px #000;
+	margin: 20px auto;
+}
+
+#wrap h2{
+	border-top: none;
+	border-right: none;
+	border-left: none;
+}
+
+.linea_equipo_propio{
+	font-weight: bold;
+}

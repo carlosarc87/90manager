@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -32,7 +32,7 @@ from gestion_sistema.gestion_calendario.models import Evento
 from gestion_usuario.gestion_notificacion.func import notificar, Notificacion
 
 from random import randint
-from func import probabilidadExito
+from .func import probabilidadExito
 
 ########################################################################
 
@@ -66,13 +66,15 @@ class JugadorPartido(models.Model):
 class AlineacionEquipo(models.Model):
 	''' Representa la alineación de un equipo en un partido '''
 	equipo = models.ForeignKey(Equipo)
-	jugadores = models.ManyToManyField(JugadorPartido, null = True, blank = True)
+	jugadores = models.ManyToManyField(JugadorPartido, blank = True)
 
+	@transaction.atomic
 	def borrarAlineacion(self):
 		''' Elimina la alineacion actual '''
 		for jugador in self.jugadores.all():
 			jugador.delete()
 
+	@transaction.atomic
 	def setAlineacion(self, portero, defensas, centrocampistas, delanteros, suplentes):
 		''' Establece una alineacion de jugadores a partir de los ids '''
 		self.borrarAlineacion()
@@ -106,14 +108,15 @@ class AlineacionEquipo(models.Model):
 			p.save()
 			self.jugadores.add(p)
 
+	@transaction.atomic
 	def copiarAlineacion(self, alineacion):
 		''' Copia la alineacion desde otra alineacion '''
 		self.borrarAlineacion()
+		
 		for jugador in alineacion.jugadores.all():
 			j = JugadorPartido(atributos = jugador.atributos, posicion = jugador.posicion)
 			j.save()
 			self.jugadores.add(j)
-
 
 	def getTitulares(self):
 		''' Devuelve los jugadores titulares '''
@@ -169,40 +172,33 @@ class AlineacionEquipo(models.Model):
 		''' Devuelve los datos de los suplentes '''
 		return self.jugadores.filter(posicion = JugadorPartido.BANQUILLO)
 
+	@transaction.atomic
 	def setAleatoria(self):
-		jugadores_equipo = self.equipo.atributosvariablesjugador_set.all()
+		self.borrarAlineacion()
 		
-		# Ordenar jugadores por valor de mercado de mayor a menor
-		jugadores_equipo = sorted(jugadores_equipo, key = lambda atributosvariablesjugador : atributosvariablesjugador.valorMercado(), reverse = True)
+		# Obtener jugadores del equipo
+		jugadores_equipo = self.equipo.atributosvariablesjugador_set.all()
 
 		# Listas para guardar jugadores por posición y poder obtener luego los mejores
-		lista_PO = []
-		lista_DF = []
-		lista_CC = []
-		lista_DL = []
-		for jug in jugadores_equipo:
-			# Añadir el jugador a una lista dependiendo de su posición
-			if jug.mejorPosicion() == 'PORTERO':
-				lista_PO.append(jug)
-			if jug.mejorPosicion() == 'DEFENSA':
-				lista_DF.append(jug)
-			if jug.mejorPosicion() == 'CENTROCAMPISTA':
-				lista_CC.append(jug)
-			if jug.mejorPosicion() == 'DELANTERO':
-				lista_DL.append(jug)
+		# Cabe la posibilidad de que no haya suficientes jugadores con el mejor nivel en alguna posición (sobre todo en niveles bajos), por lo que es mejor añadir la posibilidad de que
+		# los jugadores también jueguen en posiciones que no sean la mejor
+		lista_PO = sorted(jugadores_equipo, key = lambda atributosvariablesjugador : atributosvariablesjugador.getNivel('PORTERO'), reverse = True)
+		lista_DF = sorted(jugadores_equipo, key = lambda atributosvariablesjugador : atributosvariablesjugador.getNivel('DEFENSA'), reverse = True)
+		lista_CC = sorted(jugadores_equipo, key = lambda atributosvariablesjugador : atributosvariablesjugador.getNivel('CENTROCAMPISTA'), reverse = True)
+		lista_DL = sorted(jugadores_equipo, key = lambda atributosvariablesjugador : atributosvariablesjugador.getNivel('DELANTERO'), reverse = True)
 
+		# --------------------------------------------------------------
 		# Comprobar qué formación es con la que el equipo tiene mejor valor
 		# --------------------------------------------------------------
-		# Formaciones posibles
-		# 3-4-3
-		# 3-5-2
-		# 4-3-3
-		# 4-4-2
-		# 4-5-1
-		# 5-3-2
-		# 5-4-1
-		
-		lista_formaciones = [[3, 4, 3], [3, 5, 2], [4, 3, 3], [4, 4, 2], [4, 5, 1], [5, 3, 2], [5, 4, 1]];
+		lista_formaciones = [
+			[3, 4, 3], 
+			[3, 5, 2], 
+			[4, 3, 3], 
+			[4, 4, 2], 
+			[4, 5, 1], 
+			[5, 3, 2], 
+			[5, 4, 1]
+		];
 		
 		# Algoritmo a seguir:
 		# 1. Obtener datos de la siguiente formación de la lista.
@@ -211,7 +207,6 @@ class AlineacionEquipo(models.Model):
 		
 		mejor_formacion = lista_formaciones[0];
 		nivel_mejor_formacion = 0;
-		num_formaciones = len(lista_formaciones);
 		
 		# Calcular mejor formación a partir de los niveles de los jugadores en cada una.
 		for formacion in lista_formaciones:
@@ -229,33 +224,66 @@ class AlineacionEquipo(models.Model):
 			if nivel_formacion > nivel_mejor_formacion:
 				mejor_formacion = formacion;
 				nivel_mejor_formacion = nivel_formacion;
+		
 		# --------------------------------------------------------------
-
 		# Establecer formación
+		# --------------------------------------------------------------
+		
+		# Añadir portero
 		if len(lista_PO) > 0:
-			jugador = JugadorPartido(atributos = lista_PO.pop(0), posicion = JugadorPartido.PORTERO)
+			atributos_jugador = lista_PO.pop(0)
+			lista_PO, lista_DF, lista_CC, lista_DL = self.eliminarJugadorListasPosiciones(atributos_jugador, lista_PO, lista_DF, lista_CC, lista_DL)
+			
+			jugador = JugadorPartido(atributos = atributos_jugador, posicion = JugadorPartido.PORTERO)
 			jugador.save()
 			self.jugadores.add(jugador)
 
+		# Añadir defensas
 		for i in range(0, mejor_formacion[0]):
 			if len(lista_DF) > 0:
-				jugador = JugadorPartido(atributos = lista_DF.pop(0), posicion = JugadorPartido.DEFENSA)
+				atributos_jugador = lista_DF.pop(0)
+				lista_PO, lista_DF, lista_CC, lista_DL = self.eliminarJugadorListasPosiciones(atributos_jugador, lista_PO, lista_DF, lista_CC, lista_DL)
+				
+				jugador = JugadorPartido(atributos = atributos_jugador, posicion = JugadorPartido.DEFENSA)
 				jugador.save()
 				self.jugadores.add(jugador)
 
+		# Añadir centrocampistas
 		for i in range(0, mejor_formacion[1]):
 			if len(lista_CC) > 0:
-				jugador = JugadorPartido(atributos = lista_CC.pop(0), posicion = JugadorPartido.CENTROCAMPISTA)
+				atributos_jugador = lista_CC.pop(0)
+				lista_PO, lista_DF, lista_CC, lista_DL = self.eliminarJugadorListasPosiciones(atributos_jugador, lista_PO, lista_DF, lista_CC, lista_DL)
+				
+				jugador = JugadorPartido(atributos = atributos_jugador, posicion = JugadorPartido.CENTROCAMPISTA)
 				jugador.save()
 				self.jugadores.add(jugador)
 
+		# Añadir delanteros
 		for i in range(0, mejor_formacion[2]):
 			if len(lista_DL) > 0:
-				jugador = JugadorPartido(atributos = lista_DL.pop(0), posicion = JugadorPartido.DELANTERO)
+				atributos_jugador = lista_DL.pop(0)
+				lista_PO, lista_DF, lista_CC, lista_DL = self.eliminarJugadorListasPosiciones(atributos_jugador, lista_PO, lista_DF, lista_CC, lista_DL)
+				
+				jugador = JugadorPartido(atributos = atributos_jugador, posicion = JugadorPartido.DELANTERO)
 				jugador.save()
 				self.jugadores.add(jugador)
 				
 	# FIN setAleatoria
+	
+	def eliminarJugadorListasPosiciones(self, jugador, lista_PO, lista_DF, lista_CC, lista_DL):
+		if lista_PO.count(jugador) != 0:
+			lista_PO.remove(jugador)
+			
+		if lista_DF.count(jugador) != 0:
+			lista_DF.remove(jugador)
+			
+		if lista_CC.count(jugador) != 0:
+			lista_CC.remove(jugador)
+			
+		if lista_DL.count(jugador) != 0:
+			lista_DL.remove(jugador)
+	
+		return lista_PO, lista_DF, lista_CC, lista_DL
 
 	def estaPreparada(self):
 		return len(self.jugadores.all()) > 0
@@ -267,15 +295,16 @@ class AlineacionEquipo(models.Model):
 			posicion = t.posicion
 			ataque = t.atributos.ataque
 
-			if(posicion == "DF"):
+			if posicion == "DF":
 				valor += (ataque * 0.25)
-			elif(posicion == "CC"):
+			elif posicion == "CC":
 				valor += (ataque * 0.5)
-			elif(posicion == "DL"):
+			elif posicion == "DL":
 				valor += ataque
 
 		if len(titulares) == 0:
 			return 0
+			
 		return (int)(valor / len(titulares))
 
 	def getValorDefensa(self):
@@ -285,15 +314,16 @@ class AlineacionEquipo(models.Model):
 			posicion = t.posicion
 			defensa = t.atributos.defensa
 
-			if(posicion == "DF"):
+			if posicion == "DF":
 				valor += defensa
-			elif(posicion == "CC"):
+			elif posicion == "CC":
 				valor += (defensa * 0.5)
-			elif(posicion == "DL"):
+			elif posicion == "DL":
 				valor += (defensa * 0.25)
 
 		if len(titulares) == 0:
 			return 0
+			
 		return (int)(valor / len(titulares))
 
 	def getValorPases(self):
@@ -302,15 +332,16 @@ class AlineacionEquipo(models.Model):
 		for t in titulares:
 			posicion = t.posicion
 			pases = t.atributos.pases
-			if(posicion == "DF"):
+			if posicion == "DF":
 				valor += (pases * 0.5)
-			elif(posicion == "CC"):
+			elif posicion == "CC":
 				valor += pases
-			elif(posicion == "DL"):
+			elif posicion == "DL":
 				valor += (pases * 0.5)
 
 		if len(titulares) == 0:
 			return 0
+			
 		return (int)(valor / len(titulares))
 
 	def getValorVelocidad(self):
@@ -320,15 +351,16 @@ class AlineacionEquipo(models.Model):
 			posicion = t.posicion
 			velocidad = t.atributos.velocidad
 			
-			if(posicion == "DF"):
+			if posicion == "DF":
 				valor += (velocidad * 0.5)
-			elif(posicion == "CC"):
+			elif posicion == "CC":
 				valor += (velocidad * 0.5)
-			elif(posicion == "DL"):
+			elif posicion == "DL":
 				valor += (velocidad * 0.5)
 
 		if len(titulares) == 0:
 			return 0
+			
 		return (int)(valor / len(titulares))
 
 	def getValorAnotacion(self):
@@ -337,15 +369,16 @@ class AlineacionEquipo(models.Model):
 		for t in titulares:
 			posicion = t.posicion
 			anotacion = t.atributos.anotacion
-			if(posicion == "DF"):
+			if posicion == "DF":
 				valor += (anotacion * 0.25)
-			elif(posicion == "CC"):
+			elif posicion == "CC":
 				valor += (anotacion * 0.5)
-			elif(posicion == "DL"):
+			elif posicion == "DL":
 				valor += (anotacion * 0.5)
 
 		if len(titulares) == 0:
 			return 0
+			
 		return (int)(valor / len(titulares))
 
 	def getValorPortero(self):
@@ -354,7 +387,7 @@ class AlineacionEquipo(models.Model):
 		for t in titulares:
 			posicion = t.posicion
 
-			if(posicion == "PO"):
+			if posicion == "PO":
 				return t.atributos.portero
 
 		return 0
@@ -367,6 +400,7 @@ class AlineacionEquipo(models.Model):
 
 		if len(titulares) == 0:
 			return 0
+			
 		return (int)(valor / len(titulares))
 
 ########################################################################
@@ -401,7 +435,7 @@ class Partido(Evento):
 		''' Indica si un partido ya ha acabado '''
 		return self.jugado
 
-	@transaction.commit_on_success
+	@transaction.atomic
 	def jugar(self):
 		import time
 		
@@ -446,28 +480,28 @@ class Partido(Evento):
 
 		mostrar_datos = True
 		if mostrar_datos:
-			print "-------------------------------------------"
-			print alineacion[0].equipo.nombre
-			print "Moral: " + str(moral[0])
-			print "Ataque: " + str(ataque[0])
-			print "Defensa: " + str(defensa[0])
-			print "Pases: " + str(pases[0])
-			print "Velocidad: " + str(velocidad[0])
-			print "Anotacion: " + str(anotacion[0])
-			print "Portero: " + str(portero[0])
-			print "-------------------------------------------"
-			print alineacion[1].equipo.nombre
-			print "Moral: " + str(moral[1])
-			print "Ataque: " + str(ataque[1])
-			print "Defensa: " + str(defensa[1])
-			print "Pases: " + str(pases[1])
-			print "Velocidad: " + str(velocidad[1])
-			print "Anotacion: " + str(anotacion[1])
-			print "Portero: " + str(portero[1])
-			print "-------------------------------------------"
+			print("-------------------------------------------")
+			print(alineacion[0].equipo.nombre)
+			print("Moral: " + str(moral[0]))
+			print("Ataque: " + str(ataque[0]))
+			print("Defensa: " + str(defensa[0]))
+			print("Pases: " + str(pases[0]))
+			print("Velocidad: " + str(velocidad[0]))
+			print("Anotacion: " + str(anotacion[0]))
+			print("Portero: " + str(portero[0]))
+			print("-------------------------------------------")
+			print(alineacion[1].equipo.nombre)
+			print("Moral: " + str(moral[1]))
+			print("Ataque: " + str(ataque[1]))
+			print("Defensa: " + str(defensa[1]))
+			print("Pases: " + str(pases[1]))
+			print("Velocidad: " + str(velocidad[1]))
+			print("Anotacion: " + str(anotacion[1]))
+			print("Portero: " + str(portero[1]))
+			print("-------------------------------------------")
 
 		fin = time.time()
-		print 'Tiempo en cargar datos del partido: ' + str(fin - ini)
+		print('Tiempo en cargar datos del partido: ' + str("%.3f" % (fin - ini)))
 		
 		ini = time.time()
 		# Continuar jugando mientras no se hayan acabado las 2 partes del partido
@@ -620,7 +654,7 @@ class Partido(Evento):
 			num_parte += 1
 
 		fin = time.time()
-		print 'Tiempo en simular el partido: ' + str(fin - ini)
+		print('Tiempo en simular el partido: ' + str("%.3f" % (fin - ini)))
 		
 		ini = time.time()
 		self.goles_local = num_goles[0]
@@ -638,7 +672,7 @@ class Partido(Evento):
 		self.save()
 		
 		fin = time.time()
-		print 'Tiempo en guardar datos del partido: ' + str(fin - ini)
+		print('Tiempo en guardar datos del partido: ' + str("%.3f" % (fin - ini)))
 		
 		return lista_sucesos
 
@@ -673,6 +707,7 @@ class Suceso(models.Model):
 	)
 	segundo_partido = models.PositiveIntegerField(null = True, blank = True)
 	tipo = models.PositiveIntegerField(choices = TIPO_SUCESOS)
+	
 	# Valor adicional del suceso (minutos de descuento, que parte ha acabado)
 	valor = models.PositiveIntegerField(default = None, null = True, blank = True)
 
@@ -692,7 +727,9 @@ class Suceso(models.Model):
 		""" Convierte el suceso en una cadena de caracteres """
 		cadena = self.get_tipo_display()
 		if self.valor != None:
-			if self.tipo == Suceso.REGATE:
+			if self.tipo == Suceso.COMENZAR:
+				cadena += "\"" + self.equipo.nombre + "\""
+			elif self.tipo == Suceso.REGATE:
 				if self.valor == 0:
 					cadena += " fallado"
 				elif self.valor == 1:
@@ -708,10 +745,10 @@ class Suceso(models.Model):
 				elif self.valor == 1:
 					cadena += " parado"
 			elif self.tipo == Suceso.FIN_PARTE:
-				if self.valor == 0:
-					cadena = "Fin de la 1º parte"
-				elif self.valor == 1:
-					cadena = "Fin de la 2º parte"
+				if self.valor == 1:
+					cadena = "Fin de la primera parte"
+				else:
+					cadena = "Fin del partido"
 			elif self.tipo == Suceso.TIEMPO_DESCUENTO:
 				cadena += ": " + str(self.valor) + " minutos"
 			else:

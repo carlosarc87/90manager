@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
 	* Juan Miguel Lechuga Pérez
 	* Jose Luis López Pino
 	* Carlos Antonio Rivera Cabello
@@ -21,14 +21,17 @@ Copyright 2013 by
 	along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.db import models
+
+from django.core.validators import MaxValueValidator
+from django.db import models, transaction
+from datetime import datetime
 
 from gestion_usuario.models import Usuario
 
 import random
 
 from math import ceil
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 ########################################################################
 
@@ -50,15 +53,15 @@ class Liga(models.Model):
 	factor_tiempo = models.PositiveIntegerField(default = 1)
 
 	# Reglas liga
-	sexo_permitido = models.PositiveIntegerField(default = 0)
+	sexo_permitido = models.PositiveIntegerField(default = 0) # Sexo permitido (0 = Solo hombres, 1 = Solo mujeres, 2 = Mixto)
 	permitir_bots = models.BooleanField(default = True) # Indica si se permiten (1) o no (0) bots en las ligas
 	inteligencia_bots = models.PositiveIntegerField(default = 3, null = True) # Nivel de inteligencia de los bots (1 - 5(muy alto))
-	tipo_avance_jornadas = models.PositiveIntegerField(default = 0) # Tipo de avance de las jornadas (0 - Manual, 1 - Auto, 2 - Esperar hora)
+	tipo_avance_jornadas = models.PositiveIntegerField(default = 0) # Tipo de avance de las jornadas (0 = Manual, 1 = Auto, 2 = Esperar hora)
 
 	# Reglas equipos
-	dinero_inicial = models.IntegerField(default = 20000, max_length = 15)
-	num_jugadores_inicial = models.PositiveIntegerField(default = 20, max_length = 3)
-	nivel_max_jugadores_inicio = models.PositiveIntegerField(default = 50, max_length = 3) # Nivel máximo inicial de los jugadores al comienzo de la liga (10 - 100)
+	dinero_inicial = models.IntegerField(default = 20000, validators=[MaxValueValidator(999999999999)])
+	num_jugadores_inicial = models.PositiveIntegerField(default = 20, validators=[MaxValueValidator(100)])
+	nivel_max_jugadores_inicio = models.PositiveIntegerField(default = 50, validators=[MaxValueValidator(100)]) # Nivel máximo inicial de los jugadores al comienzo de la liga (10 - 100)
 
 	def setFecha(self, nueva_fecha):
 		""" Establece una fecha de la liga """
@@ -70,10 +73,13 @@ class Liga(models.Model):
 	def getFecha(self):
 		""" Devuelve la fecha ficticia de la liga """
 		ahora_real = datetime.now()
+		fecha_real_inicio = self.fecha_real_inicio
 		factor = self.factor_tiempo
-		t_real_transcurrida = ahora_real - self.fecha_real_inicio
+		t_real_transcurrida = ahora_real - fecha_real_inicio.replace(tzinfo=None)
 		t_ficticio_transcurrida = t_real_transcurrida * factor
+		
 		ahora_ficticia = self.fecha_ficticia_inicio + t_ficticio_transcurrida
+		
 		return ahora_ficticia
 
 	def getJornadas(self):
@@ -89,93 +95,37 @@ class Liga(models.Model):
 		# Obtenemos las jornadas no jugadas
 		jornadas_restantes = self.getJornadas().filter(jugada = False)
 		jornada_actual = None
+		
 		if len(jornadas_restantes) > 0:
 			# No ha acabado aun
 			jornada_actual = jornadas_restantes[0]
+			
 		return jornada_actual
 
+	@transaction.atomic
 	def rellenarLiga(self):
 		''' Rellena los huecos vacios de una liga con equipos controlados por bots '''
-		# Generar los equipos
-		from gestion_sistema.gestion_equipo.func import listaNombres, nombreEquipoAleatorio, generarSiglasNombre
+		from gestion_sistema.gestion_equipo.func import ObtenerNombreYSiglasAleatorio
 		from gestion_sistema.gestion_equipo.models import Equipo
-
-		# -------------------------------------------------
-		# Obtener listas de nombres
-		# -------------------------------------------------
-		# Tipo club
-		lista_nombres_tipo_club = listaNombres('nombres_equipos/tipo_club.txt') # Tipos de club
-		lon_lista_nombres_tipo_club = len(lista_nombres_tipo_club)
-
-		# Parte 1
-		lista_parte1 = [[], []]
-
-		# Animales
-		lista_nombres_animales = listaNombres('nombres_equipos/animales.txt')
-		lista_parte1[0] += lista_nombres_animales[0]
-		lista_parte1[1] += lista_nombres_animales[1]
-
-		# Comidas
-		lista_nombres_comidas = listaNombres('nombres_equipos/comidas.txt')
-		lista_parte1[0] += lista_nombres_comidas[0]
-		lista_parte1[1] += lista_nombres_comidas[1]
-
-		# Profesiones
-		lista_nombres_profesiones = listaNombres('nombres_equipos/profesiones.txt')
-		lista_parte1[0] += lista_nombres_profesiones[0]
-		lista_parte1[1] += lista_nombres_profesiones[1]
-
-		# Razas
-		lista_nombres_razas = listaNombres('nombres_equipos/razas.txt')
-		lista_parte1[0] += lista_nombres_razas[0]
-		lista_parte1[1] += lista_nombres_razas[1]
-
-		# Objetos
-		lista_nombres_objetos = listaNombres('nombres_equipos/objetos.txt')
-		lista_parte1[0] += lista_nombres_objetos[0]
-		lista_parte1[1] += lista_nombres_objetos[1]
-
-		# Parte 2
-		lista_parte2 = [[], []]
-
-		# Colores
-		lista_nombres_colores = listaNombres('nombres_equipos/colores.txt')
-		lista_parte2[0] += lista_nombres_colores[0]
-		lista_parte2[1] += lista_nombres_colores[1]
-
-		# Formas
-		lista_nombres_formas = listaNombres('nombres_equipos/formas.txt')
-		lista_parte2[0] += lista_nombres_formas[0]
-		lista_parte2[1] += lista_nombres_formas[1]
-		# -------------------------------------------------
-
+		
 		for i in range(self.equipo_set.count(), self.num_equipos):
-			nombre_eq = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
+			nombre_equipo, siglas_equipo = ObtenerNombreYSiglasAleatorio(self)
 
-			# Comprobar que el nombre no se repita
-			while self.equipo_set.filter(nombre = nombre_eq).count() > 0:
-				nombre_eq = nombreEquipoAleatorio(lista_nombres_tipo_club, lista_parte1, lista_parte2)
-
-			siglas_eq = generarSiglasNombre(nombre_eq)
-
-			# Comprobar que las siglas no se repitan
-			c = 1
-			while self.equipo_set.filter(siglas = siglas_eq).count() > 0:
-				siglas_eq = siglas_eq[:-1] + str(c)
-				c += 1
-
-			equipo = Equipo(nombre = nombre_eq, siglas = siglas_eq, usuario = None, liga = self, dinero = self.dinero_inicial)
+			equipo = Equipo(nombre = nombre_equipo, siglas = siglas_equipo, usuario = None, liga = self, dinero = self.dinero_inicial)
 			equipo.save()
 			equipo.generarJugadoresAleatorios(self.sexo_permitido, self.num_jugadores_inicial, self.nivel_max_jugadores_inicio)
 
+	@transaction.atomic
 	def generarJornadas(self):
 		''' Genera las jornadas de una liga '''
 		from gestion_sistema.gestion_jornada.models import Jornada
 		from gestion_sistema.gestion_partido.models import Partido
+		import math
 
 		jornadas = []
 		num_jornadas_ida = self.num_equipos - 1
-		num_emparejamientos_jornada = self.num_equipos / 2
+		num_emparejamientos_jornada = math.ceil(self.num_equipos / 2)
+		
 		# Creamos una copia de los equipos
 		id_equipos = list(self.equipo_set.all())
 		random.shuffle(id_equipos)
@@ -184,15 +134,18 @@ class Liga(models.Model):
 		j = 0
 		while j < num_jornadas_ida:
 			emparejamientos_jornada = []
+			
 			for emp in range(0, num_emparejamientos_jornada):
 				# Alternar local y visitante
 				if (j % 2) == 0:
 					emparejamiento = [id_equipos[self.num_equipos - emp - 1], id_equipos[emp]]
 				else:
 					emparejamiento = [id_equipos[emp], id_equipos[self.num_equipos - emp - 1]]
+				
 				# Annadir emparejamiento a la lista de emparejamientos de la jornada
 				emparejamientos_jornada.append(emparejamiento)
-			# Annadir todos los emparejamientos a la jornada
+			
+			# Añadir todos los emparejamientos a la jornada
 			jornadas.append(emparejamientos_jornada)
 
 			# Colocar segundo equipo al final del vector. El primer equipo siempre queda fijo
@@ -207,6 +160,7 @@ class Liga(models.Model):
 			for emp in range(0, num_emparejamientos_jornada):
 				emparejamiento = [jornadas[j - num_jornadas_ida][emp][1], jornadas[j - num_jornadas_ida][emp][0]]
 				emparejamientos_jornada.append(emparejamiento)
+				
 			# Annadir todos los emparejamientos a la jornada
 			jornadas.append(emparejamientos_jornada)
 			j += 1
@@ -216,7 +170,7 @@ class Liga(models.Model):
 		l_dias = [0, 0, 0, 0, 0, 1, 1]
 		primera_hora = 18 * 4
 		ultima_hora = 22 * 4
-		partidos = range(num_emparejamientos_jornada)
+		partidos = list(range(num_emparejamientos_jornada))
 
 		# Generamos los ordenes de una jornada
 		dias_jugables = l_dias.count(1)
@@ -226,6 +180,7 @@ class Liga(models.Model):
 				espacio_entre_partidos = huecos / (partidos_por_dia - 1)
 		else:
 				espacio_entre_partidos = 0
+		
 		orden_jornada = []
 		indice_partido = 0
 		dia_inicio = self.fecha_ficticia_inicio.weekday()
@@ -263,6 +218,7 @@ class Liga(models.Model):
 		''' Agrega un equipo a la liga '''
 		self.equipos_set.add(equipo)
 
+	@transaction.atomic
 	def avanzarJornada(self):
 		''' Avanza una jornada en la liga '''
 		# Sacar primera jornada no jugada
@@ -270,7 +226,7 @@ class Liga(models.Model):
 		if not jornada:
 			return False
 
-		print "Jugando partidos restantes"
+		print("Jugando partidos restantes")
 		jornada.jugarPartidosRestantes()
 
 		# Actualizar subastas
@@ -285,12 +241,12 @@ class Liga(models.Model):
 #				subasta.save()
 
 		# Generar los datos de clasificacion de la siguiente jornada
-		print "Generando clasificaciones"
+		print("Generando clasificaciones")
 		siguiente_jornada = self.getJornadaActual()
 		if siguiente_jornada:
 			siguiente_jornada.generarClasificacion()
 			siguiente_jornada.mantenerAlineaciones(jornada)
-		print "Fin"
+		print("Fin")
 		return True
 
 	def getNumJornadas(self):

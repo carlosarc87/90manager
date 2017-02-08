@@ -1,13 +1,18 @@
-from django.core.management import setup_environ, call_command
-import settings
+from django.core.management import call_command
+from django.conf import settings
+
+import django
 
 # Configurar django
-setup_environ(settings)
+settings.configure()
+
+django.setup()
 
 # Crear la bd
-call_command('syncdb', interactive = False)
+call_command('makemigrations')
+call_command('migrate')
 
 # Crear el administrador
 call_command('crearadmin', 'admin', '1234', 'admin@admin.net')
 
-print "Fin del script"
+print("Fin del script")

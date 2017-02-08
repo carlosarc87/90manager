@@ -1,0 +1,27 @@
+#form_subasta{
+	background: #fff;
+	border: solid 1px #000;
+	margin: 20px auto;
+	padding: 20px;
+	width: 350px;
+}
+
+#form_subasta section{
+	display: flex;
+	justify-content: space-between;
+}
+
+#form_subasta section+section{
+	margin-top: 10px;
+}
+
+#form_subasta label{
+	font-weight: bold;
+}
+
+#contenido_fecha_fin input,
+#contenido_precio_compra input,
+#contenido_puja input{
+	text-align: right;
+	width: 120px;
+}

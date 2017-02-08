@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -21,15 +21,17 @@ Copyright 2013 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.conf.urls.defaults import *
 
-urlpatterns = patterns('',
-	#Habilitar la funcion de contacto
-	(r'^$', 'gestion_usuario.views.principal'),
-	(r'^tablon/$', 'gestion_usuario.views.tablon'),
-	(r'^creditos/', 'gestion_base.views.creditos'),
-	(r'^contacto/', 'gestion_base.views.contacto'),
-	(r'^siguenos/', 'gestion_base.views.siguenos'),
-	(r'^changelog/', 'gestion_base.views.changelog'),
-	(r'^condiciones/', 'gestion_base.views.condiciones'),
-)
+from django.conf.urls import url
+from gestion_base import views as views_base
+from gestion_usuario import views as views_usuario
+
+urlpatterns = [
+	url(r'^$', views_usuario.principal),
+	url(r'^tablon/$', views_usuario.tablon),
+	url(r'^creditos/', views_base.creditos),
+	url(r'^contacto/', views_base.contacto),
+	url(r'^siguenos/', views_base.siguenos),
+	url(r'^changelog/', views_base.changelog),
+	url(r'^condiciones/', views_base.condiciones),
+]

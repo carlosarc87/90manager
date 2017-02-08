@@ -1,0 +1,10 @@
+/* Ligas publicas */
+
+#tabla_ligas_publicas{
+	margin: 20px auto;
+	width: 500px;
+}
+
+.col_inscritos{
+	text-align: right;
+}

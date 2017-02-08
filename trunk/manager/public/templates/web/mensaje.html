@@ -2,28 +2,13 @@
 
 {% block css_extra %}
     <link rel="stylesheet" href="/media/css/web/mensaje.css" />
-    <link rel="stylesheet" href="/media/css/redmond/jquery-ui.custom.min.css" />
 {% endblock %}
 
 {% block contenido %}
 	{% if tipo == 1 %}
-		<div class="ui-widget">
-			<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-				<p>
-					<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-					{{ mensaje }}
-				</p>
-			</div>
-		</div>
+		<div id="mensaje" class="info"><span>{{ mensaje }}</span></div>
 	{% else %}
-		<div class="ui-widget">
-			<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
-				<p>
-					<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-					{{ mensaje }}
-				</p>
-			</div>
-		</div>
+		<div id="mensaje" class="error"><span>{{ mensaje }}</span></div>
 	{% endif %}
 
 	{% if url_salida %}

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -21,14 +21,16 @@ Copyright 2013 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.conf.urls.defaults import *
 
-urlpatterns = patterns('',
+from django.conf.urls import url
+from gestion_sistema.gestion_liga import views
+
+urlpatterns = [
    	# Modulo de ligas
-   	(r'^crear/$', 'gestion_sistema.gestion_liga.views.crear_liga'),
-   	(r'^publicas/$', 'gestion_sistema.gestion_liga.views.ver_ligas_publicas'),
-   	(r'^ver/$', 'gestion_sistema.gestion_liga.views.ver_liga'),
-   	(r'^ver/(?P<liga_id>\d+)/$', 'gestion_sistema.gestion_liga.views.ver_liga_id'),
-   	(r'^avanzar/$', 'gestion_sistema.gestion_liga.views.avanzar_jornada_liga'),
-   	(r'^activar/$', 'gestion_sistema.gestion_liga.views.activar_liga'),
-)
+   	url(r'^crear/$', views.crear_liga),
+   	url(r'^publicas/$', views.ver_ligas_publicas),
+   	url(r'^ver/$', views.ver_liga),
+   	url(r'^ver/(?P<liga_id>\d+)/$', views.ver_liga_id),
+   	url(r'^avanzar/$', views.avanzar_jornada_liga),
+   	url(r'^activar/$', views.activar_liga),
+]

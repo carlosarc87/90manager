@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -21,7 +21,9 @@ Copyright 2013 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.db import models
+
+from django.core.validators import MaxValueValidator
+from django.db import models, transaction
 from django.db.models import Q, F
 
 from gestion_sistema.gestion_liga.models import Liga
@@ -39,7 +41,7 @@ class Equipo(models.Model):
 	usuario = models.ForeignKey(Usuario, null = True)
 	liga = models.ForeignKey(Liga)
 
-	dinero = models.IntegerField(default = 0, max_length = 15)
+	dinero = models.IntegerField(default = 0, validators=[MaxValueValidator(999999999999)])
 
 	# Funciones
 	def pagar(self, cantidad):
@@ -117,6 +119,7 @@ class Equipo(models.Model):
 		partidos_empatados = partidos_jugados.filter(goles_local = F('goles_visitante'))
 		return partidos_empatados
 
+	@transaction.atomic
 	def generarJugadoresAleatorios(self, sexo_permitido = 0, num_jugadores_inicial = 25, max_nivel = 50):
 		''' Genera un conjunto de jugadores aleatorios para el equipo '''
 		from gestion_sistema.gestion_jugador.models import Jugador
@@ -148,9 +151,6 @@ class Equipo(models.Model):
 		# Array con todos los apellidos obtenidos del fichero dado
 		lista_apellidos = listaNombres("apellidos.txt")
 
-		# Array con todos los dorsales disponibles
-		#dorsales_disponibles = range(1, 100)
-
 		# Generar jugadores
 		for j in range(1, num_jugadores_inicial + 1):
 			# Establecer posición
@@ -164,7 +164,6 @@ class Equipo(models.Model):
 				posicion = "DELANTERO"
 
 			# Establecer dorsal
-			#dorsal = dorsales_disponibles.pop(randint(0, len(dorsales_disponibles) - 1))
 			dorsal = j
 
 			# Obtener datos de hombre o mujer según si participan o no
@@ -195,12 +194,14 @@ class Equipo(models.Model):
 			#---------------------------------------------
 			jugador = Jugador(nombre = nombre_aleatorio, apodo = apodo_aux, fecha_nacimiento = fecha_nacimiento, sexo = sexo)
 			jugador.save()
+			
 			atributos = jugador.generarAtributos(self, dorsal, posicion, max_nivel_jug)
 			atributos.save()
 
 			jugador.setAparienciaAleatoria()
 
 			# Guardar jugador
+			jugador.atributos.save()
 			jugador.save()
 
 			# Añadir jugador al equipo

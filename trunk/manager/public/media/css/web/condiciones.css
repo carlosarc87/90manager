@@ -1,0 +1,40 @@
+article{
+	padding: 20px;
+}
+
+h2, h3{
+	border-top: none;
+	border-right: none;
+	border-left: none;
+	margin: 0;
+}
+
+#condiciones_uso{
+	display: flex;
+	list-style: none;
+	margin-top: 20px;
+	padding: 0;
+}
+
+#condiciones_uso section{
+	border: solid 1px #000;
+	flex-basis: 50%;
+}
+
+#condiciones_uso section + section{
+	margin-left: 20px;
+}
+
+#condiciones_uso section ul{
+	margin: 20px;
+}
+
+#condiciones_uso section ul li{
+	padding: .5em 0;
+}
+
+#wrap{
+	background: #fff;
+	border: solid 1px #000;
+	margin: 20px auto;
+}

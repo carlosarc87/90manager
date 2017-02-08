@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -22,10 +22,10 @@ Copyright 2013 by
 
 """
 
+from django.apps import apps
 from django.conf import settings
 from django.contrib.auth.backends import ModelBackend
 from django.core.exceptions import ImproperlyConfigured
-from django.db.models import get_model
 
 class UsuarioModelBackend(ModelBackend):
     def authenticate(self, username = None, password = None):
@@ -45,7 +45,7 @@ class UsuarioModelBackend(ModelBackend):
     @property
     def user_class(self):
         if not hasattr(self, '_user_class'):
-            self._user_class = get_model(*settings.CUSTOM_USER_MODEL.split('.', 2))
+            self._user_class = apps.get_model(*settings.CUSTOM_USER_MODEL.split('.', 2))
             if not self._user_class:
                 raise ImproperlyConfigured('no se pudo conseguir un Usuario')
         return self._user_class

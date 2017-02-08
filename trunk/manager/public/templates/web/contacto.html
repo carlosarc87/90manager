@@ -8,37 +8,36 @@
 {% block contenido %}
 	<h2>Contacto</h2>
 	
-	<p>Envíenos insultos, amenazas de muerte, citaciones para juzgado, etc
-	mediante el siguiente formulario de contacto con los administradores</p>
+	<p>Mediante este formulario de contacto puedes enviar a los administradores tus insultos, amenazas de muerte, citaciones para juzgado, etc.</p>
 
-	<form class="form1" action="/contacto/" method="post">
+	<form id="formulario_contacto" class="form1" action="/contacto/" method="post">
 		{% csrf_token %}
-		<div id="contenido_emisor">
+		<section>
 			{% if form.emisor.errors %}
 				{{ form.emisor.errors }}
 			{% endif %}
 			<label for="id_emisor">Emisor:</label>
-			<input id="id_emisor" type="text" name="emisor" />
-		</div>
+			<input id="id_emisor" type="text" name="emisor" maxlength="100" />
+		</section>
 
-		<div id="contenido_asunto">
+		<section>
 			{% if form.asunto.errors %}
 				{{ form.asunto.errors }}
 			{% endif %}
 			<label for="id_asunto">Asunto:</label>
 			<input id="id_asunto" type="text" name="asunto" maxlength="100" />
-		</div>
+		</section>
 
-		<div id="contenido_mensaje">
+		<section>
 			{% if form.mensaje.errors %}
 				{{ form.mensaje.errors }}
 			{% endif %}
 			<label for="id_mensaje">Mensaje:</label>
-			<textarea id="id_mensaje" name="mensaje" rows="10" cols="50"></textarea>
-		</div>
+			<textarea id="id_mensaje" name="mensaje" rows="6" cols="50"></textarea>
+		</section>
 
-		<div id="contenido_enviar">
+		<section>
 			<input type="submit" value="Enviar" />
-		</div>
+		</section>
 	</form>
 {% endblock %}

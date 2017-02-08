@@ -1,0 +1,37 @@
+# Masculinos
+Altos
+Atléticos
+Atractivos
+Bajos
+Bonitos
+Delgados
+Discretos
+Elegantes
+Feos
+Flacos
+Gordos
+Grandes
+Guapos
+Macizos
+Medianos
+Pequeños
+Sexis
+#
+# Femeninos
+Altas
+Atléticas
+Atractivas
+Bajas
+Bonitas
+Delgadas
+Discretas
+Elegantes
+Feas
+Flacas
+Gordas
+Grandes
+Guapas
+Macizas
+Medianas
+Pequeñas
+Sexis

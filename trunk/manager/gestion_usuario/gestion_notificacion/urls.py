@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -22,13 +22,14 @@ Copyright 2013 by
 
 """
 
-from django.conf.urls.defaults import *
+from django.conf.urls import url
+from gestion_usuario.gestion_notificacion import views
 
-urlpatterns = patterns('',
+urlpatterns = [
    	# Modulo de subastas
-   	(r'^listar/$', 'gestion_usuario.gestion_notificacion.views.listar_notificaciones'),
-   	(r'^ver/(?P<notificacion_id>\d+)/$', 'gestion_usuario.gestion_notificacion.views.ver_notificacion'),
-   	(r'^borrar/(?P<notificacion_id>\d+)/$', 'gestion_usuario.gestion_notificacion.views.borrar_notificacion'),
-   	(r'^listar_liga/$', 'gestion_usuario.gestion_notificacion.views.listar_notificaciones_liga'),
-   	(r'^listar_tablon/$', 'gestion_usuario.gestion_notificacion.views.listar_notificaciones_tablon'),
-)
+   	url(r'^listar/$', views.listar_notificaciones),
+   	url(r'^ver/(?P<notificacion_id>\d+)/$', views.ver_notificacion),
+   	url(r'^borrar/(?P<notificacion_id>\d+)/$', views.borrar_notificacion),
+   	url(r'^listar_liga/$', views.listar_notificaciones_liga),
+   	url(r'^listar_tablon/$', views.listar_notificaciones_tablon),
+]

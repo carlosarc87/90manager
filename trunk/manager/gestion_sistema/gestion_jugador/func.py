@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -22,7 +22,9 @@ Copyright 2013 by
 
 """
 
-from settings import RUTA
+from settings import MEDIA_ROOT
+
+from gestion_base.func import quitarAcentos
 
 ########################################################################
 
@@ -32,27 +34,19 @@ def listaNombres(nombre_fichero):
 	lista_nombres = []
 
 	# Obtener nombres
-	fich = open(RUTA + "public/site_media/doc/" + nombre_fichero, "r")
-	while(True):
-		nombre = fich.readline()
-		nombre = nombre[:-1] # Quitar '\n'
-		if not nombre:
-			break
-		lista_nombres.append(nombre)
+	with open(MEDIA_ROOT + "/doc/" + nombre_fichero, "r", encoding="utf-8") as fich:
+		while(True):
+			nombre = fich.readline()
+			nombre = nombre[:-1] # Quitar '\n'
+			
+			if not nombre:
+				break
+			
+			lista_nombres.append(nombre)
 
-	fich.close()
-
+		fich.close()
+	
 	return lista_nombres
-
-########################################################################
-
-def quitar_acentos(cadena):
-	cadena = cadena.replace('Á', 'A')
-	cadena = cadena.replace('É', 'E')
-	cadena = cadena.replace('Í', 'I')
-	cadena = cadena.replace('Ó', 'O')
-	cadena = cadena.replace('Ú', 'U')
-	return cadena
 
 ########################################################################
 
@@ -63,14 +57,14 @@ def nombreJugadorAleatorio(lista_nombres, lista_apellidos):
 	num_nombres = randint(1, 2)
 	nombre1 = lista_nombres[randint(0, len(lista_nombres) - 1)]
 	nombre_completo = nombre1
-	aux = quitar_acentos(nombre1)
+	aux = quitarAcentos(nombre1)
 	apodo = aux[0] + '. '
 
 	# Si se pone un segundo nombre
-	if(num_nombres == 2):
+	if num_nombres == 2 and randint(0, 3) == 0:
 		nombre2 = lista_nombres[randint(0, len(lista_nombres) - 1)]
 		nombre_completo = nombre_completo + ' ' + nombre2
-		aux = quitar_acentos(nombre2)
+		aux = quitarAcentos(nombre2)
 		apodo = apodo + aux[0] + '. '
 
 	# Poner 2 apellidos

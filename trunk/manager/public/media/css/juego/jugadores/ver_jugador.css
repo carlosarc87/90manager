@@ -1,0 +1,178 @@
+/* textos */
+
+#en_forma{
+	color: #393;
+	font-weight: bold;
+}
+
+#lesionado{
+	color: #933;
+	font-weight: bold;
+}
+
+#seccion_subasta{
+	text-align: center;
+}
+
+/* fin textos */
+
+#seccion_datos_personales{
+	background: #fff;
+	border-radius: 5px;
+	display: flex;
+	font-size: .9em;
+	padding: 10px;
+	margin: 20px auto;
+	width: 400px;
+}
+
+#datos_personales{
+	background: #fff;
+	margin: 0;
+}
+
+#datos_personales *{
+	vertical-align: middle;
+}
+
+#datos_personales>section + section{
+	margin-top: .5em;
+}
+
+#datos_personales strong{
+	color: #999;
+}
+
+#seccion_posicion{
+	display: flex;
+	justify-content: space-between;
+}
+
+#seccion_posicion section + section{
+	margin-left: 20px;
+}
+
+#nivel_datos_personales,
+#valor_mercado_datos_personales{
+	text-align: right;
+}
+
+/* FOTO */
+
+#marco_foto{
+	border: solid 1px #999;
+	height: 148px;
+	margin-right: 10px;
+	padding: 5px;
+	width: 120px;
+}
+
+#cuadro_foto{
+	height: 148px;
+	position: relative;
+	width: 120px;
+}
+
+#cuadro_foto img{
+	position: absolute;
+}
+
+#ojosF{
+	left: 36px;
+	top: 58px;
+}
+
+#ojosM{
+	left: 40px;
+	top: 55px;
+}
+
+#pielF{
+	left: 23px;
+	top: 32px;
+}
+
+#pielM{
+	left: 24px;
+	top: 31px;
+}
+
+#peloF{
+	left: -2px;
+	top: 4px;
+}
+
+#peloM{
+	left: 23px;
+	top: 3px;
+}
+
+/* FIN FOTO */
+
+#tabla_datos{
+	margin: 20px auto;
+	width: 300px;
+}
+
+#tabla_habilidades_juego{
+	margin: 20px auto;
+	width: 400px;
+}
+
+#tabla_habilidades_mentales{
+	margin: 20px auto;
+	width: 400px;
+}
+
+#tabla_habilidades_juego td *,
+#tabla_habilidades_mentales td *{
+	vertical-align: middle;
+}
+
+#tabla_habilidades_juego td:nth-child(1),
+#tabla_habilidades_mentales td:nth-child(1){
+	width: 35%;
+}
+
+#tabla_habilidades_juego td:nth-child(2),
+#tabla_habilidades_mentales td:nth-child(2){
+	text-align: right;
+}
+
+.barra_progreso{
+	border: solid 1px #333;
+	display: inline-block;
+	height: 20px;
+	margin-right: 1em;
+	width: 150px;
+}
+
+.barra_progreso div{
+	height: 100%;
+}
+
+.barra_progreso_rojo div{
+	background-color: #c66;
+}
+
+.barra_progreso_amarillo div{
+	background-color: #cc6;
+}
+
+.barra_progreso_verde div{
+	background-color: #6c6;
+}
+
+.col_valor_habilidad{
+	width: 280px;
+}
+
+.texto_valor_habilidad{
+	display: inline-block;
+	font-weight: bold;
+	width: 60px;
+}
+
+.fila_mejor_posicion{
+	font-weight: bold;
+}

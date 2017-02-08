@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -22,7 +22,7 @@ Copyright 2013 by
 
 """
 from django.contrib import admin
-from models import Usuario
+from .models import Usuario
 
 admin.site.register(Usuario)
 

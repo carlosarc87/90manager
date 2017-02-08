@@ -1,42 +1,25 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
+	<link rel="stylesheet" href="/media/css/jquery.datetimepicker.min.css" />
 	<link rel="stylesheet" href="/media/css/formularios.css" />
 	<link rel="stylesheet" href="/media/css/tablas.css" />
 	<link rel="stylesheet" href="/media/css/juego/ligas/crear_liga.css" />
 {% endblock %}
 
 {% block js_extra %}
-	<!-- No tocar que hay que arreglarlo un poco aun -->
+	<script src="/media/js/jquery.datetimepicker.full.min.js"></script>
+	
 	<script>
-		// Traduccion a español
-		jQuery(function($){
-			$.datepicker.regional['es'] = {
-				closeText: 'Cerrar',
-				prevText: '&#x3c;Ant',
-				nextText: 'Sig&#x3e;',
-				currentText: 'Hoy',
-				monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-				'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-				monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
-				'Jul','Ago','Sep','Oct','Nov','Dic'],
-				dayNames: ['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'],
-				dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
-				dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
-				weekHeader: 'Sm',
-				dateFormat: 'dd/mm/yy',
-				firstDay: 1,
-				isRTL: false,
-				showMonthAfterYear: false,
-				yearSuffix: ''};
-			$.datepicker.setDefaults($.datepicker.regional['es']);
-
-		});
-
-		/* Para el funcionamiento de tema css con jquery */
-		$(function() {
-			$("#fecha_ficticia_inicio", "#form_crear_liga").datepicker();
-			$("#factor_tiempo", "#form_crear_liga").select();
+		$(document).ready(function() {
+			$("#fecha_ficticia_inicio").datetimepicker({
+				lang: 'es',
+				format: 'd/m/Y',
+				dayOfWeekStart: 1,
+				timepicker: false,
+			});
+			
+			$.datetimepicker.setLocale('es');
 		});
 	</script>
 {% endblock %}

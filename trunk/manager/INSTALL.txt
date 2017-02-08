@@ -1,0 +1,16 @@
+-- 90manager --
+
+Requisitos:
+- Python 3.6.0
+- Django 1.10.5
+
+Instalación:
+- Descomprimir el proyecto en cualquier lugar
+
+- Ejecutar el script para cargar la base de datos:
+	python manage.py migrate
+	/* $ python crearbd.py */
+
+- Arrancar el servidor:
+	$ python manage.py runserver
+- Entrar con cualquier navegador en http://localhost:8000

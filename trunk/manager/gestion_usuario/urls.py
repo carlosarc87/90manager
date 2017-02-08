@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -22,18 +22,20 @@ Copyright 2013 by
 
 """
 
-from django.conf.urls.defaults import *
+from django.conf.urls import include, url
+from django.contrib.auth import views
+from gestion_usuario import views as views_usuario
 
-urlpatterns = patterns('',
+urlpatterns = [
 	# Modulo de login
-	(r'^logout/$', 'django.contrib.auth.views.logout_then_login'),
-	(r'^login/$', 'gestion_usuario.views.principal'),
-	(r'^confirmar/(?P<clave>\w+)/$', 'gestion_usuario.views.activar_usuario'),
-	(r'^notificaciones/', include('gestion_usuario.gestion_notificacion.urls')),
-	(r'^password/cambiar/$', 'gestion_usuario.views.principal'),
-	(r'^password/cambiar/hecho/$', 'django.contrib.auth.views.logout_then_login'),
-	(r'^password/recordar/$', 'django.contrib.auth.views.password_reset', {}),
-	(r'^password/recordar/completar/$', 'django.contrib.auth.views.password_reset_complete', {}),
-	(r'^password/recordar/hecho/$', 'django.contrib.auth.views.password_reset_done', {}),
-	(r'^password/recordar/confirmar/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm', {}),
-)
+	url(r'^logout/$', views.logout_then_login),
+	url(r'^login/$', views_usuario.principal),
+	url(r'^confirmar/(?P<clave>\w+)/$', views_usuario.activar_usuario),
+	url(r'^notificaciones/', include('gestion_usuario.gestion_notificacion.urls')),
+	url(r'^password/cambiar/$', views_usuario.principal),
+	url(r'^password/cambiar/hecho/$', views.logout_then_login),
+	url(r'^password/recordar/$', views.password_reset, {}),
+	url(r'^password/recordar/completar/$', views.password_reset_complete, {}),
+	url(r'^password/recordar/hecho/$', views.password_reset_done, {}),
+	url(r'^password/recordar/confirmar/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', views.password_reset_confirm, {}),
+]

@@ -2,7 +2,7 @@
 # Formularios del sistema. Los que deriven de una clase son rápidos de
 # crear.
 """
-Copyright 2013 by
+Copyright 2017 by
     * Juan Miguel Lechuga Pérez
     * Jose Luis López Pino
     * Carlos Antonio Rivera Cabello
@@ -25,7 +25,7 @@ Copyright 2013 by
 """
 
 from django import forms
-from models import Subasta
+from .models import Subasta
 from math import ceil
 
 ########################################################################
@@ -93,13 +93,17 @@ class PujarForm(forms.Form):
 	def clean_cantidad(self):
 		""" Filtra la cantidad para comprobar si es correcta """
 		valor = self.cleaned_data['cantidad']
+		
 		if valor < self.puja_minima:
-			raise forms.ValidationError("Debe de apostar %d como mínimo" % self.puja_minima)
+			raise forms.ValidationError("Debes pujar %d € como mínimo" % self.puja_minima)
+			
 		if valor > self.pujador.dinero:
-			raise forms.ValidationError("No tienes %d para pujar" % valor)
+			raise forms.ValidationError("No tienes %d € para pujar" % valor)
+			
 		if self.subasta.precio_compra:
 			if valor >= self.subasta.precio_compra:
-				raise forms.ValidationError("Tu estas tonto, no?")
+				valor = self.subasta.precio_compra
+		
 		return valor
 
 ########################################################################
