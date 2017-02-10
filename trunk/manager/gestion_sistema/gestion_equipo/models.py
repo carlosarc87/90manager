@@ -24,10 +24,11 @@ Copyright 2017 by
 
 from django.core.validators import MaxValueValidator
 from django.db import models, transaction
-from django.db.models import Q, F
+from django.db.models import F, Q
 
 from gestion_sistema.gestion_liga.models import Liga
 from gestion_usuario.models import Usuario
+
 
 ########################################################################
 

@@ -26,12 +26,12 @@ Copyright 2017 by
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
+from gestion_base.func import devolverMensaje, generarPagina, redireccionar
 from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 
-from .models import Partido, JugadorPartido, Suceso
 from .forms import PrepararEquipoForm
+from .models import JugadorPartido, Partido, Suceso
 
-from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 ########################################################################
 

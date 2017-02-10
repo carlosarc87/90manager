@@ -24,6 +24,7 @@ Copyright 2017 by
 
 from settings import MEDIA_ROOT
 
+
 ########################################################################
 
 def listaNombres(nombre_fichero):

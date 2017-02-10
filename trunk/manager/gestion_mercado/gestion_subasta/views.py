@@ -25,15 +25,15 @@ Copyright 2017 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 
+from gestion_base.func import devolverMensaje, generarPagina, redireccionar
 from gestion_sistema.decorators import actualizarLiga, comprobarSesion
-
-from .models import Subasta
-from .forms import SubastaForm, PujarForm
+from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_jugador.models import Jugador
 from gestion_sistema.gestion_liga.models import Liga
-from gestion_sistema.gestion_equipo.models import Equipo
 
-from gestion_base.func import devolverMensaje, redireccionar, generarPagina
+from .forms import PujarForm, SubastaForm
+from .models import Subasta
+
 
 ########################################################################
 

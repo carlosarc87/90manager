@@ -22,11 +22,13 @@ Copyright 2017 by
 
 """
 
-from django.core.validators import MaxValueValidator
-from django.db import models
 from random import randint
 
+from django.core.validators import MaxValueValidator
+from django.db import models
+
 from gestion_sistema.gestion_equipo.models import Equipo
+
 
 ########################################################################
 

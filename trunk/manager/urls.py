@@ -25,12 +25,10 @@ Copyright 2017 by
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
-
-# Para que funcione lo necesario para media
-from django.views.static import *
-
 # Habilitar la administracion
 from django.contrib import admin
+from django.views.static import *
+
 admin.autodiscover()
 
 urlpatterns = [

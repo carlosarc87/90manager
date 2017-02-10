@@ -25,5 +25,5 @@ Copyright 2017 by
 """
 
 from django import forms
-from .models import ClasificacionEquipoJornada
 
+from .models import ClasificacionEquipoJornada

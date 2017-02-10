@@ -25,8 +25,9 @@ Copyright 2017 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 
-from gestion_sistema.decorators import comprobarSesion
 from gestion_base.func import generarPagina, quitarAcentos
+from gestion_sistema.decorators import comprobarSesion
+
 
 ########################################################################
 

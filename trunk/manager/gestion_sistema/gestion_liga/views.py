@@ -22,25 +22,24 @@ Copyright 2017 by
 
 """
 
+from datetime import datetime
+
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import render
 
-from datetime import datetime
-
+from gestion_base.func import (devolverMensaje, generarPagina, quitarAcentos,
+                               redireccionar)
 from gestion_sistema.decorators import actualizarLiga, comprobarSesion
-
-from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_equipo.forms import EquipoForm
-
-from .models import Liga
-from .forms import LigaForm, ActivarLigaForm, CambiarFechaForm
-
-from gestion_base.func import devolverMensaje, redireccionar, generarPagina, quitarAcentos
-
+from gestion_sistema.gestion_equipo.models import Equipo
+from gestion_usuario.gestion_notificacion.func import Notificacion, notificar
 from gestion_usuario.models import Usuario
-from gestion_usuario.gestion_notificacion.func import notificar, Notificacion
+
+from .forms import ActivarLigaForm, CambiarFechaForm, LigaForm
+from .models import Liga
+
 
 ########################################################################
 

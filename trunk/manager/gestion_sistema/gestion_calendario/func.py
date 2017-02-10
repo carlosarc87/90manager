@@ -23,4 +23,3 @@ Copyright 2017 by
 """
 
 from django.db import transaction
-

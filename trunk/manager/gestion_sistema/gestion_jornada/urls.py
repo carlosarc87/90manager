@@ -23,6 +23,7 @@ Copyright 2017 by
 """
 
 from django.conf.urls import url
+
 from gestion_sistema.gestion_jornada import views
 
 urlpatterns = [

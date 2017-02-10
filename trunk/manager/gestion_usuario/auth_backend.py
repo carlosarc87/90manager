@@ -27,6 +27,7 @@ from django.conf import settings
 from django.contrib.auth.backends import ModelBackend
 from django.core.exceptions import ImproperlyConfigured
 
+
 class UsuarioModelBackend(ModelBackend):
     def authenticate(self, username = None, password = None):
         try:

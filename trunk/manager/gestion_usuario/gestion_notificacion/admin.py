@@ -25,6 +25,7 @@ Copyright 2017 by
 # clase se añade una linea
 
 from django.contrib import admin
+
 from .models import Notificacion
 
 admin.site.register(Notificacion)

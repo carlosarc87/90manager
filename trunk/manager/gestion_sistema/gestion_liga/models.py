@@ -22,16 +22,15 @@ Copyright 2017 by
 
 """
 
+import random
+from datetime import datetime, timedelta
+from math import ceil
+
 from django.core.validators import MaxValueValidator
 from django.db import models, transaction
-from datetime import datetime
 
 from gestion_usuario.models import Usuario
 
-import random
-
-from math import ceil
-from datetime import timedelta
 
 ########################################################################
 

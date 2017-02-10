@@ -22,7 +22,8 @@ Copyright 2017 by
 
 """
 
-from django.conf.urls import  url
+from django.conf.urls import url
+
 from gestion_mercado.gestion_subasta import views
 
 urlpatterns = [

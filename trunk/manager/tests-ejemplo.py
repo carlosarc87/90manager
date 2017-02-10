@@ -21,8 +21,11 @@ Copyright 2017 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+
 from django.utils import unittest
+
 from models import User
+
 
 """
     Tests creation and use of a single user
@@ -38,6 +41,3 @@ class UserTestCase(unittest.TestCase):
         self.uno.toggle_active()
         self.assertEqual(self.uno.is_active(), 'Putting one')
         self.assertRaises(TypeError,self.otro.put)
-
-        
-

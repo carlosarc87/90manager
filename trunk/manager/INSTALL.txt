@@ -1,16 +1,18 @@
--- 90manager --
+-- Instalación de 90manager --
 
 Requisitos:
 - Python 3.6.0
 - Django 1.10.5
 
 Instalación:
-- Descomprimir el proyecto en cualquier lugar
+1 - Descomprimir el proyecto en cualquier lugar.
 
-- Ejecutar el script para cargar la base de datos:
-	python manage.py migrate
-	/* $ python crearbd.py */
+2 - Generar la base de datos:
+	$ python manage.py makemigrations gestion_clasificacion gestion_equipo gestion_jornada gestion_jugador gestion_liga gestion_partido gestion_subasta gestion_usuario
+	$ python manage.py migrate
 
-- Arrancar el servidor:
+3 - Arrancar el servidor:
 	$ python manage.py runserver
-- Entrar con cualquier navegador en http://localhost:8000
+
+4 - Entrar con cualquier navegador a la dirección que contiene la variable URL_PROPIA en settings.py.
+	Por defecto: http://localhost:8000

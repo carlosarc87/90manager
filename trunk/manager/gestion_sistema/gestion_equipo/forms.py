@@ -25,7 +25,9 @@ Copyright 2017 by
 # crear.
 
 from django import forms
+
 from .models import Equipo
+
 
 ########################################################################
 
@@ -49,4 +51,3 @@ class EquipoForm(forms.ModelForm):
 		exclude = ('usuario', 'liga', 'dinero')
 
 ########################################################################
-

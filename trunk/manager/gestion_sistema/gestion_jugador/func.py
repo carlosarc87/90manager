@@ -22,9 +22,9 @@ Copyright 2017 by
 
 """
 
+from gestion_base.func import quitarAcentos
 from settings import MEDIA_ROOT
 
-from gestion_base.func import quitarAcentos
 
 ########################################################################
 

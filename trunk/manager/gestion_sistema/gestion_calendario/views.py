@@ -25,4 +25,3 @@ Copyright 2017 by
 from gestion_sistema.decorators import actualizarLiga
 
 # Vistas del sistema
-

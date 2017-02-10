@@ -22,16 +22,16 @@ Copyright 2017 by
 
 """
 
+from datetime import datetime
+
+from django import forms
 from django.contrib.sessions.models import Session
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-
-from django import forms
 from django.utils.safestring import mark_safe
 
-from datetime import datetime
-
 from gestion_sistema.gestion_liga.models import Liga
+
 
 ########################################################################
 

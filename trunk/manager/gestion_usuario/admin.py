@@ -21,8 +21,9 @@ Copyright 2017 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+
 from django.contrib import admin
+
 from .models import Usuario
 
 admin.site.register(Usuario)
-

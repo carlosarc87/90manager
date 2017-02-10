@@ -25,16 +25,16 @@ Copyright 2017 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 
-from .models import Equipo
-from .forms import EquipoForm
-
+from gestion_base.func import (agregarSeparadoresMiles, devolverMensaje,
+                               generarPagina, quitarAcentos, redireccionar)
 from gestion_sistema.decorators import actualizarLiga, comprobarSesion
-
-from gestion_base.func import devolverMensaje, redireccionar, generarPagina, agregarSeparadoresMiles, quitarAcentos
-
-from gestion_sistema.gestion_liga.models import Liga
-from gestion_sistema.gestion_jugador.models import Jugador
 from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio
+from gestion_sistema.gestion_jugador.models import Jugador
+from gestion_sistema.gestion_liga.models import Liga
+
+from .forms import EquipoForm
+from .models import Equipo
+
 
 ########################################################################
 
@@ -226,4 +226,3 @@ def listar_equipos_liga(request):
 	return generarPagina(request, "juego/equipos/listar_liga.html", d)
 
 ########################################################################
-

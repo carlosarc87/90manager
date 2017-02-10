@@ -23,7 +23,9 @@ Copyright 2017 by
 """
 
 from django import forms
+
 from .models import Usuario
+
 
 ########################################################################
 
@@ -36,4 +38,3 @@ class UsuarioForm(forms.ModelForm):
 		exclude = ('first_name', 'last_name', 'is_staff', 'is_active', 'is_superuser', 'last_login', 'date_joined', 'user_ptr_id', 'groups', 'user_permissions')
 
 ########################################################################
-

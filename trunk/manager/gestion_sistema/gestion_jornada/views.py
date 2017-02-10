@@ -25,11 +25,11 @@ Copyright 2017 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 
-from .models import Jornada
-
+from gestion_base.func import devolverMensaje, generarPagina, redireccionar
 from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 
-from gestion_base.func import devolverMensaje, redireccionar, generarPagina
+from .models import Jornada
+
 
 ########################################################################
 

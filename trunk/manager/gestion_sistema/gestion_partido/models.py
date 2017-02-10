@@ -24,15 +24,12 @@ Copyright 2017 by
 from django.db import models, transaction
 
 from gestion_sistema.gestion_equipo.models import Equipo
-from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
 from gestion_sistema.gestion_jornada.models import Jornada
-from gestion_sistema.gestion_clasificacion.models import ClasificacionEquipoJornada
-from gestion_sistema.gestion_calendario.models import Evento
+from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
+from gestion_usuario.gestion_notificacion.func import Notificacion, notificar
 
-from gestion_usuario.gestion_notificacion.func import notificar, Notificacion
-
-from random import randint
 from .func import probabilidadExito
+
 
 ########################################################################
 

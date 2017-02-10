@@ -46,7 +46,7 @@ URL_PROPIA = 'http://localhost:8000/'
 RUTA = os.path.dirname(__file__) + "/"
 
 # Mandar reporte de error por correo a los siguientes destinatarios cuando DEBUG = False
-ADMINS = (('Juanmi', 'ciberjm@gmail.com'), ('Carlos', 'carlos.kapazao@gmail.com'))
+ADMINS = (('Juanmi', 'ciberjm@gmail.com'), ('Carlos', 'mail@carlosarc.com'))
 
 MANAGERS = ADMINS
 
@@ -61,12 +61,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Cambio de variables para la redireccion del login
-LOGIN_URL = "/cuentas/login/"
-LOGOUT_URL = "/cuentas/logout/"
-LOGIN_REDIRECT_URL = "/tablon/"
-
-# Application definition
+# Definición de aplicaciones
+# El orden es importante
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -78,8 +74,10 @@ INSTALLED_APPS = [
 
 	# Aplicaciones caseras
     'gestion_base',
+	
     'gestion_usuario',
     'gestion_usuario.gestion_notificacion',
+	
     'gestion_sistema.gestion_liga',
     'gestion_sistema.gestion_calendario',
     'gestion_sistema.gestion_jornada',
@@ -171,14 +169,29 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
+# Language code for this installation. All choices can be found here:
+# http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'es-es'
 
 SITE_ID = 1
 
+# Local time zone for this installation. Choices can be found here:
+# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
+# although not all choices may be available on all operating systems.
+# On Unix systems, a value of None will cause Django to use the same
+# timezone as the operating system.
+# If running in a Windows environment this must be set to the same as your
+# system time zone.
 TIME_ZONE = 'Europe/Madrid'
 
+# If you set this to False, Django will make some optimizations so as not
+# to load the internationalization machinery.
 USE_I18N = True
+
+# If you set this to False, Django will not format dates, numbers and
+# calendars according to the current locale
 USE_L10N = True
+
 USE_TZ = True
 
 
@@ -201,5 +214,13 @@ MEDIA_URL = '/media/'
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 
+
+# Cambio de variables para la redireccion del login
+LOGIN_URL = "/cuentas/login/"
+LOGOUT_URL = "/cuentas/logout/"
+LOGIN_REDIRECT_URL = "/tablon/"
+
+
+# Variables de sesión
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'

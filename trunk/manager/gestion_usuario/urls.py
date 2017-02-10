@@ -24,6 +24,7 @@ Copyright 2017 by
 
 from django.conf.urls import include, url
 from django.contrib.auth import views
+
 from gestion_usuario import views as views_usuario
 
 urlpatterns = [

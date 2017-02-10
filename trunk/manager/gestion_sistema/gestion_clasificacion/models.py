@@ -21,10 +21,12 @@ Copyright 2017 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+
 from django.db import models
 
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_jornada.models import Jornada
+
 
 ########################################################################
 
@@ -41,4 +43,3 @@ class ClasificacionEquipoJornada(models.Model):
 		return self.equipo.nombre + " en jornada: " + str(self.jornada.numero) + " de liga: " + str(self.jornada.liga.id)
 
 ########################################################################
-

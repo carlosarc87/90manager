@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
+
 from gestion_usuario.models import Usuario
+
 
 class Command(BaseCommand):
 	help = "Crea un administrador"
@@ -21,5 +23,3 @@ class Command(BaseCommand):
 		admin = Usuario.objects.create(username = nombre, email = email, is_active = True, is_staff = True, is_superuser = True)
 		admin.set_password(password)
 		admin.save()
-
-

@@ -25,4 +25,3 @@ Copyright 2017 by
 import random
 
 from .models import Liga
-

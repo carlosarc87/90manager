@@ -25,7 +25,7 @@ Copyright 2017 by
 # clase se añade una linea
 
 from django.contrib import admin
+
 from .models import Jornada
 
 admin.site.register(Jornada)
-

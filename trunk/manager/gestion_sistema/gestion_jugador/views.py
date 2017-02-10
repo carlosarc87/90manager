@@ -25,12 +25,12 @@ Copyright 2017 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 
-from .models import Jugador
+from gestion_base.func import devolverMensaje, generarPagina, redireccionar
+from gestion_sistema.decorators import actualizarLiga, comprobarSesion
 from settings import MEDIA_URL
 
-from gestion_sistema.decorators import actualizarLiga, comprobarSesion
+from .models import Jugador
 
-from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 ########################################################################
 
