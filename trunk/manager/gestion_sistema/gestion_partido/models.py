@@ -21,8 +21,13 @@ Copyright 2017 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+
+from random import randint
+
 from django.db import models, transaction
 
+from gestion_sistema.gestion_calendario.models import Evento
+from gestion_sistema.gestion_clasificacion.models import ClasificacionEquipoJornada
 from gestion_sistema.gestion_equipo.models import Equipo
 from gestion_sistema.gestion_jornada.models import Jornada
 from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador

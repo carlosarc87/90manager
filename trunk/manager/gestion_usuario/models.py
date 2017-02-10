@@ -21,8 +21,10 @@ Copyright 2017 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.db import models
+
 from django.contrib.auth.models import User, UserManager
+from django.db import models
+
 
 ########################################################################
 
@@ -43,4 +45,3 @@ class ClaveRegistroUsuario(models.Model):
 	expira = models.DateTimeField()
 
 ########################################################################
-

@@ -21,13 +21,15 @@ Copyright 2017 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.contrib.auth.decorators import login_required
 
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
+
+from gestion_base.func import devolverMensaje, generarPagina, redireccionar
+
 from .forms import ContactoForm
 
-from gestion_base.func import devolverMensaje, redireccionar, generarPagina
 
 ########################################################################
 

@@ -21,22 +21,24 @@ Copyright 2017 by
 	along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.shortcuts import render
+
+import datetime
+import hashlib
+import random
+
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
-from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
+from django.shortcuts import render
 
-import datetime, random, hashlib
-
+from gestion_base.func import devolverMensaje, generarPagina, redireccionar
+from gestion_sistema.gestion_liga.models import Liga
 from settings import URL_PROPIA, vper
 
-from .models import Usuario, ClaveRegistroUsuario
 from .forms import UsuarioForm
+from .models import ClaveRegistroUsuario, Usuario
 
-from gestion_base.func import devolverMensaje, redireccionar, generarPagina
-
-from gestion_sistema.gestion_liga.models import Liga
 
 ########################################################################
 

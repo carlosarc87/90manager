@@ -21,15 +21,15 @@ Copyright 2017 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-from django.db import models
+
 from django.core.validators import MaxValueValidator
+from django.db import models
 
-from gestion_sistema.gestion_equipo.models import Equipo
-from gestion_sistema.gestion_liga.models import Liga
-from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
 from gestion_sistema.gestion_calendario.models import Evento
-
-from gestion_usuario.gestion_notificacion.func import notificar, Notificacion
+from gestion_sistema.gestion_equipo.models import Equipo
+from gestion_sistema.gestion_jugador.models import AtributosVariablesJugador
+from gestion_sistema.gestion_liga.models import Liga
+from gestion_usuario.gestion_notificacion.func import Notificacion, notificar
 
 ########################################################################
 
