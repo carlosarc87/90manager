@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
 """
 Copyright 2017 by
-	* Juan Miguel Lechuga Pérez
-	* Jose Luis López Pino
-	* Carlos Antonio Rivera Cabello
+    * Juan Miguel Lechuga Pérez
+    * Jose Luis López Pino
+    * Carlos Antonio Rivera Cabello
 
  This file is part of 90Manager.
 
-	90Manager is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
+    90Manager is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-	90Manager is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
+    90Manager is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU General Public License
+    along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 
@@ -26,17 +26,17 @@ import os
 
 # Cargar datos sensibles (No deben de estar en el svn, son contraseñas y datos importantes)
 try:
-	import personales
-except: # No hay personales, cargar config por defecto
-	vper = None
-else: # Hay personales, cargar configuracion de allí
-	vper = personales.datos_personales
+    import personales
+except:  # No hay personales, cargar config por defecto
+    vper = None
+else:  # Hay personales, cargar configuracion de allí
+    vper = personales.datos_personales
 
 if vper:
-	# Configuracion del e-mail
-	EMAIL_HOST = vper['email_host']
-	EMAIL_HOST_USER = vper['email_host_user']
-	EMAIL_HOST_PASSWORD = vper['email_host_password']
+    # Configuracion del e-mail
+    EMAIL_HOST = vper['email_host']
+    EMAIL_HOST_USER = vper['email_host_user']
+    EMAIL_HOST_PASSWORD = vper['email_host_password']
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -72,12 +72,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-	# Aplicaciones caseras
+    # Aplicaciones caseras
     'gestion_base',
-	
+
     'gestion_usuario',
     'gestion_usuario.gestion_notificacion',
-	
+
     'gestion_sistema.gestion_liga',
     'gestion_sistema.gestion_calendario',
     'gestion_sistema.gestion_jornada',
@@ -111,10 +111,10 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-			RUTA + "public/templates/",
-			RUTA + "public/templates/juego/",
-			RUTA + "public/templates/web/"
-		],
+            RUTA + "public/templates/",
+            RUTA + "public/templates/juego/",
+            RUTA + "public/templates/web/"
+        ],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -122,19 +122,18 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-			'debug': DEBUG,
-			'loaders': [
-				('django.template.loaders.cached.Loader', [
-					'django.template.loaders.filesystem.Loader',
-					'django.template.loaders.app_directories.Loader',
-				]),
-			],
+            'debug': DEBUG,
+            'loaders': [
+                ('django.template.loaders.cached.Loader', [
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ]),
+            ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
@@ -145,7 +144,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'sqlite3.db'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -164,7 +162,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -194,7 +191,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
@@ -214,12 +210,10 @@ MEDIA_URL = '/media/'
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 
-
 # Cambio de variables para la redireccion del login
 LOGIN_URL = "/cuentas/login/"
 LOGOUT_URL = "/cuentas/logout/"
 LOGIN_REDIRECT_URL = "/tablon/"
-
 
 # Variables de sesión
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

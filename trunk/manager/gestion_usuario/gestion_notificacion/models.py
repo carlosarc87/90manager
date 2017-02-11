@@ -30,136 +30,120 @@ from gestion_usuario.models import Usuario
 
 ########################################################################
 
-def getObjeto(conjunto, identificador):
-	obj = None
-	lista = conjunto.objects.filter(id = identificador)
-	
-	if lista.count() > 0:
-		obj = lista[0]
-		
-	return obj
+def get_objeto(conjunto, identificador):
+    obj = None
+    lista = conjunto.objects.filter(id=identificador)
+
+    if lista.count() > 0:
+        obj = lista[0]
+
+    return obj
+
 
 ########################################################################
 
 # Notificacion
 class Notificacion(models.Model):
-	""" Representa una notificacion de algun elemento de una liga para un usuario """
-	# Tipos disponibles
-	LIGA_ACTIVADA             = 100
+    """ Representa una notificacion de algun elemento de una liga para un usuario """
+    # Tipos disponibles
+    LIGA_ACTIVADA = 100
 
-	SUBASTA_FINALIZADA        = 300
-	SUBASTA_GANADA            = 301
-	SUBASTA_SUPERADA          = 302
-	SUBASTA_SUPERADA_COMPRADA = 303
+    SUBASTA_FINALIZADA = 300
+    SUBASTA_GANADA = 301
+    SUBASTA_SUPERADA = 302
+    SUBASTA_SUPERADA_COMPRADA = 303
 
-	PARTIDO_FINALIZADO        = 400
+    PARTIDO_FINALIZADO = 400
 
-	TIPO_NOTIFICACION = (
-		(LIGA_ACTIVADA, 'Liga activada'),
-		(SUBASTA_FINALIZADA, 'Subasta finalizada'),
-		(SUBASTA_GANADA, 'Subasta ganada'),
-		(SUBASTA_SUPERADA, 'Subasta superada'),
-		(SUBASTA_SUPERADA_COMPRADA, 'Subasta superada mediante compra'),
+    TIPO_NOTIFICACION = (
+        (LIGA_ACTIVADA, 'Liga activada'),
+        (SUBASTA_FINALIZADA, 'Subasta finalizada'),
+        (SUBASTA_GANADA, 'Subasta ganada'),
+        (SUBASTA_SUPERADA, 'Subasta superada'),
+        (SUBASTA_SUPERADA_COMPRADA, 'Subasta superada mediante compra'),
 
-		(PARTIDO_FINALIZADO, 'Partido finalizado'),
-	)
+        (PARTIDO_FINALIZADO, 'Partido finalizado'),
+    )
 
-	# Usuario notificado
-	usuario = models.ForeignKey(Usuario)
-	
-	# Liga (en su caso) desde la que se envia la notificacion
-	liga = models.ForeignKey(Liga, null = True, blank = True)
-	
-	# Tipo de notificacion
-	tipo = models.PositiveIntegerField(default = 0, choices = TIPO_NOTIFICACION)
-	
-	# Id a la que redirecciona (segun el tipo de notificacion sera de tipo partido o subasta, etc
-	identificador = models.PositiveIntegerField()
-	
-	# Indica que se ha leido la notificacion
-	leida = models.BooleanField(default = False)
-	
-	# Fecha real de emision de la notificacion
-	fecha_emision = models.DateTimeField()
+    # Usuario notificado
+    usuario = models.ForeignKey(Usuario)
 
-	def getURL(self):
-		""" Genera la URL de la notificacion """
-		from gestion_sistema.gestion_liga.models import Liga
-		from gestion_sistema.gestion_partido.models import Partido
-		from gestion_sistema.gestion_jugador.models import Jugador
-		from gestion_mercado.gestion_subasta.models import Subasta
+    # Liga (en su caso) desde la que se envia la notificacion
+    liga = models.ForeignKey(Liga, null=True, blank=True)
 
-		enlace = None
+    # Tipo de notificacion
+    tipo = models.PositiveIntegerField(default=0, choices=TIPO_NOTIFICACION)
 
-		if self.tipo == self.LIGA_ACTIVADA:
-			liga = Liga.objects.get(id = self.identificador)
-			enlace = '/ligas/ver/%d/' % self.identificador
+    # Id a la que redirecciona (segun el tipo de notificacion sera de tipo partido o subasta, etc
+    identificador = models.PositiveIntegerField()
 
-		elif self.tipo == self.SUBASTA_FINALIZADA:
-			obj = getObjeto(Jugador, self.identificador)
-			enlace = '/jugadores/ver/%d/' % self.identificador
+    # Indica que se ha leido la notificacion
+    leida = models.BooleanField(default=False)
 
-		elif self.tipo == self.SUBASTA_GANADA:
-			obj = getObjeto(Jugador, self.identificador)
-			enlace = '/jugadores/ver/%d/' % self.identificador
+    # Fecha real de emision de la notificacion
+    fecha_emision = models.DateTimeField()
 
-		elif self.tipo == self.SUBASTA_SUPERADA:
-			obj = getObjeto(Subasta, self.identificador)
-			
-			if obj:
-				enlace = '/mercado/subastas/ver/%d/' % self.identificador
-			else:
-				enlace = None
+    def get_url(self):
+        """ Genera la URL de la notificacion """
+        enlace = None
 
-		elif self.tipo == self.SUBASTA_SUPERADA_COMPRADA:
-			obj = getObjeto(Jugador, self.identificador)
-			enlace = '/jugadores/ver/%d/' % self.identificador
+        if self.tipo == self.LIGA_ACTIVADA:
+            enlace = '/ligas/ver/%d/' % self.identificador
 
-		elif self.tipo == self.PARTIDO_FINALIZADO:
-			obj = getObjeto(Partido, self.identificador)
-			enlace = '/partidos/ver/%d/' % self.identificador
+        elif self.tipo == self.SUBASTA_FINALIZADA:
+            enlace = '/jugadores/ver/%d/' % self.identificador
 
-		return enlace
+        elif self.tipo == self.SUBASTA_GANADA:
+            enlace = '/jugadores/ver/%d/' % self.identificador
 
+        elif self.tipo == self.SUBASTA_SUPERADA:
+            enlace = '/mercado/subastas/ver/%d/' % self.identificador
 
-	def getMensaje(self):
-		""" Genera un mensaje dependiendo del tipo de la notificacion """
-		from gestion_sistema.gestion_liga.models import Liga
-		from gestion_sistema.gestion_partido.models import Partido
-		from gestion_sistema.gestion_jugador.models import Jugador
-		from gestion_mercado.gestion_subasta.models import Subasta
+        elif self.tipo == self.SUBASTA_SUPERADA_COMPRADA:
+            enlace = '/jugadores/ver/%d/' % self.identificador
 
-		msj = str(self.tipo) + " - No hay mensaje"
+        elif self.tipo == self.PARTIDO_FINALIZADO:
+            enlace = '/partidos/ver/%d/' % self.identificador
 
-		if self.tipo == self.LIGA_ACTIVADA:
-			liga = Liga.objects.get(id = self.identificador)
-			enlace = '<a href="/ligas/ver/%d/">' % self.identificador
-			msj = "La liga %s ha sido activada" % (liga.nombre)
+        return enlace
 
-		elif self.tipo == self.SUBASTA_FINALIZADA:
-			obj = getObjeto(Jugador, self.identificador)
-			msj = "Ha acabado la subasta por %s" % (obj.apodo)
+    def get_mensaje(self):
+        """ Genera un mensaje dependiendo del tipo de la notificacion """
+        from gestion_sistema.gestion_liga.models import Liga
+        from gestion_sistema.gestion_partido.models import Partido
+        from gestion_sistema.gestion_jugador.models import Jugador
+        from gestion_mercado.gestion_subasta.models import Subasta
 
-		elif self.tipo == self.SUBASTA_GANADA:
-			obj = getObjeto(Jugador, self.identificador)
-			msj = "Has ganado la subasta por %s" % (obj.apodo)
+        msj = str(self.tipo) + " - No hay mensaje"
 
-		elif self.tipo == self.SUBASTA_SUPERADA:
-			obj = getObjeto(Subasta, self.identificador)
-			
-			if obj:
-				msj = "Han superado tu puja en la subasta de %s" % (obj.atributos_jugador.jugador.apodo)
-			else:
-				msj = "Han superado tu puja en una subasta que ya ha acabado"
+        if self.tipo == self.LIGA_ACTIVADA:
+            liga = Liga.objects.get(id=self.identificador)
+            msj = "La liga %s ha sido activada" % liga.nombre
 
-		elif self.tipo == self.SUBASTA_SUPERADA_COMPRADA:
-			obj = getObjeto(Jugador, self.identificador)
-			msj = "Has comprado la subasta por %s" % (obj.apodo)
+        elif self.tipo == self.SUBASTA_FINALIZADA:
+            obj = get_objeto(Jugador, self.identificador)
+            msj = "Ha acabado la subasta por %s" % obj.apodo
 
-		elif self.tipo == self.PARTIDO_FINALIZADO:
-			obj = getObjeto(Partido, self.identificador)
-			msj = "Ha acabado el partido de la jornada %s" % (obj.jornada.numero)
+        elif self.tipo == self.SUBASTA_GANADA:
+            obj = get_objeto(Jugador, self.identificador)
+            msj = "Has ganado la subasta por %s" % obj.apodo
 
-		return msj
+        elif self.tipo == self.SUBASTA_SUPERADA:
+            obj = get_objeto(Subasta, self.identificador)
+
+            if obj:
+                msj = "Han superado tu puja en la subasta de %s" % obj.atributos_jugador.jugador.apodo
+            else:
+                msj = "Han superado tu puja en una subasta que ya ha acabado"
+
+        elif self.tipo == self.SUBASTA_SUPERADA_COMPRADA:
+            obj = get_objeto(Jugador, self.identificador)
+            msj = "Has comprado la subasta por %s" % obj.apodo
+
+        elif self.tipo == self.PARTIDO_FINALIZADO:
+            obj = get_objeto(Partido, self.identificador)
+            msj = "Ha acabado el partido de la jornada %s" % obj.jornada.numero
+
+        return msj
 
 ########################################################################

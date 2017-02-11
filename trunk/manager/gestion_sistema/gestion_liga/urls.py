@@ -27,11 +27,10 @@ from django.conf.urls import url
 from gestion_sistema.gestion_liga import views
 
 urlpatterns = [
-   	# Modulo de ligas
-   	url(r'^crear/$', views.crear_liga),
-   	url(r'^publicas/$', views.ver_ligas_publicas),
-   	url(r'^ver/$', views.ver_liga),
-   	url(r'^ver/(?P<liga_id>\d+)/$', views.ver_liga_id),
-   	url(r'^avanzar/$', views.avanzar_jornada_liga),
-   	url(r'^activar/$', views.activar_liga),
+    # Modulo de ligas
+    url(r'^crear/$', views.crear_liga),
+    url(r'^publicas/$', views.ver_ligas_publicas),
+    url(r'^ver/$', views.ver_liga),
+    url(r'^ver/(?P<liga_id>\d+)/$', views.ver_liga_id),
+    url(r'^activar/$', views.activar_liga),
 ]

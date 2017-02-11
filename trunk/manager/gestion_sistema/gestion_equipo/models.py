@@ -34,182 +34,187 @@ from gestion_usuario.models import Usuario
 
 # Equipo
 class Equipo(models.Model):
-	''' Representa un equipo en el sistema '''
-	nombre = models.CharField(max_length = 50)
-	#tipo_club = models.PositiveIntField(default = 0)
-	siglas = models.CharField(max_length = 3)
+    """ Representa un equipo en el sistema """
+    nombre = models.CharField(max_length=50)
+    siglas = models.CharField(max_length=3)
 
-	usuario = models.ForeignKey(Usuario, null = True)
-	liga = models.ForeignKey(Liga)
+    usuario = models.ForeignKey(Usuario, null=True)
+    liga = models.ForeignKey(Liga)
 
-	dinero = models.IntegerField(default = 0, validators=[MaxValueValidator(999999999999)])
+    dinero = models.IntegerField(default=0, validators=[MaxValueValidator(999999999999)])
 
-	# Funciones
-	def pagar(self, cantidad):
-		''' Paga una cantidad al equipo '''
-		self.dinero += cantidad
-		self.save()
+    # Funciones
+    def pagar(self, cantidad):
+        """ Paga una cantidad al equipo """
+        self.dinero += cantidad
+        self.save()
 
-	def cobrar(self, cantidad):
-		''' Cobra una cantidad al equipo '''
-		self.dinero -= cantidad
-		self.save()
+    def cobrar(self, cantidad):
+        """ Cobra una cantidad al equipo """
+        self.dinero -= cantidad
+        self.save()
 
-	def agregarJugador(self, jugador):
-		''' Añade un jugador al equipo '''
-		self.atributosvariablesjugador_set.add(jugador.atributos)
+    def agregar_jugador(self, jugador):
+        """ Añade un jugador al equipo """
+        self.atributosvariablesjugador_set.add(jugador.atributos)
 
-	def getJugadores(self):
-		''' Devuelve los jugadores del equipo '''
-		atributos = self.atributosvariablesjugador_set.all()
-		jugadores = []
-		for atrib in atributos:
-			jugadores.append(atrib.jugador)
-		return jugadores
+    def get_jugadores(self):
+        """ Devuelve los jugadores del equipo """
+        atributos = self.atributosvariablesjugador_set.all()
+        jugadores = []
 
-	def getPartidos(self, liga):
-		''' Devuelve los partidos de una liga en los que juega '''
-		from gestion_sistema.gestion_partido.models import Partido
-		q = Partido.objects.filter(Q(equipo_local = self) | Q(equipo_visitante = self))
-		jornadas = list(liga.jornada_set.all())
-		lista = q.filter(jornada__in = jornadas)
-		return lista
+        for atrib in atributos:
+            jugadores.append(atrib.jugador)
 
-	def getPartidosHastaJornada(self, jornada, incluida = False):
-		''' Devuelve los partidos jugados hasta la jornada '''
-		# Obtenemos la liga
-		liga = jornada.liga
-		# Obtenemos los partidos en los que juega
-		partidos = self.getPartidos(liga)
-		if not incluida:
-			return partidos.filter(jornada__lt = jornada)
-		else:
-			return partidos.filter(jornada__lte = jornada)
+        return jugadores
 
-	def getPartidosGanados(self, jornada, incluida = False):
-		''' Devuelve los partidos ganados hasta la jornada '''
-		# Partidos hasta la jornada
-		partidos = self.getPartidosHastaJornada(jornada, incluida)
-		# Partidos jugados
-		partidos_jugados = partidos.filter(jugado = True)
-		# Partidos ganados como visitante
-		partidos_ganados = partidos_jugados.filter(
-			Q(Q(equipo_local = self) & Q(goles_local__gt = F('goles_visitante'))) |
-			Q(Q(equipo_visitante = self) & Q(goles_local__lt = F('goles_visitante'))))
-		return partidos_ganados
+    def get_partidos(self, liga):
+        """ Devuelve los partidos de una liga en los que juega """
+        from gestion_sistema.gestion_partido.models import Partido
 
-	def getPartidosPerdidos(self, jornada, incluida = False):
-		''' Devuelve los partidos perdidos hasta la jornada '''
-		# Partidos hasta la jornada
-		partidos = self.getPartidosHastaJornada(jornada, incluida)
-		# Partidos jugados
-		partidos_jugados = partidos.filter(jugado = True)
-		# Partidos perdidos como visitante
-		partidos_perdidos = partidos_jugados.filter(
-			Q(Q(equipo_local = self) & Q(goles_local__lt = F('goles_visitante'))) |
-			Q(Q(equipo_visitante = self) & Q(goles_local__gt = F('goles_visitante'))))
-		return partidos_perdidos
+        q = Partido.objects.filter(Q(equipo_local=self) | Q(equipo_visitante=self))
+        jornadas = list(liga.jornada_set.all())
+        lista = q.filter(jornada__in=jornadas)
 
-	def getPartidosEmpatados(self, jornada, incluida = False):
-		''' Devuelve los partidos empatados hasta la jornada '''
-		# Partidos hasta la jornada
-		partidos = self.getPartidosHastaJornada(jornada, incluida)
-		# Partidos jugados
-		partidos_jugados = partidos.filter(jugado = True)
-		# Partidos perdidos como visitante
-		partidos_empatados = partidos_jugados.filter(goles_local = F('goles_visitante'))
-		return partidos_empatados
+        return lista
 
-	@transaction.atomic
-	def generarJugadoresAleatorios(self, sexo_permitido = 0, num_jugadores_inicial = 25, max_nivel = 50):
-		''' Genera un conjunto de jugadores aleatorios para el equipo '''
-		from gestion_sistema.gestion_jugador.models import Jugador
-		from gestion_sistema.gestion_jugador.func import nombreJugadorAleatorio, listaNombres
-		from datetime import date, timedelta
-		from random import randint
+    def get_partidos_hasta_jornada(self, jornada, incluida=False):
+        """ Devuelve los partidos jugados hasta la jornada """
+        # Obtenemos la liga
+        liga = jornada.liga
+        # Obtenemos los partidos en los que juega
+        partidos = self.get_partidos(liga)
 
-		hombres_participan = False
-		mujeres_participan = False
+        if not incluida:
+            return partidos.filter(jornada__lt=jornada)
+        else:
+            return partidos.filter(jornada__lte=jornada)
 
-		edad_min = 18
-		edad_max = 35
+    def get_partidos_ganados(self, jornada, incluida=False):
+        """ Devuelve los partidos ganados hasta la jornada """
 
-		# Establecer variables dependiendo del sexo_permitido en la liga
-		if sexo_permitido == 0: # Solo hombres
-			hombres_participan = True
-			lista_nombres_hombres = listaNombres("nombres_hombres.txt")
+        partidos = self.get_partidos_hasta_jornada(jornada, incluida)
+        partidos_jugados = partidos.filter(jugado=True)
+        partidos_ganados = partidos_jugados.filter(
+            Q(Q(equipo_local=self) & Q(goles_local__gt=F('goles_visitante'))) |
+            Q(Q(equipo_visitante=self) & Q(goles_local__lt=F('goles_visitante'))))
 
-		elif sexo_permitido == 1: # Solo mujeres
-			mujeres_participan = True
-			lista_nombres_mujeres = listaNombres("nombres_mujeres.txt")
+        return partidos_ganados
 
-		else: # Hombres y mujeres
-			hombres_participan = True
-			mujeres_participan = True
-			lista_nombres_hombres = listaNombres("nombres_hombres.txt")
-			lista_nombres_mujeres = listaNombres("nombres_mujeres.txt")
+    def get_partidos_perdidos(self, jornada, incluida=False):
+        """ Devuelve los partidos perdidos hasta la jornada """
 
-		# Array con todos los apellidos obtenidos del fichero dado
-		lista_apellidos = listaNombres("apellidos.txt")
+        partidos = self.get_partidos_hasta_jornada(jornada, incluida)
+        partidos_jugados = partidos.filter(jugado=True)
+        partidos_perdidos = partidos_jugados.filter(
+            Q(Q(equipo_local=self) & Q(goles_local__lt=F('goles_visitante'))) |
+            Q(Q(equipo_visitante=self) & Q(goles_local__gt=F('goles_visitante'))))
 
-		# Generar jugadores
-		for j in range(1, num_jugadores_inicial + 1):
-			# Establecer posición
-			if (j % 10 == 1):
-				posicion = "PORTERO"
-			elif (j % 10 >= 2) and (j % 10 <= 4):
-				posicion = "DEFENSA"
-			elif (j % 10 >= 5) and (j % 10 <= 7):
-				posicion = "CENTROCAMPISTA"
-			else:
-				posicion = "DELANTERO"
+        return partidos_perdidos
 
-			# Establecer dorsal
-			dorsal = j
+    def get_partidos_empatados(self, jornada, incluida=False):
+        """ Devuelve los partidos empatados hasta la jornada """
 
-			# Obtener datos de hombre o mujer según si participan o no
-			if ((j % 2 == 0) and hombres_participan) or (mujeres_participan == False):
-				lista_nombres = lista_nombres_hombres
-				sexo = 'M'
-			else:
-				lista_nombres = lista_nombres_mujeres
-				sexo = 'F'
+        partidos = self.get_partidos_hasta_jornada(jornada, incluida)
+        partidos_jugados = partidos.filter(jugado=True)
+        partidos_empatados = partidos_jugados.filter(goles_local=F('goles_visitante'))
 
-			#---------------------------------------------
-			# Establecer variables del jugador
-			#---------------------------------------------
-			nombre_aleatorio, apodo_aux = nombreJugadorAleatorio(lista_nombres, lista_apellidos)
+        return partidos_empatados
 
-			# Calcular datos de la edad del jugador
-			fecha_ficticia_inicio = self.liga.fecha_ficticia_inicio.date()
-			fecha_nacimiento = fecha_ficticia_inicio - timedelta(randint(edad_min, edad_max) * 365) + timedelta(randint(0, 364))
-			edad = fecha_ficticia_inicio - fecha_nacimiento
-			anios = (int)(edad.days / 365)
+    @transaction.atomic
+    def generar_jugadores_aleatorios(self, sexo_permitido=0, num_jugadores_inicial=25, max_nivel=50):
+        """ Genera un conjunto de jugadores aleatorios para el equipo """
+        from gestion_sistema.gestion_jugador.models import Jugador
+        from gestion_sistema.gestion_jugador.func import nombre_jugador_aleatorio, lista_nombres
+        from datetime import timedelta
+        from random import randint
 
-			# Cada 2 años de diferencia con 28 se resta un punto al nivel máximo
-			max_nivel_jug = max_nivel - (int)(abs(28 - anios) / 2)
-			#---------------------------------------------
+        hombres_participan = False
+        mujeres_participan = False
 
-			#---------------------------------------------
-			# Asignar variables al jugador
-			#---------------------------------------------
-			jugador = Jugador(nombre = nombre_aleatorio, apodo = apodo_aux, fecha_nacimiento = fecha_nacimiento, sexo = sexo)
-			jugador.save()
-			
-			atributos = jugador.generarAtributos(self, dorsal, posicion, max_nivel_jug)
-			atributos.save()
+        edad_min = 18
+        edad_max = 35
 
-			jugador.setAparienciaAleatoria()
+        lista_nombres_hombres = None
+        lista_nombres_mujeres = None
 
-			# Guardar jugador
-			jugador.atributos.save()
-			jugador.save()
+        # Establecer variables dependiendo del sexo_permitido en la liga
+        if sexo_permitido == 0:  # Solo hombres
+            hombres_participan = True
+            lista_nombres_hombres = lista_nombres("nombres_hombres.txt")
 
-			# Añadir jugador al equipo
-			self.agregarJugador(jugador)
-			#---------------------------------------------
+        elif sexo_permitido == 1:  # Solo mujeres
+            mujeres_participan = True
+            lista_nombres_mujeres = lista_nombres("nombres_mujeres.txt")
 
-	def __unicode__(self):
-		return self.nombre
+        else:  # Hombres y mujeres
+            hombres_participan = True
+            mujeres_participan = True
+            lista_nombres_hombres = lista_nombres("nombres_hombres.txt")
+            lista_nombres_mujeres = lista_nombres("nombres_mujeres.txt")
+
+        # Array con todos los apellidos obtenidos del fichero dado
+        lista_apellidos = lista_nombres("apellidos.txt")
+
+        # Generar jugadores
+        for j in range(1, num_jugadores_inicial + 1):
+            # Establecer posición
+            if j % 10 == 1:
+                posicion = "PORTERO"
+            elif (j % 10 >= 2) and (j % 10 <= 4):
+                posicion = "DEFENSA"
+            elif (j % 10 >= 5) and (j % 10 <= 7):
+                posicion = "CENTROCAMPISTA"
+            else:
+                posicion = "DELANTERO"
+
+            # Establecer dorsal
+            dorsal = j
+
+            # Obtener datos de hombre o mujer según si participan o no
+            if ((j % 2 == 0) and hombres_participan) or (mujeres_participan is False):
+                lista_nombres = lista_nombres_hombres
+                sexo = 'M'
+            else:
+                lista_nombres = lista_nombres_mujeres
+                sexo = 'F'
+
+            # ---------------------------------------------
+            # Establecer variables del jugador
+            # ---------------------------------------------
+            nombre_aleatorio, apodo_aux = nombre_jugador_aleatorio(lista_nombres, lista_apellidos)
+
+            # Calcular datos de la edad del jugador
+            fecha_ficticia_inicio = self.liga.fecha_ficticia_inicio.date()
+            fecha_nacimiento = fecha_ficticia_inicio - timedelta(randint(edad_min, edad_max) * 365) + timedelta(
+                randint(0, 364))
+            edad = fecha_ficticia_inicio - fecha_nacimiento
+            anios = int(edad.days / 365)
+
+            # Cada 2 años de diferencia con 28 se resta un punto al nivel máximo
+            max_nivel_jug = max_nivel - int(abs(28 - anios) / 2)
+            # ---------------------------------------------
+
+            # ---------------------------------------------
+            # Asignar variables al jugador
+            # ---------------------------------------------
+            jugador = Jugador(nombre=nombre_aleatorio, apodo=apodo_aux, fecha_nacimiento=fecha_nacimiento, sexo=sexo)
+            jugador.save()
+
+            atributos = jugador.generar_atributos(self, dorsal, posicion, max_nivel_jug)
+            atributos.save()
+
+            jugador.set_apariencia_aleatoria()
+
+            # Guardar jugador
+            # jugador.atributos.save() ?
+            jugador.save()
+
+            # Añadir jugador al equipo
+            self.agregar_jugador(jugador)
+            # ---------------------------------------------
+
+    def __str__(self):
+        return self.nombre
 
 ########################################################################

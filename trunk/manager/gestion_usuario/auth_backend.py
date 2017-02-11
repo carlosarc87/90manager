@@ -29,9 +29,9 @@ from django.core.exceptions import ImproperlyConfigured
 
 
 class UsuarioModelBackend(ModelBackend):
-    def authenticate(self, username = None, password = None):
+    def authenticate(self, username=None, password=None, **kwargs):
         try:
-            user = self.user_class.objects.get(username = username)
+            user = self.user_class.objects.get(username=username)
             if user.check_password(password):
                 return user
         except self.user_class.DoesNotExist:
@@ -39,7 +39,7 @@ class UsuarioModelBackend(ModelBackend):
 
     def get_user(self, user_id):
         try:
-            return self.user_class.objects.get(pk = user_id)
+            return self.user_class.objects.get(pk=user_id)
         except self.user_class.DoesNotExist:
             return None
 
@@ -47,6 +47,8 @@ class UsuarioModelBackend(ModelBackend):
     def user_class(self):
         if not hasattr(self, '_user_class'):
             self._user_class = apps.get_model(*settings.CUSTOM_USER_MODEL.split('.', 2))
+
             if not self._user_class:
                 raise ImproperlyConfigured('no se pudo conseguir un Usuario')
+
         return self._user_class

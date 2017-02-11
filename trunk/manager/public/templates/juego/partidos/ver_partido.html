@@ -197,7 +197,7 @@
 							<td class="num1">{{ titular.atributos.numero }}</td>
 							<td>{{ titular.posicion }}</td>
 							<td><a href="/jugadores/ver/{{ titular.atributos.jugador.id }}/">{{ titular.atributos.jugador.nombre }}</a></td>
-							<td class="num1">{{ titular.atributos.getNivel }}</td>
+							<td class="num1">{{ titular.atributos.get_nivel }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -231,7 +231,7 @@
 							<td class="num1">{{ titular.atributos.numero }}</td>
 							<td>{{ titular.posicion }}</td>
 							<td><a href="/jugadores/ver/{{ titular.atributos.jugador.id }}/">{{ titular.atributos.jugador.nombre }}</a></td>
-							<td class="num1">{{ titular.atributos.getNivel }}</td>
+							<td class="num1">{{ titular.atributos.get_nivel }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -245,7 +245,7 @@
 				<tbody>
 					{% for suceso in sucesos %}
 						<tr>
-							<td class="num1"><span>{{ suceso.getTiempo }}</span></td>
+							<td class="num1"><span>{{ suceso.get_tiempo }}</span></td>
 							<td><span>{{ suceso.equipo.siglas }}</span></td>
 							<td>
 								{% if suceso.tipo == suceso.GOL %}
@@ -264,7 +264,7 @@
 									{% endif %}
 								{% endif %}
 							</td>
-							<td><span>{{ suceso.getTexto }}</span></td>
+							<td><span>{{ suceso.get_texto }}</span></td>
 						</tr>
 					{% endfor %}
 				</tbody>

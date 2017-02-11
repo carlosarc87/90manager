@@ -26,94 +26,84 @@ Copyright 2017 by
 
 from django import forms
 
-from .models import Partido
-
 
 ########################################################################
 
 class PrepararEquipoForm(forms.Form):
-	''' Formulario de preparacion de equipos locales '''
-	jugadores_disponibles = forms.fields.MultipleChoiceField(required = False)
-	defensas = forms.fields.MultipleChoiceField()
-	centrocampistas = forms.fields.MultipleChoiceField()
-	portero = forms.fields.ChoiceField()
-	delanteros = forms.fields.MultipleChoiceField()
-	suplentes = forms.fields.MultipleChoiceField(required = False)
+    """ Formulario de preparacion de equipos locales """
+    jugadores_disponibles = forms.fields.MultipleChoiceField(required=False)
+    defensas = forms.fields.MultipleChoiceField()
+    centrocampistas = forms.fields.MultipleChoiceField()
+    portero = forms.fields.ChoiceField()
+    delanteros = forms.fields.MultipleChoiceField()
+    suplentes = forms.fields.MultipleChoiceField(required=False)
 
-	def __init__(self, alineacion, equipo, *args, **kwargs):
-		''' Constructor que establece la lista de valores de los titulares '''
-		super(PrepararEquipoForm, self).__init__(*args, **kwargs)
-		# Establecemos los valores de la lista multiple como los jugadores del equipo local
-		jugadores = equipo.getJugadores()
-		lista_jugadores = [[choice.id, choice.nombre] for choice in jugadores]
+    def __init__(self, alineacion, equipo, *args, **kwargs):
+        """ Constructor que establece la lista de valores de los titulares """
+        super(PrepararEquipoForm, self).__init__(*args, **kwargs)
 
-		self.fields['jugadores_disponibles'].choices = lista_jugadores
-		self.fields['defensas'].choices = lista_jugadores
-		self.fields['centrocampistas'].choices = lista_jugadores
-		self.fields['delanteros'].choices = lista_jugadores
-		self.fields['suplentes'].choices = lista_jugadores
+        # Establecemos los valores de la lista multiple como los jugadores del equipo local
+        jugadores = equipo.get_jugadores()
+        lista_jugadores = [[choice.id, choice.nombre] for choice in jugadores]
 
-		valor_nulo = [0, "Nadie"]
-		lista_porteros = list(lista_jugadores)
-		lista_porteros.insert(0, valor_nulo)
-		self.fields['portero'].choices = lista_porteros
+        self.fields['jugadores_disponibles'].choices = lista_jugadores
+        self.fields['defensas'].choices = lista_jugadores
+        self.fields['centrocampistas'].choices = lista_jugadores
+        self.fields['delanteros'].choices = lista_jugadores
+        self.fields['suplentes'].choices = lista_jugadores
 
-#	def clean_defensas(self):
+        valor_nulo = [0, "Nadie"]
+        lista_porteros = list(lista_jugadores)
+        lista_porteros.insert(0, valor_nulo)
+        self.fields['portero'].choices = lista_porteros
 
-#	def clean_centrocampistas(self):
+    def clean(self):
+        """ Valida los datos del formulario """
+        datos = self.cleaned_data
 
-#	def clean_portero(self):
+        # Comprobacion de que haya cumplimentado los campos
+        dato = datos.get("portero")
+        if dato is not 0:
+            lista = [dato]
+        else:
+            raise forms.ValidationError("Claro que sí, sin portero...")
 
-#	def clean_delanteros(self):
+        dato = datos.get("defensas")
+        if dato:
+            lista += list(dato)
+        else:
+            raise forms.ValidationError("Pon algún defensa bonico")
 
-#	def clean_suplentes(self):
+        dato = datos.get("centrocampistas")
+        if dato:
+            lista += list(dato)
+        else:
+            raise forms.ValidationError("Menudo extremista eres, nadie en medio. Pues va a ser que no.")
 
-	def clean(self):
-		''' Valida los datos del formulario '''
-		datos = self.cleaned_data
+        dato = datos.get("delanteros")
+        if dato:
+            lista += list(dato)
+        else:
+            raise forms.ValidationError("Algún delantero podría ser útil para marcar goles y eso...")
 
-		# Comprobacion de que haya cumplimentado los campos
-		dato = datos.get("portero")
-		if dato is not 0:
-			lista = [dato]
-		else:
-			raise forms.ValidationError("Claro que sí, sin portero...")
+        # Comprobacion de los suplentes
+        dato = datos.get("suplentes")
+        if dato:
+            lista_completa = lista + list(dato)
+            # Comprobacion de que sean únicos
+            for dato in lista_completa:
+                if lista_completa.count(dato) != 1:
+                    raise forms.ValidationError("Los jugadores no son amebas, no pueden dividirse y estar en "
+                                                "2 sitios a la vez.")
 
-		dato = datos.get("defensas")
-		if dato:
-			lista += list(dato)
-		else:
-			raise forms.ValidationError("Pon algun defensa bonico")
+        num_jugadores = len(lista)
+        if num_jugadores != 11:
+            raise forms.ValidationError("Tienes que indicar a 11 jugadores titulares.")
 
-		dato = datos.get("centrocampistas")
-		if dato:
-			lista += list(dato)
-		else:
-			raise forms.ValidationError("Menudo extremista eres, o defendiendo o atacando, nadie en medio. Pues no.")
+        num_suplentes = 7
+        if len(datos.get("suplentes")) > num_suplentes:
+            raise forms.ValidationError("Tienes que indicar como mucho " + str(num_suplentes) + " suplentes.")
 
-		dato = datos.get("delanteros")
-		if dato:
-			lista += list(dato)
-		else:
-			raise forms.ValidationError("Algun delantero podría ser útil")
-
-		# Comprobacion de los suplentes
-		dato = datos.get("suplentes")
-		if dato:
-			lista_completa = lista + list(dato)
-			# Comprobacion de que sean únicos
-			for dato in lista_completa:
-				if lista_completa.count(dato) != 1:
-					raise forms.ValidationError("Los jugadores no son amebas, no pueden dividirse y estar en 2 sitios a la vez.")
-
-		num_jugadores = len(lista)
-		if num_jugadores not in list(range(7, 12)):
-			raise forms.ValidationError("Tienes que indicar entre 7 y 11 titulares.")
-
-		num_suplentes = 7
-		if len(datos.get("suplentes")) > num_suplentes:
-			raise forms.ValidationError("Tienes que indicar como mucho " + str(num_suplentes) + " suplentes.")
-		return datos
-
+        return datos
 
 ########################################################################

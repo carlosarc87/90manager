@@ -27,12 +27,11 @@
 }
 
 .tabla1 td, .tabla1 th{
-	border: solid 1px #2b9720;
 	padding: .5em;
 }
 
-.tabla1 tr:nth-child(2n){ /* Filas pares */
-	background-color: #b7fdfe;
+.tabla1 tbody tr{
+    background: linear-gradient(#e7ffff, #b7fdfe);
 }
 
 .tabla1 .num1{

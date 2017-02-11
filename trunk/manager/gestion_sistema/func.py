@@ -22,53 +22,54 @@ Copyright 2017 by
 
 """
 
+
 ########################################################################
 
-def calcularCambios(request):
-	""" Calcula los cambios realizados en una liga """
-	
-	# Esto es necesario para cuando se consulta un equipo y aún no se ha entrado a una liga
-	if not 'liga_actual' in request.session:
-		if 'equipo_actual' in request.session:
-			equipo = request.session['equipo_actual']
-			request.session['liga_actual'] = equipo.liga
-	
-	liga = request.session['liga_actual']
-	
-	if liga.activada():
-		fecha = liga.getFecha()
-		# Calculos de subastas
+def calcular_cambios(request):
+    """ Calcula los cambios realizados en una liga """
 
-		# Traspasos de jugadores
-		# Tomar en cuenta alineaciones en las que se cambia un jugador
+    # Esto es necesario para cuando se consulta un equipo y aún no se ha entrado a una liga
+    if 'liga_actual' not in request.session:
+        if 'equipo_actual' in request.session:
+            equipo = request.session['equipo_actual']
+            request.session['liga_actual'] = equipo.liga
 
-		# Avanzar Jornadas
-		print("Analizando jornadas")
-		jornadas_acabadas = liga.jornada_set.filter(jugada = False, fecha_fin__lt = liga.getFecha())
-		for jornada in jornadas_acabadas:
-			print("Avanzando jornada", jornada)
-			liga.avanzarJornada()
+    liga = request.session['liga_actual']
 
-		# Jugar Partidos de esta jornada
-		print("Analizando partidos acabados")
-		partidos_acabados = liga.partido_set.filter(jugado = False, fecha_fin__lt = liga.getFecha())
-		for partido in partidos_acabados:
-			print("Jugando el partido", partido)
-			partido.jugar()
+    if liga.activada():
+        fecha = liga.get_fecha()
+        # Calculos de subastas
 
-		print("Fin")
-		#partidos_iniciados = liga.partido_set.filter(jugado = False, fecha_inicio__lt = liga.getFecha())
-		# Iniciar partidos
-		# bla bla bla
-		# Comprobar subastas
-		print("Analizando subastas")
-		subastas = liga.subasta_set.filter(fecha_fin__lt = liga.getFecha())
-		for subasta in subastas:
-			subasta.finalizar()
-			subasta.delete()
-			
-		return True
-	else:
-		return False
+        # Traspasos de jugadores
+        # Tomar en cuenta alineaciones en las que se cambia un jugador
+
+        # Avanzar Jornadas
+        print("Analizando jornadas")
+        jornadas_acabadas = liga.jornada_set.filter(jugada=False, fecha_fin__lt=fecha)
+        for jornada in jornadas_acabadas:
+            print("Avanzando jornada", jornada)
+            liga.avanzar_jornada()
+
+        # Jugar Partidos de esta jornada
+        print("Analizando partidos acabados")
+        partidos_acabados = liga.partido_set.filter(jugado=False, fecha_fin__lt=fecha)
+        for partido in partidos_acabados:
+            print("Jugando el partido", partido)
+            partido.jugar()
+
+        print("Fin")
+        # partidos_iniciados = liga.partido_set.filter(jugado=False, fecha_inicio__lt=fecha)
+        # Iniciar partidos
+        # bla bla bla
+        # Comprobar subastas
+        print("Analizando subastas")
+        subastas = liga.subasta_set.filter(fecha_fin__lt=fecha)
+        for subasta in subastas:
+            subasta.finalizar()
+            subasta.delete()
+
+        return True
+    else:
+        return False
 
 ########################################################################

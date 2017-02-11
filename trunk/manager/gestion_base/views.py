@@ -26,7 +26,7 @@ from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 
-from gestion_base.func import devolverMensaje, generarPagina, redireccionar
+from gestion_base.func import devolver_mensaje, generar_pagina, redireccionar
 
 from .forms import ContactoForm
 
@@ -34,69 +34,77 @@ from .forms import ContactoForm
 ########################################################################
 
 @login_required
-def index(request):
-	''' Devuelve la pagina principal '''
-	return redireccionar("/tablon/")
+def index():
+    """ Devuelve la pagina principal """
+    return redireccionar("/tablon/")
+
 
 ########################################################################
 
 def creditos(request):
-	''' Ir a la pagina de creditos '''
-	return generarPagina(request, "web/creditos.html")
+    """ Ir a la pagina de creditos """
+    return generar_pagina(request, "web/creditos.html")
+
 
 ########################################################################
 
 def contacto(request):
-	''' Muestra la página para rellenar el formulario de "contacta con nosotros" '''
-	if request.method == 'POST':
-		form = ContactoForm(request.POST)
-		if form.is_valid():
-			from django.core.mail import mail_admins
-			mensaje_puro = form.cleaned_data['mensaje']
-			asunto = form.cleaned_data['asunto']
-			emisor = form.cleaned_data['emisor']
+    """ Muestra la página para rellenar el formulario de "contacta con nosotros" """
+    if request.method == 'POST':
+        form = ContactoForm(request.POST)
+        if form.is_valid():
+            from django.core.mail import mail_admins
+            mensaje_puro = form.cleaned_data['mensaje']
+            asunto = form.cleaned_data['asunto']
+            emisor = form.cleaned_data['emisor']
 
-			mensaje =  "-----------------------------------------------------------------\n"
-			mensaje += " Mensaje de contacto enviado mediante el formulario de 90manager \n"
-			mensaje += "  De: " + emisor + "\n"
-			mensaje += "  Enviado a las: " + str(datetime.now()) + " \n"
-			mensaje += "-----------------------------------------------------------------\n"
-			mensaje += "\n"
-			mensaje += mensaje_puro
+            mensaje = "-----------------------------------------------------------------\n"
+            mensaje += " Mensaje de contacto enviado mediante el formulario de 90manager \n"
+            mensaje += "  De: " + emisor + "\n"
+            mensaje += "  Enviado a las: " + str(datetime.now()) + " \n"
+            mensaje += "-----------------------------------------------------------------\n"
+            mensaje += "\n"
+            mensaje += mensaje_puro
 
-			# Mandar correo
-			mail_admins('[CONTACTO]: ' + asunto, mensaje)
-			
-			return devolverMensaje(request, "El mensaje ha sido enviado", 1, "/")
-	else:
-		form = ContactoForm()
+            # Mandar correo
+            mail_admins('[CONTACTO]: ' + asunto, mensaje)
 
-	c = { "form" : form }
+            return devolver_mensaje(request, "El mensaje ha sido enviado", 1, "/")
+    else:
+        form = ContactoForm()
 
-	return generarPagina(request, "web/contacto.html", c)
+    c = {
+        "form": form
+    }
+
+    return generar_pagina(request, "web/contacto.html", c)
+
 
 ########################################################################
 
 def changelog(request):
-	''' Muestra el historial de versiones de la web '''
-	return generarPagina(request, "web/changelog.html")
+    """ Muestra el historial de versiones de la web """
+    return generar_pagina(request, "web/changelog.html")
+
 
 ########################################################################
 
 def siguenos(request):
-	''' Muestra las páginas donde seguir el proyecto '''
-	return generarPagina(request, "web/siguenos.html")
+    """ Muestra las páginas donde seguir el proyecto """
+    return generar_pagina(request, "web/siguenos.html")
+
 
 ########################################################################
 
 def condiciones(request):
-	''' Muestra las condiciones de uso '''
-	return generarPagina(request, "web/condiciones.html")
+    """ Muestra las condiciones de uso """
+    return generar_pagina(request, "web/condiciones.html")
+
 
 ########################################################################
 
-def bajoConstruccion(request):
-	''' Mensaje para los enlaces que no estan construidos aun '''
-	return generarPagina(request, "La página que deseas visitar aún no está acabada =(")
+def bajo_construccion(request):
+    """ Mensaje para los enlaces que no estan construidos aun """
+    return generar_pagina(request, "La página que deseas visitar aún no está acabada =(")
 
 ########################################################################

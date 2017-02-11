@@ -27,13 +27,13 @@ from django.conf.urls import url
 from gestion_mercado.gestion_subasta import views
 
 urlpatterns = [
-   	# Modulo de subastas
-   	url(r'^ver/liga/$', views.ver_subastas_liga),
-   	url(r'^ver/equipo/$', views.ver_subastas_equipo),
-   	url(r'^ver/(?P<subasta_id>\d+)/$', views.ver_subasta_id),
-   	url(r'^ver/$', views.ver_subasta),
-   	url(r'^comprar/$', views.comprar_subasta),
-   	url(r'^crear/$', views.crear_subasta),
-   	url(r'^propias/$', views.mis_subastas),
-   	url(r'^pujas/$', views.mis_pujas),
+    # Modulo de subastas
+    url(r'^ver/liga/$', views.ver_subastas_liga),
+    url(r'^ver/equipo/$', views.ver_subastas_equipo),
+    url(r'^ver/(?P<subasta_id>\d+)/$', views.ver_subasta_id),
+    url(r'^ver/$', views.ver_subasta),
+    url(r'^comprar/$', views.comprar_subasta),
+    url(r'^crear/$', views.crear_subasta),
+    url(r'^propias/$', views.mis_subastas),
+    url(r'^pujas/$', views.mis_pujas),
 ]

@@ -1,241 +1,235 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<meta name="description" content="90manager" />
-	<meta name="keywords" content="entrenador futbol, juego online, juego web multijugador, ligas mixtas, ligas personalizadas, manager futbol, presidente futbol" />
-	<meta name="robots" content="NOINDEX, NOFOLLOW, NOARCHIVE" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="90manager" />
+    <meta name="keywords" content="entrenador futbol, juego online, juego web multijugador, ligas mixtas, ligas personalizadas, manager futbol, presidente futbol" />
+    <meta name="robots" content="NOINDEX, NOFOLLOW, NOARCHIVE" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-	<title>{% block title %}90manager{% endblock %}</title>
-	
-	{% block favicon %}
-		<!-- Icono para todos los navegadores -->
-		<link rel="icon" type="image/png" href="/media/img/icons/favicon.png" />
-		
-		<!-- Icono para iPhone/iPad -->
-		<link rel="apple-touch-icon-precomposed" href="/media/img/icons/favicon.png" />
-	{% endblock %}
+    <title>{% block title %}90manager{% endblock %}</title>
 
-	<link rel="stylesheet" href="/media/css/reset.css" />
-	<link rel="stylesheet" href="/media/css/general.css" />
-	{% block css_extra %}{% endblock %}
+    <!-- Icono para todos los navegadores -->
+    <link rel="icon" type="image/png" href="/media/img/icons/favicon.png" />
+
+    <!-- Icono para iPhone/iPad -->
+    <link rel="apple-touch-icon-precomposed" href="/media/img/icons/favicon.png" />
+
+    <link rel="stylesheet" href="/media/css/reset.css" />
+    <link rel="stylesheet" href="/media/css/general.css" />
+    {% block css_extra %}{% endblock %}
 </head>
-
-{% if liga_actual.activada %}
-<body onload="lanzarReloj()">
-{% else %}
 <body>
-{% endif %}
+    <header>
+        <nav id="barra_menu">
+            <ul>
+                <!-- Logo -->
+                <li id="logo" onclick="location.href='/'"></li>
 
-	<header>
-		<nav id="barra_menu">
-			<ul>
-				<!-- Logo -->
-				<li id="logo" onclick="location.href='/'"></li>
+                {% if user.is_authenticated %}
+                    {% if liga_actual %}
+                        {% if liga_actual.activada %}
+                            <!-- Liga -->
+                            <li id="liga" onclick="mostrarMenu(this)" title="Liga">
+                                <ul class="desplegable">
+                                    <li><a href="/ligas/ver/">Información</a></li>
+                                    <li><a href="/clasificacion/ver/">Clasificación</a></li>
+                                    <li><a href="/jornadas/listar/">Jornadas</a></li>
+                                    <li><a href="/jornadas/actual/">Jornada actual</a></li>
+                                    <li><a href="/equipos/listar/">Equipos</a></li>
+                                </ul>
+                            </li>
 
-				{% if user.is_authenticated %}
-					{% if liga_actual %}
-						{% if liga_actual.activada %}
-							<!-- Liga -->
-							<li id="liga" onclick="mostrarMenu(this)" title="Liga">
-								<ul class="desplegable">
-									<li><a href="/ligas/ver/">Información</a></li>
-									<li><a href="/clasificacion/ver/">Clasificación</a></li>
-									<li><a href="/jornadas/listar/">Jornadas</a></li>
-									<li><a href="/jornadas/actual/">Jornada actual</a></li>
-									<li><a href="/equipos/listar/">Equipos</a></li>
-								</ul>
-							</li>
+                            <!-- Equipo -->
+                            <li id="equipo" onclick="mostrarMenu(this)" title="Equipo">
+                                <ul class="desplegable">
+                                    {% if equipo_propio %}
+                                        <li><a href="/equipos/mi_equipo/">Información</a></li>
+                                        <!--<li><a href="#">Entrenamientos</a></li>-->
+                                        <li><a href="/partidos/mis_partidos/">Partidos</a></li>
+                                        <li><a href="/partidos/proximo/">Próximo partido</a></li>
+                                    {% else %}
+                                        <li><a>Sin Equipo</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
 
-							<!-- Equipo -->
-							<li id="equipo" onclick="mostrarMenu(this)" title="Equipo">
-								<ul class="desplegable">
-									{% if equipo_propio %}
-										<li><a href="/equipos/mi_equipo/">Información</a></li>
-										<!--<li><a href="#">Entrenamientos</a></li>-->
-										<li><a href="/partidos/mis_partidos/">Partidos</a></li>
-										<li><a href="/partidos/proximo/">Próximo partido</a></li>
-									{% else %}
-										<li><a>Sin Equipo</a></li>
-									{% endif %}
-								</ul>
-							</li>
+                            <!-- Mercado -->
+                            <li id="mercado" onclick="mostrarMenu(this)" title="Mercado">
+                                <ul class="desplegable">
+                                    <li><a href="/mercado/subastas/ver/liga/">Subastas</a></li>
+                                    <li><a href="/mercado/subastas/propias/">Mis subastas</a></li>
+                                    <li><a href="/mercado/subastas/pujas/">Mis pujas</a></li>
+                                </ul>
+                            </li>
 
-							<!-- Mercado -->
-							<li id="mercado" onclick="mostrarMenu(this)" title="Mercado">
-								<ul class="desplegable">
-									<li><a href="/mercado/subastas/ver/liga/">Subastas</a></li>
-									<li><a href="/mercado/subastas/propias/">Mis subastas</a></li>
-									<li><a href="/mercado/subastas/pujas/">Mis pujas</a></li>
-								</ul>
-							</li>
+                            <!-- Calendario -->
+                            <li id="calendario" onclick="location.href='/ligas/ver/'" title="Calendario de liga">
+                                <strong>Liga "{{ liga_actual.nombre }}": </strong>
+                                <span id="fecha_liga">00/00/00</span> | <span id="tiempo_liga">00:00:00</span>
+                            </li>
 
-							<!-- Calendario -->
-							<li id="calendario" onclick="location.href='/ligas/ver/'" title="Calendario de liga">
-								<strong>Liga "{{ liga_actual.nombre }}": </strong>
-								<span id="fecha_liga">00/00/00</span> | <span id="tiempo_liga">00:00:00</span>
-							</li>
-							
-							<!-- Notificaciones -->
-							<li id="notificaciones" onclick="mostrarMenu(this)" title="Notificaciones">
-								<ul class="desplegable">
-									{% for notificacion in ultimas_notificaciones %}
-										<li><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></li>
-									{% empty %}
-										<li>No hay novedades</li>
-									{% endfor %}
-									<li><a href="/cuentas/notificaciones/listar_liga/">Ver todas</a></li>
-								</ul>
-							</li>
-						{% else %}
-							<!-- Liga -->
-							<li id="liga" onclick="mostrarMenu(this)" title="Liga">
-								<ul class="desplegable">
-									<li><a href="/ligas/ver/">Información</a></li>
-									<li><a href="/ligas/activar/">Activar</a></li>
-									<li><a href="/equipos/listar/">Equipos</a></li>
-								</ul>
-							</li>
+                            <!-- Notificaciones -->
+                            <li id="notificaciones" onclick="mostrarMenu(this)" title="Notificaciones">
+                                <ul class="desplegable">
+                                    {% for notificacion in ultimas_notificaciones %}
+                                        <li><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.get_mensaje }}</a></li>
+                                    {% empty %}
+                                        <li>No hay novedades</li>
+                                    {% endfor %}
+                                    <li><a href="/cuentas/notificaciones/listar_liga/">Ver todas</a></li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <!-- Liga -->
+                            <li id="liga" onclick="mostrarMenu(this)" title="Liga">
+                                <ul class="desplegable">
+                                    <li><a href="/ligas/ver/">Información</a></li>
+                                    <li><a href="/ligas/activar/">Activar</a></li>
+                                    <li><a href="/equipos/listar/">Equipos</a></li>
+                                </ul>
+                            </li>
 
-							<!-- Equipo -->
-							<li id="equipo" onclick="mostrarMenu(this)" title="Equipo">
-								<ul class="desplegable">
-									{% if equipo_propio %}
-										<li><a href="/equipos/mi_equipo/">Información</a></li>
-									{% else %}
-										<li><a href="/equipos/crear/">Crear Equipo</a></li>
-									{% endif %}
-								</ul>
-							</li>
-						{% endif %}
-					{% else %}
-						<!-- Crear Liga -->
-						<li id="crear_liga" onclick="location.href='/ligas/crear/'" title="Crear liga"></li>
+                            <!-- Equipo -->
+                            <li id="equipo" onclick="mostrarMenu(this)" title="Equipo">
+                                <ul class="desplegable">
+                                    {% if equipo_propio %}
+                                        <li><a href="/equipos/mi_equipo/">Información</a></li>
+                                    {% else %}
+                                        <li><a href="/equipos/crear/">Crear Equipo</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <!-- Crear Liga -->
+                        <li id="crear_liga" onclick="location.href='/ligas/crear/'" title="Crear liga"></li>
 
-						<!-- Ver ligas publicas -->
-						<li id="ligas_publicas" onclick="location.href='/ligas/publicas/'" title="Ver ligas públicas"></li>
-					{% endif %}
+                        <!-- Ver ligas publicas -->
+                        <li id="ligas_publicas" onclick="location.href='/ligas/publicas/'" title="Ver ligas públicas"></li>
+                    {% endif %}
 
-					<!-- Usuario -->
-					<li id="usuario" onclick="mostrarMenu(this)">
-						<span>{{ user.username }}</span>
-						<ul class="desplegable">
-							<li><a href="/tablon/">Tablón</a></li>
-							<li><a href="/cuentas/logout/">Salir</a></li>
-						</ul>
-					</li>
-				{% endif %}
-			</ul>
-		</nav>
-	</header>
+                    <!-- Usuario -->
+                    <li id="usuario" onclick="mostrarMenu(this)">
+                        <span>{{ user.username }}</span>
+                        <ul class="desplegable">
+                            <li><a href="/tablon/">Tablón</a></li>
+                            <li><a href="/cuentas/logout/">Salir</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
 
-	<div id="wrap">
-		<div id="wrap-content">
-			<!-- Contenedor central -->
-			{% block contenido %}
-			{% endblock %}
-		</div>
-	</div>
+    <div id="wrap">
+        <div id="wrap-content">
+            <!-- Contenedor central -->
+            {% block contenido %}
+            {% endblock %}
+        </div>
+    </div>
 
-	<!-- Pie de pagina -->
-	<footer>
-		{% block pie_pagina %}
-			{% block enlaces_pie_pagina_internos %}
-				<div id="enlaces_internos">
-					<a href="/contacto/">Contacta con nosotros</a> |
-					<a href="/creditos/">Créditos</a> |
-					<a href="/changelog/">Cambios</a> |
-					<a href="/condiciones/">Condiciones de uso</a> |
-					<a href="/siguenos/">Síguenos</a>
-				</div>
-			{% endblock %}
+    <!-- Pie de pagina -->
+    <footer>
+        {% block pie_pagina %}
+            {% block enlaces_pie_pagina_internos %}
+                <div id="enlaces_internos">
+                    <a href="/contacto/">Contacta con nosotros</a> |
+                    <a href="/creditos/">Créditos</a> |
+                    <a href="/changelog/">Cambios</a> |
+                    <a href="/condiciones/">Condiciones de uso</a> |
+                    <a href="/siguenos/">Síguenos</a>
+                </div>
+            {% endblock %}
 
-			{% block enlaces_pie_pagina_externos %}
-				<div id="enlaces_externos">
-					<a href="http://90manager.wordpress.com/" onclick="target='_blank'">Blog</a>
-				</div>
-			{% endblock %}
+            {% block enlaces_pie_pagina_externos %}
+                <div id="enlaces_externos">
+                    <a href="http://90manager.wordpress.com/" onclick="target='_blank'">Blog</a>
+                </div>
+            {% endblock %}
 
-			{% if not user.is_authenticated %}
-				{% block logos_pie_pagina %}
-					<div id="logos">
-						<a href="http://www.w3.org/html/logo/" onclick="target='_blank'">
-							<img src="/media/img/HTML5_Logo_64.png" alt="HTML5" height="64" width="64" />
-						</a>
-						
-						<a href="http://jigsaw.w3.org/css-validator/check/referer" onclick="target='_blank'">
-							<img src="/media/img/vcss.png" alt="¡CSS Válido!" height="32" width="88" />
-						</a>
-					</div>
-				{% endblock %}
+            {% if not user.is_authenticated %}
+                {% block logos_pie_pagina %}
+                    <div id="logos">
+                        <a href="http://www.w3.org/html/logo/" onclick="target='_blank'">
+                            <img src="/media/img/HTML5_Logo_64.png" alt="HTML5" height="64" width="64" />
+                        </a>
 
-				<div id="contador_desactualizacion">
-					<span id="contador_desactualizado"></span>
-				</div>
-			{% endif %}
-		{% endblock %}
-	</footer>
+                        <a href="http://jigsaw.w3.org/css-validator/check/referer" onclick="target='_blank'">
+                            <img src="/media/img/vcss.png" alt="¡CSS Válido!" height="32" width="88" />
+                        </a>
+                    </div>
+                {% endblock %}
 
-	<script src="/media/js/jquery.min.js"></script>
+                <div id="contador_desactualizacion">
+                    <span id="contador_desactualizado"></span>
+                </div>
+            {% endif %}
+        {% endblock %}
+    </footer>
 
-	<script>
-		var sabajao = null;
-		function mostrarMenu(m) {
-			// Muestra y oculta los menus
-			if (!sabajao){
-				$(m).find('ul').slideDown();
-				sabajao = m;
-			} else if (sabajao == m) {
-				$(m).find('ul').slideUp();
-				sabajao = null;
-			} else {
-				$(sabajao).find('ul').slideUp();
-				sabajao = m;
-				$(m).find('ul').slideDown();
-			}
-		}
-	</script>
+    <script src="/media/js/jquery.min.js"></script>
 
-	{% if liga_actual.activada %}
-		<script>
-			var tiempo_actual = 0;
-			var milisegundos_actualizar = 1000;
-			
-			function lanzarReloj() {
-				tiempo_actual = new Date("{{ fecha_hora_liga.isoformat }}");
-				factor_tiempo = {{ liga_actual.factor_tiempo }};
-				intervalo = milisegundos_actualizar / factor_tiempo;
-				
-				actualizarReloj();
-				
-				setInterval("actualizarReloj()", intervalo);
-			}
-			
-			function actualizarReloj() {
-				tiempo_actual = new Date(tiempo_actual.getTime() + milisegundos_actualizar);
-				
-				// Día, mes y año
-				day = ('0' + tiempo_actual.getDate()).slice(-2);
-				month = ('0' + (tiempo_actual.getMonth() + 1)).slice(-2);
-				year = tiempo_actual.getFullYear();
-				
-				// Hora, minutos y segundos
-				h_aux = (tiempo_actual.getHours() - 2);
-				if (h_aux < 0) {
-					h_aux += 24;
-				}
-				
-				h = ('0' + h_aux).slice(-2);
-				m = ('0' + tiempo_actual.getMinutes()).slice(-2);
-				s = ('0' + tiempo_actual.getSeconds()).slice(-2);
-				
-				document.getElementById("fecha_liga").firstChild.nodeValue = day + '/' + month + '/' + year;
-				document.getElementById("tiempo_liga").firstChild.nodeValue = h + ':' + m + ':' + s;
-			}
-		</script>
-	{% endif %}
-	
-	{% block js_extra %}{% endblock %}
+    <script>
+        var sabajao = null;
+        function mostrarMenu(m) {
+            // Muestra y oculta los menus
+            if (!sabajao){
+                $(m).find('ul').slideDown();
+                sabajao = m;
+            } else if (sabajao == m) {
+                $(m).find('ul').slideUp();
+                sabajao = null;
+            } else {
+                $(sabajao).find('ul').slideUp();
+                sabajao = m;
+                $(m).find('ul').slideDown();
+            }
+        }
+    </script>
+
+    {% if liga_actual.activada %}
+        <script>
+            var tiempo_actual = 0;
+            var milisegundos_actualizar = 1000;
+
+            lanzarReloj();
+
+            function lanzarReloj() {
+                tiempo_actual = new Date("{{ fecha_hora_liga.isoformat }}");
+                factor_tiempo = {{ liga_actual.factor_tiempo }};
+                intervalo = milisegundos_actualizar / factor_tiempo;
+
+                actualizarReloj();
+
+                setInterval("actualizarReloj()", intervalo);
+            }
+
+            function actualizarReloj() {
+                tiempo_actual = new Date(tiempo_actual.getTime() + milisegundos_actualizar);
+
+                // Día, mes y año
+                day = ('0' + tiempo_actual.getDate()).slice(-2);
+                month = ('0' + (tiempo_actual.getMonth() + 1)).slice(-2);
+                year = tiempo_actual.getFullYear();
+
+                // Hora, minutos y segundos
+                h_aux = (tiempo_actual.getHours() - 2);
+                if (h_aux < 0) {
+                    h_aux += 24;
+                }
+
+                h = ('0' + h_aux).slice(-2);
+                m = ('0' + tiempo_actual.getMinutes()).slice(-2);
+                s = ('0' + tiempo_actual.getSeconds()).slice(-2);
+
+                document.getElementById("fecha_liga").firstChild.nodeValue = day + '/' + month + '/' + year;
+                document.getElementById("tiempo_liga").firstChild.nodeValue = h + ':' + m + ':' + s;
+            }
+        </script>
+    {% endif %}
+
+    {% block js_extra %}{% endblock %}
 </body>
 </html>

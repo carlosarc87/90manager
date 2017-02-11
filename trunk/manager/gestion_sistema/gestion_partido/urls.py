@@ -27,12 +27,11 @@ from django.conf.urls import url
 from gestion_sistema.gestion_partido import views
 
 urlpatterns = [
-   	# Modulo de partidos
-   	url(r'^ver/$', views.ver_partido),
-   	url(r'^ver/(?P<partido_id>\d+)/$', views.ver_partido_id),
-   	url(r'^mis_partidos/$', views.ver_partidos_propios),
-   	url(r'^proximo/$', views.proximo_partido),
-   	url(r'^repeticion/$', views.ver_repeticion_partido),
-   	url(r'^preparar/$', views.preparar_partido),
-   	url(r'^jugar/$', views.jugar_partido),
+    # Modulo de partidos
+    url(r'^ver/$', views.ver_partido),
+    url(r'^ver/(?P<partido_id>\d+)/$', views.ver_partido_id),
+    url(r'^mis_partidos/$', views.ver_partidos_propios),
+    url(r'^proximo/$', views.proximo_partido),
+    url(r'^repeticion/$', views.ver_repeticion_partido),
+    url(r'^preparar/$', views.preparar_partido),
 ]

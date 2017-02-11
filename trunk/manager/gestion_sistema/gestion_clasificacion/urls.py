@@ -27,6 +27,6 @@ from django.conf.urls import url
 from gestion_sistema.gestion_clasificacion import views
 
 urlpatterns = [
-	# Modulo de equipos
-   	url(r'^ver/$', views.ver_clasificacion),
+    # Modulo de equipos
+    url(r'^ver/$', views.ver_clasificacion),
 ]

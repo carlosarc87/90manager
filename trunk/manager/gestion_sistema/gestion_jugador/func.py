@@ -22,58 +22,59 @@ Copyright 2017 by
 
 """
 
-from gestion_base.func import quitarAcentos
+from gestion_base.func import quitar_acentos
 from settings import MEDIA_ROOT
 
 
 ########################################################################
 
-def listaNombres(nombre_fichero):
-	""" Devuelve una lista con todos los nombres que hay en el fichero dado """
-	# Crear lista
-	lista_nombres = []
+def lista_nombres(nombre_fichero):
+    """ Devuelve una lista con todos los nombres que hay en el fichero dado """
+    # Crear lista
+    lista_nombres_jugadores = []
 
-	# Obtener nombres
-	with open(MEDIA_ROOT + "/doc/" + nombre_fichero, "r", encoding="utf-8") as fich:
-		while(True):
-			nombre = fich.readline()
-			nombre = nombre[:-1] # Quitar '\n'
-			
-			if not nombre:
-				break
-			
-			lista_nombres.append(nombre)
+    # Obtener nombres
+    with open(MEDIA_ROOT + "/doc/" + nombre_fichero, "r", encoding="utf-8") as fich:
+        while True:
+            nombre = fich.readline()
+            nombre = nombre[:-1]  # Quitar '\n'
 
-		fich.close()
-	
-	return lista_nombres
+            if not nombre:
+                break
+
+            lista_nombres_jugadores.append(nombre)
+
+        fich.close()
+
+    return lista_nombres_jugadores
+
 
 ########################################################################
 
-def nombreJugadorAleatorio(lista_nombres, lista_apellidos):
-	from random import randint
-	
-	# Poner 1 o 2 nombres
-	num_nombres = randint(1, 2)
-	nombre1 = lista_nombres[randint(0, len(lista_nombres) - 1)]
-	nombre_completo = nombre1
-	aux = quitarAcentos(nombre1)
-	apodo = aux[0] + '. '
+def nombre_jugador_aleatorio(lista_nombres_jugadores, lista_apellidos_jugadores):
+    from random import randint
 
-	# Si se pone un segundo nombre
-	if num_nombres == 2 and randint(0, 3) == 0:
-		nombre2 = lista_nombres[randint(0, len(lista_nombres) - 1)]
-		nombre_completo = nombre_completo + ' ' + nombre2
-		aux = quitarAcentos(nombre2)
-		apodo = apodo + aux[0] + '. '
+    # Poner 1 o 2 nombres
+    num_nombres = randint(1, 2)
+    nombre1 = lista_nombres_jugadores[randint(0, len(lista_nombres_jugadores) - 1)]
+    nombre_completo = nombre1
+    aux = quitar_acentos(nombre1)
+    apodo = aux[0] + '. '
 
-	# Poner 2 apellidos
-	apellido1 = lista_apellidos[randint(0, len(lista_apellidos) - 1)]
-	apellido2 = lista_apellidos[randint(0, len(lista_apellidos) - 1)]
-	apellidos = apellido1 + ' ' + apellido2
-	apodo = apodo + apellido1
+    # Si se pone un segundo nombre
+    if num_nombres == 2 and randint(0, 3) == 0:
+        nombre2 = lista_nombres_jugadores[randint(0, len(lista_nombres_jugadores) - 1)]
+        nombre_completo = nombre_completo + ' ' + nombre2
+        aux = quitar_acentos(nombre2)
+        apodo = apodo + aux[0] + '. '
 
-	# Devolver nombre_completo y apodo
-	return nombre_completo + ' ' + apellidos, apodo
+    # Poner 2 apellidos
+    apellido1 = lista_apellidos_jugadores[randint(0, len(lista_apellidos_jugadores) - 1)]
+    apellido2 = lista_apellidos_jugadores[randint(0, len(lista_apellidos_jugadores) - 1)]
+    apellidos = apellido1 + ' ' + apellido2
+    apodo = apodo + apellido1
+
+    # Devolver nombre_completo y apodo
+    return nombre_completo + ' ' + apellidos, apodo
 
 ########################################################################

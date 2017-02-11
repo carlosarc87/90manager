@@ -19,32 +19,31 @@ Copyright 2017 by
 
     You should have received a copy of the GNU General Public License
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
-	
+
 """
 
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
-# Habilitar la administracion
+
 from django.contrib import admin
-from django.views.static import *
 
 admin.autodiscover()
 
 urlpatterns = [
-	# Administracion
-	url(r'^admin/', include(admin.site.urls)),
+    # Administracion
+    url(r'^admin/', include(admin.site.urls)),
 
-	# Modulos
-	url(r'^cuentas/', include('gestion_usuario.urls')),
-	url(r'^equipos/', include('gestion_sistema.gestion_equipo.urls')),
-	url(r'^ligas/', include('gestion_sistema.gestion_liga.urls')),
-	url(r'^clasificacion/', include('gestion_sistema.gestion_clasificacion.urls')),
-	url(r'^jornadas/', include('gestion_sistema.gestion_jornada.urls')),
-	url(r'^partidos/', include('gestion_sistema.gestion_partido.urls')),
-	url(r'^jugadores/', include('gestion_sistema.gestion_jugador.urls')),
-	url(r'^mercado/subastas/', include('gestion_mercado.gestion_subasta.urls')),
+    # Modulos
+    url(r'^cuentas/', include('gestion_usuario.urls')),
+    url(r'^equipos/', include('gestion_sistema.gestion_equipo.urls')),
+    url(r'^ligas/', include('gestion_sistema.gestion_liga.urls')),
+    url(r'^clasificacion/', include('gestion_sistema.gestion_clasificacion.urls')),
+    url(r'^jornadas/', include('gestion_sistema.gestion_jornada.urls')),
+    url(r'^partidos/', include('gestion_sistema.gestion_partido.urls')),
+    url(r'^jugadores/', include('gestion_sistema.gestion_jugador.urls')),
+    url(r'^mercado/subastas/', include('gestion_mercado.gestion_subasta.urls')),
 
-	# Gestion basica de la web
-	url(r'', include('gestion_base.urls')),
+    # Gestion basica de la web
+    url(r'', include('gestion_base.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

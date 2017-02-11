@@ -17,12 +17,12 @@
 					{% else %}
 						<li>
 					{% endif %}
-							<a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a>
+							<a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.get_mensaje }}</a>
 						</li>
 				{% endfor %}
 			</ol>
 		{% else %}
-			</p class="info">
+			<p class="info">
 				<span>No tienes notificaciones</span>
 			</p>
 		{% endif %}

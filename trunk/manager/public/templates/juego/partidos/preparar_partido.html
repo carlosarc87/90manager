@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block js_extra %}
-	<script><!--//--><![CDATA[//><!--
+	<script>
 		window.onload = establecerDatos;
 
 		var jugador_pillado; // Jugador que se ha cogido
@@ -73,59 +73,70 @@
 
 		// El elemento se deja en el contenedor
 		function dragDrop(objeto, ev) {
-			var situar = true; // Indica si se suelta o no el jugador en esa posicion
-			// Para evitar soltar cualquier cosa
-			var data = ev.dataTransfer.getData("Text");
+            var id_referencia = jugador_pillado.parentNode.id;
+			var data = ev.dataTransfer.getData("Text");  // Para evitar soltar cualquier cosa
+			var situar = true;  // Indica si se suelta o no el jugador en esa posicion
+
 			if (data.indexOf("jugador_cogido: ") != 0) {
 				alert("Solo se pueden soltar jugadores");
-			} else {
-				if (objeto.id == "fila_portero") {
-					if (objeto.getElementsByClassName('cuadro_jugador').length >= 1) {
-						alert("Ya hay un portero");
-						situar = false;
-					}
+			}
+			else {
+			    // Controlar número máximo de jugadores
+                if (jugadores_situados == 11 && objeto.id != "jugadores" && objeto.id != "fila_suplentes" &&
+                    (id_referencia == "fila_suplentes" || id_referencia == "jugadores"))
+                {
+                    alert("Ya están situados los 11 jugadores máximos.\nSi quieres agregar a otro jugador, quita a alguno primero.");
+                    situar = false;
+                }
+                // Controlar número máximo de porteros
+				else if (objeto.id == "fila_portero" && po_situados >= 1) {
+					alert("Ya hay un portero");
+					situar = false;
 				}
-				else if (objeto.id == "fila_defensas") {
-					if (objeto.getElementsByClassName('cuadro_jugador').length >= 6) {
-						alert("No se pueden agregar mas defensas");
-						situar = false;
-					}
+                // Controlar número máximo de defensas
+				else if (objeto.id == "fila_defensas" && df_situados >= 5) {
+					alert("No se pueden agregar más defensas");
+					situar = false;
 				}
-				else if (objeto.id == "fila_centrocampistas") {
-					if (objeto.getElementsByClassName('cuadro_jugador').length >= 6) {
-						alert("No se pueden agregar mas centrocampistas");
-						situar = false;
-					}
+                // Controlar número máximo de centrocampistas
+				else if (objeto.id == "fila_centrocampistas" && cc_situados >= 5) {
+					alert("No se pueden agregar más centrocampistas");
+					situar = false;
 				}
-				else if (objeto.id == "fila_delanteros") {
-					if (objeto.getElementsByClassName('cuadro_jugador').length >= 6) {
-						alert("No se pueden agregar mas delanteros");
-						situar = false;
-					}
+                // Controlar número máximo de delanteros
+				else if (objeto.id == "fila_delanteros" && dl_situados >= 5) {
+					alert("No se pueden agregar más delanteros");
+					situar = false;
 				}
-				else if(objeto.id == "fila_suplentes") {
-					if (objeto.getElementsByClassName('cuadro_jugador').length >= 7) {
-						alert("No se pueden agregar mas jugadores suplentes");
-						situar = false;
-					}
+                // Controlar número máximo de suplentes
+				else if(objeto.id == "fila_suplentes" && jugadores_suplentes >= 7) {
+					alert("No se pueden agregar más jugadores suplentes");
+					situar = false;
 				}
 			}
 
 			if (situar) {
 				// Calcular valores de los jugadores en alineacion y titulares
 				// Jugador cogido de los suplentes
-				if (jugador_pillado.parentNode.id == "fila_suplentes") {
+				if (id_referencia == "fila_suplentes") {
 					jugadores_suplentes--;
 				}
 				// Jugador cogido de los titulares
-				else if (jugador_pillado.parentNode.id != "jugadores") {
+				else if (id_referencia != "jugadores") {
 					jugadores_situados--;
-					if (jugador_pillado.parentNode.id == "fila_defensas")
+
+					if (id_referencia == "fila_portero") {
+						po_situados--;
+					}
+					else if (id_referencia == "fila_defensas") {
 						df_situados--;
-					if (jugador_pillado.parentNode.id == "fila_centrocampistas")
+					}
+					else if (id_referencia == "fila_centrocampistas") {
 						cc_situados--;
-					if (jugador_pillado.parentNode.id == "fila_delanteros")
+					}
+					else if (id_referencia == "fila_delanteros") {
 						dl_situados--;
+					}
 				}
 
 				// Jugador colocado en suplentes
@@ -135,66 +146,79 @@
 				// Jugador colocado en titulares
 				else if (objeto.id != "jugadores") {
 					jugadores_situados++;
-					if (objeto.id == "fila_defensas")
+
+					if (objeto.id == "fila_portero") {
+						po_situados++;
+					}
+					else if (objeto.id == "fila_defensas") {
 						df_situados++;
-					if (objeto.id == "fila_centrocampistas")
+					}
+					else if (objeto.id == "fila_centrocampistas") {
 						cc_situados++;
-					if (objeto.id == "fila_delanteros")
+					}
+					else if (objeto.id == "fila_delanteros") {
 						dl_situados++;
+					}
 				}
 
-				if (jugadores_situados > 11) {
-					jugadores_situados--;
-					alert("Ya están situados los 11 jugadores máximos.\nSi quieres agregar a otro jugador, quita a alguno primero.");
-				} else {
-					var origen = jugador_pillado.parentNode;
-					var destino = objeto
-					jugador_pillado.parentNode.removeChild(jugador_pillado);
-					objeto.appendChild(jugador_pillado);
-					actualizarNumeros();
+                var origen = jugador_pillado.parentNode;
+                var destino = objeto
+                jugador_pillado.parentNode.removeChild(jugador_pillado);
+                objeto.appendChild(jugador_pillado);
+                actualizarNumeros();
 
-					// Cambiar de una lista a otra
-					var lista_origen = document.getElementById("id_jugadores_disponibles");
-					var lista_destino = document.getElementById("id_defensas");
+                // Cambiar de una lista a otra
+                var lista_origen = document.getElementById("id_jugadores_disponibles");
+                var lista_destino = document.getElementById("id_defensas");
 
-					if (origen.id == "jugadores") {
-						lista_origen = document.getElementById("id_jugadores_disponibles");
-					} else if (origen.id == "fila_delanteros") {
-						lista_origen = document.getElementById("id_delanteros");
-					} else if (origen.id == "fila_defensas") {
-						lista_origen = document.getElementById("id_defensas");
-					} else if (origen.id == "fila_portero") {
-						lista_origen = document.getElementById("id_portero");
-					} else if (origen.id == "fila_centrocampistas") {
-						lista_origen = document.getElementById("id_centrocampistas");
-					} else if (origen.id == "fila_suplentes") {
-						lista_origen = document.getElementById("id_suplentes");
-					} else {
-						alert("Has realizado un movimiento inválido")
-					}
+                if (origen.id == "jugadores") {
+                    lista_origen = document.getElementById("id_jugadores_disponibles");
+                }
+                else if (origen.id == "fila_delanteros") {
+                    lista_origen = document.getElementById("id_delanteros");
+                }
+                else if (origen.id == "fila_defensas") {
+                    lista_origen = document.getElementById("id_defensas");
+                }
+                else if (origen.id == "fila_portero") {
+                    lista_origen = document.getElementById("id_portero");
+                }
+                else if (origen.id == "fila_centrocampistas") {
+                    lista_origen = document.getElementById("id_centrocampistas");
+                }
+                else if (origen.id == "fila_suplentes") {
+                    lista_origen = document.getElementById("id_suplentes");
+                }
+                else {
+                    alert("Has realizado un movimiento inválido")
+                }
 
-					if (destino.id == "jugadores") {
-						lista_destino = document.getElementById("id_jugadores_disponibles");
-					} else if (destino.id == "fila_delanteros") {
-						lista_destino = document.getElementById("id_delanteros");
-					} else if (destino.id == "fila_defensas") {
-						lista_destino = document.getElementById("id_defensas");
-					} else if (destino.id == "fila_portero") {
-						lista_destino = document.getElementById("id_portero");
-					} else if (destino.id == "fila_centrocampistas") {
-						lista_destino = document.getElementById("id_centrocampistas");
-					} else if (destino.id == "fila_suplentes") {
-						lista_destino = document.getElementById("id_suplentes");
-					} else {
-						alert("Has realizado un movimiento inválido")
-					}
-					deseleccionar(jugador_pillado, lista_origen);
-					seleccionar(jugador_pillado, lista_destino);
-				}
+                if (destino.id == "jugadores") {
+                    lista_destino = document.getElementById("id_jugadores_disponibles");
+                }
+                else if (destino.id == "fila_delanteros") {
+                    lista_destino = document.getElementById("id_delanteros");
+                }
+                else if (destino.id == "fila_defensas") {
+                    lista_destino = document.getElementById("id_defensas");
+                }
+                else if (destino.id == "fila_portero") {
+                    lista_destino = document.getElementById("id_portero");
+                }
+                else if (destino.id == "fila_centrocampistas") {
+                    lista_destino = document.getElementById("id_centrocampistas");
+                }
+                else if (destino.id == "fila_suplentes") {
+                    lista_destino = document.getElementById("id_suplentes");
+                }
+                else {
+                    alert("Has realizado un movimiento inválido")
+                }
+
+                deseleccionar(jugador_pillado, lista_origen);
+                seleccionar(jugador_pillado, lista_destino);
 			}
 
-			//ev.target.appendChild(jugador_pillado);
-			//ev.stopPropagation();
 			return false; // return false so the event will not be propagated to the browser
 		}
 
@@ -204,18 +228,22 @@
 			for (i = 0; i < campo.options.length; i++) {
 				campo.options[i].selected = false;
 			}
+
 			campo = document.getElementById("id_centrocampistas");
 			for (i = 0; i < campo.options.length; i++) {
 				campo.options[i].selected = false;
 			}
+
 			campo = document.getElementById("id_defensas");
 			for (i = 0; i < campo.options.length; i++) {
 				campo.options[i].selected = false;
 			}
+
 			campo = document.getElementById("id_suplentes");
 			for (i = 0; i < campo.options.length; i++) {
 				campo.options[i].selected = false;
 			}
+
 			var pradera = document.getElementById("id_portero");
 			pradera.selectedIndex = 0;
 
@@ -256,8 +284,14 @@
 				lista_destino.appendChild(nodo);
 			}
 
+            po_situados = 0;
+            df_situados = 0;
+            cc_situados = 0;
+            dl_situados = 0;
+
 			jugadores_situados = 0;
 			jugadores_suplentes = 0;
+
 			actualizarNumeros();
 		}
 
@@ -266,6 +300,7 @@
 			var jugador;
 			var destino;
 			var lista;
+
 			{% if delanteros %}
 				destino = document.getElementById("fila_delanteros");
 				lista = document.getElementById("id_delanteros");
@@ -279,6 +314,7 @@
 					seleccionar(jugador, lista);
 				{% endfor %}
 			{% endif %}
+
 			{% if portero %}
 				destino = document.getElementById("fila_portero");
 				lista = document.getElementById("id_portero");
@@ -334,14 +370,38 @@
 			
 			actualizarNumeros();
 		}
-		//--><!]]>
+
+		function comprobarAlineacion() {
+		    if (jugadores_situados != 11) {
+		        alert("Debe haber 11 jugadores en la alineación");
+		        return false;
+		    }
+		    else if (po_situados != 1) {
+		        alert("Debe haber un portero");
+		        return false;
+		    }
+		    else if (df_situados < 3) {
+		        alert("Debe haber al menos 3 defensas");
+		        return false;
+		    }
+		    else if (cc_situados < 2) {
+		        alert("Debe haber al menos 2 centrocampistas");
+		        return false;
+		    }
+		    else if (dl_situados < 1) {
+		        alert("Debe haber al menos un delantero");
+		        return false;
+		    }
+
+		    return true;
+		}
 	</script>
 {% endblock %}
 
 {% block contenido %}
 	<h2>{{ partido.equipo_local.nombre }} ({{ partido.equipo_local.siglas }}) VS ({{ partido.equipo_visitante.siglas }}) {{ partido.equipo_visitante.nombre }}</h2>
 
-	<form class="form1" id="form_alineacion" action="/partidos/preparar/" method="post">
+	<form class="form1" id="form_alineacion" action="/partidos/preparar/" method="post" onsubmit="return comprobarAlineacion();">
 		{% csrf_token %}
 		
 		{% if form.errors %}
@@ -402,9 +462,9 @@
 								draggable="true"
 								ondragstart="return dragStart(this, event)"
 								ondragend="return dragEnd(this, event)">
-							<div class="mejor_posicion_jugador">{{ jugador.siglasPosicion }}</div>
+							<div class="mejor_posicion_jugador">{{ jugador.siglas_posicion }}</div>
 							<div class="apodo_jugador">{{ jugador.apodo }}</div>
-							<div class="valor_jugador">{{ jugador.getNivel }}</div>
+							<div class="valor_jugador">{{ jugador.get_nivel }}</div>
 						</div>
 					{% endfor %}
 				</div>

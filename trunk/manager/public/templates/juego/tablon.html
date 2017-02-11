@@ -17,7 +17,7 @@
 		{% endif %}
 		<tbody>
 			{% for notificacion in ultimas_notificaciones %}
-				<tr><td><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.getMensaje }}</a></td></tr>
+				<tr><td><a href="/cuentas/notificaciones/ver/{{ notificacion.id }}/">{{ notificacion.get_mensaje }}</a></td></tr>
 			{% empty %}
 				<tr><th>No hay notificaciones nuevas</th></tr>
 			{% endfor %}
@@ -46,10 +46,10 @@
 						<td class="col_num_equipos">{{ liga.num_equipos }}</td>
 
 						{% if liga.activada %}
-							{% if not liga.getJornadaActual %}
+							{% if liga.getJornadaActual is not None %}
 								<td class="col_estado"><span class="liga_finalizada">FINALIZADA</span></td>
 							{% else %}
-								<td class="col_estado"><span class="liga_comenzada">JORNADA {{ liga.getJornadaActual.numero }}</span></td>
+								<td class="col_estado"><span class="liga_comenzada">JORNADA {{ liga.get_jornada_actual.numero }}</span></td>
 							{% endif %}
 						{% else %}
 							<td class="col_estado"><span class="liga_abierta">ABIERTA</span></td>

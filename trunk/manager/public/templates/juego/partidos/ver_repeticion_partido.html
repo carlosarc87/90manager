@@ -38,7 +38,7 @@
 				datos_suceso.push("{{ suceso.segundo_partido }}");
 				datos_suceso.push(calcularTiempo({{ suceso.segundo_partido }}, 60, 999) + ":" + calcularTiempo({{ suceso.segundo_partido }}, 1, 60));
 				datos_suceso.push("{{ suceso.equipo.siglas }}");
-				datos_suceso.push("{{ suceso.getTexto }}");
+				datos_suceso.push("{{ suceso.get_texto }}");
 				array_sucesos.push(datos_suceso);
 			{% endfor %}
 		}
@@ -214,15 +214,15 @@
 		<nav id="barra_repeticion">
 			<ul>
 				<li>
-					<a id="beginning" alt="Ir al inicio" title="Ir al inicio" onclick="reiniciarContador();"></a>
+					<a id="beginning" title="Ir al inicio" onclick="reiniciarContador();"></a>
 				</li>
 				
 				<li>
-					<a id="play" alt="Iniciar" title="Iniciar" onclick="pausarContador();"></a>
+					<a id="play" title="Iniciar" onclick="pausarContador();"></a>
 				</li>
 				
 				<li>
-					<a id="stop" alt="Parar" title="Parar" onclick="pararContador();"></a>
+					<a id="stop" title="Parar" onclick="pararContador();"></a>
 				</li>
 				
 				<li>
@@ -231,11 +231,11 @@
 				</li>
 				
 				<li>
-					<a id="dec_vel" alt="Decrementar velocidad" title="Decrementar velocidad" onclick="decrementarVelocidad();"></a>
+					<a id="dec_vel" title="Decrementar velocidad" onclick="decrementarVelocidad();"></a>
 				</li>
 				
 				<li>
-					<a id="inc_vel" alt="Aumentar velocidad" title="Aumentar velocidad" onclick="incrementarVelocidad();"></a>
+					<a id="inc_vel" title="Aumentar velocidad" onclick="incrementarVelocidad();"></a>
 				</li>
 				
 				<li>

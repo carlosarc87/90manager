@@ -34,79 +34,84 @@ from .models import Subasta
 ########################################################################
 
 class SubastaForm(forms.ModelForm):
-	''' Formulario para crear subastas '''
-	def __init__(self, jugador, *args, **kwargs):
-		''' Constructor que establece la cantidad minima de la subasta '''
-		super(SubastaForm, self).__init__(*args, **kwargs)
-		self.jugador = jugador
+    """ Formulario para crear subastas """
 
-	def clean_fecha_fin(self):
-		''' Comprueba que el numero de jornadas sea factible '''
-		valor = self.cleaned_data['fecha_fin']
-		# Comprobamos que sea positivo y no nulo
-#		if valor < hoy:
-#			raise forms.ValidationError("Debes de introducir una duracion de jornadas positiva y no nula")
+    def __init__(self, jugador, *args, **kwargs):
+        """ Constructor que establece la cantidad minima de la subasta """
+        super(SubastaForm, self).__init__(*args, **kwargs)
+        self.jugador = jugador
 
-		# Comprobamos que sea menor que las jornadas que quedan de liga
-#		jornadas_restantes = 10000
-#		if valor >= jornadas_restantes:
-#			raise forms.ValidationError("Las subastas deben acabar antes de la ultima jornada de liga")
+    def clean_fecha_fin(self):
+        """ Comprueba que el numero de jornadas sea factible """
+        valor = self.cleaned_data['fecha_fin']
 
-		return valor
+        """
+        # Comprobamos que sea positivo y no nulo
+        #		if valor < hoy:
+        #			raise forms.ValidationError("Debes de introducir una duracion de jornadas positiva y no nula")
 
-	def clean_puja(self):
-		''' Comprueba que el precio de subasta sea factible '''
-		valor = self.cleaned_data['puja']
-		# Comprobamos que sea positivo y no nulo
-		if valor < 1:
-			raise forms.ValidationError("Debes de introducir un precio de subasta no nulo")
+        # Comprobamos que sea menor que las jornadas que quedan de liga
+        #		jornadas_restantes = 10000
+        #		if valor >= jornadas_restantes:
+        #			raise forms.ValidationError("Las subastas deben acabar antes de la ultima jornada de liga")
+        """
 
-		return valor
+        return valor
 
-	def clean_precio_compra(self):
-		''' Comprueba que el precio de compra sea mayor o igual que el de subasta '''
-		valor = self.cleaned_data['precio_compra']
-		if valor:
-			subasta = self.cleaned_data['puja']
+    def clean_puja(self):
+        """ Comprueba que el precio de subasta sea factible """
+        valor = self.cleaned_data['puja']
+        # Comprobamos que sea positivo y no nulo
+        if valor < 1:
+            raise forms.ValidationError("Debes de introducir un precio de subasta no nulo")
 
-			if valor < subasta:
-				raise forms.ValidationError("Debes de introducir un precio de compra superior al de subasta")
+        return valor
 
-		return valor
+    def clean_precio_compra(self):
+        """ Comprueba que el precio de compra sea mayor o igual que el de subasta """
+        valor = self.cleaned_data['precio_compra']
+        if valor:
+            subasta = self.cleaned_data['puja']
 
-	class Meta:
-		model = Subasta
-		exclude = ('estado', 'vendedor', 'comprador', 'atributos_jugador', 'liga', 'fecha_inicio')
+            if valor < subasta:
+                raise forms.ValidationError("Debes de introducir un precio de compra superior al de subasta")
+
+        return valor
+
+    class Meta:
+        model = Subasta
+        exclude = ('estado', 'vendedor', 'comprador', 'atributos_jugador', 'liga', 'fecha_inicio')
+
 
 ########################################################################
 
 class PujarForm(forms.Form):
-	''' Acepta una cantidad para pujar por una subasta '''
-	cantidad = forms.fields.IntegerField()
+    """ Acepta una cantidad para pujar por una subasta """
+    cantidad = forms.fields.IntegerField()
 
-	def __init__(self, subasta, pujador, *args, **kwargs):
-		''' Constructor que establece la cantidad minima de la subasta '''
-		super(PujarForm, self).__init__(*args, **kwargs)
+    def __init__(self, subasta, pujador, *args, **kwargs):
+        """ Constructor que establece la cantidad minima de la subasta """
+        super(PujarForm, self).__init__(*args, **kwargs)
 
-		self.puja_minima = int(ceil(subasta.puja * 1.10))
-		self.fields['cantidad'].initial = self.puja_minima
-		self.subasta = subasta
-		self.pujador = pujador
+        self.puja_minima = int(ceil(subasta.puja * 1.10))
+        self.fields['cantidad'].initial = self.puja_minima
+        self.subasta = subasta
+        self.pujador = pujador
 
-	def clean_cantidad(self):
-		""" Filtra la cantidad para comprobar si es correcta """
-		valor = self.cleaned_data['cantidad']
-		
-		if valor < self.puja_minima:
-			raise forms.ValidationError("Debes pujar %d € como mínimo" % self.puja_minima)
-			
-		if valor > self.pujador.dinero:
-			raise forms.ValidationError("No tienes %d € para pujar" % valor)
-			
-		if self.subasta.precio_compra:
-			if valor >= self.subasta.precio_compra:
-				valor = self.subasta.precio_compra
-		
-		return valor
+    def clean_cantidad(self):
+        """ Filtra la cantidad para comprobar si es correcta """
+        valor = self.cleaned_data['cantidad']
+
+        if valor < self.puja_minima:
+            raise forms.ValidationError("Debes pujar %d € como mínimo" % self.puja_minima)
+
+        if valor > self.pujador.dinero:
+            raise forms.ValidationError("No tienes %d € para pujar" % valor)
+
+        if self.subasta.precio_compra:
+            if valor >= self.subasta.precio_compra:
+                valor = self.subasta.precio_compra
+
+        return valor
 
 ########################################################################

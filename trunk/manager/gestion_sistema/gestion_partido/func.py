@@ -22,13 +22,14 @@ Copyright 2017 by
 
 """
 
+
 ########################################################################
 
 # Devuelve la probabilidad dada la fórmula
-def probabilidadExito(formula):
-	v = (120 - (100 / (formula + 1)))
-	if v >= 100:
-		v = 100
-	return v * 0.99
+def probabilidad_exito(formula):
+    v = (120 - (100 / (formula + 1)))
+    if v >= 100:
+        v = 100
+    return v * 0.99
 
 ########################################################################

@@ -21,11 +21,3 @@ Copyright 2017 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-# Archivo para añadir las clases al panel de administración. Por cada
-# clase se añade una linea
-
-from django.contrib import admin
-
-from .models import Evento
-
-#admin.site.register(Evento)

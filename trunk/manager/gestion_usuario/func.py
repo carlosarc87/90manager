@@ -24,12 +24,14 @@ Copyright 2017 by
 
 from datetime import datetime
 
+from django.contrib.sessions.models import Session
+
 from .models import Usuario
 
 
-def getUsuariosConectados():
+def get_usuarios_conectados():
     # Query all non-expired sessions
-    sesiones = Session.objects.filter(expire_date__gte = datetime.now())
+    sesiones = Session.objects.filter(expire_date__gte=datetime.now())
     uid_list = []
 
     # Build a list of user ids from that query
@@ -38,4 +40,4 @@ def getUsuariosConectados():
         uid_list.append(data.get('_auth_user_id', None))
 
     # Query all logged in users based on id list
-    return Usuario.objects.filter(id__in = uid_list)
+    return Usuario.objects.filter(id__in=uid_list)

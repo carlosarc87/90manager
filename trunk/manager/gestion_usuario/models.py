@@ -30,18 +30,19 @@ from django.db import models
 
 # Usuario - hereda de la clase User de django
 class Usuario(User):
-	''' Representa a un usuario en el sistema '''
-	objects = UserManager()
+    """ Representa a un usuario en el sistema """
+    objects = UserManager()
 
-	def __unicode__(self):
-		''' Devuelve una cadena de texto que representa la clase '''
-		return self.username
+    def __str__(self):
+        """ Devuelve una cadena de texto que representa la clase """
+        return self.username
+
 
 ########################################################################
 
 class ClaveRegistroUsuario(models.Model):
-	usuario = models.OneToOneField(Usuario)
-	clave = models.CharField(max_length = 40)
-	expira = models.DateTimeField()
+    usuario = models.OneToOneField(Usuario)
+    clave = models.CharField(max_length=40)
+    expira = models.DateTimeField()
 
 ########################################################################

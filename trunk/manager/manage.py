@@ -2,24 +2,24 @@
 # -*- coding: utf-8 -*-
 """
 Copyright 2017 by
-	* Juan Miguel Lechuga Pérez
-	* Jose Luis López Pino
-	* Carlos Antonio Rivera Cabello
+    * Juan Miguel Lechuga Pérez
+    * Jose Luis López Pino
+    * Carlos Antonio Rivera Cabello
 
  This file is part of 90Manager.
 
-	90Manager is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
+    90Manager is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-	90Manager is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
+    90Manager is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU General Public License
+    along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 
@@ -28,7 +28,7 @@ import sys
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
-	
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError:
@@ -44,4 +44,5 @@ if __name__ == "__main__":
                 "forget to activate a virtual environment?"
             )
         raise
+
     execute_from_command_line(sys.argv)

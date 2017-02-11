@@ -27,7 +27,8 @@ from django.utils import timezone
 from .models import Notificacion
 
 
-def notificar(usuario, tipo, identificador, liga = None):
-	fecha = timezone.now()
-	n = Notificacion.objects.create(usuario = usuario, tipo = tipo, identificador = identificador, liga = liga, fecha_emision = fecha)
-	n.save()
+def notificar(usuario, tipo, identificador, liga=None):
+    fecha = timezone.now()
+    n = Notificacion.objects.create(usuario=usuario, tipo=tipo, identificador=identificador, liga=liga,
+                                    fecha_emision=fecha)
+    n.save()

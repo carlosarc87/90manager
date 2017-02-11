@@ -27,9 +27,9 @@ from django.conf.urls import url
 from gestion_sistema.gestion_jornada import views
 
 urlpatterns = [
-   	# Modulo de jornadas
-   	url(r'^actual/$', views.ver_jornada_actual),
-   	url(r'^listar/$', views.listar_jornadas),
-   	url(r'^ver/(?P<jornada_id>\d+)/$', views.ver_jornada_id),
-   	url(r'^ver/$', views.ver_jornada),
+    # Modulo de jornadas
+    url(r'^actual/$', views.ver_jornada_actual),
+    url(r'^listar/$', views.listar_jornadas),
+    url(r'^ver/(?P<jornada_id>\d+)/$', views.ver_jornada_id),
+    url(r'^ver/$', views.ver_jornada),
 ]

@@ -18,7 +18,7 @@
 					{% else %}
 						<li>
 					{% endif %}
-							<div class="bloque_mensaje">{{ notificacion.getMensaje }}</div>
+							<div class="bloque_mensaje">{{ notificacion.get_mensaje }}</div>
 						
 							<div class="bloque_botones">
 								<button class="boton_ver" onclick="location.href='/cuentas/notificaciones/ver/{{ notificacion.id }}/'">
@@ -33,7 +33,7 @@
 				{% endfor %}
 			</ol>
 		{% else %}
-			</p class="info">
+			<p class="info">
 				<span>No tienes notificaciones</span>
 			</p>
 		{% endif %}

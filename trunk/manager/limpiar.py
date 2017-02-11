@@ -20,9 +20,17 @@ Copyright 2017 by
 
     You should have received a copy of the GNU General Public License
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
-	
+
 """
 
-echo "Limpiando .pyc del proyecto"
-pwd
-find . -type f -name "*.pyc" -delete
+import os
+
+# Eliminar archivos con las extensiones dadas
+root_dir = './'
+extensions = '.pyc'
+
+for root, dirs, files in os.walk(root_dir):
+    for name in files:
+        if name.endswith(extensions):
+            os.remove(os.path.join(root, name))
+            print(os.path.join(root, name) + " eliminado.")  # change to os.remove once sure

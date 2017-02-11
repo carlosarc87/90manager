@@ -27,10 +27,10 @@ from django.conf.urls import url
 from gestion_sistema.gestion_equipo import views
 
 urlpatterns = [
-	# Modulo de equipos
-   	url(r'^ver/$', views.ver_equipo),
-   	url(r'^mi_equipo/$', views.ver_equipo_propio),
-   	url(r'^ver/(?P<equipo_id>\d+)/$', views.ver_equipo_id),
-   	url(r'^crear/$', views.crear_equipo),
-   	url(r'^listar/$', views.listar_equipos_liga),
+    # Modulo de equipos
+    url(r'^ver/$', views.ver_equipo),
+    url(r'^mi_equipo/$', views.ver_equipo_propio),
+    url(r'^ver/(?P<equipo_id>\d+)/$', views.ver_equipo_id),
+    url(r'^crear/$', views.crear_equipo),
+    url(r'^listar/$', views.listar_equipos_liga),
 ]

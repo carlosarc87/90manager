@@ -28,11 +28,11 @@ from gestion_base import views as views_base
 from gestion_usuario import views as views_usuario
 
 urlpatterns = [
-	url(r'^$', views_usuario.principal),
-	url(r'^tablon/$', views_usuario.tablon),
-	url(r'^creditos/', views_base.creditos),
-	url(r'^contacto/', views_base.contacto),
-	url(r'^siguenos/', views_base.siguenos),
-	url(r'^changelog/', views_base.changelog),
-	url(r'^condiciones/', views_base.condiciones),
+    url(r'^$', views_usuario.principal),
+    url(r'^tablon/$', views_usuario.tablon),
+    url(r'^creditos/', views_base.creditos),
+    url(r'^contacto/', views_base.contacto),
+    url(r'^siguenos/', views_base.siguenos),
+    url(r'^changelog/', views_base.changelog),
+    url(r'^condiciones/', views_base.condiciones),
 ]

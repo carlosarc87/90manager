@@ -27,10 +27,10 @@ from django.conf.urls import url
 from gestion_usuario.gestion_notificacion import views
 
 urlpatterns = [
-   	# Modulo de subastas
-   	url(r'^listar/$', views.listar_notificaciones),
-   	url(r'^ver/(?P<notificacion_id>\d+)/$', views.ver_notificacion),
-   	url(r'^borrar/(?P<notificacion_id>\d+)/$', views.borrar_notificacion),
-   	url(r'^listar_liga/$', views.listar_notificaciones_liga),
-   	url(r'^listar_tablon/$', views.listar_notificaciones_tablon),
+    # Modulo de subastas
+    url(r'^listar/$', views.listar_notificaciones),
+    url(r'^ver/(?P<notificacion_id>\d+)/$', views.ver_notificacion),
+    url(r'^borrar/(?P<notificacion_id>\d+)/$', views.borrar_notificacion),
+    url(r'^listar_liga/$', views.listar_notificaciones_liga),
+    url(r'^listar_tablon/$', views.listar_notificaciones_tablon),
 ]

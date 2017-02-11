@@ -25,8 +25,8 @@ Copyright 2017 by
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
 
-from gestion_base.func import devolverMensaje, generarPagina, redireccionar
-from gestion_sistema.decorators import actualizarLiga, comprobarSesion
+from gestion_base.func import devolver_mensaje, generar_pagina, redireccionar
+from gestion_sistema.decorators import actualizar_liga, comprobar_sesion
 from settings import MEDIA_URL
 
 from .models import Jugador
@@ -36,81 +36,79 @@ from .models import Jugador
 
 @login_required
 def ver_jugador_id(request, jugador_id):
-	''' Muestra los datos de un jugador '''
-	# Obtenemos el usuario
-	usuario = request.user
+    """ Muestra los datos de un jugador """
 
-	jugadores = Jugador.objects.filter(id = jugador_id)
+    jugadores = Jugador.objects.filter(id=jugador_id)
 
-	if jugadores.count() == 0:
-		return devolverMensaje(request, "Error, no existe un jugador con identificador %s" % jugador_id, 0)
+    if jugadores.count() == 0:
+        return devolver_mensaje(request, "Error, no existe un jugador con identificador %s" % jugador_id, 0)
 
-	# Obtenemos el jugador
-	request.session['jugador_actual'] = jugadores[0]
+    # Obtenemos el jugador
+    request.session['jugador_actual'] = jugadores[0]
 
-	return redireccionar('/jugadores/ver/')
+    return redireccionar('/jugadores/ver/')
+
 
 ########################################################################
 
 @login_required
-@actualizarLiga
-@comprobarSesion(['jugador_actual'])
+@actualizar_liga
+@comprobar_sesion(['jugador_actual'])
 def ver_jugador(request):
-	''' Muestra los datos de un jugador '''
-	# Obtenemos el usuario
-	usuario = request.user
+    """ Muestra los datos de un jugador """
+    # Obtenemos el usuario
+    usuario = request.user
 
-	jugador = request.session['jugador_actual']
-	
-	# Rutas de imágenes de foto
-	ruta_imagenes = MEDIA_URL + 'img/jugadores/'
-	
-	if jugador.sexo == 'F':
-		ruta_imagenes = MEDIA_URL + 'img/jugadores/mujeres/'
-		ruta_imagen_foto = ruta_imagenes + 'mujer.png'
-	else:
-		ruta_imagenes = MEDIA_URL + 'img/jugadores/hombres/'
-		ruta_imagen_foto = ruta_imagenes + 'hombre.png'
-		
-	ruta_imagen_ojos = ruta_imagenes + 'ojos_' + jugador.color_ojos + '.png'
-	ruta_imagen_pelo = ruta_imagenes + 'pelo_' + jugador.color_pelo + '.png'
-	ruta_imagen_piel = ruta_imagenes + 'piel_' + jugador.color_piel + '.png'
-	
-	# Valor de mercado
-	mejor_posicion = jugador.mejorPosicion()
-	
-	# Nivel
-	nivel = jugador.getNivel()
-	
-	# Valor de mercado
-	valor_mercado = jugador.valorMercado()
+    jugador = request.session['jugador_actual']
 
-	# Obtener edad
-	anios, dias = jugador.getEdad()
+    # Rutas de imágenes de foto
+    if jugador.sexo == 'F':
+        ruta_imagenes = MEDIA_URL + 'img/jugadores/mujeres/'
+        ruta_imagen_foto = ruta_imagenes + 'mujer.png'
+    else:
+        ruta_imagenes = MEDIA_URL + 'img/jugadores/hombres/'
+        ruta_imagen_foto = ruta_imagenes + 'hombre.png'
 
-	# Obtenemos el equipo
-	equipo = jugador.atributos.equipo
+    ruta_imagen_ojos = ruta_imagenes + 'ojos_' + jugador.color_ojos + '.png'
+    ruta_imagen_pelo = ruta_imagenes + 'pelo_' + jugador.color_pelo + '.png'
+    ruta_imagen_piel = ruta_imagenes + 'piel_' + jugador.color_piel + '.png'
 
-	# Obtenemos si está en subasta
-	subasta = None
-	if jugador.atributos.ofertado:
-		subasta = jugador.atributos.subasta
+    # Valor de mercado
+    mejor_posicion = jugador.mejor_posicion()
 
-	d = {"equipo" : equipo,
-		 "usuario" : usuario,
-		 "jugador" : jugador,
-		 "subasta" : subasta,
-		 "anios" : anios,
-		 "dias" : dias,
-		 "ruta_imagen_foto" : ruta_imagen_foto,
-		 "ruta_imagen_ojos" : ruta_imagen_ojos,
-		 "ruta_imagen_pelo" : ruta_imagen_pelo,
-		 "ruta_imagen_piel" : ruta_imagen_piel,
-		 "mejor_posicion" : mejor_posicion,
-		 "nivel" : nivel,
-		 "valor_mercado" : valor_mercado,
-		}
-	
-	return generarPagina(request, "juego/jugadores/ver_jugador.html", d)
+    # Nivel
+    nivel = jugador.get_nivel()
+
+    # Valor de mercado
+    valor_mercado = jugador.valor_mercado()
+
+    # Obtener edad
+    anios, dias = jugador.get_edad()
+
+    # Obtenemos el equipo
+    equipo = jugador.atributos.equipo
+
+    # Obtenemos si está en subasta
+    subasta = None
+    if jugador.atributos.ofertado:
+        subasta = jugador.atributos.subasta
+
+    d = {
+        "equipo": equipo,
+        "usuario": usuario,
+        "jugador": jugador,
+        "subasta": subasta,
+        "anios": anios,
+        "dias": dias,
+        "ruta_imagen_foto": ruta_imagen_foto,
+        "ruta_imagen_ojos": ruta_imagen_ojos,
+        "ruta_imagen_pelo": ruta_imagen_pelo,
+        "ruta_imagen_piel": ruta_imagen_piel,
+        "mejor_posicion": mejor_posicion,
+        "nivel": nivel,
+        "valor_mercado": valor_mercado,
+    }
+
+    return generar_pagina(request, "juego/jugadores/ver_jugador.html", d)
 
 ########################################################################

@@ -31,15 +31,16 @@ from gestion_sistema.gestion_jornada.models import Jornada
 ########################################################################
 
 class ClasificacionEquipoJornada(models.Model):
-	''' Representa una posicion de un equipo en una jornada '''
-	jornada = models.ForeignKey(Jornada)
-	equipo = models.ForeignKey(Equipo)
-	goles_favor = models.PositiveIntegerField(default = 0)
-	goles_contra = models.PositiveIntegerField(default = 0)
-	puntos = models.PositiveIntegerField(default = 0)
+    """ Representa una posicion de un equipo en una jornada """
+    jornada = models.ForeignKey(Jornada)
+    equipo = models.ForeignKey(Equipo)
+    goles_favor = models.PositiveIntegerField(default=0)
+    goles_contra = models.PositiveIntegerField(default=0)
+    puntos = models.PositiveIntegerField(default=0)
 
-	def __unicode__(self):
-		''' Devuelve una cadena de texto que representa la clase '''
-		return self.equipo.nombre + " en jornada: " + str(self.jornada.numero) + " de liga: " + str(self.jornada.liga.id)
+    def __str__(self):
+        """ Devuelve una cadena de texto que representa la clase """
+        return self.equipo.nombre + " en jornada: " + str(self.jornada.numero) + " de liga: " + str(
+            self.jornada.liga.id)
 
 ########################################################################

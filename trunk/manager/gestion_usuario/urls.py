@@ -28,15 +28,15 @@ from django.contrib.auth import views
 from gestion_usuario import views as views_usuario
 
 urlpatterns = [
-	# Modulo de login
-	url(r'^logout/$', views.logout_then_login),
-	url(r'^login/$', views_usuario.principal),
-	url(r'^confirmar/(?P<clave>\w+)/$', views_usuario.activar_usuario),
-	url(r'^notificaciones/', include('gestion_usuario.gestion_notificacion.urls')),
-	url(r'^password/cambiar/$', views_usuario.principal),
-	url(r'^password/cambiar/hecho/$', views.logout_then_login),
-	url(r'^password/recordar/$', views.password_reset, {}),
-	url(r'^password/recordar/completar/$', views.password_reset_complete, {}),
-	url(r'^password/recordar/hecho/$', views.password_reset_done, {}),
-	url(r'^password/recordar/confirmar/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', views.password_reset_confirm, {}),
+    # Modulo de login
+    url(r'^logout/$', views.logout_then_login),
+    url(r'^login/$', views_usuario.principal),
+    url(r'^confirmar/(?P<clave>\w+)/$', views_usuario.activar_usuario),
+    url(r'^notificaciones/', include('gestion_usuario.gestion_notificacion.urls')),
+    url(r'^password/cambiar/$', views_usuario.principal),
+    url(r'^password/cambiar/hecho/$', views.logout_then_login),
+    url(r'^password/recordar/$', views.password_reset, {}),
+    url(r'^password/recordar/completar/$', views.password_reset_complete, {}),
+    url(r'^password/recordar/hecho/$', views.password_reset_done, {}),
+    url(r'^password/recordar/confirmar/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', views.password_reset_confirm, {}),
 ]

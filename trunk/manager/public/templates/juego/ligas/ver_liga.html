@@ -59,12 +59,12 @@
 				<ul id="cuadro_equipos">
 					{% for equipo in equipos %}
 						<li>
-							<a href="/equipos/ver/{{ equipo.id }}/" 
+							<a href="/equipos/ver/{{ equipo.id }}/" class="
 								{% if equipo_propio.nombre == equipo.nombre %}
-									class="equipo linea_equipo_propio"
+									equipo linea_equipo_propio
 								{% else %}
-									class="equipo"
-								{% endif %} title="{{ equipo.nombre }}">{{ equipo.siglas }}</a>
+									equipo
+								{% endif %}" title="{{ equipo.nombre }}">{{ equipo.siglas }}</a>
 						</li>
 					{% endfor %}
 				</ul>
@@ -141,10 +141,10 @@
 								</td>
 								<!-- Equipo -->
 								<td>
-									<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/" 
+									<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/" class="
 										{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
-											class="linea_equipo_propio"
-										{% endif %}>{{ dato_clasificacion.equipo.nombre }}</a>
+											linea_equipo_propio
+										{% endif %}">{{ dato_clasificacion.equipo.nombre }}</a>
 								</td>
 								<!-- Partidos jugados -->
 								<td class="num1">

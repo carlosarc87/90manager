@@ -21,7 +21,3 @@ Copyright 2017 by
     along with 90Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-
-from gestion_sistema.decorators import actualizarLiga
-
-# Vistas del sistema

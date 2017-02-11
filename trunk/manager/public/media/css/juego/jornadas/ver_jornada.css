@@ -16,22 +16,26 @@
 	width: 60px;
 }
 
-#tabla_clasificacion_anterior{
-	margin: 20px auto;
-	width: 500px;
-}
-
 #tabla_clasificacion{
 	margin: 20px auto;
-	width: 500px;
+	width: 700px;
+}
+
+#tabla_clasificacion thead th{
+	text-align: right;
+}
+
+#tabla_clasificacion td:nth-child(1){
+	text-align: right;
+	width: 30px;
+}
+
+#tabla_clasificacion th:nth-child(2){
+	text-align: left;
 }
 
 .info{
 	margin: 20px;
-}
-
-.diferencia_posicion{
-	text-align: right;
 }
 
 .gana_posicion{

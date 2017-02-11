@@ -30,22 +30,22 @@ from gestion_sistema.gestion_liga.models import Liga
 ########################################################################
 
 class Evento(models.Model):
-	""" Representa un evento evaluable con el tiempo """
-	fecha_inicio = models.DateTimeField()
-	fecha_fin = models.DateTimeField()
-	liga = models.ForeignKey(Liga)
+    """ Representa un evento evaluable con el tiempo """
+    fecha_inicio = models.DateTimeField()
+    fecha_fin = models.DateTimeField()
+    liga = models.ForeignKey(Liga)
 
-	def iniciar():
-		print("No implementada")
+    @staticmethod
+    def iniciar():
+        print("No implementada")
 
-	def finalizar():
-		print("No implementada")
+    def finalizar(self):
+        print("No implementada")
 
-	def __unicode__(self):
-		return "Evento"
+    def __str__(self):
+        return "Evento"
 
-	class Meta:
-		abstract = True
-
+    class Meta:
+        abstract = True
 
 ########################################################################
