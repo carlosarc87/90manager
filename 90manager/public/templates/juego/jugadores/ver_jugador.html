@@ -284,15 +284,16 @@
                 <tr>
                     <td>Agresividad</td>
                     <td>
-                        {% if jugador.atributos.agresividad > 70 %}
-                            <div class="barra_progreso barra_progreso_verde">
-                        {% else %}
-                            {% if jugador.atributos.agresividad > 30 %}
-                                <div class="barra_progreso barra_progreso_amarillo">
+                        <div class="
+                            {% if jugador.atributos.agresividad > 70 %}
+                                barra_progreso barra_progreso_verde
                             {% else %}
-                                <div class="barra_progreso barra_progreso_rojo">
-                            {% endif %}
-                        {% endif %}
+                                {% if jugador.atributos.agresividad > 30 %}
+                                    barra_progreso barra_progreso_amarillo
+                                {% else %}
+                                    barra_progreso barra_progreso_rojo
+                                {% endif %}
+                            {% endif %}">
                             <div style="width: {{ jugador.atributos.agresividad }}%;">
                             </div>
                         </div>
@@ -304,15 +305,16 @@
                 <tr>
                     <td>Concentración</td>
                     <td>
-                        {% if jugador.atributos.concentracion > 70 %}
-                            <div class="barra_progreso barra_progreso_verde">
-                        {% else %}
-                            {% if jugador.atributos.concentracion > 30 %}
-                                <div class="barra_progreso barra_progreso_amarillo">
+                        <div class="
+                            {% if jugador.atributos.concentracion > 70 %}
+                                barra_progreso barra_progreso_verde
                             {% else %}
-                                <div class="barra_progreso barra_progreso_rojo">
-                            {% endif %}
-                        {% endif %}
+                                {% if jugador.atributos.concentracion > 30 %}
+                                    barra_progreso barra_progreso_amarillo
+                                {% else %}
+                                    barra_progreso barra_progreso_rojo
+                                {% endif %}
+                            {% endif %}">
                             <div style="width: {{ jugador.atributos.concentracion }}%;">
                             </div>
                         </div>
@@ -324,15 +326,16 @@
                 <tr>
                     <td>Estabilidad</td>
                     <td>
-                        {% if jugador.atributos.estabilidad > 70 %}
-                            <div class="barra_progreso barra_progreso_verde">
-                        {% else %}
-                            {% if jugador.atributos.estabilidad > 30 %}
-                                <div class="barra_progreso barra_progreso_amarillo">
+                        <div class="
+                            {% if jugador.atributos.estabilidad > 70 %}
+                                barra_progreso barra_progreso_verde
                             {% else %}
-                                <div class="barra_progreso barra_progreso_rojo">
-                            {% endif %}
-                        {% endif %}
+                                {% if jugador.atributos.estabilidad > 30 %}
+                                    barra_progreso barra_progreso_amarillo
+                                {% else %}
+                                    barra_progreso barra_progreso_rojo
+                                {% endif %}
+                            {% endif %}">
                             <div style="width: {{ jugador.atributos.estabilidad }}%;">
                             </div>
                         </div>
@@ -344,15 +347,16 @@
                 <tr>
                     <td>Moral</td>
                     <td>
-                        {% if jugador.atributos.moral > 70 %}
-                            <div class="barra_progreso barra_progreso_verde">
-                        {% else %}
-                            {% if jugador.atributos.moral > 30 %}
-                                <div class="barra_progreso barra_progreso_amarillo">
+                        <div class="
+                            {% if jugador.atributos.moral > 70 %}
+                                barra_progreso barra_progreso_verde
                             {% else %}
-                                <div class="barra_progreso barra_progreso_rojo">
-                            {% endif %}
-                        {% endif %}
+                                {% if jugador.atributos.moral > 30 %}
+                                    barra_progreso barra_progreso_amarillo
+                                {% else %}
+                                    barra_progreso barra_progreso_rojo
+                                {% endif %}
+                            {% endif %}">
                             <div style="width: {{ jugador.atributos.moral }}%;">
                             </div>
                         </div>

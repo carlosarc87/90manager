@@ -33,4 +33,4 @@ for root, dirs, files in os.walk(root_dir):
     for name in files:
         if name.endswith(extensions):
             os.remove(os.path.join(root, name))
-            print(os.path.join(root, name) + " eliminado.")  # change to os.remove once sure
+            print(os.path.join(root, name) + " eliminado.")
