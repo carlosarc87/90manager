@@ -49,17 +49,6 @@ class Jugador(models.Model):
     # Atributos variables del jugador
     atributos = None
 
-    def generar_atributos(self, equipo, numero, posicion, max_nivel):
-        """ Genera una instancia relacionada de atributos """
-        atributos = AtributosVariablesJugador(jugador=self, equipo=equipo, numero=numero)
-        atributos.set_numero(numero)
-        atributos.set_habilidades_aleatorias(posicion, max_nivel)
-
-        return atributos
-
-    def set_equipo(self, equipo):
-        self.atributos.equipo = equipo
-
     def get_edad(self):
         if self.atributos.equipo.liga.activada():
             fecha_actual_liga = self.atributos.equipo.liga.get_fecha()
@@ -71,6 +60,9 @@ class Jugador(models.Model):
         dias = int(edad.days % 365.25)
 
         return anios, dias
+
+    def get_nivel(self, posicion=None):
+        return self.atributos.get_nivel(posicion)
 
     def set_apariencia_aleatoria(self):
         if self.sexo == 'M':
@@ -119,6 +111,26 @@ class Jugador(models.Model):
         else:
             self.color_ojos = "azules"
 
+    def set_equipo(self, equipo):
+        self.atributos.equipo = equipo
+
+    def set_numero(self, numero):
+        self.atributos.set_numero(numero)
+
+    def set_habilidades_aleatorias(self, posicion, nivel):
+        return self.atributos.set_habilidades_aleatorias(posicion, nivel)
+
+    def generar_atributos(self, equipo, numero, posicion, max_nivel):
+        """ Genera una instancia relacionada de atributos """
+        atributos = AtributosVariablesJugador(jugador=self, equipo=equipo, numero=numero)
+        atributos.set_numero(numero)
+        atributos.set_habilidades_aleatorias(posicion, max_nivel)
+
+        return atributos
+
+    def mejor_posicion(self):
+        return self.atributos.mejor_posicion()
+
     def siglas_posicion(self):
         mejor_posicion = self.mejor_posicion()
 
@@ -133,20 +145,8 @@ class Jugador(models.Model):
 
         return '-'
 
-    def mejor_posicion(self):
-        return self.atributos.mejor_posicion()
-
-    def set_numero(self, numero):
-        self.atributos.set_numero(numero)
-
-    def get_nivel(self, posicion=None):
-        return self.atributos.get_nivel(posicion)
-
     def valor_mercado(self, posicion=None):
         return self.atributos.valor_mercado(posicion)
-
-    def set_habilidades_aleatorias(self, posicion, nivel):
-        return self.atributos.set_habilidades_aleatorias(posicion, nivel)
 
     def __str__(self):
         return self.nombre
@@ -185,39 +185,39 @@ class AtributosVariablesJugador(models.Model):
     altura = models.PositiveIntegerField(validators=[MaxValueValidator(300)], default=0)  # Altura en cm.
     peso = models.PositiveIntegerField(validators=[MaxValueValidator(200)], default=0)  # Peso en kg.
 
-    # Para que no salgan habilidades con valor 0 el nivel debería ser al menos 10.
+    # Para que no se generen habilidades con valor 0, el nivel debería ser al menos 10.
     def set_habilidades_aleatorias(self, posicion, nivel):
         # Habilidades de juego
         if posicion == "DELANTERO":
             self.ataque = randint(int(nivel * 0.8), nivel)
-            self.defensa = randint(1, int(nivel * 0.5))
+            self.defensa = randint(int(nivel * 0.1), int(nivel * 0.7))
             self.velocidad = randint(int(nivel * 0.5), nivel)
-            self.pases = randint(int(nivel * 0.5), int(nivel * 0.7))
-            self.anotacion = randint(int(nivel * 0.5), nivel)
-            self.portero = randint(1, int(nivel * 0.5))
+            self.pases = randint(int(nivel * 0.3), int(nivel * 0.7))
+            self.anotacion = randint(int(nivel * 0.8), nivel)
+            self.portero = randint(int(nivel * 0.1), int(nivel * 0.2))
 
         elif posicion == "CENTROCAMPISTA":
-            self.ataque = randint(int(nivel * 0.5), int(nivel * 0.7))
-            self.defensa = randint(int(nivel * 0.5), int(nivel * 0.7))
+            self.ataque = randint(int(nivel * 0.2), int(nivel * 0.8))
+            self.defensa = randint(int(nivel * 0.2), int(nivel * 0.8))
             self.velocidad = randint(int(nivel * 0.5), nivel)
             self.pases = randint(int(nivel * 0.8), nivel)
-            self.anotacion = randint(int(nivel * 0.5), nivel)
-            self.portero = randint(1, int(nivel * 0.5))
+            self.anotacion = randint(int(nivel * 0.2), int(nivel * 0.8))
+            self.portero = randint(int(nivel * 0.1), int(nivel * 0.2))
 
         elif posicion == "DEFENSA":
-            self.ataque = randint(1, int(nivel * 0.5))
+            self.ataque = randint(int(nivel * 0.1), int(nivel * 0.7))
             self.defensa = randint(int(nivel * 0.8), nivel)
             self.velocidad = randint(int(nivel * 0.5), nivel)
-            self.pases = randint(int(nivel * 0.5), int(nivel * 0.7))
-            self.anotacion = randint(1, int(nivel * 0.5))
-            self.portero = randint(1, int(nivel * 0.5))
+            self.pases = randint(int(nivel * 0.3), int(nivel * 0.7))
+            self.anotacion = randint(int(nivel * 0.1), int(nivel * 0.7))
+            self.portero = randint(int(nivel * 0.1), int(nivel * 0.2))
 
         elif posicion == "PORTERO":
-            self.ataque = randint(1, int(nivel * 0.5))
-            self.defensa = randint(1, int(nivel * 0.5))
+            self.ataque = randint(int(nivel * 0.1), int(nivel * 0.3))
+            self.defensa = randint(int(nivel * 0.1), int(nivel * 0.3))
             self.velocidad = randint(int(nivel * 0.5), nivel)
-            self.pases = randint(int(nivel * 0.5), int(nivel * 0.7))
-            self.anotacion = randint(1, int(nivel * 0.5))
+            self.pases = randint(int(nivel * 0.1), int(nivel * 0.5))
+            self.anotacion = randint(int(nivel * 0.1), int(nivel * 0.3))
             self.portero = randint(int(nivel * 0.8), nivel)
 
         else:
@@ -275,6 +275,10 @@ class AtributosVariablesJugador(models.Model):
         self.numero = numero
 
     def get_nivel(self, posicion=None):
+        media_hab_principales = 0
+        media_hab_secundarias = 0
+        media_hab_poco_importantes = 0
+
         if not posicion:
             posicion = self.mejor_posicion()
 
@@ -286,24 +290,22 @@ class AtributosVariablesJugador(models.Model):
         elif posicion == "DEFENSA":
             media_hab_principales = self.defensa
             media_hab_secundarias = (self.velocidad + self.pases) / 2.0
-            media_hab_poco_importantes = (self.ataque + self.anotacion + self.portero) / 3.0
+            media_hab_poco_importantes = (self.ataque + self.anotacion) / 2.0
 
         elif posicion == "CENTROCAMPISTA":
             media_hab_principales = self.pases
             media_hab_secundarias = (self.ataque + self.defensa + self.velocidad + self.anotacion) / 4.0
-            media_hab_poco_importantes = self.portero
 
         elif posicion == "DELANTERO":
-            media_hab_principales = self.ataque
-            media_hab_secundarias = (self.velocidad + self.pases + self.anotacion) / 3.0
-            media_hab_poco_importantes = (self.defensa + self.portero) / 2.0
+            media_hab_principales = (self.ataque + self.anotacion) / 2.0
+            media_hab_secundarias = self.velocidad
+            media_hab_poco_importantes = (self.pases + self.defensa) / 2.0
 
-        else:
-            media_hab_principales = 0
-            media_hab_secundarias = 0
-            media_hab_poco_importantes = 0
+        nivel = int((0.85 * media_hab_principales) +
+                    (0.125 * media_hab_secundarias) +
+                    (0.025 * media_hab_poco_importantes))
 
-        return int((0.8 * media_hab_principales) + (0.15 * media_hab_secundarias) + (0.05 * media_hab_poco_importantes))
+        return nivel
 
     @staticmethod
     def coeficiente_juventud(edad):

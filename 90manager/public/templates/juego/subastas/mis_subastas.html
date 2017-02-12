@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load templatetags %}
 
 {% block css_extra %}
 	<link rel="stylesheet" href="/media/css/tablas.css" />
@@ -48,18 +49,18 @@
 
 						<!-- Valor -->
 						<td class="valor_mercado">
-							<span>{{ subasta.atributos_jugador.jugador.valor_mercado }} €</span>
+							<span>{{ subasta.atributos_jugador.jugador.valor_mercado|agregar_separadores_miles }} €</span>
 						</td>
 
 						<!-- Precio subasta -->
 						<td class="precio_subasta">
-							<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.puja }} €</a>
+							<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.puja|agregar_separadores_miles }} €</a>
 						</td>
 
 						<!-- Precio compra -->
 						<td class="precio_compra">
 							{% if subasta.precio_compra %}
-								<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.precio_compra }} €</a>
+								<a href="/mercado/subastas/ver/{{ subasta.id }}">{{ subasta.precio_compra|agregar_separadores_miles }} €</a>
 							{% else %}
 								<a href="/mercado/subastas/ver/{{ subasta.id }}">Ninguno aún</a>
 							{% endif %}

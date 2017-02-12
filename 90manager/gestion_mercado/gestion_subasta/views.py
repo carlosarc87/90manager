@@ -24,6 +24,7 @@ Copyright 2017 by
 
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 
 from gestion_base.func import devolver_mensaje, generar_pagina, redireccionar
 from gestion_sistema.decorators import actualizar_liga, comprobar_sesion
@@ -37,6 +38,7 @@ from .models import Subasta
 @login_required
 @actualizar_liga
 @comprobar_sesion(['jugador_actual'])
+@transaction.atomic
 def crear_subasta(request):
     """ Crea una subasta de un jugador """
     usuario = request.user
@@ -84,7 +86,11 @@ def crear_subasta(request):
     else:
         form = SubastaForm(jugador)
 
-    d = {"form": form, "jugador": jugador, "duracion_liga": duracion_liga}
+    d = {
+        "form": form,
+        "jugador": jugador,
+        "duracion_liga": duracion_liga
+    }
 
     return generar_pagina(request, "juego/subastas/crear_subasta.html", d)
 
@@ -155,10 +161,12 @@ def ver_subasta(request):
         else:
             form = PujarForm(subasta, equipo_usuario)
 
-    d = {"equipo_usuario": equipo_usuario,
-         "subasta": subasta,
-         "form": form,
-         }
+    d = {
+        "equipo_usuario": equipo_usuario,
+        "subasta": subasta,
+        "form": form,
+    }
+
     return generar_pagina(request, "juego/subastas/ver_subasta.html", d)
 
 
@@ -177,10 +185,13 @@ def ver_subastas_equipo(request):
 
     subastas_comprador = equipo.subastas_como_comprador.all()
     subastas_vendedor = equipo.subastas_como_vendedor.all()
-    d = {"subastas_comprador": subastas_comprador,
-         "subastas_vendedor": subastas_vendedor,
-         "equipo": equipo,
-         }
+
+    d = {
+        "subastas_comprador": subastas_comprador,
+        "subastas_vendedor": subastas_vendedor,
+        "equipo": equipo,
+    }
+
     return generar_pagina(request, "juego/subastas/ver_subastas_equipo.html", d)
 
 
@@ -241,9 +252,11 @@ def mis_subastas(request):
         return devolver_mensaje(request, "La liga no esta activada y no hay mercado aún", 0)
 
     subastas = equipo.subastas_como_vendedor.all()
+
     d = {
         "subastas": subastas,
     }
+
     return generar_pagina(request, "juego/subastas/mis_subastas.html", d)
 
 
@@ -261,9 +274,11 @@ def mis_pujas(request):
         return devolver_mensaje(request, "La liga no esta activada y no hay mercado aún", 0)
 
     subastas = equipo.subastas_como_comprador.all()
+
     d = {
         "subastas": subastas,
     }
+
     return generar_pagina(request, "juego/subastas/mis_pujas.html", d)
 
 ########################################################################

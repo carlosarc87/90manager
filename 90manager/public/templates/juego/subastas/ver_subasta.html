@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load templatetags %}
 
 {% block css_extra %}
 	<link rel="stylesheet" href="/media/css/tablas.css" />
@@ -30,19 +31,19 @@
 				{% if subasta.comprador %}
 					<tr>
 						<td>Puja actual:</td>
-						<td>{{ subasta.puja }} € por {{ subasta.comprador.nombre }}</td>
+						<td>{{ subasta.puja|agregar_separadores_miles }} € por {{ subasta.comprador.nombre }}</td>
 					</tr>
 				{% else %}
 					<tr>
 						<td>Puja actual:</td>
-						<td>{{ subasta.puja }} €</td>
+						<td>{{ subasta.puja|agregar_separadores_miles }} €</td>
 					</tr>
 				{% endif %}
 
 				{% if subasta.precio_compra %}
 					<tr>
 						<td>Precio de compra directa:</td>
-						<td>{{ subasta.precio_compra }} €</td>
+						<td>{{ subasta.precio_compra|agregar_separadores_miles }} €</td>
 					</tr>
 				{% endif %}
 

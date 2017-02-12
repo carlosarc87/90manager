@@ -44,20 +44,6 @@ class Equipo(models.Model):
     dinero = models.IntegerField(default=0, validators=[MaxValueValidator(999999999999)])
 
     # Funciones
-    def pagar(self, cantidad):
-        """ Paga una cantidad al equipo """
-        self.dinero += cantidad
-        self.save()
-
-    def cobrar(self, cantidad):
-        """ Cobra una cantidad al equipo """
-        self.dinero -= cantidad
-        self.save()
-
-    def agregar_jugador(self, jugador):
-        """ Añade un jugador al equipo """
-        self.atributosvariablesjugador_set.add(jugador.atributos)
-
     def get_jugadores(self):
         """ Devuelve los jugadores del equipo """
         atributos = self.atributosvariablesjugador_set.all()
@@ -90,6 +76,15 @@ class Equipo(models.Model):
         else:
             return partidos.filter(jornada__lte=jornada)
 
+    def get_partidos_empatados(self, jornada, incluida=False):
+        """ Devuelve los partidos empatados hasta la jornada """
+
+        partidos = self.get_partidos_hasta_jornada(jornada, incluida)
+        partidos_jugados = partidos.filter(jugado=True)
+        partidos_empatados = partidos_jugados.filter(goles_local=F('goles_visitante'))
+
+        return partidos_empatados
+
     def get_partidos_ganados(self, jornada, incluida=False):
         """ Devuelve los partidos ganados hasta la jornada """
 
@@ -112,14 +107,19 @@ class Equipo(models.Model):
 
         return partidos_perdidos
 
-    def get_partidos_empatados(self, jornada, incluida=False):
-        """ Devuelve los partidos empatados hasta la jornada """
+    def agregar_jugador(self, jugador):
+        """ Añade un jugador al equipo """
+        self.atributosvariablesjugador_set.add(jugador.atributos)
 
-        partidos = self.get_partidos_hasta_jornada(jornada, incluida)
-        partidos_jugados = partidos.filter(jugado=True)
-        partidos_empatados = partidos_jugados.filter(goles_local=F('goles_visitante'))
+    def cobrar(self, cantidad):
+        """ Cobra una cantidad al equipo """
+        self.dinero -= cantidad
+        self.save()
 
-        return partidos_empatados
+    def pagar(self, cantidad):
+        """ Paga una cantidad al equipo """
+        self.dinero += cantidad
+        self.save()
 
     @transaction.atomic
     def generar_jugadores_aleatorios(self, sexo_permitido=0, num_jugadores_inicial=25, max_nivel=50):
@@ -129,31 +129,23 @@ class Equipo(models.Model):
         from datetime import timedelta
         from random import randint
 
-        hombres_participan = False
-        mujeres_participan = False
-
         edad_min = 18
         edad_max = 35
 
+        hombres_participan = sexo_permitido != 1
+        mujeres_participan = sexo_permitido > 0
+
+        # Cargar lista de nombres de jugadores según el sexo
         lista_nombres_hombres = None
         lista_nombres_mujeres = None
 
-        # Establecer variables dependiendo del sexo_permitido en la liga
-        if sexo_permitido == 0:  # Solo hombres
-            hombres_participan = True
+        if hombres_participan:
             lista_nombres_hombres = lista_nombres("nombres_hombres.txt")
 
-        elif sexo_permitido == 1:  # Solo mujeres
-            mujeres_participan = True
+        if mujeres_participan:
             lista_nombres_mujeres = lista_nombres("nombres_mujeres.txt")
 
-        else:  # Hombres y mujeres
-            hombres_participan = True
-            mujeres_participan = True
-            lista_nombres_hombres = lista_nombres("nombres_hombres.txt")
-            lista_nombres_mujeres = lista_nombres("nombres_mujeres.txt")
-
-        # Array con todos los apellidos obtenidos del fichero dado
+        # Cargar lista de apellidos de jugadores
         lista_apellidos = lista_nombres("apellidos.txt")
 
         # Generar jugadores
@@ -171,8 +163,8 @@ class Equipo(models.Model):
             # Establecer dorsal
             dorsal = j
 
-            # Obtener datos de hombre o mujer según si participan o no
-            if ((j % 2 == 0) and hombres_participan) or (mujeres_participan is False):
+            # Obtener aleatoriamente datos de hombre o mujer según si participan o no
+            if hombres_participan and randint(0, 1) == 0:
                 lista_nombres = lista_nombres_hombres
                 sexo = 'M'
             else:
@@ -186,10 +178,13 @@ class Equipo(models.Model):
 
             # Calcular datos de la edad del jugador
             fecha_ficticia_inicio = self.liga.fecha_ficticia_inicio.date()
-            fecha_nacimiento = fecha_ficticia_inicio - timedelta(randint(edad_min, edad_max) * 365) + timedelta(
-                randint(0, 364))
+            fecha_nacimiento = \
+                fecha_ficticia_inicio - \
+                timedelta(randint(edad_min, edad_max) * 365) + \
+                timedelta(randint(0, 364))
+
             edad = fecha_ficticia_inicio - fecha_nacimiento
-            anios = int(edad.days / 365)
+            anios = int(edad.days / 365.25)
 
             # Cada 2 años de diferencia con 28 se resta un punto al nivel máximo
             max_nivel_jug = max_nivel - int(abs(28 - anios) / 2)
@@ -207,7 +202,7 @@ class Equipo(models.Model):
             jugador.set_apariencia_aleatoria()
 
             # Guardar jugador
-            # jugador.atributos.save() ?
+            jugador.atributos.save()
             jugador.save()
 
             # Añadir jugador al equipo

@@ -6,290 +6,293 @@
 {% endblock %}
 
 {% block js_extra %}
-	<script>
-		var login = document.getElementById('login');
-		var recordar_clave = document.getElementById('recordar_clave');
-		var registro = document.getElementById('registro');
+    <script>
+        var login = document.getElementById('login');
+        var recordar_clave = document.getElementById('recordar_clave');
+        var registro = document.getElementById('registro');
 
-		fechaUltimaActualizacion = new Date(2017, 2, 11, 20, 0);
-		formato_tiempo = "%%D%% días, %%H%% horas, %%M%% minutos y %%S%% segundos.";
-		paso = +1;
-		paso = Math.ceil(paso); // Filtrico
+        // Nota: Los meses van de 0 - 11
+        fechaUltimaActualizacion = new Date(Date.UTC(2017, 1, 11, 0, 0, 0));
 
-		var timeout = (Math.abs(paso) - 1) * 1000 + 990;
-		var ahora = new Date();
-		dif = new Date(ahora - fechaUltimaActualizacion);
-		gsegs = Math.floor(dif.valueOf() / 1000);
-		
-		// Calcula el tiempo dependiendo de num1 y num2
-		function calcularTiempo(segundos, num1, num2) {
-			s = ((Math.floor(segundos / num1)) % num2).toString();
-			if (s.length < 2)
-				s = "0" + s;
-			return "<b>" + s + "</b>";
-		}
+        formato_tiempo = "%%D%% días, %%H%% horas, %%M%% minutos y %%S%% segundos.";
+        paso = +1;
+        paso = Math.ceil(paso); // Filtrico
 
-		// Actualiza el span con el texto
-		function contadorDesactualizado(segundos) {
-			if (segundos < 0) {
-				document.getElementById("contador_desactualizado").innerHTML = "¡Actualizado!";
-				return;
-			}
-			str_tiempo = formato_tiempo.replace(/%%D%%/g, calcularTiempo(segundos, 86400, 8640000));
-			str_tiempo = str_tiempo.replace(/%%H%%/g, calcularTiempo(segundos, 3600, 24));
-			str_tiempo = str_tiempo.replace(/%%M%%/g, calcularTiempo(segundos, 60, 60));
-			str_tiempo = str_tiempo.replace(/%%S%%/g, calcularTiempo(segundos, 1, 60));
+        var timeout = (Math.abs(paso) - 1) * 1000 + 990;
+        var ahora = new Date();
+        dif = ahora.getTime() - fechaUltimaActualizacion.getTime();
+        gsegs = Math.floor(dif.valueOf() / 1000);
 
-			document.getElementById("contador_desactualizado").innerHTML = "Esto lleva desactualizado " + str_tiempo;
+        // Calcula el tiempo dependiendo de num1 y num2
+        function calcularTiempo(segundos, num1, num2) {
+            s = ((Math.floor(segundos / num1)) % num2).toString();
+            if (s.length < 2)
+                s = "0" + s;
+            return "<b>" + s + "</b>";
+        }
 
-			setTimeout("contadorDesactualizado(" + (segundos + paso) + ")", timeout);
-		}
+        // Actualiza el span con el texto
+        function contadorDesactualizado(segundos) {
+            if (segundos < 0) {
+                document.getElementById("contador_desactualizado").innerHTML = "¡Actualizado!";
+                return;
+            }
 
-		function aleatorio(inferior, superior){
-			numPosibilidades = superior - inferior
-			aleat = Math.random() * numPosibilidades
-			aleat = Math.round(aleat)
-			return parseInt(inferior) + aleat
-		}
+            str_tiempo = formato_tiempo.replace(/%%D%%/g, calcularTiempo(segundos, 86400, 8640000));
+            str_tiempo = str_tiempo.replace(/%%H%%/g, calcularTiempo(segundos, 3600, 24));
+            str_tiempo = str_tiempo.replace(/%%M%%/g, calcularTiempo(segundos, 60, 60));
+            str_tiempo = str_tiempo.replace(/%%S%%/g, calcularTiempo(segundos, 1, 60));
 
-		var r_text = new Array ();
+            document.getElementById("contador_desactualizado").innerHTML = "Esto lleva desactualizado " + str_tiempo;
 
-		r_text.push("404 - Gracia not found.");
-		r_text.push("Ahora con más lechuga.");
-		r_text.push("Alt + F4 no activa los trucos.");
-		r_text.push("Chuck no está entre los nombres de jugadores.");
-		r_text.push("¡Con efectos especiales!");
-		r_text.push("¡Con jugadores tan famosos como Eufemio Teunuco Malvérez de la Fuente!");
-		r_text.push("¿Documentación? ¿Qué es eso?");
-		r_text.push("El 90 de 90manager es un secreto.");
-		r_text.push("El único proyecto de un juego de fútbol que puede aburrir a las masas en sus presentaciones.");
-		r_text.push("En 90manager todo es posible.");
-		r_text.push("En Abril, errores mil.");
-		r_text.push("En donde nunca sale el sol.");
-		r_text.push("En el mercado de transferibles no hay sangre para Pino.");
-		r_text.push("En la forja rediris no hay metal.");
-		r_text.push("¡Entra ya, tus jugadores te están esperando!");
-		r_text.push("Esto es un erasmus, un programador de videojuegos y un tío que sabe php y van y hacen una web en django...");
-		r_text.push("Esto no tendría gracia sin la aleatoriedad.");
-		r_text.push("¿Galletillas saladas?");
-		r_text.push("¡GOOOOOL!");
-		r_text.push("Hay webs que presumen que no van en Internet Explorer 6. En la nuestra ni hemos probado.");
-		r_text.push("Hoy hace buen día para jugar a 90manager");
-		r_text.push("¡HTML 5 POWER!");
-		r_text.push("¡Instalable con diskettes de 3'5!");
-		r_text.push("Juanmi se aburre mucho y crea estos mensajicos.");
-		r_text.push("Logro desbloqueado: Ver este mensaje.");
-		r_text.push("No tenemos los derechos de Crisóstomo Amaranto, pero tampoco hay derecho de que alguien se llame así.");
-		r_text.push("Programado a mano.");
-		r_text.push("Pulse [aquí] para recibir su fortuna.");
-		r_text.push("¡Qué ganas de que llegue el verano!");
-		r_text.push("Si ves algo sin validar correctamente, Carlos lo sabrá.");
-		r_text.push("Sí, nosotros también nos entretenemos clickando en esto.");
-		r_text.push("Tan sencillo como comerse un bocadillo.");
-		r_text.push("Tiene nombres mil... tiene nombres mil...");
+            setTimeout("contadorDesactualizado(" + (segundos + paso) + ")", timeout);
+        }
 
-		var num_mensajicos = r_text.length;
+        function aleatorio(inferior, superior){
+            numPosibilidades = superior - inferior
+            aleat = Math.random() * numPosibilidades
+            aleat = Math.round(aleat)
+            return parseInt(inferior) + aleat
+        }
 
-		function cargarMensajico(ele){
-			$(ele).fadeToggle(300, function(){
-				// Color del texto
-				r = aleatorio(0, 255);
-				g = 0;
-				b = aleatorio(0, 255);
+        var r_text = new Array ();
 
-				// Modificar color del texto
-				ele.style.color = "rgb(" + r + ", " + g + ", " + b + ")";
+        r_text.push("404 - Gracia not found.");
+        r_text.push("Ahora con más lechuga.");
+        r_text.push("Alt + F4 no activa los trucos.");
+        r_text.push("Chuck no está entre los nombres de jugadores.");
+        r_text.push("¡Con efectos especiales!");
+        r_text.push("¡Con jugadores tan famosos como Eufemio Teunuco Malvérez de la Fuente!");
+        r_text.push("¿Documentación? ¿Qué es eso?");
+        r_text.push("El 90 de 90manager es un secreto.");
+        r_text.push("El único proyecto de un juego de fútbol que puede aburrir a las masas en sus presentaciones.");
+        r_text.push("En 90manager todo es posible.");
+        r_text.push("En Abril, errores mil.");
+        r_text.push("En donde nunca sale el sol.");
+        r_text.push("En el mercado de transferibles no hay sangre para Pino.");
+        r_text.push("En la forja rediris no hay metal.");
+        r_text.push("¡Entra ya, tus jugadores te están esperando!");
+        r_text.push("Esto es un erasmus, un programador de videojuegos y un tío que sabe php y van y hacen una web en django...");
+        r_text.push("Esto no tendría gracia sin la aleatoriedad.");
+        r_text.push("¿Galletillas saladas?");
+        r_text.push("¡GOOOOOL!");
+        r_text.push("Hay webs que presumen que no van en Internet Explorer 6. En la nuestra ni hemos probado.");
+        r_text.push("Hoy hace buen día para jugar a 90manager");
+        r_text.push("¡HTML 5 POWER!");
+        r_text.push("¡Instalable con diskettes de 3'5!");
+        r_text.push("Juanmi se aburre mucho y crea estos mensajicos.");
+        r_text.push("Logro desbloqueado: Ver este mensaje.");
+        r_text.push("No tenemos los derechos de Crisóstomo Amaranto, pero tampoco hay derecho de que alguien se llame así.");
+        r_text.push("Programado a mano.");
+        r_text.push("Pulse [aquí] para recibir su fortuna.");
+        r_text.push("¡Qué ganas de que llegue el verano!");
+        r_text.push("Si ves algo sin validar correctamente, Carlos lo sabrá.");
+        r_text.push("Sí, nosotros también nos entretenemos clickando en esto.");
+        r_text.push("Tan sencillo como comerse un bocadillo.");
+        r_text.push("Tiene nombres mil... tiene nombres mil...");
 
-				// Imprimir un texto aleatorio de entre los disponibles
-				i = aleatorio(0, num_mensajicos - 1);
-				ele.innerHTML = r_text[i];
+        var num_mensajicos = r_text.length;
 
-				$(ele).fadeToggle(300, "linear");
-			})
-		}
+        function cargarMensajico(ele){
+            $(ele).fadeToggle(300, function(){
+                // Color del texto
+                r = aleatorio(0, 255);
+                g = 0;
+                b = aleatorio(0, 255);
 
-		// Al terminar de cargar la pagina cargar un mensajico
-		$(document).ready(function(){
-			cargarMensajico(document.getElementById("mensajico"));
-			contadorDesactualizado(gsegs);
-			
-			{% if form_reg.errors %}
-				mostrarRegistro();
-			{% endif %}
-		});
+                // Modificar color del texto
+                ele.style.color = "rgb(" + r + ", " + g + ", " + b + ")";
 
-		/* Muestra la caja de login */
-		function mostrarLogin(){
-			$(recordar_clave).hide();
-			$(registro).hide();
-			$(login).fadeIn(300, "linear");
-		}
+                // Imprimir un texto aleatorio de entre los disponibles
+                i = aleatorio(0, num_mensajicos - 1);
+                ele.innerHTML = r_text[i];
 
-		/* Muestra la caja de recordar clave */
-		function mostrarRecordarClave(){
-			$(login).hide();
-			$(registro).hide();
-			$(recordar_clave).fadeIn(300, "linear");
-		}
+                $(ele).fadeToggle(300, "linear");
+            })
+        }
 
-		/* Muestra la caja de registro */
-		function mostrarRegistro(){
-			$(login).hide();
-			$(recordar_clave).hide();
-			$(registro).fadeIn(300, "linear");
-		}
-	</script>
+        /* Muestra la caja de login */
+        function mostrarLogin(){
+            $(recordar_clave).hide();
+            $(registro).hide();
+            $(login).fadeIn(300, "linear");
+        }
+
+        /* Muestra la caja de recordar clave */
+        function mostrarRecordarClave(){
+            $(login).hide();
+            $(registro).hide();
+            $(recordar_clave).fadeIn(300, "linear");
+        }
+
+        /* Muestra la caja de registro */
+        function mostrarRegistro(){
+            $(login).hide();
+            $(recordar_clave).hide();
+            $(registro).fadeIn(300, "linear");
+        }
+
+        // Al terminar de cargar la pagina cargar un mensajico
+        $(document).ready(function(){
+            cargarMensajico(document.getElementById("mensajico"));
+            contadorDesactualizado(gsegs);
+
+            {% if form_reg.errors %}
+                mostrarRegistro();
+            {% endif %}
+        });
+    </script>
 {% endblock %}
 
 {% block cabecera %}
 {% endblock %}
 
 {% block contenido %}
-	<!-- Logo -->
-	<a href="/">
-		<img src="/media/img/logoAlter.png" id="logo_90manager" alt="90manager" title="Ir a la página principal" height="176" width="388" />
-	</a>
+    <!-- Logo -->
+    <a href="/">
+        <img src="/media/img/logoAlter.png" id="logo_90manager" alt="90manager" title="Ir a la página principal" height="176" width="388" />
+    </a>
 
-	<!-- Descripcion -->
-	<p id="descripcion">
-		Juego multijugador donde puedes ser entrenador y presidente de un equipo de fútbol
-	</p>
+    <!-- Descripcion -->
+    <p id="descripcion">
+        Juego multijugador donde puedes ser entrenador y presidente de un equipo de fútbol
+    </p>
 
-	<div id="div_acceso">
-		<div id="login">
-			{% if login_error %}
-				<p class="texto_error">{{ login_error }}</p>
-			{% endif %}
+    <div id="div_acceso">
+        <div id="login">
+            {% if login_error %}
+                <p class="texto_error">{{ login_error }}</p>
+            {% endif %}
 
-			<form class="form1" action="/" method="post">
-				{% csrf_token %}
-				<ul id="datos_login">
-					<li>
-						<label for="nombre_usuario_login" class="col1">Usuario</label>
-						<input type="text" name="login_username" id="nombre_usuario_login" value="" maxlength="50" tabindex="1" required />
-					</li>
-					<li>
-						<label for="clave_login" class="col1">Contraseña</label>
-						<input type="password" name="login_password" id="clave_login" value="" maxlength="50" tabindex="2" required />
-					</li>
-					<li>
-						<div class="col1"></div>
-						<input type="submit" name="login" id="entrar_login" value="Entrar" tabindex="3" />
-					</li>
-					<li>
-						<div class="col1">
-							<a href="#" id="enlace_login_registro" onclick="mostrarRegistro();" tabindex="4">Registro</a>
-						</div>
-						<a href="#" id="enlace_login_recordar_clave" onclick="mostrarRecordarClave();" tabindex="5">Recordar contraseña</a>
-					</li>
-				</ul>
-			</form>
-		</div>
+            <form class="form1" action="/" method="post">
+                {% csrf_token %}
+                <ul id="datos_login">
+                    <li>
+                        <label for="nombre_usuario_login" class="col1">Usuario</label>
+                        <input type="text" name="login_username" id="nombre_usuario_login" value="" maxlength="50" tabindex="1" required />
+                    </li>
+                    <li>
+                        <label for="clave_login" class="col1">Contraseña</label>
+                        <input type="password" name="login_password" id="clave_login" value="" maxlength="50" tabindex="2" required />
+                    </li>
+                    <li>
+                        <div class="col1"></div>
+                        <input type="submit" name="login" id="entrar_login" value="Entrar" tabindex="3" />
+                    </li>
+                    <li>
+                        <div class="col1">
+                            <a href="#" id="enlace_login_registro" onclick="mostrarRegistro();" tabindex="4">Registro</a>
+                        </div>
+                        <a href="#" id="enlace_login_recordar_clave" onclick="mostrarRecordarClave();" tabindex="5">Recordar contraseña</a>
+                    </li>
+                </ul>
+            </form>
+        </div>
 
-		<div id="registro">
-			<form class="form1" action="/" method="post">
-				<p>Regístrate en 90 manager en unos segundos</p>
-				
-				{% csrf_token %}
+        <div id="registro">
+            <form class="form1" action="/" method="post">
+                <p>Regístrate en 90 manager en unos segundos</p>
 
-				<ul id="datos_registro">
-					{% if form_reg.username.errors %}
-						{{ form_reg.username.errors }}
-					{% endif %}
+                {% csrf_token %}
 
-					<!-- Usuario -->
-					<li>
-						<label for="nombre_usuario_registro">Nombre de usuario:</label>
-						<div id="caja_usuario_reg">
-							<input type="text" name="username" id="nombre_usuario_registro" value="" maxlength="50" tabindex="1" required autocomplete="off" />
-						</div>
-					</li>
+                <ul id="datos_registro">
+                    {% if form_reg.username.errors %}
+                        {{ form_reg.username.errors }}
+                    {% endif %}
 
-					{% if form_reg.password.errors %}
-						{{ form_reg.password.errors }}
-					{% endif %}
+                    <!-- Usuario -->
+                    <li>
+                        <label for="nombre_usuario_registro">Nombre de usuario:</label>
+                        <div id="caja_usuario_reg">
+                            <input type="text" name="username" id="nombre_usuario_registro" value="" maxlength="50" tabindex="1" required autocomplete="off" />
+                        </div>
+                    </li>
 
-					<!-- Contrasena -->
-					<li>
-						<label for="clave_registro">Contraseña:</label>
-						<div id="caja_clave_registro">
-							<input type="password" name="password" id="clave_registro" value="" maxlength="50" tabindex="2" required autocomplete="off" />
-						</div>
-					</li>
+                    {% if form_reg.password.errors %}
+                        {{ form_reg.password.errors }}
+                    {% endif %}
 
-					{% if form_reg.email.errors %}
-						{{ form_reg.email.errors }}
-					{% endif %}
+                    <!-- Contrasena -->
+                    <li>
+                        <label for="clave_registro">Contraseña:</label>
+                        <div id="caja_clave_registro">
+                            <input type="password" name="password" id="clave_registro" value="" maxlength="50" tabindex="2" required autocomplete="off" />
+                        </div>
+                    </li>
 
-					<!-- E-mail -->
-					<li>
-						<label for="email_registro">E-Mail:</label>
-						<div id="caja_email_registro">
-							<input type="email" name="email" id="email_registro" value="" maxlength="100" tabindex="3" required autocomplete="off" />
-						</div>
-					</li>
-					
-					
-				</ul>
+                    {% if form_reg.email.errors %}
+                        {{ form_reg.email.errors }}
+                    {% endif %}
 
-				<p>Todos los campos son obligatorios</p>
+                    <!-- E-mail -->
+                    <li>
+                        <label for="email_registro">E-Mail:</label>
+                        <div id="caja_email_registro">
+                            <input type="email" name="email" id="email_registro" value="" maxlength="100" tabindex="3" required autocomplete="off" />
+                        </div>
+                    </li>
 
-				<!-- Condiciones de uso -->
-				<p>Registrándome acepto las <a href="/condiciones/" onclick="this.target='_blank'">condiciones de uso</a>.</p>
 
-				<!-- Boton registrar -->
-				<div>
-					<input type="submit" name="registrar_usuario" id="boton_registro" value="Registrar" tabindex="4" />
-				</div>
-				
-				<div class="clear"></div>
-			</form>
-			
-			<!-- Login -->
-			<div class="volver_login">
-				<button onclick="mostrarLogin();">Volver a Login</button>
-			</div>
-		</div>
-		
-		<div id="recordar_clave">
-			{% if recordar_clave_error %}
-				<p class="texto_error">{{ recordar_clave_error }}</p>
-			{% endif %}
+                </ul>
 
-			<form class="form1" action="/" method="post">
-				<p>Introduce el e-mail al que enviar el correo de recuperación de contraseña</p>
-				
-				{% csrf_token %}
-				<ul id="datos_recordar_clave">
-					<!-- E-mail -->
-					<li>
-						<label for="email_recordar_clave">E-Mail:</label>
-						<div id="caja_email_recordar_clave">
-							<input type="email" name="email" id="email_recordar_clave" value="" maxlength="100" tabindex="1" required autocomplete="off" />
-						</div>
-					</li>
+                <p>Todos los campos son obligatorios</p>
 
-					<!-- Boton entrar -->
-					<li>
-						<input type="submit" name="enviar_clave" id="boton_enviar_clave" value="Aceptar" tabindex="2" />
-					</li>
-				</ul>
-				
-				<div class="clear"></div>
-			</form>
-			
-			<!-- Login -->
-			<div class="volver_login">
-				<button onclick="mostrarLogin();">Volver a Login</button>
-			</div>
-		</div>
-	</div>
+                <!-- Condiciones de uso -->
+                <p>Registrándome acepto las <a href="/condiciones/" onclick="this.target='_blank'">condiciones de uso</a>.</p>
 
-	<!-- Usuarios registrados -->
-	<p id="usuarios_registrados">{{ usuarios_registrados }} usuarios registrados</p>
+                <!-- Boton registrar -->
+                <div>
+                    <input type="submit" name="registrar_usuario" id="boton_registro" value="Registrar" tabindex="4" />
+                </div>
 
-	<!-- Mensajitos -->
-	<p id="caja_mensajico">
-		<span id="mensajico" onclick="cargarMensajico(this)"></span>
-	</p>
+                <div class="clear"></div>
+            </form>
+
+            <!-- Login -->
+            <div class="volver_login">
+                <button onclick="mostrarLogin();">Volver a Login</button>
+            </div>
+        </div>
+
+        <div id="recordar_clave">
+            {% if recordar_clave_error %}
+                <p class="texto_error">{{ recordar_clave_error }}</p>
+            {% endif %}
+
+            <form class="form1" action="/" method="post">
+                <p>Introduce el e-mail al que enviar el correo de recuperación de contraseña</p>
+
+                {% csrf_token %}
+                <ul id="datos_recordar_clave">
+                    <!-- E-mail -->
+                    <li>
+                        <label for="email_recordar_clave">E-Mail:</label>
+                        <div id="caja_email_recordar_clave">
+                            <input type="email" name="email" id="email_recordar_clave" value="" maxlength="100" tabindex="1" required autocomplete="off" />
+                        </div>
+                    </li>
+
+                    <!-- Boton entrar -->
+                    <li>
+                        <input type="submit" name="enviar_clave" id="boton_enviar_clave" value="Aceptar" tabindex="2" />
+                    </li>
+                </ul>
+
+                <div class="clear"></div>
+            </form>
+
+            <!-- Login -->
+            <div class="volver_login">
+                <button onclick="mostrarLogin();">Volver a Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Usuarios conectados jugando -->
+    <p id="usuarios_registrados">{{ usuarios_conectados }} usuarios jugando de {{ usuarios_registrados }} registrados</p>
+
+    <!-- Mensajitos -->
+    <p id="caja_mensajico">
+        <span id="mensajico" onclick="cargarMensajico(this)"></span>
+    </p>
 {% endblock %}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load templatetags %}
 
 {% block css_extra %}
     <link rel="stylesheet" href="/media/css/tablas.css" />
@@ -6,7 +7,6 @@
 {% endblock %}
 
 {% block contenido %}
-
     <h2>{{ jugador.apodo }}</h2>
 
     <!-- Subasta -->
@@ -102,7 +102,7 @@
                     <div><strong>Valor</strong></div>
 
                     <div id="valor_mercado_datos_personales">
-                        {{ valor_mercado }} &euro;
+                        {{ valor_mercado|agregar_separadores_miles }} &euro;
                     </div>
                 </section>
             </section>

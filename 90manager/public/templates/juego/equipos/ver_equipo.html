@@ -5,112 +5,107 @@
     <link rel="stylesheet" href="/media/css/juego/equipos/ver_equipo.css" />
 {% endblock %}
 
-{% block situacion %}
-	<ul id="menu_superior_situacion">
-		<li><a href="/ligas/ver/{{ liga.id }}/">{{ liga.nombre }}</a></li>
-		<li>{{ equipo.nombre }}</li>
-	</ul>
-{% endblock %}
-
 {% block contenido %}
-	<h2>{{ equipo.nombre }}</h2>
+    {% load templatetags %}
 
-	{% if liga_actual.activada %}
-		<div id="contenido_boton_jugadores_subasta">
-			<button onclick="location.href='/mercado/subastas/ver/equipo/'">Ver jugadores en subasta</button>
-		</div>
-	{% endif %}
+    <h2>{{ equipo.nombre }}</h2>
 
-	<table class="tabla1" id="tabla_datos_equipo">
-		<caption>Datos del equipo</caption>
-		<tbody>
-			{% if jugadores %}
-				<!-- Edad media del equipo -->
-				<tr>
-					<th>Edad media del equipo</th>
-					<td>{{ edad_media_equipo }} años</td>
-				</tr>
-				<!-- Nivel medio del equipo -->
-				<tr>
-					<th>Nivel medio del equipo</th>
-					<td>{{ nivel_medio_equipo }}</td>
-				</tr>
-			{% endif %}
-			
-			<!-- Valor del equipo -->
-			<tr>
-				<th>Valor del equipo</th>
-				<td>{{ valor_equipo }} &euro;</td>
-			</tr>
-			<!-- Dinero actual -->
-			<tr>
-				<th>Dinero actual</th>
-				<td>{{ dinero_equipo }} &euro;</td>
-			</tr>
-		</tbody>
-	</table>
-	
-	<!-- Tabla jugadores -->
-	<table class="tabla1" id="tabla_jugadores">
-		<caption>Jugadores</caption>
-		{% if jugadores %}
-			<thead>
-				<tr>
-					<td>Num.</td>
-					<td>Mejor posición</td>
-					<td>Nombre</td>
-					<td>Edad (años)</td>
-					<td>Valor (&euro;)</td>
-					<td>Nivel</td>
-				</tr>
-			</thead>
-			<tbody>
-				{% for jugador in jugadores %}
-					<tr>
-						<td class="col_numero_jug">{{ jugador.atributos.numero }}</td>
-						<td class="col_mejorPosicion_jug">{{ jugador.mejor_posicion }}</td>
-						<td class="col_nombre_jug"><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></td>
-						<td class="col_edad_jug">{{ jugador.anios }}</td>
-						<td class="col_valorMercado_jug">{{ jugador.valor_mercado }}</td>
-						<td class="col_nivel_jug">{{ jugador.nivel }}</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		{% else %}
-			<tr>
-				<th>Este equipo no tiene jugadores</th>
-			</tr>
-		{% endif %}
-	</table>
+    {% if liga_actual.activada %}
+        <div id="contenido_boton_jugadores_subasta">
+            <button onclick="location.href='/mercado/subastas/ver/equipo/'">Ver jugadores en subasta</button>
+        </div>
+    {% endif %}
 
-	<!-- Tabla cuentas -->
-	<table class="tabla1" id="tabla_cuentas">
-		<caption>Cuentas</caption>
-		{% if historial_cuentas %}
-			<thead>
-				<tr>
-					<td>Fecha</td>
-					<td>Tipo</td>
-					<td>Beneficios</td>
-					<td>Dinero total</td>
-				</tr>
-			</thead>
-			<tbody>
-				{% for cuenta in historial_cuentas %}
-					<tr>
-						<td class="cuadro_num_azul_der">{{ jugador.numero }}</td>
-						<td>{{ jugador.mejor_posicion }}</td>
-						<td><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></td>
-						<td class="cuadro_num_azul_der">{{ jugador.valor_mercado }}</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		{% else %}
-			<tbody>
-				<tr>
-					<th>Aún no hay historial de cuentas</th>
-				</tr>
-			</tbody>
-		{% endif %}
-	</table>
+    <table class="tabla1" id="tabla_datos_equipo">
+        <caption>Datos del equipo</caption>
+        <tbody>
+            {% if jugadores %}
+                <!-- Edad media del equipo -->
+                <tr>
+                    <th>Edad media del equipo</th>
+                    <td>{{ edad_media_equipo }} años</td>
+                </tr>
+                <!-- Nivel medio del equipo -->
+                <tr>
+                    <th>Nivel medio del equipo</th>
+                    <td>{{ nivel_medio_equipo }}</td>
+                </tr>
+            {% endif %}
+
+            <!-- Valor del equipo -->
+            <tr>
+                <th>Valor del equipo</th>
+                <td>{{ valor_equipo|agregar_separadores_miles }} &euro;</td>
+            </tr>
+            <!-- Dinero actual -->
+            <tr>
+                <th>Dinero actual</th>
+                <td>{{ dinero_equipo|agregar_separadores_miles }} &euro;</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Tabla jugadores -->
+    <table class="tabla1" id="tabla_jugadores">
+        <caption>Jugadores</caption>
+        {% if jugadores %}
+            <thead>
+                <tr>
+                    <td>Num.</td>
+                    <td>Mejor posición</td>
+                    <td>Nombre</td>
+                    <td>Edad (años)</td>
+                    <td>Valor (&euro;)</td>
+                    <td>Nivel</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for jugador in jugadores %}
+                    <tr>
+                        <td class="col_numero_jug">{{ jugador.atributos.numero }}</td>
+                        <td class="col_mejorPosicion_jug">{{ jugador.mejor_posicion }}</td>
+                        <td class="col_nombre_jug"><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></td>
+                        <td class="col_edad_jug">{{ jugador.anios }}</td>
+                        <td class="col_valorMercado_jug">{{ jugador.valor_mercado|agregar_separadores_miles }}</td>
+                        <td class="col_nivel_jug">{{ jugador.nivel }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        {% else %}
+            <tr>
+                <th>Este equipo no tiene jugadores</th>
+            </tr>
+        {% endif %}
+    </table>
+
+    <!-- Tabla cuentas -->
+    <table class="tabla1" id="tabla_cuentas">
+        <caption>Cuentas</caption>
+        {% if historial_cuentas %}
+            <thead>
+                <tr>
+                    <td>Fecha</td>
+                    <td>Tipo</td>
+                    <td>Beneficios</td>
+                    <td>Dinero total</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cuenta in historial_cuentas %}
+                    <tr>
+                        <td class="cuadro_num_azul_der">{{ jugador.numero }}</td>
+                        <td>{{ jugador.mejor_posicion }}</td>
+                        <td><a href="/jugadores/ver/{{ jugador.id }}/">{{ jugador.nombre }}</a></td>
+                        <td class="cuadro_num_azul_der">{{ jugador.valor_mercado|agregar_separadores_miles }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        {% else %}
+            <tbody>
+                <tr>
+                    <th>Aún no hay historial de cuentas</th>
+                </tr>
+            </tbody>
+        {% endif %}
+    </table>
 {% endblock %}

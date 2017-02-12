@@ -447,8 +447,10 @@ class Partido(Evento):
 
     jugado = models.BooleanField(default=False)
 
+    @transaction.atomic
     def __init__(self, *args, **kwargs):
         super(Partido, self).__init__(*args, **kwargs)
+
         if not self.alineacion_local_id:
             self.alineacion_local = AlineacionEquipo(equipo=self.equipo_local)
             self.alineacion_visitante = AlineacionEquipo(equipo=self.equipo_visitante)

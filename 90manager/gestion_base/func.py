@@ -51,7 +51,7 @@ def devolver_mensaje(request, mensaje, tipo=0, url_salida=None):
 
 ########################################################################
 
-def generar_pagina(request, template, parametros=None, agregar_parametros=True):
+def generar_pagina(request, template_name, parametros=None, agregar_parametros=True):
     """ Genera una pagina web con los templates añadiendo unos parámetros por defecto """
     if parametros is None:
         parametros = {}
@@ -79,13 +79,7 @@ def generar_pagina(request, template, parametros=None, agregar_parametros=True):
 
             parametros['num_notificaciones'] = notificaciones.count()
 
-    return render(request, template, parametros)
-
-
-########################################################################
-
-def agregar_separadores_miles(dato):
-    return "{:,}".format(dato).replace(',', '.')
+    return render(request, template_name, parametros)
 
 
 ########################################################################

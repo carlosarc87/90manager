@@ -250,6 +250,7 @@ def ver_liga_id(request, liga_id):
 ########################################################################
 
 @login_required
+@transaction.atomic
 def crear_liga(request):
     """ Muestra y gestiona el formulario para crear una liga """
     usuario = request.user

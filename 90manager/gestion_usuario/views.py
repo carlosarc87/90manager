@@ -29,10 +29,12 @@ import random
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
+from django.db import transaction
 from django.shortcuts import render
 
 from gestion_base.func import devolver_mensaje, generar_pagina, redireccionar
 from gestion_sistema.gestion_liga.models import Liga
+from gestion_usuario.func import get_usuarios_conectados
 from settings import URL_PROPIA, vper
 
 from .forms import UsuarioForm
@@ -41,6 +43,7 @@ from .models import ClaveRegistroUsuario, Usuario
 
 ########################################################################
 
+@transaction.atomic
 def principal(request):
     """ Página principal del sistema """
     # Si el usuario está logeado
@@ -49,6 +52,9 @@ def principal(request):
 
     # Obtener número de usuarios registrados
     usuarios_registrados = Usuario.objects.count()
+
+    # Obtener número de usuarios conectados
+    usuarios_conectados = get_usuarios_conectados().count()
 
     # Formulario de registro
     form_reg = ""
@@ -71,6 +77,7 @@ def principal(request):
         # Formulario de registro
         else:
             form_reg = UsuarioForm(request.POST)
+
             if form_reg.is_valid():
                 # Solucion para los problemas de la password
                 usuario = form_reg.save(commit=False)
@@ -110,11 +117,14 @@ def principal(request):
     else:
         form_reg = UsuarioForm()
 
-    return render(request, "web/principal.html", {
+    d = {
         "form_reg": form_reg,
         "usuarios_registrados": usuarios_registrados,
+        "usuarios_conectados": usuarios_conectados,
         "login_error": login_error
-    })
+    }
+
+    return render(request, "web/principal.html", d)
 
 
 ########################################################################

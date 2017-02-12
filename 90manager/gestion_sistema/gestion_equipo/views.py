@@ -24,9 +24,9 @@ Copyright 2017 by
 
 # Vistas del sistema
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 
-from gestion_base.func import (agregar_separadores_miles, devolver_mensaje,
-                               generar_pagina, quitar_acentos, redireccionar)
+from gestion_base.func import (devolver_mensaje, generar_pagina, quitar_acentos, redireccionar)
 from gestion_sistema.decorators import actualizar_liga, comprobar_sesion
 
 from .forms import EquipoForm
@@ -92,8 +92,8 @@ def ver_equipo(request):
     # Obtenemos la liga
     liga = equipo.liga
 
-    dinero_equipo = agregar_separadores_miles(equipo.dinero)
-    valor_equipo = agregar_separadores_miles(valor_equipo)
+    dinero_equipo = equipo.dinero
+    valor_equipo = valor_equipo
 
     d = {
         "usuario": usuario,
@@ -105,6 +105,7 @@ def ver_equipo(request):
         "edad_media_equipo": edad_media_equipo,
         "nivel_medio_equipo": nivel_medio_equipo
     }
+
     return generar_pagina(request, "juego/equipos/ver_equipo.html", d)
 
 
@@ -147,14 +148,16 @@ def ver_equipo_propio(request):
     # Obtenemos la liga
     liga = equipo.liga
 
-    d = {"usuario": usuario,
-         "liga": liga,
-         "equipo": equipo,
-         "jugadores": jugadores,
-         "valor_equipo": valor_equipo,
-         "edad_media_equipo": edad_media_equipo,
-         "nivel_medio_equipo": nivel_medio_equipo
-         }
+    d = {
+        "usuario": usuario,
+        "liga": liga,
+        "equipo": equipo,
+        "jugadores": jugadores,
+        "valor_equipo": valor_equipo,
+        "edad_media_equipo": edad_media_equipo,
+        "nivel_medio_equipo": nivel_medio_equipo
+    }
+
     return generar_pagina(request, "juego/equipos/ver_equipo.html", d)
 
 
@@ -163,6 +166,7 @@ def ver_equipo_propio(request):
 @login_required
 @actualizar_liga
 @comprobar_sesion(['liga_actual'])
+@transaction.atomic
 def crear_equipo(request):
     from gestion_sistema.gestion_equipo.func import obtener_nombre_y_siglas_aleatorio
 
@@ -196,7 +200,14 @@ def crear_equipo(request):
 
     nombre_aleatorio, siglas = obtener_nombre_y_siglas_aleatorio(liga)
 
-    d = {"form": form, "usuario": usuario, "liga": liga, "nombre_aleatorio": nombre_aleatorio, "siglas": siglas}
+    d = {
+        "form": form,
+        "usuario": usuario,
+        "liga": liga,
+        "nombre_aleatorio": nombre_aleatorio,
+        "siglas": siglas
+    }
+
     return generar_pagina(request, "juego/equipos/crear_equipo.html", d)
 
 
@@ -224,6 +235,7 @@ def listar_equipos_liga(request):
         "activada": activada,
         "equipo_propio": equipo_propio,
     }
+
     return generar_pagina(request, "juego/equipos/listar_liga.html", d)
 
 ########################################################################
