@@ -164,7 +164,7 @@ class Equipo(models.Model):
             dorsal = j
 
             # Obtener aleatoriamente datos de hombre o mujer según si participan o no
-            if hombres_participan and randint(0, 1) == 0:
+            if mujeres_participan is False or (hombres_participan and randint(0, 1) == 0):
                 lista_nombres = lista_nombres_hombres
                 sexo = 'M'
             else:

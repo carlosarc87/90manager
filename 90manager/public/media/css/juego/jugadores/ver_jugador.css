@@ -23,7 +23,7 @@
 	font-size: .9em;
 	padding: 10px;
 	margin: 20px auto;
-	width: 400px;
+	width: 440px;
 }
 
 #datos_personales{
@@ -107,20 +107,32 @@
 	top: 3px;
 }
 
-/* FIN FOTO */
+/* Datos extra */
 
 #tabla_datos{
 	margin: 20px auto;
-	width: 300px;
+	width: 250px;
+}
+
+#tabla_datos td:nth-child(2){
+	text-align: right;
+}
+
+/* Habilidades */
+
+#seccion_habilidades{
+    display: flex;
+    justify-content: center;
+	margin: 20px 0;
 }
 
 #tabla_habilidades_juego{
-	margin: 20px auto;
+	margin: 0 20px 0 0;
 	width: 400px;
 }
 
 #tabla_habilidades_mentales{
-	margin: 20px auto;
+	margin: 0;
 	width: 400px;
 }
 

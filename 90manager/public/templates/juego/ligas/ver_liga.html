@@ -1,191 +1,192 @@
 {% extends "base.html" %}
 
 {% block css_extra %}
-	<link rel="stylesheet" href="/media/css/jquery.datetimepicker.min.css" />
-	<link rel="stylesheet" href="/media/css/formularios.css" />
-	<link rel="stylesheet" href="/media/css/tablas.css" />
-	<link rel="stylesheet" href="/media/css/juego/ligas/ver_liga.css" />
+    <link rel="stylesheet" href="/media/css/jquery.datetimepicker.min.css" />
+    <link rel="stylesheet" href="/media/css/formularios.css" />
+    <link rel="stylesheet" href="/media/css/tablas.css" />
+    <link rel="stylesheet" href="/media/css/juego/ligas/ver_liga.css" />
 {% endblock %}
 
 {% block js_extra %}
-	<script src="/media/js/jquery.datetimepicker.full.min.js"></script>
-	
-	<script>
-		$(document).ready(function() {
-			$("#id_fecha_nueva").datetimepicker({
-				lang: 'es',
-				format: 'd/m/Y H:i',
-				dayOfWeekStart: 1,
-				defaultDate: new Date("{{ fecha_hora_liga.isoformat }}"),
-				startDate: new Date("{{ fecha_hora_liga.isoformat }}"),
-			});
-			
-			$.datetimepicker.setLocale('es');
-		});
-	</script>
+    <script src="/media/js/jquery.datetimepicker.full.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#id_fecha_nueva").datetimepicker({
+                lang: 'es',
+                format: 'd/m/Y H:i',
+                dayOfWeekStart: 1,
+                defaultDate: new Date("{{ fecha_hora_liga.isoformat }}"),
+                startDate: new Date("{{ fecha_hora_liga.isoformat }}"),
+            });
+
+            $.datetimepicker.setLocale('es');
+        });
+    </script>
 {% endblock %}
 
 {% block contenido %}
-	<h2>Liga "{{ liga.nombre }}"</h2>
+    <h2>Liga "{{ liga.nombre }}"</h2>
 
-	{% if activada %}
-		<section id="seccion_avanzar_tiempo">
-			{% if jornada_actual %}
-				{% if es_creador %}
-					<form class="form1" id="form_ver_liga" action="/ligas/ver/" method="post">
-						{% csrf_token %}
-						
-						<p>Avanzar tiempo</p>
+    {% if activada %}
+        <!-- Cuadro de equipos -->
+        <section id="seccion_equipos">
+            <p><strong>Equipos</strong></p>
 
-						{{ form_fecha.as_p }}
-						<!-- Boton crear -->
-						<div id="contenido_boton_crear">
-							<input type="submit" value="Cambiar" />
-						</div>
-					</form>
-				{% endif %}
-			{% else %}
-				<p class="info">
-					<span>LIGA FINALIZADA</span>
-				</p>
-			{% endif %}
-		</section>
-		
-		<!-- Cuadro de equipos -->
-		<section id="seccion_equipos">
-			<p><strong>Equipos</strong></p>
-			
-			{% if equipos %}
-				<ul id="cuadro_equipos">
-					{% for equipo in equipos %}
-						<li>
-							<a href="/equipos/ver/{{ equipo.id }}/" class="
-								{% if equipo_propio.nombre == equipo.nombre %}
-									equipo linea_equipo_propio
-								{% else %}
-									equipo
-								{% endif %}" title="{{ equipo.nombre }}">{{ equipo.siglas }}</a>
-						</li>
-					{% endfor %}
-				</ul>
-			{% else %}
-				<p class="info"><span>Aún no se ha añadido ningún equipo a la liga</span></p>
-			{% endif %}
-		</section>
+            {% if equipos %}
+                <ul id="cuadro_equipos">
+                    {% for equipo in equipos %}
+                        <li>
+                            <a href="/equipos/ver/{{ equipo.id }}/" class="
+                                {% if equipo_propio.nombre == equipo.nombre %}
+                                    equipo linea_equipo_propio
+                                {% else %}
+                                    equipo
+                                {% endif %}" title="{{ equipo.nombre }}">{{ equipo.siglas }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="info"><span>Aún no se ha añadido ningún equipo a la liga</span></p>
+            {% endif %}
+        </section>
 
-		<section id="seccion_clasificacion_y_resultados">
-			<!-- Partidos de la jornada actual -->
-			<section id="seccion_partidos_jornada_actual">
-				<table class="tabla1" id="tabla_partidos_jornada_actual">
-					<caption>Jornada 
-						{% if jornada_actual %}
-							{{ jornada_actual.numero }}
-						{% else %}
-							{{ jornada_anterior.numero }}
-						{% endif %}</caption>
-					<tbody>
-						{% for partido_jornada_actual in partidos_jornada_actual %}
-							<tr>
-								<th colspan="3">
-									{{ partido_jornada_actual.fecha_inicio }}
-								</th>
-							</tr>
-							<tr>
-								<td>
-									<a href="/equipos/ver/{{ partido_jornada_actual.equipo_local.id }}/">{{ partido_jornada_actual.equipo_local.nombre }}</a>
-								</td>
-								<td>
-									<a href="/partidos/ver/{{ partido_jornada_actual.id }}/">
-										{% if partido_jornada_actual.jugado %}
-											{{ partido_jornada_actual.goles_local }} - {{ partido_jornada_actual.goles_visitante }}
-										{% else %}
-											-
-										{% endif %}
-									</a>
-								</td>
-								<td>
-									<a href="/equipos/ver/{{ partido_jornada_actual.equipo_visitante.id }}/">{{ partido_jornada_actual.equipo_visitante.nombre }}</a>
-								</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</section>
-			
-			<!-- Clasificación de la jornada actual -->
-			<section id="seccion_clasificacion">
-				<table class="tabla1" id="tabla_clasificacion">
-					<caption>Clasificación</caption>
+        <section id="seccion_clasificacion_y_resultados">
+            <!-- Partidos de la jornada actual -->
+            <section id="seccion_partidos_jornada_actual">
+                <table class="tabla1" id="tabla_partidos_jornada_actual">
+                    <caption>Jornada
+                        {% if jornada_actual %}
+                            {{ jornada_actual.numero }}
+                        {% else %}
+                            {{ jornada_anterior.numero }}
+                        {% endif %}</caption>
+                    <tbody>
+                        {% for partido_jornada_actual in partidos_jornada_actual %}
+                            <tr>
+                                <th colspan="3">
+                                    {{ partido_jornada_actual.fecha_inicio }}
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="/equipos/ver/{{ partido_jornada_actual.equipo_local.id }}/">{{ partido_jornada_actual.equipo_local.nombre }}</a>
+                                </td>
+                                <td>
+                                    <a href="/partidos/ver/{{ partido_jornada_actual.id }}/">
+                                        {% if partido_jornada_actual.jugado %}
+                                            {{ partido_jornada_actual.goles_local }} - {{ partido_jornada_actual.goles_visitante }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/equipos/ver/{{ partido_jornada_actual.equipo_visitante.id }}/">{{ partido_jornada_actual.equipo_visitante.nombre }}</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
 
-					<thead>
-						<tr>
-							<th title="Posición">Pos</th>
-							<th>Equipo</th>
-							<th title="Partidos jugados">PJ</th>
-							<th title="Partidos ganados">PG</th>
-							<th title="Partidos empatados">PE</th>
-							<th title="Partidos perdidos">PP</th>
-							<th>Puntos</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for dato_clasificacion in clasificacion %}
-							{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
-								<tr class="linea_equipo_propio">
-							{% else %}
-								<tr>
-							{% endif %}
-								<!-- Posicion -->
-								<td class="num1">
-									{{ dato_clasificacion.posicion }}
-								</td>
-								<!-- Equipo -->
-								<td>
-									<a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/" class="
-										{% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
-											linea_equipo_propio
-										{% endif %}">{{ dato_clasificacion.equipo.nombre }}</a>
-								</td>
-								<!-- Partidos jugados -->
-								<td class="num1">
-									{{ dato_clasificacion.partidos_jugados }}
-								</td>
-								<!-- Partidos ganados -->
-								<td class="num1">
-									{{ dato_clasificacion.partidos_ganados }}
-								</td>
-								<!-- Partidos empatados -->
-								<td class="num1">
-									{{ dato_clasificacion.partidos_empatados }}
-								</td>
-								<!-- Partidos perdidos -->
-								<td class="num1">
-									{{ dato_clasificacion.partidos_perdidos }}
-								</td>
-								<!-- Puntos -->
-								<td class="num1">
-									{{ dato_clasificacion.puntos }}
-								</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</section>
-		</section>
-	{% else %}
-		<section id="activar_liga">
-			<strong>La liga no está activada aún:</strong>
-			{% if es_creador %}
-				<button id="boton_activar" onclick="location.href='/ligas/activar/'">ACTIVAR</button>
-			{% endif %}
-		</section>
+            <!-- Clasificación de la jornada actual -->
+            <section id="seccion_clasificacion">
+                <table class="tabla1" id="tabla_clasificacion">
+                    <caption>Clasificación</caption>
 
-		<section id="equipo_propio">
-			{% if equipo_propio %}
-				<strong>Equipo propio:</strong> <a href="/equipos/ver/{{ equipo_propio.id }}/">{{ equipo_propio.nombre }}</a>
-			{% else %}
-				<b>{{ user.username }}</b> aún puede <a href="/equipos/crear/">crear un equipo</a> en esta liga.
-			{% endif %}
-		</section>
-	{% endif %}
+                    <thead>
+                        <tr>
+                            <th title="Posición">Pos</th>
+                            <th>Equipo</th>
+                            <th title="Partidos jugados">PJ</th>
+                            <th title="Partidos ganados">PG</th>
+                            <th title="Partidos empatados">PE</th>
+                            <th title="Partidos perdidos">PP</th>
+                            <th>Puntos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dato_clasificacion in clasificacion %}
+                            {% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+                                <tr class="linea_equipo_propio">
+                            {% else %}
+                                <tr>
+                            {% endif %}
+                                <!-- Posicion -->
+                                <td class="num1">
+                                    {{ dato_clasificacion.posicion }}
+                                </td>
+                                <!-- Equipo -->
+                                <td>
+                                    <a href="/equipos/ver/{{ dato_clasificacion.equipo.id }}/" class="
+                                        {% if equipo_propio.nombre == dato_clasificacion.equipo.nombre %}
+                                            linea_equipo_propio
+                                        {% endif %}">{{ dato_clasificacion.equipo.nombre }}</a>
+                                </td>
+                                <!-- Partidos jugados -->
+                                <td class="num1">
+                                    {{ dato_clasificacion.partidos_jugados }}
+                                </td>
+                                <!-- Partidos ganados -->
+                                <td class="num1">
+                                    {{ dato_clasificacion.partidos_ganados }}
+                                </td>
+                                <!-- Partidos empatados -->
+                                <td class="num1">
+                                    {{ dato_clasificacion.partidos_empatados }}
+                                </td>
+                                <!-- Partidos perdidos -->
+                                <td class="num1">
+                                    {{ dato_clasificacion.partidos_perdidos }}
+                                </td>
+                                <!-- Puntos -->
+                                <td class="num1">
+                                    {{ dato_clasificacion.puntos }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </section>
+
+        <!-- Avanzar tiempo (temporal) -->
+        <section id="seccion_avanzar_tiempo">
+            {% if jornada_actual %}
+                {% if es_creador %}
+                    <form class="form1" id="form_ver_liga" action="/ligas/ver/" method="post">
+                        {% csrf_token %}
+
+                        <p>Avanzar tiempo</p>
+
+                        {{ form_fecha.as_p }}
+                        <!-- Boton crear -->
+                        <div id="contenido_boton_crear">
+                            <input type="submit" value="Cambiar" />
+                        </div>
+                    </form>
+                {% endif %}
+            {% else %}
+                <p class="info">
+                    <span>LIGA FINALIZADA</span>
+                </p>
+            {% endif %}
+        </section>
+    {% else %}
+        <section id="activar_liga">
+            <strong>La liga no está activada aún:</strong>
+            {% if es_creador %}
+                <button id="boton_activar" onclick="location.href='/ligas/activar/'">ACTIVAR</button>
+            {% endif %}
+        </section>
+
+        <section id="equipo_propio">
+            {% if equipo_propio %}
+                <strong>Equipo propio:</strong> <a href="/equipos/ver/{{ equipo_propio.id }}/">{{ equipo_propio.nombre }}</a>
+            {% else %}
+                <b>{{ user.username }}</b> aún puede <a href="/equipos/crear/">crear un equipo</a> en esta liga.
+            {% endif %}
+        </section>
+    {% endif %}
 {% endblock %}

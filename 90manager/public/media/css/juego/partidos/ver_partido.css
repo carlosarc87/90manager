@@ -36,6 +36,10 @@
 	padding: 1em 0;
 }
 
+#fila_mensaje_estado button{
+	margin-left: 10px;
+}
+
 /* Ver repetición */
 
 #ver_repeticion{

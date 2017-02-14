@@ -7,7 +7,7 @@
 
 /* Avanzar tiempo */
 #seccion_avanzar_tiempo{
-	margin: 20px;
+	margin-bottom: 20px;
 }
 
 /* Equipos */
@@ -78,15 +78,7 @@
 /* wrap */
 
 #wrap{
-	background: #fff;
-	border: solid 1px #000;
-	margin: 20px auto;
-}
-
-#wrap h2{
-	border-top: none;
-	border-right: none;
-	border-left: none;
+	margin: 0 auto 20px;
 }
 
 .linea_equipo_propio{
