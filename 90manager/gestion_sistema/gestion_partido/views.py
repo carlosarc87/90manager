@@ -154,10 +154,18 @@ def ver_partido(request):
 
         if num_acciones_total > 0:
             for equipo in (equipo_local, equipo_visitante):
-                equipo.porc_posesion = round((100.0 * equipo.num_acciones) / num_acciones_total, 1)
-                equipo.porc_regates_exito = round((100.0 * equipo.regates_realizados) / equipo.regates_totales, 1)
-                equipo.porc_pases_exito = round((100.0 * equipo.pases_realizados) / equipo.pases_totales, 1)
-                equipo.porc_disparos_exito = round((100.0 * equipo.disparos_a_puerta) / equipo.disparos_totales, 1)
+                equipo.porc_posesion = 0 \
+                    if (num_acciones_total == 0) \
+                    else round((100.0 * equipo.num_acciones) / num_acciones_total, 1)
+                equipo.porc_regates_exito = 0 \
+                    if (equipo.regates_totales == 0) \
+                    else round((100.0 * equipo.regates_realizados) / equipo.regates_totales, 1)
+                equipo.porc_pases_exito = 0 \
+                    if (equipo.pases_totales == 0) \
+                    else round((100.0 * equipo.pases_realizados) / equipo.pases_totales, 1)
+                equipo.porc_disparos_exito = 0 \
+                    if (equipo.disparos_totales == 0) \
+                    else round((100.0 * equipo.disparos_a_puerta) / equipo.disparos_totales, 1)
 
             for equipo, alineacion in (
                     (equipo_local, partido.alineacion_local), (equipo_visitante, partido.alineacion_visitante)):
@@ -180,7 +188,7 @@ def ver_partido(request):
                     elif t.posicion == JugadorPartido.DELANTERO:
                         equipo.num_dl += 1
 
-                equipo.nivel_medio_titulares = "%.2f" % (1.0 * equipo.suma_nivel_titulares / 11)
+                equipo.nivel_medio_titulares = "%.2f" % (1.0 * equipo.suma_nivel_titulares / len(equipo.titulares))
 
     sucesos = partido.suceso_set.filter(
         Q(tipo=Suceso.GOL) |

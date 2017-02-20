@@ -22,14 +22,23 @@ Copyright 2017 by
 
 """
 
+from gestion_base.func import clamp
+
 
 ########################################################################
 
 # Devuelve la probabilidad dada la fórmula
-def probabilidad_exito(formula):
-    v = (120 - (100 / (formula + 1)))
-    if v >= 100:
-        v = 100
-    return v * 0.99
+def probabilidad_exito_jugada(formula, posicion_balon):
+    # Calcular probabilidad de éxito según la fórmula dada
+    v = 120 - (100 / (formula + 1))
+
+    # Calcular probabilidad de éxito según la posición del balón.
+    # Cuanto más cerca de la portería rival menor probabilidad de éxito
+    v *= (1.5 - posicion_balon)
+
+    # Limitar probabilidad de éxito. Siempre habrá un 1% de probabilidad de fallo
+    v = clamp(v, 0, 99)
+
+    return v
 
 ########################################################################

@@ -1,5 +1,3 @@
-#activar_liga,
-#equipo_propio,
 #form_ver_liga{
 	margin: 20px auto;
 	width: 400px;
@@ -73,6 +71,19 @@
 #tabla_partidos_jornada_actual td:nth-child(2){
 	text-align: center;
 	width: 10%;
+}
+
+/* Activar liga */
+
+#activar_liga,
+#equipo_propio{
+	background: #fff;
+	border: solid 1px #000;
+	border-radius: 5px;
+	box-shadow: 0 0 5px #000;
+	margin: 20px auto;
+	padding: 1em;
+	width: 400px;
 }
 
 /* wrap */

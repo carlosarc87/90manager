@@ -99,4 +99,10 @@ def quitar_acentos(cadena):
 
     return cadena
 
+
+########################################################################
+
+def clamp(n, smallest, largest):
+    return max(smallest, min(n, largest))
+
 ########################################################################

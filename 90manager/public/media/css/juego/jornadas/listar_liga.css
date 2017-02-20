@@ -21,7 +21,7 @@
 
 .tabla_jornada td:nth-child(1){
 	text-align: right;
-	width: 45%;
+	width: 43%;
 }
 
 .tabla_jornada td:nth-child(2){
@@ -29,5 +29,5 @@
 }
 
 .tabla_jornada td:nth-child(3){
-	width: 45%;
+	width: 43%;
 }

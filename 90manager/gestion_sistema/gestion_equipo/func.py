@@ -27,6 +27,20 @@ from settings import MEDIA_ROOT
 
 ########################################################################
 
+def jugadores_posicion(jugadores_partido, posicion):
+    """ Devuelve a todos los jugadores de una lista según su posición """
+
+    lista_aux = []
+
+    for jugador_partido in jugadores_partido:
+        if jugador_partido.atributos.jugador.mejor_posicion() == posicion:
+            lista_aux.append(jugador_partido)
+
+    return lista_aux
+
+
+########################################################################
+
 def lista_nombres(nombre_fichero):
     """ Devuelve una lista con todos los nombres que hay en el fichero dado """
     # Listas de nombres
@@ -60,19 +74,16 @@ def lista_nombres(nombre_fichero):
 
 ########################################################################
 
-def quitar_caracteres_raros(cadena):
-    cadena = cadena.replace('á', 'a')
-    cadena = cadena.replace('é', 'e')
-    cadena = cadena.replace('í', 'i')
-    cadena = cadena.replace('ó', 'o')
-    cadena = cadena.replace('ú', 'u')
-    cadena = cadena.replace('ñ', 'n')
+def transformar_caracteres_para_siglas(cadena):
+    cadena = cadena.upper()
+
     cadena = cadena.replace('Á', 'A')
     cadena = cadena.replace('É', 'E')
     cadena = cadena.replace('Í', 'I')
     cadena = cadena.replace('Ó', 'O')
     cadena = cadena.replace('Ú', 'U')
     cadena = cadena.replace('Ñ', 'N')
+
     return cadena
 
 
@@ -120,8 +131,7 @@ def nombre_equipo_aleatorio(liga, lista_nombres_tipo_club, lista_parte1, lista_p
 def generar_siglas_nombre(liga, nombre_equipo):
     """ Devuelve unas siglas para el nombre dado """
     # Separar el nombre del equipo en partes a partir de los espacios
-    nombre_equipo = quitar_caracteres_raros(nombre_equipo)
-    nombre_equipo = nombre_equipo.upper()
+    nombre_equipo = transformar_caracteres_para_siglas(nombre_equipo)
     partes = nombre_equipo.split(" ")
     num_partes = len(partes)
 
